@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -116,7 +116,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Empty();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -338,7 +338,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.EnumContainer();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -610,7 +610,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Simple1();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -716,7 +716,7 @@ $root.jspb = (function() {
                 if (object.aRepeatedString) {
                     if (!Array.isArray(object.aRepeatedString))
                         throw TypeError(".jspb.test.Simple1.aRepeatedString: array expected");
-                    message.aRepeatedString = [];
+                    message.aRepeatedString = Array(object.aRepeatedString.length);
                     for (var i = 0; i < object.aRepeatedString.length; ++i)
                         message.aRepeatedString[i] = String(object.aRepeatedString[i]);
                 }
@@ -747,7 +747,7 @@ $root.jspb = (function() {
                 if (message.aString != null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
                 if (message.aRepeatedString && message.aRepeatedString.length) {
-                    object.aRepeatedString = [];
+                    object.aRepeatedString = Array(message.aRepeatedString.length);
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
                 }
@@ -897,7 +897,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Simple2();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -994,7 +994,7 @@ $root.jspb = (function() {
                 if (object.aRepeatedString) {
                     if (!Array.isArray(object.aRepeatedString))
                         throw TypeError(".jspb.test.Simple2.aRepeatedString: array expected");
-                    message.aRepeatedString = [];
+                    message.aRepeatedString = Array(object.aRepeatedString.length);
                     for (var i = 0; i < object.aRepeatedString.length; ++i)
                         message.aRepeatedString[i] = String(object.aRepeatedString[i]);
                 }
@@ -1021,7 +1021,7 @@ $root.jspb = (function() {
                 if (message.aString != null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
                 if (message.aRepeatedString && message.aRepeatedString.length) {
-                    object.aRepeatedString = [];
+                    object.aRepeatedString = Array(message.aRepeatedString.length);
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
                 }
@@ -1186,7 +1186,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.SpecialCases();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -1510,7 +1510,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.OptionalFields();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -1651,7 +1651,7 @@ $root.jspb = (function() {
                 if (object.aRepeatedMessage) {
                     if (!Array.isArray(object.aRepeatedMessage))
                         throw TypeError(".jspb.test.OptionalFields.aRepeatedMessage: array expected");
-                    message.aRepeatedMessage = [];
+                    message.aRepeatedMessage = Array(object.aRepeatedMessage.length);
                     for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
                         if (typeof object.aRepeatedMessage[i] !== "object")
                             throw TypeError(".jspb.test.OptionalFields.aRepeatedMessage: object expected");
@@ -1661,7 +1661,7 @@ $root.jspb = (function() {
                 if (object.aRepeatedString) {
                     if (!Array.isArray(object.aRepeatedString))
                         throw TypeError(".jspb.test.OptionalFields.aRepeatedString: array expected");
-                    message.aRepeatedString = [];
+                    message.aRepeatedString = Array(object.aRepeatedString.length);
                     for (var i = 0; i < object.aRepeatedString.length; ++i)
                         message.aRepeatedString[i] = String(object.aRepeatedString[i]);
                 }
@@ -1697,12 +1697,12 @@ $root.jspb = (function() {
                 if (message.aNestedMessage != null && message.hasOwnProperty("aNestedMessage"))
                     object.aNestedMessage = $root.jspb.test.OptionalFields.Nested.toObject(message.aNestedMessage, options);
                 if (message.aRepeatedMessage && message.aRepeatedMessage.length) {
-                    object.aRepeatedMessage = [];
+                    object.aRepeatedMessage = Array(message.aRepeatedMessage.length);
                     for (var j = 0; j < message.aRepeatedMessage.length; ++j)
                         object.aRepeatedMessage[j] = $root.jspb.test.OptionalFields.Nested.toObject(message.aRepeatedMessage[j], options);
                 }
                 if (message.aRepeatedString && message.aRepeatedString.length) {
-                    object.aRepeatedString = [];
+                    object.aRepeatedString = Array(message.aRepeatedString.length);
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
                 }
@@ -1835,7 +1835,7 @@ $root.jspb = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.OptionalFields.Nested();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -2125,7 +2125,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.HasExtensions();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -2314,14 +2314,14 @@ $root.jspb = (function() {
                 if (object[".jspb.test.IndirectExtension.repeatedStr"]) {
                     if (!Array.isArray(object[".jspb.test.IndirectExtension.repeatedStr"]))
                         throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedStr: array expected");
-                    message[".jspb.test.IndirectExtension.repeatedStr"] = [];
+                    message[".jspb.test.IndirectExtension.repeatedStr"] = Array(object[".jspb.test.IndirectExtension.repeatedStr"].length);
                     for (var i = 0; i < object[".jspb.test.IndirectExtension.repeatedStr"].length; ++i)
                         message[".jspb.test.IndirectExtension.repeatedStr"][i] = String(object[".jspb.test.IndirectExtension.repeatedStr"][i]);
                 }
                 if (object[".jspb.test.IndirectExtension.repeatedSimple"]) {
                     if (!Array.isArray(object[".jspb.test.IndirectExtension.repeatedSimple"]))
                         throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple: array expected");
-                    message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
+                    message[".jspb.test.IndirectExtension.repeatedSimple"] = Array(object[".jspb.test.IndirectExtension.repeatedSimple"].length);
                     for (var i = 0; i < object[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
                         if (typeof object[".jspb.test.IndirectExtension.repeatedSimple"][i] !== "object")
                             throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple: object expected");
@@ -2375,12 +2375,12 @@ $root.jspb = (function() {
                 if (message[".jspb.test.IndirectExtension.str"] != null && message.hasOwnProperty(".jspb.test.IndirectExtension.str"))
                     object[".jspb.test.IndirectExtension.str"] = message[".jspb.test.IndirectExtension.str"];
                 if (message[".jspb.test.IndirectExtension.repeatedStr"] && message[".jspb.test.IndirectExtension.repeatedStr"].length) {
-                    object[".jspb.test.IndirectExtension.repeatedStr"] = [];
+                    object[".jspb.test.IndirectExtension.repeatedStr"] = Array(message[".jspb.test.IndirectExtension.repeatedStr"].length);
                     for (var j = 0; j < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++j)
                         object[".jspb.test.IndirectExtension.repeatedStr"][j] = message[".jspb.test.IndirectExtension.repeatedStr"][j];
                 }
                 if (message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length) {
-                    object[".jspb.test.IndirectExtension.repeatedSimple"] = [];
+                    object[".jspb.test.IndirectExtension.repeatedSimple"] = Array(message[".jspb.test.IndirectExtension.repeatedSimple"].length);
                     for (var j = 0; j < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++j)
                         object[".jspb.test.IndirectExtension.repeatedSimple"][j] = $root.jspb.test.Simple1.toObject(message[".jspb.test.IndirectExtension.repeatedSimple"][j], options);
                 }
@@ -2564,7 +2564,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Complex();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -2706,7 +2706,7 @@ $root.jspb = (function() {
                 if (object.aRepeatedMessage) {
                     if (!Array.isArray(object.aRepeatedMessage))
                         throw TypeError(".jspb.test.Complex.aRepeatedMessage: array expected");
-                    message.aRepeatedMessage = [];
+                    message.aRepeatedMessage = Array(object.aRepeatedMessage.length);
                     for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
                         if (typeof object.aRepeatedMessage[i] !== "object")
                             throw TypeError(".jspb.test.Complex.aRepeatedMessage: object expected");
@@ -2716,7 +2716,7 @@ $root.jspb = (function() {
                 if (object.aRepeatedString) {
                     if (!Array.isArray(object.aRepeatedString))
                         throw TypeError(".jspb.test.Complex.aRepeatedString: array expected");
-                    message.aRepeatedString = [];
+                    message.aRepeatedString = Array(object.aRepeatedString.length);
                     for (var i = 0; i < object.aRepeatedString.length; ++i)
                         message.aRepeatedString[i] = String(object.aRepeatedString[i]);
                 }
@@ -2750,12 +2750,12 @@ $root.jspb = (function() {
                 if (message.aNestedMessage != null && message.hasOwnProperty("aNestedMessage"))
                     object.aNestedMessage = $root.jspb.test.Complex.Nested.toObject(message.aNestedMessage, options);
                 if (message.aRepeatedMessage && message.aRepeatedMessage.length) {
-                    object.aRepeatedMessage = [];
+                    object.aRepeatedMessage = Array(message.aRepeatedMessage.length);
                     for (var j = 0; j < message.aRepeatedMessage.length; ++j)
                         object.aRepeatedMessage[j] = $root.jspb.test.Complex.Nested.toObject(message.aRepeatedMessage[j], options);
                 }
                 if (message.aRepeatedString && message.aRepeatedString.length) {
-                    object.aRepeatedString = [];
+                    object.aRepeatedString = Array(message.aRepeatedString.length);
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
                 }
@@ -2889,7 +2889,7 @@ $root.jspb = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Complex.Nested();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -3112,7 +3112,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.OuterMessage();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -3317,7 +3317,7 @@ $root.jspb = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.OuterMessage.Complex();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -3550,7 +3550,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.IsExtension();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -3769,7 +3769,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.IndirectExtension();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -4032,7 +4032,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.DefaultValues();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -4472,7 +4472,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.FloatingPointFields();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -4648,7 +4648,7 @@ $root.jspb = (function() {
                 if (object.repeatedFloatField) {
                     if (!Array.isArray(object.repeatedFloatField))
                         throw TypeError(".jspb.test.FloatingPointFields.repeatedFloatField: array expected");
-                    message.repeatedFloatField = [];
+                    message.repeatedFloatField = Array(object.repeatedFloatField.length);
                     for (var i = 0; i < object.repeatedFloatField.length; ++i)
                         message.repeatedFloatField[i] = Number(object.repeatedFloatField[i]);
                 }
@@ -4661,7 +4661,7 @@ $root.jspb = (function() {
                 if (object.repeatedDoubleField) {
                     if (!Array.isArray(object.repeatedDoubleField))
                         throw TypeError(".jspb.test.FloatingPointFields.repeatedDoubleField: array expected");
-                    message.repeatedDoubleField = [];
+                    message.repeatedDoubleField = Array(object.repeatedDoubleField.length);
                     for (var i = 0; i < object.repeatedDoubleField.length; ++i)
                         message.repeatedDoubleField[i] = Number(object.repeatedDoubleField[i]);
                 }
@@ -4700,7 +4700,7 @@ $root.jspb = (function() {
                 if (message.requiredFloatField != null && message.hasOwnProperty("requiredFloatField"))
                     object.requiredFloatField = options.json && !isFinite(message.requiredFloatField) ? String(message.requiredFloatField) : message.requiredFloatField;
                 if (message.repeatedFloatField && message.repeatedFloatField.length) {
-                    object.repeatedFloatField = [];
+                    object.repeatedFloatField = Array(message.repeatedFloatField.length);
                     for (var j = 0; j < message.repeatedFloatField.length; ++j)
                         object.repeatedFloatField[j] = options.json && !isFinite(message.repeatedFloatField[j]) ? String(message.repeatedFloatField[j]) : message.repeatedFloatField[j];
                 }
@@ -4711,7 +4711,7 @@ $root.jspb = (function() {
                 if (message.requiredDoubleField != null && message.hasOwnProperty("requiredDoubleField"))
                     object.requiredDoubleField = options.json && !isFinite(message.requiredDoubleField) ? String(message.requiredDoubleField) : message.requiredDoubleField;
                 if (message.repeatedDoubleField && message.repeatedDoubleField.length) {
-                    object.repeatedDoubleField = [];
+                    object.repeatedDoubleField = Array(message.repeatedDoubleField.length);
                     for (var j = 0; j < message.repeatedDoubleField.length; ++j)
                         object.repeatedDoubleField[j] = options.json && !isFinite(message.repeatedDoubleField[j]) ? String(message.repeatedDoubleField[j]) : message.repeatedDoubleField[j];
                 }
@@ -4901,7 +4901,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestClone();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -5044,7 +5044,7 @@ $root.jspb = (function() {
                 if (object.simple2) {
                     if (!Array.isArray(object.simple2))
                         throw TypeError(".jspb.test.TestClone.simple2: array expected");
-                    message.simple2 = [];
+                    message.simple2 = Array(object.simple2.length);
                     for (var i = 0; i < object.simple2.length; ++i) {
                         if (typeof object.simple2[i] !== "object")
                             throw TypeError(".jspb.test.TestClone.simple2: object expected");
@@ -5099,7 +5099,7 @@ $root.jspb = (function() {
                 if (message.simple1 != null && message.hasOwnProperty("simple1"))
                     object.simple1 = $root.jspb.test.Simple1.toObject(message.simple1, options);
                 if (message.simple2 && message.simple2.length) {
-                    object.simple2 = [];
+                    object.simple2 = Array(message.simple2.length);
                     for (var j = 0; j < message.simple2.length; ++j)
                         object.simple2[j] = $root.jspb.test.Simple1.toObject(message.simple2[j], options);
                 }
@@ -5241,7 +5241,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.CloneExtension();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -5548,7 +5548,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -5714,7 +5714,7 @@ $root.jspb = (function() {
                 if (object.repeatedGroup) {
                     if (!Array.isArray(object.repeatedGroup))
                         throw TypeError(".jspb.test.TestGroup.repeatedGroup: array expected");
-                    message.repeatedGroup = [];
+                    message.repeatedGroup = Array(object.repeatedGroup.length);
                     for (var i = 0; i < object.repeatedGroup.length; ++i) {
                         if (typeof object.repeatedGroup[i] !== "object")
                             throw TypeError(".jspb.test.TestGroup.repeatedGroup: object expected");
@@ -5781,7 +5781,7 @@ $root.jspb = (function() {
                     object.optionalSimple = null;
                 }
                 if (message.repeatedGroup && message.repeatedGroup.length) {
-                    object.repeatedGroup = [];
+                    object.repeatedGroup = Array(message.repeatedGroup.length);
                     for (var j = 0; j < message.repeatedGroup.length; ++j)
                         object.repeatedGroup[j] = $root.jspb.test.TestGroup.RepeatedGroup.toObject(message.repeatedGroup[j], options);
                 }
@@ -5940,7 +5940,7 @@ $root.jspb = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.RepeatedGroup();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -6045,7 +6045,7 @@ $root.jspb = (function() {
                     if (object.someBool) {
                         if (!Array.isArray(object.someBool))
                             throw TypeError(".jspb.test.TestGroup.RepeatedGroup.someBool: array expected");
-                        message.someBool = [];
+                        message.someBool = Array(object.someBool.length);
                         for (var i = 0; i < object.someBool.length; ++i)
                             message.someBool[i] = Boolean(object.someBool[i]);
                     }
@@ -6072,7 +6072,7 @@ $root.jspb = (function() {
                     if (message.id != null && message.hasOwnProperty("id"))
                         object.id = message.id;
                     if (message.someBool && message.someBool.length) {
-                        object.someBool = [];
+                        object.someBool = Array(message.someBool.length);
                         for (var j = 0; j < message.someBool.length; ++j)
                             object.someBool[j] = message.someBool[j];
                     }
@@ -6207,7 +6207,7 @@ $root.jspb = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.RequiredGroup();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -6437,7 +6437,7 @@ $root.jspb = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.OptionalGroup();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -6667,7 +6667,7 @@ $root.jspb = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.MessageInGroup();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -6901,7 +6901,7 @@ $root.jspb = (function() {
                         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.MessageInGroup.NestedMessage();
                         while (reader.pos < end) {
                             var start = reader.pos;
-                            var tag = reader.uint32();
+                            var tag = reader.tag();
                             if (tag === _end) {
                                 _end = undefined;
                                 break;
@@ -7133,7 +7133,7 @@ $root.jspb = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.EnumInGroup();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -7400,7 +7400,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup1();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -7641,7 +7641,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestReservedNames();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -7875,7 +7875,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestReservedNamesExtension();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -8231,7 +8231,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestMessageWithOneof();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -8446,7 +8446,7 @@ $root.jspb = (function() {
                 if (object.repeatedField) {
                     if (!Array.isArray(object.repeatedField))
                         throw TypeError(".jspb.test.TestMessageWithOneof.repeatedField: array expected");
-                    message.repeatedField = [];
+                    message.repeatedField = Array(object.repeatedField.length);
                     for (var i = 0; i < object.repeatedField.length; ++i)
                         message.repeatedField[i] = String(object.repeatedField[i]);
                 }
@@ -8501,7 +8501,7 @@ $root.jspb = (function() {
                 if (message.normalField != null && message.hasOwnProperty("normalField"))
                     object.normalField = message.normalField;
                 if (message.repeatedField && message.repeatedField.length) {
-                    object.repeatedField = [];
+                    object.repeatedField = Array(message.repeatedField.length);
                     for (var j = 0; j < message.repeatedField.length; ++j)
                         object.repeatedField[j] = message.repeatedField[j];
                 }
@@ -8668,7 +8668,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestEndsWithBytes();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -9069,7 +9069,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestMapFieldsNoBinary(), key, value;
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -9085,7 +9085,7 @@ $root.jspb = (function() {
                             key = "";
                             value = "";
                             while (reader.pos < end2) {
-                                var tag2 = reader.uint32();
+                                var tag2 = reader.tag();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
                                 case 1:
@@ -9115,7 +9115,7 @@ $root.jspb = (function() {
                             key = "";
                             value = 0;
                             while (reader.pos < end2) {
-                                var tag2 = reader.uint32();
+                                var tag2 = reader.tag();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
                                 case 1:
@@ -9145,7 +9145,7 @@ $root.jspb = (function() {
                             key = "";
                             value = 0;
                             while (reader.pos < end2) {
-                                var tag2 = reader.uint32();
+                                var tag2 = reader.tag();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
                                 case 1:
@@ -9175,7 +9175,7 @@ $root.jspb = (function() {
                             key = "";
                             value = false;
                             while (reader.pos < end2) {
-                                var tag2 = reader.uint32();
+                                var tag2 = reader.tag();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
                                 case 1:
@@ -9205,7 +9205,7 @@ $root.jspb = (function() {
                             key = "";
                             value = 0;
                             while (reader.pos < end2) {
-                                var tag2 = reader.uint32();
+                                var tag2 = reader.tag();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
                                 case 1:
@@ -9235,7 +9235,7 @@ $root.jspb = (function() {
                             key = "";
                             value = 0;
                             while (reader.pos < end2) {
-                                var tag2 = reader.uint32();
+                                var tag2 = reader.tag();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
                                 case 1:
@@ -9265,7 +9265,7 @@ $root.jspb = (function() {
                             key = "";
                             value = null;
                             while (reader.pos < end2) {
-                                var tag2 = reader.uint32();
+                                var tag2 = reader.tag();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
                                 case 1:
@@ -9295,7 +9295,7 @@ $root.jspb = (function() {
                             key = 0;
                             value = "";
                             while (reader.pos < end2) {
-                                var tag2 = reader.uint32();
+                                var tag2 = reader.tag();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
                                 case 1:
@@ -9323,7 +9323,7 @@ $root.jspb = (function() {
                             key = 0;
                             value = "";
                             while (reader.pos < end2) {
-                                var tag2 = reader.uint32();
+                                var tag2 = reader.tag();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
                                 case 1:
@@ -9351,7 +9351,7 @@ $root.jspb = (function() {
                             key = false;
                             value = "";
                             while (reader.pos < end2) {
-                                var tag2 = reader.uint32();
+                                var tag2 = reader.tag();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
                                 case 1:
@@ -9385,7 +9385,7 @@ $root.jspb = (function() {
                             key = "";
                             value = null;
                             while (reader.pos < end2) {
-                                var tag2 = reader.uint32();
+                                var tag2 = reader.tag();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
                                 case 1:
@@ -9997,7 +9997,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.MapValueMessageNoBinary();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -10216,7 +10216,7 @@ $root.jspb = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Deeply();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -10410,7 +10410,7 @@ $root.jspb = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Deeply.Nested();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -10615,7 +10615,7 @@ $root.jspb = (function() {
                         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Deeply.Nested.Message();
                         while (reader.pos < end) {
                             var start = reader.pos;
-                            var tag = reader.uint32();
+                            var tag = reader.tag();
                             if (tag === _end) {
                                 _end = undefined;
                                 break;
@@ -10877,7 +10877,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FileDescriptorSet();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -10964,7 +10964,7 @@ $root.google = (function() {
                 if (object.file) {
                     if (!Array.isArray(object.file))
                         throw TypeError(".google.protobuf.FileDescriptorSet.file: array expected");
-                    message.file = [];
+                    message.file = Array(object.file.length);
                     for (var i = 0; i < object.file.length; ++i) {
                         if (typeof object.file[i] !== "object")
                             throw TypeError(".google.protobuf.FileDescriptorSet.file: object expected");
@@ -10990,7 +10990,7 @@ $root.google = (function() {
                 if (options.arrays || options.defaults)
                     object.file = [];
                 if (message.file && message.file.length) {
-                    object.file = [];
+                    object.file = Array(message.file.length);
                     for (var j = 0; j < message.file.length; ++j)
                         object.file[j] = $root.google.protobuf.FileDescriptorProto.toObject(message.file[j], options);
                 }
@@ -11319,7 +11319,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FileDescriptorProto();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -11610,35 +11610,35 @@ $root.google = (function() {
                 if (object.dependency) {
                     if (!Array.isArray(object.dependency))
                         throw TypeError(".google.protobuf.FileDescriptorProto.dependency: array expected");
-                    message.dependency = [];
+                    message.dependency = Array(object.dependency.length);
                     for (var i = 0; i < object.dependency.length; ++i)
                         message.dependency[i] = String(object.dependency[i]);
                 }
                 if (object.publicDependency) {
                     if (!Array.isArray(object.publicDependency))
                         throw TypeError(".google.protobuf.FileDescriptorProto.publicDependency: array expected");
-                    message.publicDependency = [];
+                    message.publicDependency = Array(object.publicDependency.length);
                     for (var i = 0; i < object.publicDependency.length; ++i)
                         message.publicDependency[i] = object.publicDependency[i] | 0;
                 }
                 if (object.weakDependency) {
                     if (!Array.isArray(object.weakDependency))
                         throw TypeError(".google.protobuf.FileDescriptorProto.weakDependency: array expected");
-                    message.weakDependency = [];
+                    message.weakDependency = Array(object.weakDependency.length);
                     for (var i = 0; i < object.weakDependency.length; ++i)
                         message.weakDependency[i] = object.weakDependency[i] | 0;
                 }
                 if (object.optionDependency) {
                     if (!Array.isArray(object.optionDependency))
                         throw TypeError(".google.protobuf.FileDescriptorProto.optionDependency: array expected");
-                    message.optionDependency = [];
+                    message.optionDependency = Array(object.optionDependency.length);
                     for (var i = 0; i < object.optionDependency.length; ++i)
                         message.optionDependency[i] = String(object.optionDependency[i]);
                 }
                 if (object.messageType) {
                     if (!Array.isArray(object.messageType))
                         throw TypeError(".google.protobuf.FileDescriptorProto.messageType: array expected");
-                    message.messageType = [];
+                    message.messageType = Array(object.messageType.length);
                     for (var i = 0; i < object.messageType.length; ++i) {
                         if (typeof object.messageType[i] !== "object")
                             throw TypeError(".google.protobuf.FileDescriptorProto.messageType: object expected");
@@ -11648,7 +11648,7 @@ $root.google = (function() {
                 if (object.enumType) {
                     if (!Array.isArray(object.enumType))
                         throw TypeError(".google.protobuf.FileDescriptorProto.enumType: array expected");
-                    message.enumType = [];
+                    message.enumType = Array(object.enumType.length);
                     for (var i = 0; i < object.enumType.length; ++i) {
                         if (typeof object.enumType[i] !== "object")
                             throw TypeError(".google.protobuf.FileDescriptorProto.enumType: object expected");
@@ -11658,7 +11658,7 @@ $root.google = (function() {
                 if (object.service) {
                     if (!Array.isArray(object.service))
                         throw TypeError(".google.protobuf.FileDescriptorProto.service: array expected");
-                    message.service = [];
+                    message.service = Array(object.service.length);
                     for (var i = 0; i < object.service.length; ++i) {
                         if (typeof object.service[i] !== "object")
                             throw TypeError(".google.protobuf.FileDescriptorProto.service: object expected");
@@ -11668,7 +11668,7 @@ $root.google = (function() {
                 if (object.extension) {
                     if (!Array.isArray(object.extension))
                         throw TypeError(".google.protobuf.FileDescriptorProto.extension: array expected");
-                    message.extension = [];
+                    message.extension = Array(object.extension.length);
                     for (var i = 0; i < object.extension.length; ++i) {
                         if (typeof object.extension[i] !== "object")
                             throw TypeError(".google.protobuf.FileDescriptorProto.extension: object expected");
@@ -11782,27 +11782,27 @@ $root.google = (function() {
                 if (message["package"] != null && message.hasOwnProperty("package"))
                     object["package"] = message["package"];
                 if (message.dependency && message.dependency.length) {
-                    object.dependency = [];
+                    object.dependency = Array(message.dependency.length);
                     for (var j = 0; j < message.dependency.length; ++j)
                         object.dependency[j] = message.dependency[j];
                 }
                 if (message.messageType && message.messageType.length) {
-                    object.messageType = [];
+                    object.messageType = Array(message.messageType.length);
                     for (var j = 0; j < message.messageType.length; ++j)
                         object.messageType[j] = $root.google.protobuf.DescriptorProto.toObject(message.messageType[j], options);
                 }
                 if (message.enumType && message.enumType.length) {
-                    object.enumType = [];
+                    object.enumType = Array(message.enumType.length);
                     for (var j = 0; j < message.enumType.length; ++j)
                         object.enumType[j] = $root.google.protobuf.EnumDescriptorProto.toObject(message.enumType[j], options);
                 }
                 if (message.service && message.service.length) {
-                    object.service = [];
+                    object.service = Array(message.service.length);
                     for (var j = 0; j < message.service.length; ++j)
                         object.service[j] = $root.google.protobuf.ServiceDescriptorProto.toObject(message.service[j], options);
                 }
                 if (message.extension && message.extension.length) {
-                    object.extension = [];
+                    object.extension = Array(message.extension.length);
                     for (var j = 0; j < message.extension.length; ++j)
                         object.extension[j] = $root.google.protobuf.FieldDescriptorProto.toObject(message.extension[j], options);
                 }
@@ -11811,12 +11811,12 @@ $root.google = (function() {
                 if (message.sourceCodeInfo != null && message.hasOwnProperty("sourceCodeInfo"))
                     object.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.toObject(message.sourceCodeInfo, options);
                 if (message.publicDependency && message.publicDependency.length) {
-                    object.publicDependency = [];
+                    object.publicDependency = Array(message.publicDependency.length);
                     for (var j = 0; j < message.publicDependency.length; ++j)
                         object.publicDependency[j] = message.publicDependency[j];
                 }
                 if (message.weakDependency && message.weakDependency.length) {
-                    object.weakDependency = [];
+                    object.weakDependency = Array(message.weakDependency.length);
                     for (var j = 0; j < message.weakDependency.length; ++j)
                         object.weakDependency[j] = message.weakDependency[j];
                 }
@@ -11825,7 +11825,7 @@ $root.google = (function() {
                 if (message.edition != null && message.hasOwnProperty("edition"))
                     object.edition = options.enums === String ? $root.google.protobuf.Edition[message.edition] === undefined ? message.edition : $root.google.protobuf.Edition[message.edition] : message.edition;
                 if (message.optionDependency && message.optionDependency.length) {
-                    object.optionDependency = [];
+                    object.optionDependency = Array(message.optionDependency.length);
                     for (var j = 0; j < message.optionDependency.length; ++j)
                         object.optionDependency[j] = message.optionDependency[j];
                 }
@@ -12087,7 +12087,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.DescriptorProto();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -12328,7 +12328,7 @@ $root.google = (function() {
                 if (object.field) {
                     if (!Array.isArray(object.field))
                         throw TypeError(".google.protobuf.DescriptorProto.field: array expected");
-                    message.field = [];
+                    message.field = Array(object.field.length);
                     for (var i = 0; i < object.field.length; ++i) {
                         if (typeof object.field[i] !== "object")
                             throw TypeError(".google.protobuf.DescriptorProto.field: object expected");
@@ -12338,7 +12338,7 @@ $root.google = (function() {
                 if (object.extension) {
                     if (!Array.isArray(object.extension))
                         throw TypeError(".google.protobuf.DescriptorProto.extension: array expected");
-                    message.extension = [];
+                    message.extension = Array(object.extension.length);
                     for (var i = 0; i < object.extension.length; ++i) {
                         if (typeof object.extension[i] !== "object")
                             throw TypeError(".google.protobuf.DescriptorProto.extension: object expected");
@@ -12348,7 +12348,7 @@ $root.google = (function() {
                 if (object.nestedType) {
                     if (!Array.isArray(object.nestedType))
                         throw TypeError(".google.protobuf.DescriptorProto.nestedType: array expected");
-                    message.nestedType = [];
+                    message.nestedType = Array(object.nestedType.length);
                     for (var i = 0; i < object.nestedType.length; ++i) {
                         if (typeof object.nestedType[i] !== "object")
                             throw TypeError(".google.protobuf.DescriptorProto.nestedType: object expected");
@@ -12358,7 +12358,7 @@ $root.google = (function() {
                 if (object.enumType) {
                     if (!Array.isArray(object.enumType))
                         throw TypeError(".google.protobuf.DescriptorProto.enumType: array expected");
-                    message.enumType = [];
+                    message.enumType = Array(object.enumType.length);
                     for (var i = 0; i < object.enumType.length; ++i) {
                         if (typeof object.enumType[i] !== "object")
                             throw TypeError(".google.protobuf.DescriptorProto.enumType: object expected");
@@ -12368,7 +12368,7 @@ $root.google = (function() {
                 if (object.extensionRange) {
                     if (!Array.isArray(object.extensionRange))
                         throw TypeError(".google.protobuf.DescriptorProto.extensionRange: array expected");
-                    message.extensionRange = [];
+                    message.extensionRange = Array(object.extensionRange.length);
                     for (var i = 0; i < object.extensionRange.length; ++i) {
                         if (typeof object.extensionRange[i] !== "object")
                             throw TypeError(".google.protobuf.DescriptorProto.extensionRange: object expected");
@@ -12378,7 +12378,7 @@ $root.google = (function() {
                 if (object.oneofDecl) {
                     if (!Array.isArray(object.oneofDecl))
                         throw TypeError(".google.protobuf.DescriptorProto.oneofDecl: array expected");
-                    message.oneofDecl = [];
+                    message.oneofDecl = Array(object.oneofDecl.length);
                     for (var i = 0; i < object.oneofDecl.length; ++i) {
                         if (typeof object.oneofDecl[i] !== "object")
                             throw TypeError(".google.protobuf.DescriptorProto.oneofDecl: object expected");
@@ -12393,7 +12393,7 @@ $root.google = (function() {
                 if (object.reservedRange) {
                     if (!Array.isArray(object.reservedRange))
                         throw TypeError(".google.protobuf.DescriptorProto.reservedRange: array expected");
-                    message.reservedRange = [];
+                    message.reservedRange = Array(object.reservedRange.length);
                     for (var i = 0; i < object.reservedRange.length; ++i) {
                         if (typeof object.reservedRange[i] !== "object")
                             throw TypeError(".google.protobuf.DescriptorProto.reservedRange: object expected");
@@ -12403,7 +12403,7 @@ $root.google = (function() {
                 if (object.reservedName) {
                     if (!Array.isArray(object.reservedName))
                         throw TypeError(".google.protobuf.DescriptorProto.reservedName: array expected");
-                    message.reservedName = [];
+                    message.reservedName = Array(object.reservedName.length);
                     for (var i = 0; i < object.reservedName.length; ++i)
                         message.reservedName[i] = String(object.reservedName[i]);
                 }
@@ -12461,44 +12461,44 @@ $root.google = (function() {
                 if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
                 if (message.field && message.field.length) {
-                    object.field = [];
+                    object.field = Array(message.field.length);
                     for (var j = 0; j < message.field.length; ++j)
                         object.field[j] = $root.google.protobuf.FieldDescriptorProto.toObject(message.field[j], options);
                 }
                 if (message.nestedType && message.nestedType.length) {
-                    object.nestedType = [];
+                    object.nestedType = Array(message.nestedType.length);
                     for (var j = 0; j < message.nestedType.length; ++j)
                         object.nestedType[j] = $root.google.protobuf.DescriptorProto.toObject(message.nestedType[j], options);
                 }
                 if (message.enumType && message.enumType.length) {
-                    object.enumType = [];
+                    object.enumType = Array(message.enumType.length);
                     for (var j = 0; j < message.enumType.length; ++j)
                         object.enumType[j] = $root.google.protobuf.EnumDescriptorProto.toObject(message.enumType[j], options);
                 }
                 if (message.extensionRange && message.extensionRange.length) {
-                    object.extensionRange = [];
+                    object.extensionRange = Array(message.extensionRange.length);
                     for (var j = 0; j < message.extensionRange.length; ++j)
                         object.extensionRange[j] = $root.google.protobuf.DescriptorProto.ExtensionRange.toObject(message.extensionRange[j], options);
                 }
                 if (message.extension && message.extension.length) {
-                    object.extension = [];
+                    object.extension = Array(message.extension.length);
                     for (var j = 0; j < message.extension.length; ++j)
                         object.extension[j] = $root.google.protobuf.FieldDescriptorProto.toObject(message.extension[j], options);
                 }
                 if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.MessageOptions.toObject(message.options, options);
                 if (message.oneofDecl && message.oneofDecl.length) {
-                    object.oneofDecl = [];
+                    object.oneofDecl = Array(message.oneofDecl.length);
                     for (var j = 0; j < message.oneofDecl.length; ++j)
                         object.oneofDecl[j] = $root.google.protobuf.OneofDescriptorProto.toObject(message.oneofDecl[j], options);
                 }
                 if (message.reservedRange && message.reservedRange.length) {
-                    object.reservedRange = [];
+                    object.reservedRange = Array(message.reservedRange.length);
                     for (var j = 0; j < message.reservedRange.length; ++j)
                         object.reservedRange[j] = $root.google.protobuf.DescriptorProto.ReservedRange.toObject(message.reservedRange[j], options);
                 }
                 if (message.reservedName && message.reservedName.length) {
-                    object.reservedName = [];
+                    object.reservedName = Array(message.reservedName.length);
                     for (var j = 0; j < message.reservedName.length; ++j)
                         object.reservedName[j] = message.reservedName[j];
                 }
@@ -12655,7 +12655,7 @@ $root.google = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.DescriptorProto.ExtensionRange();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -12930,7 +12930,7 @@ $root.google = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.DescriptorProto.ReservedRange();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -13215,7 +13215,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.ExtensionRangeOptions();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -13344,7 +13344,7 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
                         throw TypeError(".google.protobuf.ExtensionRangeOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
+                    message.uninterpretedOption = Array(object.uninterpretedOption.length);
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
                         if (typeof object.uninterpretedOption[i] !== "object")
                             throw TypeError(".google.protobuf.ExtensionRangeOptions.uninterpretedOption: object expected");
@@ -13354,7 +13354,7 @@ $root.google = (function() {
                 if (object.declaration) {
                     if (!Array.isArray(object.declaration))
                         throw TypeError(".google.protobuf.ExtensionRangeOptions.declaration: array expected");
-                    message.declaration = [];
+                    message.declaration = Array(object.declaration.length);
                     for (var i = 0; i < object.declaration.length; ++i) {
                         if (typeof object.declaration[i] !== "object")
                             throw TypeError(".google.protobuf.ExtensionRangeOptions.declaration: object expected");
@@ -13407,7 +13407,7 @@ $root.google = (function() {
                     object.features = null;
                 }
                 if (message.declaration && message.declaration.length) {
-                    object.declaration = [];
+                    object.declaration = Array(message.declaration.length);
                     for (var j = 0; j < message.declaration.length; ++j)
                         object.declaration[j] = $root.google.protobuf.ExtensionRangeOptions.Declaration.toObject(message.declaration[j], options);
                 }
@@ -13416,7 +13416,7 @@ $root.google = (function() {
                 if (message.features != null && message.hasOwnProperty("features"))
                     object.features = $root.google.protobuf.FeatureSet.toObject(message.features, options);
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
+                    object.uninterpretedOption = Array(message.uninterpretedOption.length);
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
@@ -13593,7 +13593,7 @@ $root.google = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.ExtensionRangeOptions.Declaration();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -14007,7 +14007,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldDescriptorProto();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -14579,7 +14579,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.OneofDescriptorProto();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -14890,7 +14890,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumDescriptorProto();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -15046,7 +15046,7 @@ $root.google = (function() {
                 if (object.value) {
                     if (!Array.isArray(object.value))
                         throw TypeError(".google.protobuf.EnumDescriptorProto.value: array expected");
-                    message.value = [];
+                    message.value = Array(object.value.length);
                     for (var i = 0; i < object.value.length; ++i) {
                         if (typeof object.value[i] !== "object")
                             throw TypeError(".google.protobuf.EnumDescriptorProto.value: object expected");
@@ -15061,7 +15061,7 @@ $root.google = (function() {
                 if (object.reservedRange) {
                     if (!Array.isArray(object.reservedRange))
                         throw TypeError(".google.protobuf.EnumDescriptorProto.reservedRange: array expected");
-                    message.reservedRange = [];
+                    message.reservedRange = Array(object.reservedRange.length);
                     for (var i = 0; i < object.reservedRange.length; ++i) {
                         if (typeof object.reservedRange[i] !== "object")
                             throw TypeError(".google.protobuf.EnumDescriptorProto.reservedRange: object expected");
@@ -15071,7 +15071,7 @@ $root.google = (function() {
                 if (object.reservedName) {
                     if (!Array.isArray(object.reservedName))
                         throw TypeError(".google.protobuf.EnumDescriptorProto.reservedName: array expected");
-                    message.reservedName = [];
+                    message.reservedName = Array(object.reservedName.length);
                     for (var i = 0; i < object.reservedName.length; ++i)
                         message.reservedName[i] = String(object.reservedName[i]);
                 }
@@ -15124,19 +15124,19 @@ $root.google = (function() {
                 if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
                 if (message.value && message.value.length) {
-                    object.value = [];
+                    object.value = Array(message.value.length);
                     for (var j = 0; j < message.value.length; ++j)
                         object.value[j] = $root.google.protobuf.EnumValueDescriptorProto.toObject(message.value[j], options);
                 }
                 if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.EnumOptions.toObject(message.options, options);
                 if (message.reservedRange && message.reservedRange.length) {
-                    object.reservedRange = [];
+                    object.reservedRange = Array(message.reservedRange.length);
                     for (var j = 0; j < message.reservedRange.length; ++j)
                         object.reservedRange[j] = $root.google.protobuf.EnumDescriptorProto.EnumReservedRange.toObject(message.reservedRange[j], options);
                 }
                 if (message.reservedName && message.reservedName.length) {
-                    object.reservedName = [];
+                    object.reservedName = Array(message.reservedName.length);
                     for (var j = 0; j < message.reservedName.length; ++j)
                         object.reservedName[j] = message.reservedName[j];
                 }
@@ -15282,7 +15282,7 @@ $root.google = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumDescriptorProto.EnumReservedRange();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -15552,7 +15552,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumValueDescriptorProto();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -15840,7 +15840,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.ServiceDescriptorProto();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -15949,7 +15949,7 @@ $root.google = (function() {
                 if (object.method) {
                     if (!Array.isArray(object.method))
                         throw TypeError(".google.protobuf.ServiceDescriptorProto.method: array expected");
-                    message.method = [];
+                    message.method = Array(object.method.length);
                     for (var i = 0; i < object.method.length; ++i) {
                         if (typeof object.method[i] !== "object")
                             throw TypeError(".google.protobuf.ServiceDescriptorProto.method: object expected");
@@ -15986,7 +15986,7 @@ $root.google = (function() {
                 if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
                 if (message.method && message.method.length) {
-                    object.method = [];
+                    object.method = Array(message.method.length);
                     for (var j = 0; j < message.method.length; ++j)
                         object.method[j] = $root.google.protobuf.MethodDescriptorProto.toObject(message.method[j], options);
                 }
@@ -16179,7 +16179,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.MethodDescriptorProto();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -16707,7 +16707,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FileOptions();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -17043,7 +17043,7 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
                         throw TypeError(".google.protobuf.FileOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
+                    message.uninterpretedOption = Array(object.uninterpretedOption.length);
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
                         if (typeof object.uninterpretedOption[i] !== "object")
                             throw TypeError(".google.protobuf.FileOptions.uninterpretedOption: object expected");
@@ -17131,7 +17131,7 @@ $root.google = (function() {
                 if (message.features != null && message.hasOwnProperty("features"))
                     object.features = $root.google.protobuf.FeatureSet.toObject(message.features, options);
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
+                    object.uninterpretedOption = Array(message.uninterpretedOption.length);
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
@@ -17351,7 +17351,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.MessageOptions();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -17509,7 +17509,7 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
                         throw TypeError(".google.protobuf.MessageOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
+                    message.uninterpretedOption = Array(object.uninterpretedOption.length);
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
                         if (typeof object.uninterpretedOption[i] !== "object")
                             throw TypeError(".google.protobuf.MessageOptions.uninterpretedOption: object expected");
@@ -17555,7 +17555,7 @@ $root.google = (function() {
                 if (message.features != null && message.hasOwnProperty("features"))
                     object.features = $root.google.protobuf.FeatureSet.toObject(message.features, options);
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
+                    object.uninterpretedOption = Array(message.uninterpretedOption.length);
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
@@ -17840,7 +17840,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -18173,7 +18173,7 @@ $root.google = (function() {
                 if (object.targets) {
                     if (!Array.isArray(object.targets))
                         throw TypeError(".google.protobuf.FieldOptions.targets: array expected");
-                    message.targets = [];
+                    message.targets = Array(object.targets.length);
                     for (var i = 0; i < object.targets.length; ++i)
                         switch (object.targets[i]) {
                         default:
@@ -18226,7 +18226,7 @@ $root.google = (function() {
                 if (object.editionDefaults) {
                     if (!Array.isArray(object.editionDefaults))
                         throw TypeError(".google.protobuf.FieldOptions.editionDefaults: array expected");
-                    message.editionDefaults = [];
+                    message.editionDefaults = Array(object.editionDefaults.length);
                     for (var i = 0; i < object.editionDefaults.length; ++i) {
                         if (typeof object.editionDefaults[i] !== "object")
                             throw TypeError(".google.protobuf.FieldOptions.editionDefaults: object expected");
@@ -18246,7 +18246,7 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
                         throw TypeError(".google.protobuf.FieldOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
+                    message.uninterpretedOption = Array(object.uninterpretedOption.length);
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
                         if (typeof object.uninterpretedOption[i] !== "object")
                             throw TypeError(".google.protobuf.FieldOptions.uninterpretedOption: object expected");
@@ -18306,12 +18306,12 @@ $root.google = (function() {
                 if (message.retention != null && message.hasOwnProperty("retention"))
                     object.retention = options.enums === String ? $root.google.protobuf.FieldOptions.OptionRetention[message.retention] === undefined ? message.retention : $root.google.protobuf.FieldOptions.OptionRetention[message.retention] : message.retention;
                 if (message.targets && message.targets.length) {
-                    object.targets = [];
+                    object.targets = Array(message.targets.length);
                     for (var j = 0; j < message.targets.length; ++j)
                         object.targets[j] = options.enums === String ? $root.google.protobuf.FieldOptions.OptionTargetType[message.targets[j]] === undefined ? message.targets[j] : $root.google.protobuf.FieldOptions.OptionTargetType[message.targets[j]] : message.targets[j];
                 }
                 if (message.editionDefaults && message.editionDefaults.length) {
-                    object.editionDefaults = [];
+                    object.editionDefaults = Array(message.editionDefaults.length);
                     for (var j = 0; j < message.editionDefaults.length; ++j)
                         object.editionDefaults[j] = $root.google.protobuf.FieldOptions.EditionDefault.toObject(message.editionDefaults[j], options);
                 }
@@ -18320,7 +18320,7 @@ $root.google = (function() {
                 if (message.featureSupport != null && message.hasOwnProperty("featureSupport"))
                     object.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.toObject(message.featureSupport, options);
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
+                    object.uninterpretedOption = Array(message.uninterpretedOption.length);
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
@@ -18542,7 +18542,7 @@ $root.google = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions.EditionDefault();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -18889,7 +18889,7 @@ $root.google = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions.FeatureSupport();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -19385,7 +19385,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.OneofOptions();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -19488,7 +19488,7 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
                         throw TypeError(".google.protobuf.OneofOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
+                    message.uninterpretedOption = Array(object.uninterpretedOption.length);
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
                         if (typeof object.uninterpretedOption[i] !== "object")
                             throw TypeError(".google.protobuf.OneofOptions.uninterpretedOption: object expected");
@@ -19518,7 +19518,7 @@ $root.google = (function() {
                 if (message.features != null && message.hasOwnProperty("features"))
                     object.features = $root.google.protobuf.FeatureSet.toObject(message.features, options);
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
+                    object.uninterpretedOption = Array(message.uninterpretedOption.length);
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
@@ -19706,7 +19706,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumOptions();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -19851,7 +19851,7 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
                         throw TypeError(".google.protobuf.EnumOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
+                    message.uninterpretedOption = Array(object.uninterpretedOption.length);
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
                         if (typeof object.uninterpretedOption[i] !== "object")
                             throw TypeError(".google.protobuf.EnumOptions.uninterpretedOption: object expected");
@@ -19894,7 +19894,7 @@ $root.google = (function() {
                 if (message.features != null && message.hasOwnProperty("features"))
                     object.features = $root.google.protobuf.FeatureSet.toObject(message.features, options);
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
+                    object.uninterpretedOption = Array(message.uninterpretedOption.length);
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
@@ -20078,7 +20078,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumValueOptions();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -20219,7 +20219,7 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
                         throw TypeError(".google.protobuf.EnumValueOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
+                    message.uninterpretedOption = Array(object.uninterpretedOption.length);
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
                         if (typeof object.uninterpretedOption[i] !== "object")
                             throw TypeError(".google.protobuf.EnumValueOptions.uninterpretedOption: object expected");
@@ -20259,7 +20259,7 @@ $root.google = (function() {
                 if (message.featureSupport != null && message.hasOwnProperty("featureSupport"))
                     object.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.toObject(message.featureSupport, options);
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
+                    object.uninterpretedOption = Array(message.uninterpretedOption.length);
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
@@ -20419,7 +20419,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.ServiceOptions();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -20533,7 +20533,7 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
                         throw TypeError(".google.protobuf.ServiceOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
+                    message.uninterpretedOption = Array(object.uninterpretedOption.length);
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
                         if (typeof object.uninterpretedOption[i] !== "object")
                             throw TypeError(".google.protobuf.ServiceOptions.uninterpretedOption: object expected");
@@ -20567,7 +20567,7 @@ $root.google = (function() {
                 if (message.features != null && message.hasOwnProperty("features"))
                     object.features = $root.google.protobuf.FeatureSet.toObject(message.features, options);
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
+                    object.uninterpretedOption = Array(message.uninterpretedOption.length);
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
@@ -20738,7 +20738,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.MethodOptions();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -20887,7 +20887,7 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
                         throw TypeError(".google.protobuf.MethodOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
+                    message.uninterpretedOption = Array(object.uninterpretedOption.length);
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
                         if (typeof object.uninterpretedOption[i] !== "object")
                             throw TypeError(".google.protobuf.MethodOptions.uninterpretedOption: object expected");
@@ -20924,7 +20924,7 @@ $root.google = (function() {
                 if (message.features != null && message.hasOwnProperty("features"))
                     object.features = $root.google.protobuf.FeatureSet.toObject(message.features, options);
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
+                    object.uninterpretedOption = Array(message.uninterpretedOption.length);
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
@@ -21144,7 +21144,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.UninterpretedOption();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -21285,7 +21285,7 @@ $root.google = (function() {
                 if (object.name) {
                     if (!Array.isArray(object.name))
                         throw TypeError(".google.protobuf.UninterpretedOption.name: array expected");
-                    message.name = [];
+                    message.name = Array(object.name.length);
                     for (var i = 0; i < object.name.length; ++i) {
                         if (typeof object.name[i] !== "object")
                             throw TypeError(".google.protobuf.UninterpretedOption.name: object expected");
@@ -21362,7 +21362,7 @@ $root.google = (function() {
                     object.aggregateValue = "";
                 }
                 if (message.name && message.name.length) {
-                    object.name = [];
+                    object.name = Array(message.name.length);
                     for (var j = 0; j < message.name.length; ++j)
                         object.name[j] = $root.google.protobuf.UninterpretedOption.NamePart.toObject(message.name[j], options);
                 }
@@ -21522,7 +21522,7 @@ $root.google = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.UninterpretedOption.NamePart();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -21849,7 +21849,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSet();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -22485,7 +22485,7 @@ $root.google = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSet.VisibilityFeature();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -22740,7 +22740,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSetDefaults();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -22875,7 +22875,7 @@ $root.google = (function() {
                 if (object.defaults) {
                     if (!Array.isArray(object.defaults))
                         throw TypeError(".google.protobuf.FeatureSetDefaults.defaults: array expected");
-                    message.defaults = [];
+                    message.defaults = Array(object.defaults.length);
                     for (var i = 0; i < object.defaults.length; ++i) {
                         if (typeof object.defaults[i] !== "object")
                             throw TypeError(".google.protobuf.FeatureSetDefaults.defaults: object expected");
@@ -23017,7 +23017,7 @@ $root.google = (function() {
                     object.maximumEdition = options.enums === String ? "EDITION_UNKNOWN" : 0;
                 }
                 if (message.defaults && message.defaults.length) {
-                    object.defaults = [];
+                    object.defaults = Array(message.defaults.length);
                     for (var j = 0; j < message.defaults.length; ++j)
                         object.defaults[j] = $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.toObject(message.defaults[j], options);
                 }
@@ -23176,7 +23176,7 @@ $root.google = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -23519,7 +23519,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.SourceCodeInfo();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -23606,7 +23606,7 @@ $root.google = (function() {
                 if (object.location) {
                     if (!Array.isArray(object.location))
                         throw TypeError(".google.protobuf.SourceCodeInfo.location: array expected");
-                    message.location = [];
+                    message.location = Array(object.location.length);
                     for (var i = 0; i < object.location.length; ++i) {
                         if (typeof object.location[i] !== "object")
                             throw TypeError(".google.protobuf.SourceCodeInfo.location: object expected");
@@ -23632,7 +23632,7 @@ $root.google = (function() {
                 if (options.arrays || options.defaults)
                     object.location = [];
                 if (message.location && message.location.length) {
-                    object.location = [];
+                    object.location = Array(message.location.length);
                     for (var j = 0; j < message.location.length; ++j)
                         object.location[j] = $root.google.protobuf.SourceCodeInfo.Location.toObject(message.location[j], options);
                 }
@@ -23821,7 +23821,7 @@ $root.google = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.SourceCodeInfo.Location();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -23970,14 +23970,14 @@ $root.google = (function() {
                     if (object.path) {
                         if (!Array.isArray(object.path))
                             throw TypeError(".google.protobuf.SourceCodeInfo.Location.path: array expected");
-                        message.path = [];
+                        message.path = Array(object.path.length);
                         for (var i = 0; i < object.path.length; ++i)
                             message.path[i] = object.path[i] | 0;
                     }
                     if (object.span) {
                         if (!Array.isArray(object.span))
                             throw TypeError(".google.protobuf.SourceCodeInfo.Location.span: array expected");
-                        message.span = [];
+                        message.span = Array(object.span.length);
                         for (var i = 0; i < object.span.length; ++i)
                             message.span[i] = object.span[i] | 0;
                     }
@@ -23988,7 +23988,7 @@ $root.google = (function() {
                     if (object.leadingDetachedComments) {
                         if (!Array.isArray(object.leadingDetachedComments))
                             throw TypeError(".google.protobuf.SourceCodeInfo.Location.leadingDetachedComments: array expected");
-                        message.leadingDetachedComments = [];
+                        message.leadingDetachedComments = Array(object.leadingDetachedComments.length);
                         for (var i = 0; i < object.leadingDetachedComments.length; ++i)
                             message.leadingDetachedComments[i] = String(object.leadingDetachedComments[i]);
                     }
@@ -24018,12 +24018,12 @@ $root.google = (function() {
                         object.trailingComments = "";
                     }
                     if (message.path && message.path.length) {
-                        object.path = [];
+                        object.path = Array(message.path.length);
                         for (var j = 0; j < message.path.length; ++j)
                             object.path[j] = message.path[j];
                     }
                     if (message.span && message.span.length) {
-                        object.span = [];
+                        object.span = Array(message.span.length);
                         for (var j = 0; j < message.span.length; ++j)
                             object.span[j] = message.span[j];
                     }
@@ -24032,7 +24032,7 @@ $root.google = (function() {
                     if (message.trailingComments != null && message.hasOwnProperty("trailingComments"))
                         object.trailingComments = message.trailingComments;
                     if (message.leadingDetachedComments && message.leadingDetachedComments.length) {
-                        object.leadingDetachedComments = [];
+                        object.leadingDetachedComments = Array(message.leadingDetachedComments.length);
                         for (var j = 0; j < message.leadingDetachedComments.length; ++j)
                             object.leadingDetachedComments[j] = message.leadingDetachedComments[j];
                     }
@@ -24173,7 +24173,7 @@ $root.google = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.GeneratedCodeInfo();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -24260,7 +24260,7 @@ $root.google = (function() {
                 if (object.annotation) {
                     if (!Array.isArray(object.annotation))
                         throw TypeError(".google.protobuf.GeneratedCodeInfo.annotation: array expected");
-                    message.annotation = [];
+                    message.annotation = Array(object.annotation.length);
                     for (var i = 0; i < object.annotation.length; ++i) {
                         if (typeof object.annotation[i] !== "object")
                             throw TypeError(".google.protobuf.GeneratedCodeInfo.annotation: object expected");
@@ -24286,7 +24286,7 @@ $root.google = (function() {
                 if (options.arrays || options.defaults)
                     object.annotation = [];
                 if (message.annotation && message.annotation.length) {
-                    object.annotation = [];
+                    object.annotation = Array(message.annotation.length);
                     for (var j = 0; j < message.annotation.length; ++j)
                         object.annotation[j] = $root.google.protobuf.GeneratedCodeInfo.Annotation.toObject(message.annotation[j], options);
                 }
@@ -24468,7 +24468,7 @@ $root.google = (function() {
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.GeneratedCodeInfo.Annotation();
                     while (reader.pos < end) {
                         var start = reader.pos;
-                        var tag = reader.uint32();
+                        var tag = reader.tag();
                         if (tag === _end) {
                             _end = undefined;
                             break;
@@ -24603,7 +24603,7 @@ $root.google = (function() {
                     if (object.path) {
                         if (!Array.isArray(object.path))
                             throw TypeError(".google.protobuf.GeneratedCodeInfo.Annotation.path: array expected");
-                        message.path = [];
+                        message.path = Array(object.path.length);
                         for (var i = 0; i < object.path.length; ++i)
                             message.path[i] = object.path[i] | 0;
                     }
@@ -24658,7 +24658,7 @@ $root.google = (function() {
                         object.semantic = options.enums === String ? "NONE" : 0;
                     }
                     if (message.path && message.path.length) {
-                        object.path = [];
+                        object.path = Array(message.path.length);
                         for (var j = 0; j < message.path.length; ++j)
                             object.path[j] = message.path[j];
                     }

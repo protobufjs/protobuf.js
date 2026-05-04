@@ -205,6 +205,11 @@ tape.test("decode known fields by wire type", function(test) {
     var field1Fixed64 = [ 1 << 3 | 1, 1, 2, 3, 4, 5, 6, 7, 8 ];
     var field1Group = [ 1 << 3 | 3, 1 << 3 | 4 ];
     var field1GroupField2End = [ 1 << 3 | 3, 2 << 3 | 4 ];
+    var field1TagWithContinuation = 1 << 3 | 128;
+    var fieldNumberTooHigh = [ field1TagWithContinuation, 128, 128, 128, 128, 15, 210, 9 ];
+    var fieldNumberSlightlyTooHigh = [ field1TagWithContinuation, 128, 128, 128, 64, 210, 9 ];
+    var overlongTagVarint = [ field1TagWithContinuation, 128, 128, 128, 128, 128, 128, 128, 0, 210, 9 ];
+    var tagVarintMoreThanTenBytes = [ field1TagWithContinuation, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 0, 210, 9 ];
 
     test.throws(function() {
         Message.decode(protobuf.util.newBuffer(field0Varint));
@@ -227,6 +232,22 @@ tape.test("decode known fields by wire type", function(test) {
     test.throws(function() {
         Message.decode(protobuf.util.newBuffer(field1GroupField2End));
     }, /invalid end group tag/, "should reject mismatched unknown group tags");
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(fieldNumberTooHigh));
+    }, /invalid tag encoding/, "should reject tags above the maximum field number");
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(fieldNumberSlightlyTooHigh));
+    }, /invalid tag encoding/, "should reject tags above uint32 range");
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(overlongTagVarint));
+    }, /invalid tag encoding/, "should reject overlong tag varints");
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(tagVarintMoreThanTenBytes));
+    }, /invalid tag encoding/, "should reject tag varints longer than ten bytes");
     test.end();
 });
 

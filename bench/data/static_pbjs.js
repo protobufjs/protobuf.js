@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -48,7 +48,7 @@ $root.Test = (function() {
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test(), value;
         while (reader.pos < end) {
             var start = reader.pos;
-            var tag = reader.uint32();
+            var tag = reader.tag();
             if (tag === _end) {
                 _end = undefined;
                 break;
@@ -136,7 +136,7 @@ $root.Test = (function() {
             var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test.Inner(), value;
             while (reader.pos < end) {
                 var start = reader.pos;
-                var tag = reader.uint32();
+                var tag = reader.tag();
                 if (tag === _end) {
                     _end = undefined;
                     break;
@@ -212,7 +212,7 @@ $root.Test = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test.Inner.InnerInner(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -315,7 +315,7 @@ $root.Outer = (function() {
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Outer(), value;
         while (reader.pos < end) {
             var start = reader.pos;
-            var tag = reader.uint32();
+            var tag = reader.tag();
             if (tag === _end) {
                 _end = undefined;
                 break;

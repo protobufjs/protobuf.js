@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 import $protobuf from "protobufjs/minimal.js";
 
 // Common aliases
@@ -175,7 +175,7 @@ export const MyRequest = $root.MyRequest = (() => {
         let end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.MyRequest(), value;
         while (reader.pos < end) {
             let start = reader.pos;
-            let tag = reader.uint32();
+            let tag = reader.tag();
             if (tag === _end) {
                 _end = undefined;
                 break;
@@ -409,7 +409,7 @@ export const MyResponse = $root.MyResponse = (() => {
         let end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.MyResponse(), value;
         while (reader.pos < end) {
             let start = reader.pos;
-            let tag = reader.uint32();
+            let tag = reader.tag();
             if (tag === _end) {
                 _end = undefined;
                 break;

@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -297,7 +297,7 @@ $root.Package = (function() {
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package(), key, value;
         while (reader.pos < end) {
             var start = reader.pos;
-            var tag = reader.uint32();
+            var tag = reader.tag();
             if (tag === _end) {
                 _end = undefined;
                 break;
@@ -408,7 +408,7 @@ $root.Package = (function() {
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
-                        var tag2 = reader.uint32();
+                        var tag2 = reader.tag();
                         wireType = tag2 & 7;
                         switch (tag2 >>>= 3) {
                         case 1:
@@ -438,7 +438,7 @@ $root.Package = (function() {
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
-                        var tag2 = reader.uint32();
+                        var tag2 = reader.tag();
                         wireType = tag2 & 7;
                         switch (tag2 >>>= 3) {
                         case 1:
@@ -468,7 +468,7 @@ $root.Package = (function() {
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
-                        var tag2 = reader.uint32();
+                        var tag2 = reader.tag();
                         wireType = tag2 & 7;
                         switch (tag2 >>>= 3) {
                         case 1:
@@ -498,7 +498,7 @@ $root.Package = (function() {
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
-                        var tag2 = reader.uint32();
+                        var tag2 = reader.tag();
                         wireType = tag2 & 7;
                         switch (tag2 >>>= 3) {
                         case 1:
@@ -709,7 +709,7 @@ $root.Package = (function() {
         if (object.keywords) {
             if (!Array.isArray(object.keywords))
                 throw TypeError(".Package.keywords: array expected");
-            message.keywords = [];
+            message.keywords = Array(object.keywords.length);
             for (var i = 0; i < object.keywords.length; ++i)
                 message.keywords[i] = String(object.keywords[i]);
         }
@@ -762,7 +762,7 @@ $root.Package = (function() {
         if (object.cliDependencies) {
             if (!Array.isArray(object.cliDependencies))
                 throw TypeError(".Package.cliDependencies: array expected");
-            message.cliDependencies = [];
+            message.cliDependencies = Array(object.cliDependencies.length);
             for (var i = 0; i < object.cliDependencies.length; ++i)
                 message.cliDependencies[i] = String(object.cliDependencies[i]);
         }
@@ -822,7 +822,7 @@ $root.Package = (function() {
         if (message.homepage != null && message.hasOwnProperty("homepage"))
             object.homepage = message.homepage;
         if (message.keywords && message.keywords.length) {
-            object.keywords = [];
+            object.keywords = Array(message.keywords.length);
             for (var j = 0; j < message.keywords.length; ++j)
                 object.keywords[j] = message.keywords[j];
         }
@@ -864,7 +864,7 @@ $root.Package = (function() {
         if (message.types != null && message.hasOwnProperty("types"))
             object.types = message.types;
         if (message.cliDependencies && message.cliDependencies.length) {
-            object.cliDependencies = [];
+            object.cliDependencies = Array(message.cliDependencies.length);
             for (var j = 0; j < message.cliDependencies.length; ++j)
                 object.cliDependencies[j] = message.cliDependencies[j];
         }
@@ -1010,7 +1010,7 @@ $root.Package = (function() {
             var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package.Repository(), value;
             while (reader.pos < end) {
                 var start = reader.pos;
-                var tag = reader.uint32();
+                var tag = reader.tag();
                 if (tag === _end) {
                     _end = undefined;
                     break;
