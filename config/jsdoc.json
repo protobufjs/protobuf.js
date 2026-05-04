@@ -20,7 +20,7 @@
             "outputSourceFiles" : false
         },
         "applicationName": "protobuf.js",
-        "googleAnalytics": "UA-40277577-3",
+        "applicationSubtitle": "API documentation",
         "linenums"      : true
     },
     "markdown"  : {
@@ -34,8 +34,9 @@
         "private"       : false,
         "lenient"       : false,
         "destination"   : "./docs",
-        "template"      : "./node_modules/jaguarjs-jsdoc",
-        "sourceRoot"    : "https://github.com/dcodeIO/protobuf.js/blob/master/src/",
-        "repo"          : "https://github.com/dcodeIO/protobuf.js"
+        "template"      : "./lib/jsdoc-template",
+        "sourceRoot"    : "https://github.com/protobufjs/protobuf.js/blob/master/src/",
+        "repo"          : "https://github.com/protobufjs/protobuf.js",
+        "repoBranch"    : "master"
     }
 }
