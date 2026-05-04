@@ -186,7 +186,7 @@ util.Long = /* istanbul ignore next */ util.global.dcodeIO && /* istanbul ignore
  * @type {RegExp}
  * @const
  */
-util.key2Re = /^true|false|0|1$/;
+util.key2Re = /^(?:true|false|0|1)$/;
 
 /**
  * Regular expression used to verify 32 bit (`int32` etc.) map keys.
