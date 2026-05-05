@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.1.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.0.3...protobufjs-cli-v2.1.0) (2026-05-05)
+
+
+### Features
+
+* Roundtrip unknown fields ([#2209](https://github.com/protobufjs/protobuf.js/issues/2209)) ([76fa03c](https://github.com/protobufjs/protobuf.js/commit/76fa03c252542b607e4c81a4fe4db12aa1f948af))
+
+
+### Bug Fixes
+
+* Add eslint-disable default-case to generated files ([#2095](https://github.com/protobufjs/protobuf.js/issues/2095)) ([8723f3f](https://github.com/protobufjs/protobuf.js/commit/8723f3f4a1cea6409883fe77408083914ca054cd))
+* Consistently handle scalar map keys ([#2186](https://github.com/protobufjs/protobuf.js/issues/2186)) ([29b1183](https://github.com/protobufjs/protobuf.js/commit/29b11834520bc4ab0bb377933e4efefbf95f93b2))
+* Correct parsedOptions TypeScript types ([#2217](https://github.com/protobufjs/protobuf.js/issues/2217)) ([dbe8d77](https://github.com/protobufjs/protobuf.js/commit/dbe8d7775a46bebaf644461dce586fa29be242f6))
+* Decode missing map message values as empty messages ([#2206](https://github.com/protobufjs/protobuf.js/issues/2206)) ([51c1a4f](https://github.com/protobufjs/protobuf.js/commit/51c1a4fd77169565bc6248f996f698ee396c90f0))
+* Generate TypeScript class properties for extensions ([#2187](https://github.com/protobufjs/protobuf.js/issues/2187)) ([ec04bee](https://github.com/protobufjs/protobuf.js/commit/ec04bee4a1aada80083d504f0c879dee6e293799))
+* Merge singular message fields while decoding ([#2195](https://github.com/protobufjs/protobuf.js/issues/2195)) ([14d9df7](https://github.com/protobufjs/protobuf.js/commit/14d9df796af789aca5ad7a54c67d9be8b84a818a))
+
+
+### Performance Improvements
+
+* Reduce generated code overhead ([#2212](https://github.com/protobufjs/protobuf.js/issues/2212)) ([45ec503](https://github.com/protobufjs/protobuf.js/commit/45ec503c299ea16523e990b8a50cad977ef93e6a))
+
 ## [2.0.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.0.2...protobufjs-cli-v2.0.3) (2026-04-28)
 
 

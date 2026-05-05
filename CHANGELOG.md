@@ -1,5 +1,41 @@
 # Changelog
 
+## [8.1.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.0.3...protobufjs-v8.1.0) (2026-05-05)
+
+
+### Features
+
+* Roundtrip unknown fields ([#2209](https://github.com/protobufjs/protobuf.js/issues/2209)) ([76fa03c](https://github.com/protobufjs/protobuf.js/commit/76fa03c252542b607e4c81a4fe4db12aa1f948af))
+
+
+### Bug Fixes
+
+* Accept URL-safe base64 input ([#2207](https://github.com/protobufjs/protobuf.js/issues/2207)) ([57a3821](https://github.com/protobufjs/protobuf.js/commit/57a3821de0d2ffdac06973be49554dea0332bb7f))
+* Also resolve common definitions by file name ([#2218](https://github.com/protobufjs/protobuf.js/issues/2218)) ([e533950](https://github.com/protobufjs/protobuf.js/commit/e533950dbdc1a5e31ca3611e711a9042019c18c3))
+* Apply oneof last-value wins during decode ([#2193](https://github.com/protobufjs/protobuf.js/issues/2193)) ([cf35cdc](https://github.com/protobufjs/protobuf.js/commit/cf35cdc23237c06e7de603fa8fe36e47b7c037e0))
+* Consistently handle scalar map keys ([#2186](https://github.com/protobufjs/protobuf.js/issues/2186)) ([29b1183](https://github.com/protobufjs/protobuf.js/commit/29b11834520bc4ab0bb377933e4efefbf95f93b2))
+* Consistently reject truncated strings ([#2205](https://github.com/protobufjs/protobuf.js/issues/2205)) ([689e911](https://github.com/protobufjs/protobuf.js/commit/689e911efa3b7e81ea20f29ae2cd725566891c6a))
+* Correct parsedOptions TypeScript types ([#2217](https://github.com/protobufjs/protobuf.js/issues/2217)) ([dbe8d77](https://github.com/protobufjs/protobuf.js/commit/dbe8d7775a46bebaf644461dce586fa29be242f6))
+* Decode bool values from full varints ([#2192](https://github.com/protobufjs/protobuf.js/issues/2192)) ([7b8d5c1](https://github.com/protobufjs/protobuf.js/commit/7b8d5c111a5e517be219872fb36f4dcfe2b6d371))
+* Decode fields by full wire tag ([#2197](https://github.com/protobufjs/protobuf.js/issues/2197)) ([f6264b1](https://github.com/protobufjs/protobuf.js/commit/f6264b1890e85885a22fa323d983f46b6ba9a05e))
+* Decode missing map message values as empty messages ([#2206](https://github.com/protobufjs/protobuf.js/issues/2206)) ([51c1a4f](https://github.com/protobufjs/protobuf.js/commit/51c1a4fd77169565bc6248f996f698ee396c90f0))
+* Generate TypeScript class properties for extensions ([#2187](https://github.com/protobufjs/protobuf.js/issues/2187)) ([ec04bee](https://github.com/protobufjs/protobuf.js/commit/ec04bee4a1aada80083d504f0c879dee6e293799))
+* Merge singular message fields while decoding ([#2195](https://github.com/protobufjs/protobuf.js/issues/2195)) ([14d9df7](https://github.com/protobufjs/protobuf.js/commit/14d9df796af789aca5ad7a54c67d9be8b84a818a))
+* Omit proto3 implicit scalar defaults ([#2208](https://github.com/protobufjs/protobuf.js/issues/2208)) ([ea1b003](https://github.com/protobufjs/protobuf.js/commit/ea1b0037baf2af5b8c20d79ab62141bdc08eda09))
+* Read non-minimal 32-bit varints correctly ([#2198](https://github.com/protobufjs/protobuf.js/issues/2198)) ([5650a07](https://github.com/protobufjs/protobuf.js/commit/5650a07301752f37a1c294e71574b50ef9d55eb4))
+* Reject malformed field tag varints ([#2224](https://github.com/protobufjs/protobuf.js/issues/2224)) ([1904533](https://github.com/protobufjs/protobuf.js/commit/19045330c108b7fad9e97b787ed641f1637b13b2))
+* Support proto2 extension groups ([#2181](https://github.com/protobufjs/protobuf.js/issues/2181)) ([1039194](https://github.com/protobufjs/protobuf.js/commit/103919422de361935d99a2bb92ead9ca749f0b17))
+* Tighten key2Re regex with non-capturing group ([#2225](https://github.com/protobufjs/protobuf.js/issues/2225)) ([c87b149](https://github.com/protobufjs/protobuf.js/commit/c87b149adc52034363693980b735a63f5af9a266))
+* Validate field and group tags while decoding ([#2200](https://github.com/protobufjs/protobuf.js/issues/2200)) ([c09d4f7](https://github.com/protobufjs/protobuf.js/commit/c09d4f74c1c9d33f2cb3971110f2af4fe51dff93))
+
+
+### Performance Improvements
+
+* Avoid constructor setup during resolve ([#2211](https://github.com/protobufjs/protobuf.js/issues/2211)) ([1bf3c07](https://github.com/protobufjs/protobuf.js/commit/1bf3c07e32e72258d6d9ad5b0fe858ce705df083))
+* Preallocate arrays in converters ([#2219](https://github.com/protobufjs/protobuf.js/issues/2219)) ([62d2155](https://github.com/protobufjs/protobuf.js/commit/62d21559ce1c223ab26a2e998d3b2bce5d22c0d1))
+* Reduce generated code overhead ([#2212](https://github.com/protobufjs/protobuf.js/issues/2212)) ([45ec503](https://github.com/protobufjs/protobuf.js/commit/45ec503c299ea16523e990b8a50cad977ef93e6a))
+* Tweak reader varint32 and string cases ([#2220](https://github.com/protobufjs/protobuf.js/issues/2220)) ([4076ea8](https://github.com/protobufjs/protobuf.js/commit/4076ea84d0b1804d9a421a77c5cac8b141917833))
+
 ## [8.0.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.0.2...protobufjs-v8.0.3) (2026-04-27)
 
 
