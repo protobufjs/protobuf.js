@@ -2786,7 +2786,7 @@ export class Writer {
      * @param [offset=0] Offset to start writing at
      * @returns The provided buffer
      */
-    public finishTo<T extends Uint8Array>(buf: T, offset?: number): T;
+    public finishInto<T extends Uint8Array>(buf: T, offset?: number): T;
 }
 
 /** Wire format writer using node buffers. */

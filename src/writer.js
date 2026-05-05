@@ -446,7 +446,7 @@ Writer.prototype.ldelim = function ldelim() {
  * @returns {Uint8Array} Finished buffer
  */
 Writer.prototype.finish = function finish() {
-    return this.finishTo(this.constructor.alloc(this.len), 0);
+    return this.finishInto(this.constructor.alloc(this.len), 0);
 };
 
 /**
@@ -458,7 +458,7 @@ Writer.prototype.finish = function finish() {
  * @returns {T} The provided buffer
  * @template T extends Uint8Array
  */
-Writer.prototype.finishTo = function finishTo(buf, offset) {
+Writer.prototype.finishInto = function finishInto(buf, offset) {
     offset >>>= 0;
     var head = this.head.next,
         pos  = offset;

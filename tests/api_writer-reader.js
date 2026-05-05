@@ -129,7 +129,7 @@ tape.test("writer & reader", function(test) {
         test.end();
     });
 
-    test.test(test.name + " - finishTo", function(test) {
+    test.test(test.name + " - finishInto", function(test) {
 
         // writes at offset and preserves existing data
         var w2 = Writer.create();
@@ -142,7 +142,7 @@ tape.test("writer & reader", function(test) {
         var buf3 = new Uint8Array(offset + w3.len);
         for (var i = 0; i < offset; ++i)
             buf3[i] = 99;
-        w3.finishTo(buf3, offset);
+        w3.finishInto(buf3, offset);
 
         for (var i = 0; i < offset; ++i)
             test.equal(buf3[i], 99, "preserves byte at index " + i + " before offset");
