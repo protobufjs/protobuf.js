@@ -9,7 +9,7 @@
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://protobuf.dev/)).
 
-**protobuf.js** is a freestanding JavaScript implementation of Protocol Buffers with TypeScript support for Node.js and the browser. It works with `.proto` files out of the box and can generate optimized encoders and decoders at runtime or emit them statically.
+**protobuf.js** is a standalone JavaScript implementation of Protocol Buffers with TypeScript support for Node.js and the browser. It works with `.proto` files out of the box, is optimized for fast binary I/O, and supports runtime reflection as well as static code generation.
 
 ## Getting started
 
@@ -25,7 +25,7 @@ The [command line utility](./cli/) for generating reflection bundles, static cod
 npm install --save-dev protobufjs-cli
 ```
 
-The CLI is a small but capable standalone protobuf.js toolchain. It does not require `protoc`.
+The CLI is a small but capable standalone protobuf.js toolchain. It does not require `protoc` or a language plugin.
 
 ### Choose a runtime
 
@@ -35,7 +35,7 @@ The CLI is a small but capable standalone protobuf.js toolchain. It does not req
 | `protobufjs/light.js`   | Reflection         | You load JSON bundles or build schemas programmatically
 | `protobufjs/minimal.js` | Static runtime     | You only use generated static code
 
-Builds with reflection include just-in-time code generation. Use the CLI to emit the same optimized code ahead of time and run it on the minimal runtime. The full build includes the light build, and the light build includes the minimal runtime.
+Reflection builds generate specialized code at runtime. The CLI can emit the same optimized code ahead of time for the minimal runtime. The full build includes the light build, and the light build includes the minimal runtime.
 
 ### Browser builds
 
@@ -50,7 +50,7 @@ Pick the distribution matching your runtime variant and pin an exact version:
 <script src="https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/minimal/protobuf.min.js"></script>
 ```
 
-Browser builds support CommonJS and AMD loaders and export globally as `window.protobuf`. Native ESM support is planned for a future release.
+Browser builds support CommonJS and AMD loaders and export globally as `window.protobuf`.
 
 ## Usage
 
@@ -99,7 +99,7 @@ const decoded = AwesomeMessage.decode(encoded);
 
 Plain objects can be encoded directly when they already use protobuf.js runtime types: numbers for 32-bit numeric fields, booleans for `bool`, strings for `string`, `Uint8Array` or `Buffer` for `bytes`, arrays for repeated fields, and plain objects for maps. Map keys are the string representation of the respective value or an 8-character hash string for 64-bit/`Long` keys. Use `fromObject` when input may use broader JSON-style forms such as enum names, base64 strings for bytes, or decimal strings for 64-bit values.
 
-Install [`long`](https://github.com/dcodeIO/long.js) with protobuf.js when exact 64-bit integer support is required. Native `BigInt` support is planned for a future release.
+Install [`long`](https://github.com/dcodeIO/long.js) with protobuf.js when exact 64-bit integer support is required.
 
 ### Convert plain objects
 
@@ -111,6 +111,19 @@ const object = AwesomeMessage.toObject(message, {
   bytes: String
 });
 ```
+
+Common `ConversionOptions` are:
+
+| Option | Effect |
+|--------|--------|
+| `longs: String` | Converts 64-bit values to decimal strings |
+| `longs: Number` | Converts 64-bit values to JS numbers (may lose precision) |
+| `enums: String` | Converts enum values to names |
+| `bytes: String` | Converts bytes to base64 strings |
+| `defaults: true` | Includes default values for unset fields |
+| `arrays: true` | Includes empty arrays for repeated fields |
+| `objects: true` | Includes empty objects for map fields |
+| `oneofs: true` | Includes virtual oneof discriminator properties |
 
 ## Message API
 
@@ -126,18 +139,7 @@ Message types expose focused methods for validation, conversion, and binary I/O.
   Converts broader JavaScript input into a message instance.
 
 * **toObject**(message: `Message`, options?: `ConversionOptions`): `object`  
-  Converts a message instance to a plain object for JSON or interoperability. Common options:
-
-  | Option | Effect |
-  |--------|--------|
-  | `longs: String` | Converts 64-bit values to decimal strings |
-  | `longs: Number` | Converts 64-bit values to JS numbers (may lose precision) |
-  | `enums: String` | Converts enum values to names |
-  | `bytes: String` | Converts bytes to base64 strings |
-  | `defaults: true` | Includes default values for unset fields |
-  | `arrays: true` | Includes empty arrays for repeated fields |
-  | `objects: true` | Includes empty objects for map fields |
-  | `oneofs: true` | Includes virtual oneof discriminator properties |
+  Converts a message instance to a plain object for JSON or interoperability.
 
 * **encode**(message: `Message | object`, writer?: `Writer`): `Writer`  
   Encodes a message or equivalent plain object. Call `.finish()` on the returned writer to obtain a buffer.
@@ -298,11 +300,15 @@ For protobuf descriptor interoperability, see [ext/descriptor](./ext/descriptor)
 
 In [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval, use generated static code instead of runtime code generation.
 
+## Conformance
+
+protobuf.js targets full binary wire-format conformance for **Proto2**, **Proto3** and **Editions**. CI runs the official Protocol Buffers conformance suite, with logs uploaded as artifacts.
+
 ## Performance
 
-Both protobuf.js reflection and static modes execute specialized encoder and decoder functions generated for each message type instead of a generic descriptor-walking interpreter.
+In both reflection and static modes, protobuf.js builds specialized encoders and decoders for each message type instead of interpreting descriptors at runtime.
 
-The repository includes a small benchmark for the bundled fixture in [`bench/`](./bench/). It compares protobuf.js reflection and static code against native `JSON.stringify`/`JSON.parse` and [google-protobuf](https://www.npmjs.com/package/google-protobuf). Results depend on hardware, Node.js version, and the message shape, so they should be treated as indicative rather than absolute.
+The repository includes a small benchmark for the bundled fixture in [`bench/`](./bench/). It compares protobuf.js reflection and static code against native `JSON.stringify`/`JSON.parse` and [google-protobuf](https://www.npmjs.com/package/google-protobuf) (`protoc-gen-js`). Results depend on hardware, Node.js version, and the message shape, so they should be treated as indicative rather than absolute.
 
 One run on an AMD Ryzen 9 9950X3D with Node.js 24.13.0 and google-protobuf 4.0.2 produced:
 
