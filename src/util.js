@@ -23,7 +23,12 @@ var reservedRe = util.patterns.reservedRe,
  * Node's fs module if available.
  * @type {Object.<string,*>}
  */
-util.fs = util.inquire("fs");
+util.fs = null;
+try {
+    util.fs = require(/* webpackIgnore: true */ "fs");
+} catch (e) {
+    // `fs` is unavailable in browsers and in bundles where it cannot be resolved.
+}
 
 /**
  * Converts an object's values to an array.

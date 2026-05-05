@@ -13,9 +13,6 @@ util.EventEmitter = require("./eventemitter");
 // float handling accross browsers
 util.float = require("./float");
 
-// requires modules optionally and hides the call from bundlers
-util.inquire = require("./inquire");
-
 // converts to / from utf8 encoded strings
 util.utf8 = require("./utf8");
 
@@ -125,7 +122,7 @@ util.isSet = function isSet(obj, prop) {
  */
 util.Buffer = (function() {
     try {
-        var Buffer = util.inquire("buffer").Buffer;
+        var Buffer = require("buffer").Buffer;
         // refuse to use non-node buffers if not explicitly assigned (perf reasons):
         return Buffer.prototype.utf8Write ? Buffer : /* istanbul ignore next */ null;
     } catch (e) {
@@ -179,7 +176,14 @@ util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore n
  */
 util.Long = /* istanbul ignore next */ util.global.dcodeIO && /* istanbul ignore next */ util.global.dcodeIO.Long
          || /* istanbul ignore next */ util.global.Long
-         || util.inquire("long");
+         || (function() {
+                try {
+                    return require("long");
+                } catch (e) {
+                    /* istanbul ignore next */
+                    return null;
+                }
+            })();
 
 /**
  * Regular expression used to verify 2 bit (`bool`) map keys.

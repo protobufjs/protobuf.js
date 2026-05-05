@@ -1,10 +1,14 @@
 "use strict";
 module.exports = fetch;
 
-var asPromise = require("./aspromise"),
-    inquire   = require("./inquire");
+var asPromise = require("./aspromise");
 
-var fs = inquire("fs");
+var fs = null;
+try {
+    fs = require(/* webpackIgnore: true */ "fs");
+} catch (e) {
+    // `fs` is unavailable in browsers and in bundles where it cannot be resolved.
+}
 
 /**
  * Node-style callback as used by {@link util.fetch}.
