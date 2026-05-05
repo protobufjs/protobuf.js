@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../../minimal");
@@ -120,7 +120,7 @@ $root.vector_tile = (function() {
             var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile();
             while (reader.pos < end) {
                 var start = reader.pos;
-                var tag = reader.uint32();
+                var tag = reader.tag();
                 if (tag === _end) {
                     _end = undefined;
                     break;
@@ -207,7 +207,7 @@ $root.vector_tile = (function() {
             if (object.layers) {
                 if (!Array.isArray(object.layers))
                     throw TypeError(".vector_tile.Tile.layers: array expected");
-                message.layers = [];
+                message.layers = Array(object.layers.length);
                 for (var i = 0; i < object.layers.length; ++i) {
                     if (typeof object.layers[i] !== "object")
                         throw TypeError(".vector_tile.Tile.layers: object expected");
@@ -233,7 +233,7 @@ $root.vector_tile = (function() {
             if (options.arrays || options.defaults)
                 object.layers = [];
             if (message.layers && message.layers.length) {
-                object.layers = [];
+                object.layers = Array(message.layers.length);
                 for (var j = 0; j < message.layers.length; ++j)
                     object.layers[j] = $root.vector_tile.Tile.Layer.toObject(message.layers[j], options);
             }
@@ -450,7 +450,7 @@ $root.vector_tile = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Value();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -850,7 +850,7 @@ $root.vector_tile = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Feature();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -1000,7 +1000,7 @@ $root.vector_tile = (function() {
                 if (object.tags) {
                     if (!Array.isArray(object.tags))
                         throw TypeError(".vector_tile.Tile.Feature.tags: array expected");
-                    message.tags = [];
+                    message.tags = Array(object.tags.length);
                     for (var i = 0; i < object.tags.length; ++i)
                         message.tags[i] = object.tags[i] >>> 0;
                 }
@@ -1031,7 +1031,7 @@ $root.vector_tile = (function() {
                 if (object.geometry) {
                     if (!Array.isArray(object.geometry))
                         throw TypeError(".vector_tile.Tile.Feature.geometry: array expected");
-                    message.geometry = [];
+                    message.geometry = Array(object.geometry.length);
                     for (var i = 0; i < object.geometry.length; ++i)
                         message.geometry[i] = object.geometry[i] >>> 0;
                 }
@@ -1069,14 +1069,14 @@ $root.vector_tile = (function() {
                     else
                         object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber(true) : message.id;
                 if (message.tags && message.tags.length) {
-                    object.tags = [];
+                    object.tags = Array(message.tags.length);
                     for (var j = 0; j < message.tags.length; ++j)
                         object.tags[j] = message.tags[j];
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.vector_tile.Tile.GeomType[message.type] === undefined ? message.type : $root.vector_tile.Tile.GeomType[message.type] : message.type;
                 if (message.geometry && message.geometry.length) {
-                    object.geometry = [];
+                    object.geometry = Array(message.geometry.length);
                     for (var j = 0; j < message.geometry.length; ++j)
                         object.geometry[j] = message.geometry[j];
                 }
@@ -1271,7 +1271,7 @@ $root.vector_tile = (function() {
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Layer();
                 while (reader.pos < end) {
                     var start = reader.pos;
-                    var tag = reader.uint32();
+                    var tag = reader.tag();
                     if (tag === _end) {
                         _end = undefined;
                         break;
@@ -1423,7 +1423,7 @@ $root.vector_tile = (function() {
                 if (object.features) {
                     if (!Array.isArray(object.features))
                         throw TypeError(".vector_tile.Tile.Layer.features: array expected");
-                    message.features = [];
+                    message.features = Array(object.features.length);
                     for (var i = 0; i < object.features.length; ++i) {
                         if (typeof object.features[i] !== "object")
                             throw TypeError(".vector_tile.Tile.Layer.features: object expected");
@@ -1433,14 +1433,14 @@ $root.vector_tile = (function() {
                 if (object.keys) {
                     if (!Array.isArray(object.keys))
                         throw TypeError(".vector_tile.Tile.Layer.keys: array expected");
-                    message.keys = [];
+                    message.keys = Array(object.keys.length);
                     for (var i = 0; i < object.keys.length; ++i)
                         message.keys[i] = String(object.keys[i]);
                 }
                 if (object.values) {
                     if (!Array.isArray(object.values))
                         throw TypeError(".vector_tile.Tile.Layer.values: array expected");
-                    message.values = [];
+                    message.values = Array(object.values.length);
                     for (var i = 0; i < object.values.length; ++i) {
                         if (typeof object.values[i] !== "object")
                             throw TypeError(".vector_tile.Tile.Layer.values: object expected");
@@ -1478,17 +1478,17 @@ $root.vector_tile = (function() {
                 if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
                 if (message.features && message.features.length) {
-                    object.features = [];
+                    object.features = Array(message.features.length);
                     for (var j = 0; j < message.features.length; ++j)
                         object.features[j] = $root.vector_tile.Tile.Feature.toObject(message.features[j], options);
                 }
                 if (message.keys && message.keys.length) {
-                    object.keys = [];
+                    object.keys = Array(message.keys.length);
                     for (var j = 0; j < message.keys.length; ++j)
                         object.keys[j] = message.keys[j];
                 }
                 if (message.values && message.values.length) {
-                    object.values = [];
+                    object.values = Array(message.values.length);
                     for (var j = 0; j < message.values.length; ++j)
                         object.values[j] = $root.vector_tile.Tile.Value.toObject(message.values[j], options);
                 }

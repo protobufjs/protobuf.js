@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -134,7 +134,7 @@ $root.Test1 = (function() {
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test1(), value;
         while (reader.pos < end) {
             var start = reader.pos;
-            var tag = reader.uint32();
+            var tag = reader.tag();
             if (tag === _end) {
                 _end = undefined;
                 break;
@@ -394,7 +394,7 @@ $root.Test2 = (function() {
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test2();
         while (reader.pos < end) {
             var start = reader.pos;
-            var tag = reader.uint32();
+            var tag = reader.tag();
             if (tag === _end) {
                 _end = undefined;
                 break;

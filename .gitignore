@@ -10,3 +10,4 @@ sandbox/
 .nyc_output
 dist/
 .gitpod.yml
+.tmp/

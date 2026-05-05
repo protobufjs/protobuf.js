@@ -1192,6 +1192,12 @@ export class Reader {
     public uint32(): number;
 
     /**
+     * Reads a field tag.
+     * @returns Tag read
+     */
+    public tag(): number;
+
+    /**
      * Reads a varint as a signed 32 bit value.
      * @returns Value read
      */

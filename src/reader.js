@@ -98,52 +98,88 @@ Reader.prototype.raw = function read_raw(start, end) {
  * @function
  * @returns {number} Value read
  */
-Reader.prototype.uint32 = (function read_uint32_setup() {
-    return function read_uint32() {
-        var buf = this.buf,
-            pos = this.pos,
-            value = (buf[pos] & 127) >>> 0;
-        if (buf[pos++] < 128) {
-            this.pos = pos;
-            return value;
-        }
-        value = (value | (buf[pos] & 127) << 7) >>> 0;
-        if (buf[pos++] < 128) {
-            this.pos = pos;
-            return value;
-        }
-        value = (value | (buf[pos] & 127) << 14) >>> 0;
-        if (buf[pos++] < 128) {
-            this.pos = pos;
-            return value;
-        }
-        value = (value | (buf[pos] & 127) << 21) >>> 0;
-        if (buf[pos++] < 128) {
-            this.pos = pos;
-            return value;
-        }
-        value = (value | (buf[pos] & 15) << 28) >>> 0;
-        if (buf[pos++] < 128) {
-            this.pos = pos;
-            return value;
-        }
-
-        for (var i = 0; i < 5; ++i) {
-            /* istanbul ignore if */
-            if (pos >= this.len) {
-                this.pos = pos;
-                throw indexOutOfRange(this);
-            }
-            if (buf[pos++] < 128) {
-                this.pos = pos;
-                return value;
-            }
-        }
-        /* istanbul ignore next */
+Reader.prototype.uint32 = function read_uint32() {
+    var buf = this.buf,
+        pos = this.pos,
+        value = (buf[pos] & 127) >>> 0;
+    if (buf[pos++] < 128) {
         this.pos = pos;
-        throw Error("invalid varint encoding");
-    };
-})();
+        return value;
+    }
+    value = (value | (buf[pos] & 127) << 7) >>> 0;
+    if (buf[pos++] < 128) {
+        this.pos = pos;
+        return value;
+    }
+    value = (value | (buf[pos] & 127) << 14) >>> 0;
+    if (buf[pos++] < 128) {
+        this.pos = pos;
+        return value;
+    }
+    value = (value | (buf[pos] & 127) << 21) >>> 0;
+    if (buf[pos++] < 128) {
+        this.pos = pos;
+        return value;
+    }
+    value = (value | (buf[pos] & 15) << 28) >>> 0;
+    if (buf[pos++] < 128) {
+        this.pos = pos;
+        return value;
+    }
+
+    for (var i = 0; i < 5; ++i) {
+        /* istanbul ignore if */
+        if (pos >= this.len) {
+            this.pos = pos;
+            throw indexOutOfRange(this);
+        }
+        if (buf[pos++] < 128) {
+            this.pos = pos;
+            return value;
+        }
+    }
+    /* istanbul ignore next */
+    this.pos = pos;
+    throw Error("invalid varint encoding");
+};
+
+/**
+ * Reads a field tag.
+ * @function
+ * @returns {number} Tag read
+ */
+Reader.prototype.tag = function read_tag() {
+    var buf = this.buf,
+        pos = this.pos,
+        value = (buf[pos] & 127) >>> 0;
+    if (buf[pos++] < 128) {
+        this.pos = pos;
+        return value;
+    }
+    value = (value | (buf[pos] & 127) << 7) >>> 0;
+    if (buf[pos++] < 128) {
+        this.pos = pos;
+        return value;
+    }
+    value = (value | (buf[pos] & 127) << 14) >>> 0;
+    if (buf[pos++] < 128) {
+        this.pos = pos;
+        return value;
+    }
+    value = (value | (buf[pos] & 127) << 21) >>> 0;
+    if (buf[pos++] < 128) {
+        this.pos = pos;
+        return value;
+    }
+    value = (value | (buf[pos] & 15) << 28) >>> 0;
+    if (buf[pos] < 128 && (buf[pos] & 112) === 0) {
+        this.pos = pos + 1;
+        return value;
+    }
+
+    this.pos = pos + 1;
+    throw Error("invalid tag encoding");
+};
 
 /**
  * Reads a varint as a signed 32 bit value.
@@ -439,7 +475,7 @@ Reader.prototype.skipType = function(wireType, depth, fieldNumber) {
             break;
         case 3:
             while (true) {
-                var tag = this.uint32();
+                var tag = this.tag();
                 var nestedField = tag >>> 3;
                 wireType = tag & 7;
                 if (!nestedField)

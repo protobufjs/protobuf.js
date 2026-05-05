@@ -35,7 +35,7 @@ function decoder(mtype) {
     ("var c=l===undefined?r.len:r.pos+l,m=g||new this.ctor" + (hasMapField ? ",k,v" : hasImplicitPresenceField ? ",v" : ""))
     ("while(r.pos<c){")
         ("var s=r.pos")
-        ("var t=r.uint32()")
+        ("var t=r.tag()")
         ("if(t===z){")
             ("z=undefined")
             ("break")
@@ -70,7 +70,7 @@ function decoder(mtype) {
 
             gen
                 ("while(r.pos<c2){")
-                    ("var t2=r.uint32()")
+                    ("var t2=r.tag()")
                     ("u=t2&7")
                     ("switch(t2>>>=3){")
                         ("case 1:")
