@@ -62,7 +62,10 @@ function run(options) {
 
     var files  = argv._;
 
-    if ((hasSource && files.length) || (!hasSource && !files.length)) {
+    var invalidUsage = hasSource
+        ? files.length > 0
+        : files.length === 0;
+    if (invalidUsage) {
         if (callback)
             callback(Error("usage")); // eslint-disable-line callback-return
         else
@@ -237,4 +240,4 @@ function run(options) {
     }
 
     return undefined;
-};
+}

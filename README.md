@@ -198,7 +198,7 @@ import { awesomepackage } from "./awesome.js";
 const AwesomeMessage = awesomepackage.AwesomeMessage;
 ```
 
-JSON module output exports the reflection root. With `-w esm`, the root remains available as the default export and top-level schema symbols are emitted as named exports. Nested property access follows reflection's existing rule of exposing message, enum, service and namespace names that begin with an uppercase letter. Reflection bundles can be loaded with `protobufjs/light.js` because the `.proto` parser is not required.
+JSON module output exports the reflection root and, with `-w esm`, also emits top-level named exports to align with static modules. Reflection bundles can be loaded with `protobufjs/light.js` because the `.proto` parser is not required.
 
 ### Static modules
 
