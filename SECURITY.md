@@ -17,6 +17,17 @@ release containing the fix.
 | 7.5.x        | ✅        |
 | < 7.5        | ❌        |
 
+## Untrusted Schema Input
+
+Historically, loading untrusted `.proto` files and JSON descriptors was not
+treated as a dedicated security boundary. The support scope has since been
+expanded: malformed or adversarial schema input is now considered part of the
+supported input surface for active release lines.
+
+Security-impacting behavior in this area, including code execution, prototype
+pollution, and denial-of-service issues with practical exploitability, should
+be reported through the security process described below.
+
 ## Reporting a Vulnerability
 
 Please do not report security vulnerabilities through public GitHub issues.
