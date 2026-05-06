@@ -41,7 +41,7 @@ jobs:
       run: npm run test:sources
     - name: "Test types"
       run: npm run test:types
-  bench:
+  benchmark:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
@@ -51,4 +51,33 @@ jobs:
     - name: "Install dependencies"
       run: npm install
     - name: "Run benchmark"
-      run: npm run bench
+      run: |
+        set -o pipefail
+        npm run bench 2>&1 | tee "$RUNNER_TEMP/bench.log"
+        {
+          echo '```'
+          sed -r 's/\x1b\[[0-9;]*m//g' "$RUNNER_TEMP/bench.log"
+          echo '```'
+        } >> "$GITHUB_STEP_SUMMARY"
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
+      with:
+        node-version: "lts/*"
+    - name: "Install dependencies"
+      run: npm install --ignore-scripts
+    - name: "Install CLI dependencies"
+      run: npm --prefix cli install --ignore-scripts
+    - uses: ./.github/actions/conformance
+    - uses: actions/upload-artifact@v7
+      if: always()
+      with:
+        name: conformance-results
+        path: |
+          tests/conformance/out/conformance.json
+          tests/conformance/out/conformance.log
+          tests/conformance/out/conformance-tests.log
+          tests/conformance/out/failing_tests.txt
+        if-no-files-found: ignore

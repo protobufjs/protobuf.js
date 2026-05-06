@@ -1,0 +1,110 @@
+name: "Run protobuf conformance"
+description: "Build and run the upstream Protocol Buffers conformance suite for protobuf.js."
+inputs:
+  upstream-version:
+    description: "Upstream protocolbuffers/protobuf tag or branch to test against."
+    default: "v33.0"
+  upstream-dir:
+    description: "Directory where upstream protobuf is checked out."
+    default: "tests/conformance/upstream"
+  runner-cache:
+    description: "Directory used to cache the built upstream conformance runner."
+    default: "tests/conformance/runner-cache"
+  output-dir:
+    description: "Directory where conformance logs and generated reports are written."
+    default: "tests/conformance/out"
+  maximum-edition:
+    description: "Maximum protobuf edition passed to the conformance runner."
+    default: "2024"
+outputs:
+  exit-code:
+    description: "Exit code returned by the upstream conformance runner."
+    value: ${{ steps.run-conformance.outputs.exit_code }}
+runs:
+  using: "composite"
+  steps:
+    - name: "Prepare conformance runner cache"
+      shell: bash
+      run: mkdir -p "${{ inputs.runner-cache }}"
+
+    - uses: actions/cache@v5
+      id: conformance-runner-cache
+      with:
+        path: ${{ inputs.runner-cache }}
+        key: protobuf-conformance-runner-${{ runner.os }}-${{ inputs.upstream-version }}
+
+    - name: "Check out upstream protobuf"
+      shell: bash
+      run: git clone --depth 1 --branch "${{ inputs.upstream-version }}" https://github.com/protocolbuffers/protobuf.git "${{ inputs.upstream-dir }}"
+
+    - name: "Install build dependencies"
+      if: steps.conformance-runner-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake ninja-build
+
+    - name: "Build upstream conformance runner"
+      if: steps.conformance-runner-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        cmake -S "${{ inputs.upstream-dir }}" -B "${{ inputs.runner-cache }}/build" -G Ninja \
+          -DCMAKE_BUILD_TYPE=Release \
+          -Dprotobuf_BUILD_CONFORMANCE=ON \
+          -Dprotobuf_BUILD_TESTS=OFF \
+          -Dprotobuf_BUILD_EXAMPLES=OFF \
+          -Dprotobuf_INSTALL=OFF \
+          -Dprotobuf_FORCE_FETCH_DEPENDENCIES=ON
+        cmake --build "${{ inputs.runner-cache }}/build" --target conformance_test_runner --parallel 2
+
+    - name: "Generate protobuf.js conformance target"
+      shell: bash
+      env:
+        PROTOBUF_UPSTREAM: ${{ inputs.upstream-dir }}
+      run: node tests/conformance/generate.js
+
+    - name: "Locate Node.js"
+      id: node
+      shell: bash
+      run: echo "path=$(command -v node)" >> "$GITHUB_OUTPUT"
+
+    - name: "List conformance tests"
+      shell: bash
+      run: |
+        mkdir -p "${{ inputs.output-dir }}"
+        : > "${{ inputs.output-dir }}/failure_list.txt"
+        "${{ inputs.runner-cache }}/build/conformance_test_runner" \
+          --maximum_edition "${{ inputs.maximum-edition }}" \
+          --enforce_recommended \
+          --verbose \
+          --failure_list "${{ inputs.output-dir }}/failure_list.txt" \
+          --output_dir "${{ inputs.output-dir }}" \
+          "${{ steps.node.outputs.path }}" tests/conformance/testee.js --list \
+          > "${{ inputs.output-dir }}/conformance-tests.log" 2>&1
+
+    - name: "Run conformance suite"
+      id: run-conformance
+      shell: bash
+      run: |
+        set +e
+        "${{ inputs.runner-cache }}/build/conformance_test_runner" \
+          --maximum_edition "${{ inputs.maximum-edition }}" \
+          --enforce_recommended \
+          --failure_list "${{ inputs.output-dir }}/failure_list.txt" \
+          --output_dir "${{ inputs.output-dir }}" \
+          "${{ steps.node.outputs.path }}" tests/conformance/testee.js \
+          > "${{ inputs.output-dir }}/conformance.log" 2>&1
+        status=$?
+        set -e
+        echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+        tail -n 80 "${{ inputs.output-dir }}/conformance.log"
+        if [ -s "${{ inputs.output-dir }}/failing_tests.txt" ]; then
+          echo ""
+          echo "Failing conformance tests:"
+          cat "${{ inputs.output-dir }}/failing_tests.txt"
+        fi
+
+    - name: "Summarize conformance results"
+      if: always()
+      shell: bash
+      run: node tests/conformance/report.js "${{ inputs.output-dir }}/conformance.log" "${{ inputs.output-dir }}/conformance-tests.log" --json "${{ inputs.output-dir }}/conformance.json" | tee -a "$GITHUB_STEP_SUMMARY"
