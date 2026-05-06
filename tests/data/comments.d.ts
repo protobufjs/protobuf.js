@@ -22,7 +22,7 @@ export class Test1 implements ITest1 {
     public static fromObject(object: { [k: string]: any }): Test1;
     public static toObject(message: Test1, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
-    public static getTypeUrl(typeUrlPrefix?: string): string;
+    public static getTypeUrl(prefix?: string): string;
 }
 
 export interface ITest2 {
@@ -41,7 +41,7 @@ export class Test2 implements ITest2 {
     public static fromObject(object: { [k: string]: any }): Test2;
     public static toObject(message: Test2, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
-    public static getTypeUrl(typeUrlPrefix?: string): string;
+    public static getTypeUrl(prefix?: string): string;
 }
 
 export enum Test3 {

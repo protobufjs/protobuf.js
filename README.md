@@ -171,7 +171,7 @@ Reflection keeps schemas as descriptors and generates optimized functions at run
 | `static` | Static code | custom wrapper/integration, not standalone |
 | `static-module` | Static code module | `protobufjs/minimal.js` |
 
-Module targets support `--wrap default` for CommonJS and AMD, plus `commonjs`, `amd`, `es6`, and `closure`; `--wrap` can also load a custom wrapper module.
+Module targets support `--wrap default` for CommonJS and AMD, plus `commonjs`, `amd`, `esm`, and `closure`; `--wrap` can also load a custom wrapper module.
 
 ### Reflection bundles
 
@@ -189,22 +189,21 @@ const AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");
 ```
 
 ```sh
-npx pbjs -t json-module -w es6 -o awesome.json awesome.proto
+npx pbjs -t json-module -w esm -o awesome.js awesome.proto
 ```
 
 ```js
-const root = require("./awesome.js");
+import { awesomepackage } from "./awesome.js";
 
-const AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");
+const AwesomeMessage = awesomepackage.AwesomeMessage;
 ```
 
-Reflection bundles can be loaded with `protobufjs/light.js` because the `.proto` parser is not required.
+JSON module output exports the reflection root. With `-w esm`, the root remains available as the default export and top-level schema symbols are emitted as named exports. Nested property access follows reflection's existing rule of exposing message, enum, service and namespace names that begin with an uppercase letter. Reflection bundles can be loaded with `protobufjs/light.js` because the `.proto` parser is not required.
 
 ### Static modules
 
 ```sh
-npx pbjs -t static-module -w es6 -o awesome.js awesome.proto
-npx pbts -o awesome.d.ts awesome.js
+npx pbjs -t static-module -w esm -o awesome.js --dts awesome.proto
 ```
 
 ```ts
@@ -217,14 +216,9 @@ Generated static code only needs `protobufjs/minimal.js`.
 
 ### TypeScript integration
 
-The protobuf.js runtime API is typed, but fields of dynamically loaded messages are only known at runtime. For statically typed messages and fields, either generate static code with declarations, or use reflection bundles with declarations generated from the equivalent static module:
+The protobuf.js runtime API is typed, but fields of dynamically loaded schemas are only known at runtime. To get statically typed messages and fields, generate a `json-module` or `static-module` with the CLI and add `--dts` to write a matching `.d.ts` file next to the emitted `.js` file.
 
-```sh
-npx pbjs -t json-module -w commonjs -o awesome.js awesome.proto
-npx pbjs -t static-module awesome.proto | npx pbts -o awesome.d.ts -
-```
-
-Use `create(...)` instead of constructors with reflection-backed declarations.
+Note that declarations generated for JSON modules describe reflection-backed message types, so use `MyMessage.create(...)` instead of constructors.
 
 ## Advanced usage
 

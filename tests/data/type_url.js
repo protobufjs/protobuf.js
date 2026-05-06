@@ -227,18 +227,17 @@ $root.TypeUrlTest = (function() {
     };
 
     /**
-     * Gets the default type url for TypeUrlTest
+     * Gets the type url for TypeUrlTest
      * @function getTypeUrl
      * @memberof TypeUrlTest
      * @static
-     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-     * @returns {string} The default type url
+     * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+     * @returns {string} The type url
      */
-    TypeUrlTest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-        if (typeUrlPrefix === undefined) {
-            typeUrlPrefix = "type.googleapis.com";
-        }
-        return typeUrlPrefix + "/TypeUrlTest";
+    TypeUrlTest.getTypeUrl = function getTypeUrl(prefix) {
+        if (prefix === undefined)
+            prefix = "type.googleapis.com";
+        return prefix + "/TypeUrlTest";
     };
 
     TypeUrlTest.Nested = (function() {
@@ -458,18 +457,17 @@ $root.TypeUrlTest = (function() {
         };
 
         /**
-         * Gets the default type url for Nested
+         * Gets the type url for Nested
          * @function getTypeUrl
          * @memberof TypeUrlTest.Nested
          * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
          */
-        Nested.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/TypeUrlTest.Nested";
+        Nested.getTypeUrl = function getTypeUrl(prefix) {
+            if (prefix === undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/TypeUrlTest.Nested";
         };
 
         return Nested;

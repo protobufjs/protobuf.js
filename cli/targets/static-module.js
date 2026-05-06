@@ -19,7 +19,7 @@ function static_module_target(root, options, callback) {
         }
         try {
             output = util.wrap(output, protobuf.util.merge({
-                dependency: options.wrap === "es6"
+                dependency: util.isEsmWrapper(options.wrap)
                     ? "protobufjs/minimal.js"
                     : "protobufjs/minimal"
             }, options));

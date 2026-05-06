@@ -600,6 +600,18 @@ Type.prototype.toObject = function toObject(message, options) {
 };
 
 /**
+ * Gets the type url for this type.
+ * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+ * @returns {string} The type url
+ */
+Type.prototype.getTypeUrl = function getTypeUrl(prefix) {
+    if (prefix === undefined)
+        prefix = "type.googleapis.com";
+    var fullName = this.fullName;
+    return prefix + "/" + (fullName.charAt(0) === "." ? fullName.substring(1) : fullName);
+};
+
+/**
  * Decorator function as returned by {@link Type.d} (TypeScript).
  * @typedef TypeDecorator
  * @type {function}

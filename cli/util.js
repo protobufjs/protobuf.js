@@ -62,6 +62,10 @@ exports.traverseResolved = function traverseResolved(current, fn) {
         traverseResolved(current.resolvedResponseType, fn);
 };
 
+exports.isEsmWrapper = function isEsmWrapper(wrap) {
+    return wrap === "esm" || wrap === "es6";
+};
+
 exports.inspect = function inspect(object, indent) {
     if (!object)
         return "";
@@ -111,6 +115,13 @@ exports.wrap = function(OUTPUT, options) {
         wrap = fs.readFileSync(path.resolve(process.cwd(), name)).toString("utf8");
     }
     wrap = wrap.replace(/\$DEPENDENCY/g, JSON.stringify(options.dependency || "protobufjs"));
+    wrap = wrap.replace(/( *)\$DEFAULT_EXPORT/g, function($0, $1) {
+        var defaultExport = options.defaultExport || "";
+        if (!defaultExport)
+            return $1;
+        defaultExport = defaultExport.replace(/\r?\n/g, "\n");
+        return $1.length ? defaultExport.replace(/^/mg, $1) : defaultExport;
+    });
     wrap = wrap.replace(/( *)\$OUTPUT;/, function($0, $1) {
         return $1.length ? OUTPUT.replace(/^/mg, $1) : OUTPUT;
     });

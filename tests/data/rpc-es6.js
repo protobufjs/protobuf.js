@@ -292,18 +292,17 @@ export const MyRequest = $root.MyRequest = (() => {
     };
 
     /**
-     * Gets the default type url for MyRequest
+     * Gets the type url for MyRequest
      * @function getTypeUrl
      * @memberof MyRequest
      * @static
-     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-     * @returns {string} The default type url
+     * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+     * @returns {string} The type url
      */
-    MyRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-        if (typeUrlPrefix === undefined) {
-            typeUrlPrefix = "type.googleapis.com";
-        }
-        return typeUrlPrefix + "/MyRequest";
+    MyRequest.getTypeUrl = function getTypeUrl(prefix) {
+        if (prefix === undefined)
+            prefix = "type.googleapis.com";
+        return prefix + "/MyRequest";
     };
 
     return MyRequest;
@@ -526,21 +525,22 @@ export const MyResponse = $root.MyResponse = (() => {
     };
 
     /**
-     * Gets the default type url for MyResponse
+     * Gets the type url for MyResponse
      * @function getTypeUrl
      * @memberof MyResponse
      * @static
-     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-     * @returns {string} The default type url
+     * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+     * @returns {string} The type url
      */
-    MyResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-        if (typeUrlPrefix === undefined) {
-            typeUrlPrefix = "type.googleapis.com";
-        }
-        return typeUrlPrefix + "/MyResponse";
+    MyResponse.getTypeUrl = function getTypeUrl(prefix) {
+        if (prefix === undefined)
+            prefix = "type.googleapis.com";
+        return prefix + "/MyResponse";
     };
 
     return MyResponse;
 })();
 
-export { $root as default };
+export {
+  $root as default
+};

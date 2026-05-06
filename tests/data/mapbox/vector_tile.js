@@ -252,18 +252,17 @@ $root.vector_tile = (function() {
         };
 
         /**
-         * Gets the default type url for Tile
+         * Gets the type url for Tile
          * @function getTypeUrl
          * @memberof vector_tile.Tile
          * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
          */
-        Tile.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/vector_tile.Tile";
+        Tile.getTypeUrl = function getTypeUrl(prefix) {
+            if (prefix === undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/vector_tile.Tile";
         };
 
         /**
@@ -690,18 +689,17 @@ $root.vector_tile = (function() {
             };
 
             /**
-             * Gets the default type url for Value
+             * Gets the type url for Value
              * @function getTypeUrl
              * @memberof vector_tile.Tile.Value
              * @static
-             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns {string} The default type url
+             * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+             * @returns {string} The type url
              */
-            Value.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-                if (typeUrlPrefix === undefined) {
-                    typeUrlPrefix = "type.googleapis.com";
-                }
-                return typeUrlPrefix + "/vector_tile.Tile.Value";
+            Value.getTypeUrl = function getTypeUrl(prefix) {
+                if (prefix === undefined)
+                    prefix = "type.googleapis.com";
+                return prefix + "/vector_tile.Tile.Value";
             };
 
             return Value;
@@ -1095,18 +1093,17 @@ $root.vector_tile = (function() {
             };
 
             /**
-             * Gets the default type url for Feature
+             * Gets the type url for Feature
              * @function getTypeUrl
              * @memberof vector_tile.Tile.Feature
              * @static
-             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns {string} The default type url
+             * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+             * @returns {string} The type url
              */
-            Feature.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-                if (typeUrlPrefix === undefined) {
-                    typeUrlPrefix = "type.googleapis.com";
-                }
-                return typeUrlPrefix + "/vector_tile.Tile.Feature";
+            Feature.getTypeUrl = function getTypeUrl(prefix) {
+                if (prefix === undefined)
+                    prefix = "type.googleapis.com";
+                return prefix + "/vector_tile.Tile.Feature";
             };
 
             return Feature;
@@ -1511,18 +1508,17 @@ $root.vector_tile = (function() {
             };
 
             /**
-             * Gets the default type url for Layer
+             * Gets the type url for Layer
              * @function getTypeUrl
              * @memberof vector_tile.Tile.Layer
              * @static
-             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns {string} The default type url
+             * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+             * @returns {string} The type url
              */
-            Layer.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-                if (typeUrlPrefix === undefined) {
-                    typeUrlPrefix = "type.googleapis.com";
-                }
-                return typeUrlPrefix + "/vector_tile.Tile.Layer";
+            Layer.getTypeUrl = function getTypeUrl(prefix) {
+                if (prefix === undefined)
+                    prefix = "type.googleapis.com";
+                return prefix + "/vector_tile.Tile.Layer";
             };
 
             return Layer;
