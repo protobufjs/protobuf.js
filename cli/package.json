@@ -12,6 +12,7 @@
   },
   "license": "BSD-3-Clause",
   "main": "index.js",
+  "type": "commonjs",
   "types": "index.d.ts",
   "bin": {
     "pbjs": "bin/pbjs",

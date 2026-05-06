@@ -144,8 +144,11 @@ tape.test("pbts passes jsdoc arguments without a shell", function(test) {
         var child = new EventEmitter();
         child.stdout = new EventEmitter();
         child.stderr = { pipe: function() {} };
+        var nodePath = typeof Bun !== "undefined"
+            ? process.env.npm_node_execpath || "node"
+            : process.execPath;
 
-        test.equal(cmd, process.execPath, "should execute node directly");
+        test.equal(cmd, nodePath, "should execute node directly");
         test.ok(/jsdoc[\\/]jsdoc\.js$/.test(args[0]), "should execute jsdoc directly");
         test.equal(args[args.length - 1], file, "should pass file path as a single argument");
         test.equal(options.stdio, "pipe", "should pipe jsdoc output");

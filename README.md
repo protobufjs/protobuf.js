@@ -300,6 +300,10 @@ For protobuf descriptor interoperability, see [ext/descriptor](./ext/descriptor)
 
 In [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval, use generated static code instead of runtime code generation.
 
+## Compatibility
+
+Supported runtimes are browsers, Node.js v12+, Deno (`deno add npm:protobufjs`) and Bun (`bun add protobufjs`). When using the CLI with Bun, Node.js must also be installed.
+
 ## Conformance
 
 protobuf.js targets full binary wire-format conformance for **Proto2**, **Proto3** and **Editions**. CI runs the official Protocol Buffers conformance suite, with logs uploaded as artifacts.

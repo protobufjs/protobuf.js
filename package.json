@@ -17,6 +17,7 @@
     "typescript"
   ],
   "main": "index.js",
+  "type": "commonjs",
   "types": "index.d.ts",
   "scripts": {
     "bench": "node bench",

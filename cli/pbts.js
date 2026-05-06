@@ -97,7 +97,10 @@ exports.main = function(args, callback) {
         // There is no proper API for jsdoc, so this executes the CLI and pipes the output
         var basedir = path.join(__dirname, ".");
         var moduleName = argv.name || "null";
-        var nodePath = process.execPath;
+        // JSDoc 4 uses requizzle, which depends on Node's CommonJS loader internals.
+        var nodePath = typeof Bun === "undefined"
+            ? process.execPath
+            : process.env.npm_node_execpath || "node"; // eslint-disable-line no-process-env
         var jsdocArgs = [
             require.resolve("jsdoc/jsdoc.js"),
             "-c",
