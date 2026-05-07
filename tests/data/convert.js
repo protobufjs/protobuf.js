@@ -658,18 +658,17 @@ $root.Message = (function() {
     };
 
     /**
-     * Gets the default type url for Message
+     * Gets the type url for Message
      * @function getTypeUrl
      * @memberof Message
      * @static
-     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-     * @returns {string} The default type url
+     * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+     * @returns {string} The type url
      */
-    Message.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-        if (typeUrlPrefix === undefined) {
-            typeUrlPrefix = "type.googleapis.com";
-        }
-        return typeUrlPrefix + "/Message";
+    Message.getTypeUrl = function getTypeUrl(prefix) {
+        if (prefix === undefined)
+            prefix = "type.googleapis.com";
+        return prefix + "/Message";
     };
 
     /**

@@ -415,6 +415,13 @@ function writeProperty(property, declare, inClass) {
     writeln(": ", getTypeOf(property), ";");
 }
 
+function isDefaultExport(element) {
+    return element.name === "default"
+        && element.meta
+        && element.meta.code
+        && element.meta.code.name === "exports.default";
+}
+
 //
 // Handlers
 //
@@ -547,8 +554,13 @@ function handleClass(element, parent) {
         writeln(element.tsType.replace(/\r?\n|\r/g, "\n"));
 
     // constructor
-    if (!is_interface && !element.virtual)
-        handleFunction(element, parent, true);
+    if (!is_interface && !element.virtual) {
+        if (options.constructor === false) {
+            writeComment("Reflection-backed declarations are not constructable. Use " + element.name + ".create(...) instead.");
+            writeln("private constructor();");
+        } else
+            handleFunction(element, parent, true);
+    }
 
     // properties
     if (element.properties)
@@ -623,6 +635,12 @@ function handleEnum(element) {
 function handleMember(element, parent) {
     if (element.isEnum) {
         handleEnum(element);
+        return;
+    }
+    if (!parent && isDefaultExport(element)) {
+        writeComment(element.comment, true);
+        writeln("declare const _default: ", getTypeOf(element), ";");
+        writeln("export default _default;");
         return;
     }
     begin(element);

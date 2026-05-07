@@ -702,23 +702,23 @@ function buildType(ref, type) {
     }
 
     if (config.typeurl) {
+        var typeUrlName = type.fullName.charAt(0) === "." ? type.fullName.substring(1) : type.fullName;
         push("");
         pushComment([
-            "Gets the default type url for " + type.name,
+            "Gets the type url for " + type.name,
             "@function getTypeUrl",
             "@memberof " + exportName(type),
             "@static",
-            "@param {string} [typeUrlPrefix] your custom typeUrlPrefix(default \"type.googleapis.com\")",
-            "@returns {string} The default type url"
+            "@param {string} [prefix] Custom type url prefix, defaults to `\"type.googleapis.com\"`",
+            "@returns {string} The type url"
         ]);
-        push(escapeName(type.name) + ".getTypeUrl = function getTypeUrl(typeUrlPrefix) {");
+        push(escapeName(type.name) + ".getTypeUrl = function getTypeUrl(prefix) {");
         ++indent;
-            push("if (typeUrlPrefix === undefined) {");
+            push("if (prefix === undefined)");
             ++indent;
-                push("typeUrlPrefix = \"type.googleapis.com\";");
+                push("prefix = \"type.googleapis.com\";");
             --indent;
-            push("}");
-            push("return typeUrlPrefix + \"/" + exportName(type) + "\";");
+            push("return prefix + " + JSON.stringify("/" + typeUrlName) + ";");
         --indent;
         push("};");
     }

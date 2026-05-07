@@ -12,6 +12,7 @@
   },
   "license": "BSD-3-Clause",
   "main": "index.js",
+  "type": "commonjs",
   "types": "index.d.ts",
   "bin": {
     "pbjs": "bin/pbjs",
@@ -27,7 +28,7 @@
     "estraverse": "^5.1.0",
     "glob": "^8.0.0",
     "jsdoc": "^4.0.0",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.8",
     "semver": "^7.1.2",
     "tmp": "^0.2.1",
     "uglify-js": "^3.7.7"

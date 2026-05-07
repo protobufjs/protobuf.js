@@ -4,4 +4,4 @@ var $protobuf = require($DEPENDENCY);
 
 $OUTPUT;
 
-module.exports = $root;
+$DEFAULT_EXPORTmodule.exports = $root;

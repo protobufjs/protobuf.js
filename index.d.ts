@@ -1765,6 +1765,13 @@ export class Type extends NamespaceBase {
     public toObject(message: Message<{}>, options?: IConversionOptions): { [k: string]: any };
 
     /**
+     * Gets the type url for this type.
+     * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+     * @returns The type url
+     */
+    public getTypeUrl(prefix?: string): string;
+
+    /**
      * Type decorator (TypeScript).
      * @param [typeName] Type name, defaults to the constructor's name
      * @returns Decorator function

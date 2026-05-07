@@ -15,25 +15,57 @@ var child_process = require("child_process"),
  * @returns {number|undefined} Exit code, if known
  */
 exports.main = function(args, callback) {
+    return run({
+        args: args,
+        callback: callback
+    });
+};
+
+/**
+ * Generates TypeScript definitions from a JavaScript source.
+ * @param {string|Buffer} source JavaScript source
+ * @param {string[]} args Command line arguments
+ * @param {function(?Error, string=)} [callback] Optional completion callback
+ * @returns {number|undefined} Exit code, if known
+ */
+exports.process = function(source, args, callback) {
+    return run({
+        args: args,
+        callback: callback,
+        source: source
+    });
+};
+
+function run(options) {
+    var args = options.args,
+        callback = options.callback,
+        source = options.source,
+        hasSource = Object.prototype.hasOwnProperty.call(options, "source");
+
     var argv = minimist(args, {
         alias: {
             name: "n",
             out : "o",
             main: "m",
             global: "g",
-            import: "i"
+            import: "i",
+            constructors: [ "constructor" ]
         },
         string: [ "name", "out", "global", "import" ],
-        boolean: [ "comments", "main" ],
+        boolean: [ "comments", "constructors", "main" ],
         default: {
             comments: true,
+            constructors: true,
             main: false
         }
     });
 
     var files  = argv._;
 
-    if (!files.length) {
+    var invalidUsage = hasSource
+        ? files.length > 0
+        : files.length === 0;
+    if (invalidUsage) {
         if (callback)
             callback(Error("usage")); // eslint-disable-line callback-return
         else
@@ -47,6 +79,8 @@ exports.main = function(args, callback) {
                 "  -g, --global    Name of the global object in browser environments, if any.",
                 "",
                 "  -i, --import    Comma delimited list of imports. Local names will equal camelCase of the basename.",
+                "",
+                "  --no-constructor Emits private constructors for reflection-backed declarations.",
                 "",
                 "  --no-comments   Does not output any JSDoc comments.",
                 "",
@@ -74,8 +108,15 @@ exports.main = function(args, callback) {
 
     var cleanup = [];
 
+    // Load provided source through a temporary file because JSDoc expects file paths.
+    if (hasSource) {
+        files[0] = tmp.tmpNameSync() + ".js";
+        fs.writeFileSync(files[0], source, typeof source === "string" ? { encoding: "utf8" } : undefined);
+        cleanup.push(files[0]);
+        callJsdoc();
+
     // Read from stdin (to a temporary file)
-    if (files.length === 1 && files[0] === "-") {
+    } else if (files.length === 1 && files[0] === "-") {
         var data = [];
         process.stdin.on("data", function(chunk) {
             data.push(chunk);
@@ -97,13 +138,18 @@ exports.main = function(args, callback) {
         // There is no proper API for jsdoc, so this executes the CLI and pipes the output
         var basedir = path.join(__dirname, ".");
         var moduleName = argv.name || "null";
-        var nodePath = process.execPath;
+        // JSDoc 4 uses requizzle, which depends on Node's CommonJS loader internals.
+        var nodePath = typeof Bun === "undefined"
+            ? process.execPath
+            : process.env.npm_node_execpath || "node"; // eslint-disable-line no-process-env
         var jsdocArgs = [
             require.resolve("jsdoc/jsdoc.js"),
             "-c",
             path.join(basedir, "lib", "tsd-jsdoc.json"),
             "-q",
-            "module=" + encodeURIComponent(moduleName) + "&comments=" + Boolean(argv.comments)
+            "module=" + encodeURIComponent(moduleName)
+                + "&comments=" + Boolean(argv.comments)
+                + "&constructor=" + Boolean(argv.constructors)
         ].concat(files);
         var child = child_process.spawn(nodePath, jsdocArgs, {
             cwd: process.cwd(),
@@ -197,4 +243,4 @@ exports.main = function(args, callback) {
     }
 
     return undefined;
-};
+}

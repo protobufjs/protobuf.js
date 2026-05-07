@@ -885,18 +885,17 @@ $root.Package = (function() {
     };
 
     /**
-     * Gets the default type url for Package
+     * Gets the type url for Package
      * @function getTypeUrl
      * @memberof Package
      * @static
-     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-     * @returns {string} The default type url
+     * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+     * @returns {string} The type url
      */
-    Package.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-        if (typeUrlPrefix === undefined) {
-            typeUrlPrefix = "type.googleapis.com";
-        }
-        return typeUrlPrefix + "/Package";
+    Package.getTypeUrl = function getTypeUrl(prefix) {
+        if (prefix === undefined)
+            prefix = "type.googleapis.com";
+        return prefix + "/Package";
     };
 
     Package.Repository = (function() {
@@ -1146,18 +1145,17 @@ $root.Package = (function() {
         };
 
         /**
-         * Gets the default type url for Repository
+         * Gets the type url for Repository
          * @function getTypeUrl
          * @memberof Package.Repository
          * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
+         * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+         * @returns {string} The type url
          */
-        Repository.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/Package.Repository";
+        Repository.getTypeUrl = function getTypeUrl(prefix) {
+            if (prefix === undefined)
+                prefix = "type.googleapis.com";
+            return prefix + "/Package.Repository";
         };
 
         return Repository;

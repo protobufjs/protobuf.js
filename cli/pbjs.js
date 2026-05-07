@@ -37,13 +37,14 @@ exports.main = function main(args, callback) {
             path: "p",
             wrap: "w",
             root: "r",
+            dts: "d",
             lint: "l",
             // backward compatibility:
             "force-long": "strict-long",
             "force-message": "strict-message"
         },
         string: [ "target", "out", "path", "wrap", "dependency", "root", "lint", "filter" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults", "null-semantics"],
+        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "dts", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults", "null-semantics"],
         default: {
             target: "json",
             create: true,
@@ -56,6 +57,7 @@ exports.main = function main(args, callback) {
             beautify: true,
             comments: true,
             service: true,
+            dts: false,
             es6: null,
             lint: lintDefault,
             "keep-case": false,
@@ -101,10 +103,12 @@ exports.main = function main(args, callback) {
                 "",
                 "  -p, --path       Adds a directory to the include path.",
                 "",
-                "  --filter         Set up a filter to configure only those messages you need and their dependencies to compile, this will effectively reduce the final file size",
-                "                   Set A json file path, Example of file content: {\"messageNames\":[\"mypackage.messageName1\", \"messageName2\"] } ",
+                "  --filter         Path to a JSON file listing messages and their dependencies to keep.",
+                "                   Example: {\"messageNames\":[\"mypackage.Message\",\"Message2\"]}",
                 "",
                 "  -o, --out        Saves to a file instead of writing to stdout.",
+                "",
+                "  -d, --dts        Also saves a .d.ts file next to --out for static-module and json-module.",
                 "",
                 "  --sparse         Exports only those types referenced from a main file (experimental).",
                 "",
@@ -115,7 +119,7 @@ exports.main = function main(args, callback) {
                 "                   default   Default wrapper supporting both CommonJS and AMD",
                 "                   commonjs  CommonJS wrapper",
                 "                   amd       AMD wrapper",
-                "                   es6       ES6 wrapper (implies --es6)",
+                "                   esm       ESM wrapper (implies --es6)",
                 "                   closure   A closure adding to protobuf.roots where protobuf is a global",
                 "",
                 "  --dependency     Specifies which version of protobuf to require. Accepts any valid module id",
@@ -207,9 +211,26 @@ exports.main = function main(args, callback) {
         return resolved;
     };
 
-    // `--wrap es6` implies `--es6` but not the other way around. You can still use e.g. `--es6 --wrap commonjs`
-    if (argv.wrap === "es6") {
+    // ES module wrappers imply `--es6` but not the other way around. You can still use e.g. `--es6 --wrap commonjs`
+    if (util.isEsmWrapper(argv.wrap)) {
         argv.es6 = true;
+    }
+
+    if (argv.dts) {
+        var dtsError = null;
+        if (!argv.out)
+            dtsError = Error("--dts requires --out");
+        else if (argv.target !== "static-module" && argv.target !== "json-module")
+            dtsError = Error("--dts requires --target static-module or json-module");
+        else if (argv.wrap !== "commonjs" && !util.isEsmWrapper(argv.wrap))
+            dtsError = Error("--dts requires --wrap commonjs or esm");
+        if (dtsError) {
+            if (callback) {
+                callback(dtsError);
+                return undefined;
+            }
+            throw dtsError;
+        }
     }
 
     var parseOptions = {
@@ -335,20 +356,65 @@ exports.main = function main(args, callback) {
                     return callback(err);
                 throw err;
             }
-            try {
-                if (argv.out)
-                    fs.writeFileSync(argv.out, output, { encoding: "utf8" });
-                else if (!callback)
-                    process.stdout.write(output, "utf8");
-                return callback
-                    ? callback(null, output)
-                    : undefined;
-            } catch (err) {
-                if (callback)
-                    return callback(err);
-                throw err;
-            }
+            if (argv.dts)
+                return generateDts(output, function(dtsErr, dtsOutput) {
+                    if (dtsErr) {
+                        if (callback)
+                            return callback(dtsErr);
+                        throw dtsErr;
+                    }
+                    return writeOutputs(output, dtsOutput);
+                });
+            return writeOutputs(output);
         });
+    }
+
+    function deriveDtsPath(out) {
+        return out.replace(/\.(?:[cm]?js)$/i, "") + ".d.ts";
+    }
+
+    function generateDts(output, done) {
+        function runPbts(jsOutput) {
+            var pbtsArgs = [];
+            if (argv.target === "json-module")
+                pbtsArgs.push("--no-constructor");
+            if (!argv.comments)
+                pbtsArgs.push("--no-comments");
+
+            require("./pbts").process(jsOutput, pbtsArgs, done);
+        }
+
+        if (argv.target === "static-module")
+            return runPbts(output);
+
+        var dtsOptions = protobuf.util.merge({}, argv);
+        // The temporary static module can expose the reflected root as a default export
+        // only for ES module declarations. CommonJS has no equivalent default export here.
+        if (util.isEsmWrapper(argv.wrap))
+            dtsOptions.defaultExport = targets["json-module"].defaultExportDoc;
+        return targets["static-module"](root, dtsOptions, function(err, staticOutput) {
+            if (err)
+                return done(err);
+            return runPbts(staticOutput);
+        });
+    }
+
+    function writeOutputs(output, dtsOutput) {
+        try {
+            if (argv.out) {
+                fs.writeFileSync(argv.out, output, { encoding: "utf8" });
+                if (dtsOutput)
+                    fs.writeFileSync(deriveDtsPath(argv.out), dtsOutput, { encoding: "utf8" });
+            } else if (!callback)
+                process.stdout.write(output, "utf8");
+            return callback
+                ? callback(null, output)
+                : undefined;
+        } catch (err) {
+            if (callback)
+                return callback(err);
+            throw err;
+        }
     }
 
     return undefined;
