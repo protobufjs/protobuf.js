@@ -286,7 +286,7 @@ See [examples/decorators.ts](./examples/decorators.ts) for an example.
 
 ### Descriptors
 
-For protobuf descriptor interoperability, see [ext/descriptor](./ext/descriptor). Note that because the internals of this package do not rely on `google/protobuf/descriptor.proto`, options are parsed and presented literally.
+For protobuf descriptor interoperability, see [ext/descriptor](./ext/README.md#descriptor). Note that because protobuf.js does not use `descriptor.proto` internally, options are parsed and presented literally.
 
 ### Content Security Policy
 

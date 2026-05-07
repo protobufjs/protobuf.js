@@ -1,13 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var path = require("path");
 var tape = require("tape");
 var protobuf = require("../index");
-
-// to extend Root
 var descriptor = require("../ext/descriptor");
 
-tape.test("extensions - proto2 to proto3", function (test) {
+tape.test("descriptor - proto2 to proto3", function (test) {
     // load document with extended field imported multiple times
     var root = protobuf.loadSync(path.resolve(__dirname, "data/test.proto"));
 
@@ -25,7 +21,7 @@ tape.test("extensions - proto2 to proto3", function (test) {
     test.end();
 });
 
-tape.test("extensions - proto2 roundtrip", function (test) {
+tape.test("descriptor - proto2 roundtrip", function (test) {
     // load document with extended field imported multiple times
     var root = protobuf.parse(`syntax = "proto2";
 
@@ -55,7 +51,7 @@ tape.test("extensions - proto2 roundtrip", function (test) {
     test.end();
 });
 
-tape.test("extensions - proto3 roundtrip", function (test) {
+tape.test("descriptor - proto3 roundtrip", function (test) {
     var root = protobuf.parse(`syntax = "proto3";
 
         message Message {
@@ -84,7 +80,7 @@ tape.test("extensions - proto3 roundtrip", function (test) {
     test.end();
 });
 
-tape.test("extensions - proto3 optional in extend toDescriptor", function (test) {
+tape.test("descriptor - proto3 optional in extend toDescriptor", function (test) {
   var root = protobuf.parse(`syntax = "proto3";
 
     message SomeMessage {
@@ -109,14 +105,23 @@ tape.test("extensions - proto3 optional in extend toDescriptor", function (test)
   test.ok(decodedDescriptorSet.file[0].extension && decodedDescriptorSet.file[0].extension.length === 1,
     "should include extension field");
 
-  var ext = decodedDescriptorSet.file[0].extension[0];
+  var encodedDescriptorSet = descriptor.FileDescriptorSet.decode(
+      descriptor.FileDescriptorSet.encode(decodedDescriptorSet).finish()
+  );
+
+  var ext = encodedDescriptorSet.file[0].extension[0];
   test.equal(ext.name, "bar", "extension field name is preserved");
-  test.equal(ext.proto3_optional, true, "proto3_optional flag is preserved");
+  test.equal(ext.proto3Optional, true, "proto3 optional flag is preserved");
+  test.notOk(Object.prototype.hasOwnProperty.call(ext, "proto3_optional"), "does not emit legacy snake_case descriptor property");
+
+  var root2 = protobuf.Root.fromDescriptor(encodedDescriptorSet),
+      ext2 = root2.lookup("bar");
+  test.equal(ext2.options.proto3_optional, true, "proto3 optional flag is restored");
 
   test.end();
 });
 
-tape.test("extensions - edition 2023 file roundtrip", function (test) {
+tape.test("descriptor - edition 2023 file roundtrip", function (test) {
     var json = {
       nested: { Message: {
           edition: "2023",
@@ -155,7 +160,7 @@ tape.test("extensions - edition 2023 file roundtrip", function (test) {
 });
 
 
-tape.test("extensions - proto2 root-less type", function (test) {
+tape.test("descriptor - proto2 root-less type", function (test) {
     var Message = protobuf.Type.fromJSON("Message", {
       "edition": "proto2",
       "fields": {
@@ -216,7 +221,7 @@ tape.test("extensions - proto2 root-less type", function (test) {
 });
 
 
-tape.test("extensions - unsupported edition", function (test) {
+tape.test("descriptor - unsupported edition", function (test) {
     var json = {
       nested: { Message: {
           edition: "2023",
@@ -248,7 +253,7 @@ tape.test("extensions - unsupported edition", function (test) {
     test.end();
 });
 
-tape.test("extensions - descriptor type names", function(test) {
+tape.test("descriptor - descriptor type names", function(test) {
     var field = descriptor.FieldDescriptorProto.create({
         name: "field",
         number: 1,
@@ -281,6 +286,132 @@ tape.test("extensions - descriptor type names", function(test) {
     test.throws(function() {
         protobuf.Method.fromDescriptor(method);
     }, /illegal type name/, "should reject invalid method type names");
+
+    test.end();
+});
+
+tape.test("descriptor - encoded descriptor inputs", function(test) {
+    var root = protobuf.parse("syntax = \"proto3\"; message Message { string value = 1; }").root.resolveAll(),
+        descriptorSet = root.toDescriptor("proto3"),
+        descriptorBytes = descriptor.FileDescriptorSet.encode(descriptorSet).finish(),
+        fieldDescriptor = descriptor.FieldDescriptorProto.create({
+            name: "value",
+            number: 1,
+            label: 1,
+            type: 9
+        }),
+        fieldBytes = descriptor.FieldDescriptorProto.encode(fieldDescriptor).finish();
+
+    test.equal(protobuf.Root.fromDescriptor(descriptorBytes).lookupType("Message").fields.value.type, "string", "decodes root descriptor buffers");
+    test.equal(protobuf.Root.fromDescriptor(protobuf.Reader.create(descriptorBytes)).lookupType("Message").fields.value.type, "string", "decodes root descriptor readers");
+    test.equal(protobuf.Field.fromDescriptor(fieldBytes).type, "string", "decodes field descriptor buffers");
+    test.equal(protobuf.Field.fromDescriptor(protobuf.Reader.create(fieldBytes)).type, "string", "decodes field descriptor readers");
+
+    test.end();
+});
+
+tape.test("descriptor - proto3 optional field without options", function(test) {
+    var fieldDescriptor = descriptor.FieldDescriptorProto.create({
+        name: "value",
+        number: 1,
+        label: 1,
+        type: 5,
+        proto3Optional: true
+    });
+
+    test.equal(protobuf.Field.fromDescriptor(fieldDescriptor, "proto3").options.proto3_optional, true, "accepts proto3 optional without field options");
+
+    test.end();
+});
+
+tape.test("descriptor - map field roundtrip", function(test) {
+    var root = protobuf.parse(`syntax = "proto3";
+
+        message Child {
+            string value = 1;
+        }
+
+        message Message {
+            map<string, int32> numbers = 1;
+            map<string, Child> children = 2;
+        }
+    `).root.resolveAll();
+
+    var Message = root.lookupType("Message"),
+        bytes = Message.encode(Message.create({
+            numbers: { a: 1 },
+            children: { b: { value: "x" } }
+        })).finish(),
+        descriptorSet = descriptor.FileDescriptorSet.decode(descriptor.FileDescriptorSet.encode(root.toDescriptor("proto3")).finish()),
+        root2 = protobuf.Root.fromDescriptor(descriptorSet).resolveAll(),
+        Message2 = root2.lookupType("Message");
+
+    test.ok(Message2.fields.numbers instanceof protobuf.MapField, "reconstructs scalar map fields");
+    test.ok(Message2.fields.children instanceof protobuf.MapField, "reconstructs message map fields");
+    test.notOk(Message2.nested && Message2.nested.Numbers, "does not expose synthetic map entry types");
+    test.same(Message2.toObject(Message2.decode(bytes)), {
+        numbers: { a: 1 },
+        children: { b: { value: "x" } }
+    }, "decodes descriptor maps as map objects");
+
+    test.end();
+});
+
+tape.test("descriptor - protoc map entry", function(test) {
+    var root = protobuf.Root.fromDescriptor(descriptor.FileDescriptorSet.create({
+        file: [{
+            name: "maps.proto",
+            package: "pkg",
+            syntax: "proto3",
+            messageType: [{
+                name: "Child",
+                field: [{
+                    name: "value",
+                    number: 1,
+                    label: 1,
+                    type: 9
+                }]
+            }, {
+                name: "Message",
+                field: [{
+                    name: "numbers",
+                    number: 1,
+                    label: 3,
+                    type: 11,
+                    typeName: ".pkg.Message.NumbersEntry"
+                }, {
+                    name: "children",
+                    number: 2,
+                    label: 3,
+                    type: 11,
+                    typeName: ".pkg.Message.ChildrenEntry"
+                }],
+                nestedType: [{
+                    name: "NumbersEntry",
+                    field: [
+                        { name: "key", number: 1, label: 1, type: 9 },
+                        { name: "value", number: 2, label: 1, type: 5 }
+                    ],
+                    options: { mapEntry: true }
+                }, {
+                    name: "ChildrenEntry",
+                    field: [
+                        { name: "key", number: 1, label: 1, type: 9 },
+                        { name: "value", number: 2, label: 1, type: 11, typeName: ".pkg.Child" }
+                    ],
+                    options: { mapEntry: true }
+                }]
+            }]
+        }]
+    })).resolveAll();
+
+    var Message = root.lookupType("pkg.Message");
+
+    test.ok(Message.fields.numbers instanceof protobuf.MapField, "reconstructs protoc-style map entry types");
+    test.equal(Message.fields.numbers.keyType, "string", "keeps map key type");
+    test.equal(Message.fields.numbers.type, "int32", "keeps map value type");
+    test.ok(Message.fields.children instanceof protobuf.MapField, "reconstructs message-valued map entry types");
+    test.equal(Message.fields.children.resolvedType.fullName, ".pkg.Child", "resolves qualified map value type");
 
     test.end();
 });
