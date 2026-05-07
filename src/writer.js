@@ -459,7 +459,8 @@ Writer.prototype.finish = function finish() {
  * @template T extends Uint8Array
  */
 Writer.prototype.finishInto = function finishInto(buf, offset) {
-    offset >>>= 0;
+    if (offset === undefined)
+        offset = 0;
     var head = this.head.next,
         pos  = offset;
     while (head) {
