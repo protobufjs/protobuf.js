@@ -119,6 +119,21 @@ export const ServiceOptions: $protobuf.Type;
 
 export const MethodOptions: $protobuf.Type;
 
+export const FeatureSet: $protobuf.Type & {
+    FieldPresence: $protobuf.Enum,
+    EnumType: $protobuf.Enum,
+    RepeatedFieldEncoding: $protobuf.Enum,
+    Utf8Validation: $protobuf.Enum,
+    MessageEncoding: $protobuf.Enum,
+    JsonFormat: $protobuf.Enum,
+    EnforceNamingStyle: $protobuf.Enum,
+    VisibilityFeature: $protobuf.Type
+};
+
+export const FeatureSetDefaults: $protobuf.Type & {
+    FeatureSetEditionDefault: $protobuf.Type
+};
+
 export const UninterpretedOption: $protobuf.Type & {
     NamePart: $protobuf.Type
 };
@@ -233,7 +248,7 @@ export interface IEnumDescriptorProto {
 export interface IEnumValueDescriptorProto {
     name?: string;
     number?: number;
-    options?: any;
+    options?: IEnumValueOptions;
 }
 
 export interface IEnumOptions {
@@ -243,7 +258,31 @@ export interface IEnumOptions {
 
 export interface IOneofDescriptorProto {
     name?: string;
-    options?: any;
+    options?: IOneofOptions;
+}
+
+export interface IOneofOptions {
+    features?: IFeatureSet;
+    uninterpretedOption?: any[];
+}
+
+export interface IEnumValueOptions {
+    deprecated?: boolean;
+    features?: IFeatureSet;
+    debugRedact?: boolean;
+    featureSupport?: any;
+    uninterpretedOption?: any[];
+}
+
+export interface IFeatureSet {
+    fieldPresence?: number;
+    enumType?: number;
+    repeatedFieldEncoding?: number;
+    utf8Validation?: number;
+    messageEncoding?: number;
+    jsonFormat?: number;
+    enforceNamingStyle?: number;
+    defaultSymbolVisibility?: number;
 }
 
 export interface IServiceDescriptorProto {

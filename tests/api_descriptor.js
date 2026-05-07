@@ -324,6 +324,41 @@ tape.test("descriptor - proto3 optional field without options", function(test) {
     test.end();
 });
 
+tape.test("descriptor - oneof and enum value options", function(test) {
+    var fieldPresence = descriptor.FeatureSet.lookup("FieldPresence").values.EXPLICIT,
+        oneofDescriptor = descriptor.OneofDescriptorProto.create({
+            name: "choice",
+            options: {
+                features: {
+                    fieldPresence: fieldPresence
+                }
+            }
+        }),
+        oneof = protobuf.OneOf.fromDescriptor(oneofDescriptor),
+        enumDescriptor = descriptor.EnumDescriptorProto.create({
+            name: "State",
+            value: [{
+                name: "ON",
+                number: 0,
+                options: {
+                    deprecated: true,
+                    features: {
+                        fieldPresence: fieldPresence
+                    }
+                }
+            }]
+        }),
+        enm = protobuf.Enum.fromDescriptor(enumDescriptor);
+
+    test.same(oneof.options, { features: { field_presence: "EXPLICIT" } }, "preserves oneof options");
+    test.equal(oneof.toDescriptor().options.features.fieldPresence, fieldPresence, "emits oneof options");
+    test.same(enm.valuesOptions.ON, { deprecated: true, features: { field_presence: "EXPLICIT" } }, "preserves enum value options");
+    test.equal(enm.toDescriptor().value[0].options.deprecated, true, "emits enum value options");
+    test.equal(enm.toDescriptor().value[0].options.features.fieldPresence, fieldPresence, "emits enum value features");
+
+    test.end();
+});
+
 tape.test("descriptor - map field roundtrip", function(test) {
     var root = protobuf.parse(`syntax = "proto3";
 

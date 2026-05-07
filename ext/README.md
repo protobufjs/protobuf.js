@@ -9,35 +9,35 @@ import protobuf from "protobufjs";
 import descriptor from "protobufjs/ext/descriptor.js";
 
 // Convert an existing root to a FileDescriptorSet message.
+const root = protobuf.Root.fromJSON(bundle);
 const set = root.toDescriptor("proto2");
 
-// Encode and decode descriptor buffers.
+// Encode descriptor buffers.
 const buffer = descriptor.FileDescriptorSet.encode(set).finish();
-const decoded = descriptor.FileDescriptorSet.decode(buffer);
 
 // Convert a FileDescriptorSet message or buffer back to a root.
-const root = protobuf.Root.fromDescriptor(decoded);
+const decodedRoot = protobuf.Root.fromDescriptor(buffer);
 ```
 
 The extension requires reflection metadata and also works with `protobufjs/light.js` when schemas are loaded from JSON or otherwise provided as reflection objects.
 
-The extension adds `.fromDescriptor(descriptor[, syntaxOrEdition])` and `#toDescriptor([syntaxOrEdition])` methods to reflection objects and exports reflected descriptor types from `google.protobuf`:
+Importing the extension adds `.fromDescriptor(descriptor[, syntaxOrEdition])` and `#toDescriptor([syntaxOrEdition])` methods to reflection objects and exports reflected descriptor types from `google.protobuf`. Descriptor inputs can be decoded messages, readers, or `Uint8Array`s for the corresponding descriptor message.
 
 | Descriptor type               | protobuf.js type | Remarks |
 |-------------------------------|------------------|---------|
 | **FileDescriptorSet**         | Root             | |
-| FileDescriptorProto           |                  | dependencies are not supported |
+| FileDescriptorProto           |                  | dependencies and source info are ignored on input and not emitted |
 | FileOptions                   |                  | |
 | FileOptionsOptimizeMode       |                  | |
-| SourceCodeInfo                |                  | not supported |
+| SourceCodeInfo                |                  | exported descriptor type; not mapped to reflection |
 | SourceCodeInfoLocation        |                  | |
-| GeneratedCodeInfo             |                  | not supported |
+| GeneratedCodeInfo             |                  | exported descriptor type; not mapped to reflection |
 | GeneratedCodeInfoAnnotation   |                  | |
 | **DescriptorProto**           | Type             | |
 | MessageOptions                |                  | |
 | DescriptorProtoExtensionRange |                  | |
 | DescriptorProtoReservedRange  |                  | |
-| **FieldDescriptorProto**      | Field            | |
+| **FieldDescriptorProto**      | Field / MapField | map entries are reconstructed as map fields |
 | FieldDescriptorProtoLabel     |                  | |
 | FieldDescriptorProtoType      |                  | |
 | FieldOptions                  |                  | |
@@ -48,12 +48,14 @@ The extension adds `.fromDescriptor(descriptor[, syntaxOrEdition])` and `#toDesc
 | **EnumDescriptorProto**       | Enum             | |
 | EnumOptions                   |                  | |
 | EnumValueDescriptorProto      |                  | |
-| EnumValueOptions              |                  | not supported |
+| EnumValueOptions              |                  | |
 | **ServiceDescriptorProto**    | Service          | |
 | ServiceOptions                |                  | |
 | **MethodDescriptorProto**     | Method           | |
 | MethodOptions                 |                  | |
-| UninterpretedOption           |                  | not supported |
+| FeatureSet                    |                  | exported descriptor type; used by edition-aware options |
+| FeatureSetDefaults            |                  | exported descriptor type |
+| UninterpretedOption           |                  | exported descriptor type; options are not interpreted |
 | UninterpretedOptionNamePart   |                  | |
 
 Not all `descriptor.proto` features translate perfectly to a protobuf.js root. A root has only limited knowledge of packages and individual files, for example, which is compensated by guessing and generating file names.

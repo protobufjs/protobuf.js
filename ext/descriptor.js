@@ -601,7 +601,7 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
  * @interface IEnumValueDescriptorProto
  * @property {string} [name] Name
  * @property {number} [number] Value
- * @property {*} [options] Not supported
+ * @property {IEnumValueOptions} [options] Enum value options
  */
 
 /**
@@ -628,18 +628,26 @@ Enum.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
     descriptor = decodeDescriptor(descriptor, exports.EnumDescriptorProto);
 
     // Construct values object
-    var values = {};
+    var values = {},
+        valuesOptions;
     if (descriptor.value)
         for (var i = 0; i < descriptor.value.length; ++i) {
             var name  = descriptor.value[i].name,
-                value = descriptor.value[i].number || 0;
-            values[name && name.length ? name : "NAME" + value] = value;
+                valueName = name && name.length ? name : "NAME" + (descriptor.value[i].number || 0),
+                value = descriptor.value[i].number || 0,
+                options = fromDescriptorOptions(descriptor.value[i].options, exports.EnumValueOptions);
+            values[valueName] = value;
+            if (options)
+                (valuesOptions || (valuesOptions = {}))[valueName] = options;
         }
 
     var enm = new Enum(
         descriptor.name && descriptor.name.length ? descriptor.name : "Enum" + unnamedEnumIndex++,
         values,
-        fromDescriptorOptions(descriptor.options, exports.EnumOptions)
+        fromDescriptorOptions(descriptor.options, exports.EnumOptions),
+        undefined,
+        undefined,
+        valuesOptions
     );
 
     if (!nested)
@@ -657,7 +665,11 @@ Enum.prototype.toDescriptor = function toDescriptor() {
     // Values
     var values = [];
     for (var i = 0, ks = Object.keys(this.values); i < ks.length; ++i)
-        values.push(exports.EnumValueDescriptorProto.create({ name: ks[i], number: this.values[ks[i]] }));
+        values.push(exports.EnumValueDescriptorProto.create({
+            name: ks[i],
+            number: this.values[ks[i]],
+            options: this.valuesOptions && toDescriptorOptions(this.valuesOptions[ks[i]], exports.EnumValueOptions)
+        }));
 
     return exports.EnumDescriptorProto.create({
         name: this.name,
@@ -672,7 +684,7 @@ Enum.prototype.toDescriptor = function toDescriptor() {
  * Properties of a OneofDescriptorProto message.
  * @interface IOneofDescriptorProto
  * @property {string} [name] Oneof name
- * @property {*} [options] Not supported
+ * @property {IOneofOptions} [options] Oneof options
  */
 
 var unnamedOneofIndex = 0;
@@ -691,8 +703,8 @@ OneOf.fromDescriptor = function fromDescriptor(descriptor) {
 
     return new OneOf(
         // unnamedOneOfIndex is global, not per type, because we have no ref to a type here
-        descriptor.name && descriptor.name.length ? descriptor.name : "oneof" + unnamedOneofIndex++
-        // fromDescriptorOptions(descriptor.options, exports.OneofOptions) - only uninterpreted_option
+        descriptor.name && descriptor.name.length ? descriptor.name : "oneof" + unnamedOneofIndex++,
+        fromDescriptorOptions(descriptor.options, exports.OneofOptions)
     );
 };
 
@@ -702,8 +714,8 @@ OneOf.fromDescriptor = function fromDescriptor(descriptor) {
  */
 OneOf.prototype.toDescriptor = function toDescriptor() {
     return exports.OneofDescriptorProto.create({
-        name: this.name
-        // options: toDescriptorOptions(this.options, exports.OneofOptions) - only uninterpreted_option
+        name: this.name,
+        options: toDescriptorOptions(this.options, exports.OneofOptions)
     });
 };
 
