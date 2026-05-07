@@ -965,6 +965,8 @@ function editionFromDescriptor(fileDescriptor) {
         switch(fileDescriptor.edition) {
             case exports.Edition.EDITION_2023:
                 return "2023";
+            case exports.Edition.EDITION_2024:
+                return "2024";
             default:
                 throw new Error("Unsupported edition " + fileDescriptor.edition);
         }
@@ -984,6 +986,9 @@ function editionToDescriptor(edition, fileDescriptor) {
         switch(edition) {
             case "2023":
                 fileDescriptor.edition = exports.Edition.EDITION_2023;
+                break;
+            case "2024":
+                fileDescriptor.edition = exports.Edition.EDITION_2024;
                 break;
             default:
                 throw new Error("Unsupported edition " + edition);

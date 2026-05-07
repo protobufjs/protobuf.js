@@ -25,7 +25,7 @@ The [command line utility](./cli/) for generating reflection bundles, static cod
 npm install --save-dev protobufjs-cli
 ```
 
-The CLI is a small but capable standalone protobuf.js toolchain. It does not require `protoc` or a language plugin.
+The CLI is a small but capable standalone protobuf.js toolchain and does not require `protoc`. For projects that use `protoc`, it provides `protoc-gen-pbjs`.
 
 ### Choose a runtime
 
@@ -162,7 +162,7 @@ If required fields are missing while decoding proto2 data, `decode` throws `prot
 
 ## Schemas and code generation
 
-Use [`protobufjs-cli`](./cli/) to generate reflection bundles, static JavaScript code and TypeScript declarations.
+Use [`protobufjs-cli`](./cli/) to generate reflection bundles, static JavaScript code and TypeScript declarations, either directly with `pbjs` or through its optional `protoc-gen-pbjs` plugin.
 
 Reflection keeps schemas as descriptors and generates optimized functions at runtime. Static code emits the same optimized functions ahead of time. The main tradeoffs are how schemas are loaded, how bundle size scales with schema size, whether runtime code generation is allowed by your environment, and whether reflection metadata should remain available at runtime.
 

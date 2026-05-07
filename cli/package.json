@@ -16,7 +16,8 @@
   "types": "index.d.ts",
   "bin": {
     "pbjs": "bin/pbjs",
-    "pbts": "bin/pbts"
+    "pbts": "bin/pbts",
+    "protoc-gen-pbjs": "bin/protoc-gen-pbjs"
   },
   "peerDependencies": {
     "protobufjs": ">=8.1.0 <9"

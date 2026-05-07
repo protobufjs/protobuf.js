@@ -129,6 +129,36 @@ tape.test("pbjs keeps es6 as an ES module wrapper alias", function(test) {
     });
 });
 
+tape.test("pbjs supports custom target paths", function(test) {
+    cliTest(test, function() {
+        var pbjs = require("../cli/pbjs");
+        var tmpDir = path.join(".tmp", "pbjs-custom-target-" + process.pid + "-" + Date.now());
+        var targetPath = path.join(tmpDir, "custom-target.js");
+        var outPath = path.join(tmpDir, "out.js");
+
+        fs.mkdirSync(tmpDir, { recursive: true });
+        fs.writeFileSync(targetPath, [
+            "\"use strict\";",
+            "module.exports = function(root, options, callback) {",
+            "    callback(null, \"custom target:\" + options.target);",
+            "};"
+        ].join("\n"));
+
+        pbjs.main([
+            "--target", targetPath,
+            "--out", outPath,
+            "tests/data/package.proto"
+        ], function(err) {
+            test.error(err, "custom target generation worked");
+            test.equal(fs.readFileSync(outPath, "utf8"), "custom target:" + targetPath, "uses required custom target");
+            fs.unlinkSync(outPath);
+            fs.unlinkSync(targetPath);
+            fs.rmdirSync(tmpDir);
+            test.end();
+        });
+    });
+});
+
 tape.test("pbjs json-module exports reflection root", function(test) {
     cliTest(test, function() {
         var root = protobuf.loadSync([

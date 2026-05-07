@@ -10,6 +10,146 @@ var path     = require("path"),
 
 var targets  = util.requireAll("./targets");
 
+var lintDefault = "eslint-disable " + [
+    "block-scoped-var",
+    "id-length",
+    "no-control-regex",
+    "no-magic-numbers",
+    "no-prototype-builtins",
+    "no-redeclare",
+    "no-shadow",
+    "no-var",
+    "sort-vars",
+    "default-case",
+    "jsdoc/require-param"
+].join(", ");
+
+/**
+ * Generates JavaScript and optional TypeScript declarations from a root.
+ * @param {Root} root Reflected root
+ * @param {Object} options Normalized pbjs options
+ * @param {function(?Error, string=, string=)} callback Completion callback
+ * @returns {undefined}
+ * @private
+ */
+exports.generate = function generate(root, options, callback) {
+    var target = targets[options.target];
+    if (!target) {
+        // Require custom target
+        try {
+            target = require(path.resolve(process.cwd(), options.target));
+        } catch (err) {
+            return callback(err);
+        }
+    }
+
+    // ES module wrappers imply `--es6` but not the other way around. You can still use e.g. `--es6 --wrap commonjs`
+    if (util.isEsmWrapper(options.wrap))
+        options.es6 = true;
+
+    target(root, options, function targetCallback(err, output) {
+        if (err)
+            return callback(err);
+        if (options.dts)
+            return generateDts(root, options, output, function(dtsErr, dtsOutput) {
+                if (dtsErr)
+                    return callback(dtsErr);
+                return callback(null, output, dtsOutput);
+            });
+        return callback(null, output);
+    });
+    return undefined;
+};
+
+exports.deriveDtsPath = deriveDtsPath;
+exports.sparsify = sparsify;
+
+function deriveDtsPath(out) {
+    return out.replace(/\.(?:[cm]?js)$/i, "") + ".d.ts";
+}
+
+function generateDts(root, argv, output, done) {
+    function runPbts(jsOutput) {
+        var pbtsArgs = [];
+        if (argv.target === "json-module")
+            pbtsArgs.push("--no-constructor");
+        if (!argv.comments)
+            pbtsArgs.push("--no-comments");
+
+        require("./pbts").process(jsOutput, pbtsArgs, done);
+    }
+
+    if (argv.target === "static-module")
+        return runPbts(output);
+
+    var dtsOptions = protobuf.util.merge({}, argv);
+    // The temporary static module can expose the reflected root as a default export
+    // only for ES module declarations. CommonJS has no equivalent default export here.
+    if (util.isEsmWrapper(argv.wrap))
+        dtsOptions.defaultExport = targets["json-module"].defaultExportDoc;
+    return targets["static-module"](root, dtsOptions, function(err, staticOutput) {
+        if (err)
+            return done(err);
+        return runPbts(staticOutput);
+    });
+}
+
+function markReferenced(tobj) {
+    tobj.referenced = true;
+    // also mark a type's fields and oneofs
+    if (tobj.fieldsArray)
+        tobj.fieldsArray.forEach(function(fobj) {
+            fobj.referenced = true;
+        });
+    if (tobj.oneofsArray)
+        tobj.oneofsArray.forEach(function(oobj) {
+            oobj.referenced = true;
+        });
+    // also mark an extension field's extended type, but not its (other) fields
+    if (tobj.extensionField)
+        tobj.extensionField.parent.referenced = true;
+}
+
+function sparsify(root, mainFiles) {
+
+    // 1. mark directly or indirectly referenced objects
+    util.traverse(root, function(obj) {
+        if (!obj.filename)
+            return;
+        if (mainFiles.indexOf(obj.filename) > -1)
+            util.traverseResolved(obj, markReferenced);
+    });
+
+    // 2. empty unreferenced objects
+    util.traverse(root, function(obj) {
+        var parent = obj.parent;
+        if (!parent || obj.referenced) // root or referenced
+            return;
+        // remove unreferenced namespaces
+        if (obj instanceof protobuf.Namespace) {
+            var hasReferenced = false;
+            util.traverse(obj, function(iobj) {
+                if (iobj.referenced)
+                    hasReferenced = true;
+            });
+            if (hasReferenced) { // replace with plain namespace if a namespace subclass
+                if (obj instanceof protobuf.Type || obj instanceof protobuf.Service) {
+                    var robj = new protobuf.Namespace(obj.name, obj.options);
+                    robj.nested = obj.nested;
+                    parent.add(robj);
+                }
+            } else // remove completely if nothing inside is referenced
+                parent.remove(obj);
+
+        // remove everything else unreferenced
+        } else if (!(obj instanceof protobuf.Namespace))
+            parent.remove(obj);
+    });
+
+    // 3. validate that everything is fine
+    root.resolveAll();
+}
+
 /**
  * Runs pbjs programmatically.
  * @param {string[]} args Command line arguments
@@ -17,19 +157,6 @@ var targets  = util.requireAll("./targets");
  * @returns {number|undefined} Exit code, if known
  */
 exports.main = function main(args, callback) {
-    var lintDefault = "eslint-disable " + [
-        "block-scoped-var",
-        "id-length",
-        "no-control-regex",
-        "no-magic-numbers",
-        "no-prototype-builtins",
-        "no-redeclare",
-        "no-shadow",
-        "no-var",
-        "sort-vars",
-        "default-case",
-        "jsdoc/require-param"
-    ].join(", ");
     var argv = minimist(args, {
         alias: {
             target: "t",
@@ -71,8 +198,7 @@ exports.main = function main(args, callback) {
         }
     });
 
-    var target = targets[argv.target],
-        files  = argv._,
+    var files  = argv._,
         paths  = typeof argv.path === "string" ? [ argv.path ] : argv.path || [];
 
     // alias hyphen args in camel case
@@ -176,10 +302,6 @@ exports.main = function main(args, callback) {
             ++i;
     }
 
-    // Require custom target
-    if (!target)
-        target = require(path.resolve(process.cwd(), argv.target));
-
     var root = new protobuf.Root();
 
     var mainFiles = [];
@@ -210,11 +332,6 @@ exports.main = function main(args, callback) {
 
         return resolved;
     };
-
-    // ES module wrappers imply `--es6` but not the other way around. You can still use e.g. `--es6 --wrap commonjs`
-    if (util.isEsmWrapper(argv.wrap)) {
-        argv.es6 = true;
-    }
 
     if (argv.dts) {
         var dtsError = null;
@@ -269,7 +386,7 @@ exports.main = function main(args, callback) {
         try {
             root.loadSync(files, parseOptions).resolveAll(); // sync is deterministic while async is not
             if (argv.sparse)
-                sparsify(root);
+                sparsify(root, mainFiles);
             callTarget();
         } catch (err) {
             if (callback) {
@@ -278,62 +395,6 @@ exports.main = function main(args, callback) {
             }
             throw err;
         }
-    }
-
-    function markReferenced(tobj) {
-        tobj.referenced = true;
-        // also mark a type's fields and oneofs
-        if (tobj.fieldsArray)
-            tobj.fieldsArray.forEach(function(fobj) {
-                fobj.referenced = true;
-            });
-        if (tobj.oneofsArray)
-            tobj.oneofsArray.forEach(function(oobj) {
-                oobj.referenced = true;
-            });
-        // also mark an extension field's extended type, but not its (other) fields
-        if (tobj.extensionField)
-            tobj.extensionField.parent.referenced = true;
-    }
-
-    function sparsify(root) {
-
-        // 1. mark directly or indirectly referenced objects
-        util.traverse(root, function(obj) {
-            if (!obj.filename)
-                return;
-            if (mainFiles.indexOf(obj.filename) > -1)
-                util.traverseResolved(obj, markReferenced);
-        });
-
-        // 2. empty unreferenced objects
-        util.traverse(root, function(obj) {
-            var parent = obj.parent;
-            if (!parent || obj.referenced) // root or referenced
-                return;
-            // remove unreferenced namespaces
-            if (obj instanceof protobuf.Namespace) {
-                var hasReferenced = false;
-                util.traverse(obj, function(iobj) {
-                    if (iobj.referenced)
-                        hasReferenced = true;
-                });
-                if (hasReferenced) { // replace with plain namespace if a namespace subclass
-                    if (obj instanceof protobuf.Type || obj instanceof protobuf.Service) {
-                        var robj = new protobuf.Namespace(obj.name, obj.options);
-                        robj.nested = obj.nested;
-                        parent.add(robj);
-                    }
-                } else // remove completely if nothing inside is referenced
-                    parent.remove(obj);
-
-            // remove everything else unreferenced
-            } else if (!(obj instanceof protobuf.Namespace))
-                parent.remove(obj);
-        });
-
-        // 3. validate that everything is fine
-        root.resolveAll();
     }
 
     function filterMessage() {
@@ -350,52 +411,13 @@ exports.main = function main(args, callback) {
 
     function callTarget() {
         filterMessage();
-        target(root, argv, function targetCallback(err, output) {
+        exports.generate(root, argv, function targetCallback(err, output, dtsOutput) {
             if (err) {
                 if (callback)
                     return callback(err);
                 throw err;
             }
-            if (argv.dts)
-                return generateDts(output, function(dtsErr, dtsOutput) {
-                    if (dtsErr) {
-                        if (callback)
-                            return callback(dtsErr);
-                        throw dtsErr;
-                    }
-                    return writeOutputs(output, dtsOutput);
-                });
-            return writeOutputs(output);
-        });
-    }
-
-    function deriveDtsPath(out) {
-        return out.replace(/\.(?:[cm]?js)$/i, "") + ".d.ts";
-    }
-
-    function generateDts(output, done) {
-        function runPbts(jsOutput) {
-            var pbtsArgs = [];
-            if (argv.target === "json-module")
-                pbtsArgs.push("--no-constructor");
-            if (!argv.comments)
-                pbtsArgs.push("--no-comments");
-
-            require("./pbts").process(jsOutput, pbtsArgs, done);
-        }
-
-        if (argv.target === "static-module")
-            return runPbts(output);
-
-        var dtsOptions = protobuf.util.merge({}, argv);
-        // The temporary static module can expose the reflected root as a default export
-        // only for ES module declarations. CommonJS has no equivalent default export here.
-        if (util.isEsmWrapper(argv.wrap))
-            dtsOptions.defaultExport = targets["json-module"].defaultExportDoc;
-        return targets["static-module"](root, dtsOptions, function(err, staticOutput) {
-            if (err)
-                return done(err);
-            return runPbts(staticOutput);
+            return writeOutputs(output, dtsOutput);
         });
     }
 
