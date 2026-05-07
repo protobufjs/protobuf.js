@@ -26,8 +26,6 @@ function readTests(file) {
         return [];
 
     log = readText(file);
-    if (log.indexOf("CONFORMANCE SUITE") >= 0)
-        log = log.substring(0, log.indexOf("CONFORMANCE SUITE"));
     while ((match = pattern.exec(log)) !== null) {
         name = match[1];
         tests[name] = classifyTest(name);
@@ -70,18 +68,29 @@ function readSkips(file) {
 }
 
 function readRunnerSummary(file) {
-    var match;
+    var log,
+        match,
+        pattern = /CONFORMANCE SUITE [^:]+: (\d+) successes, (\d+) skipped, (\d+) expected failures, (\d+) unexpected failures\./g,
+        summary = null;
 
     if (!file || !fs.existsSync(file))
         return null;
 
-    match = /CONFORMANCE SUITE \w+: (\d+) successes, (\d+) skipped, (\d+) expected failures, (\d+) unexpected failures\./.exec(readText(file));
-    return match ? {
-        successes: Number(match[1]),
-        skipped: Number(match[2]),
-        expectedFailures: Number(match[3]),
-        unexpectedFailures: Number(match[4])
-    } : null;
+    log = readText(file);
+    while ((match = pattern.exec(log)) !== null) {
+        if (!summary)
+            summary = {
+                successes: 0,
+                skipped: 0,
+                expectedFailures: 0,
+                unexpectedFailures: 0
+            };
+        summary.successes += Number(match[1]);
+        summary.skipped += Number(match[2]);
+        summary.expectedFailures += Number(match[3]);
+        summary.unexpectedFailures += Number(match[4]);
+    }
+    return summary;
 }
 
 function summarize(tests, failures, skips) {
@@ -89,6 +98,7 @@ function summarize(tests, failures, skips) {
         overall: summarizeTests(tests, failures, skips),
         byRequirement: summarizeGroups(tests, failures, skips, "requirement", requirementOrder()),
         byFormat: summarizeGroups(tests, failures, skips, "format", formatOrder()),
+        byFormatRequirement: summarizeMatrix(tests, failures, skips, "format", "requirement", formatOrder(), requirementOrder()),
         bySyntax: summarizeGroups(tests, failures, skips, "syntax", syntaxOrder())
     };
 }
@@ -101,6 +111,26 @@ function summarizeGroups(tests, failures, skips, property, groups) {
         });
         if (groupTests.length)
             out[group.id] = Object.assign({ id: group.id, label: group.label }, summarizeTests(groupTests, failures, skips));
+    });
+    return out;
+}
+
+function summarizeMatrix(tests, failures, skips, rowProperty, columnProperty, rows, columns) {
+    var out = Object.create(null);
+    rows.forEach(function(row) {
+        var rowTests = tests.filter(function(test) {
+            return test[rowProperty] === row.id;
+        });
+        if (rowTests.length) {
+            out[row.id] = Object.create(null);
+            columns.forEach(function(column) {
+                var columnTests = rowTests.filter(function(test) {
+                    return test[columnProperty] === column.id;
+                });
+                if (columnTests.length)
+                    out[row.id][column.id] = Object.assign({ id: column.id, label: column.label }, summarizeTests(columnTests, failures, skips));
+            });
+        }
     });
     return out;
 }

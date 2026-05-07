@@ -284,7 +284,7 @@ protobuf.js favors transparent disclosure. Security-impacting reports are handle
 
 ## Conformance
 
-protobuf.js targets full binary wire-format conformance for **Proto2**, **Proto3** and **Editions**. CI runs the official Protocol Buffers conformance suite, with logs uploaded as artifacts.
+protobuf.js targets full binary wire-format conformance for **Proto2**, **Proto3** and **Editions**. **TextFormat** is supported via [ext/textformat](./ext/README.md#textformat). CI runs the official Protocol Buffers conformance suite, with logs uploaded as artifacts.
 
 ## Performance
 

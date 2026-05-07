@@ -1,47 +1,46 @@
 "use strict";
 
 var fs = require("fs"),
+    protobuf = require("../.."),
     generated = require("./generated/messages.js"),
+    reflectionRoot = protobuf.Root.fromJSON(require("./generated/messages.json")).resolveAll(),
     conformance = generated.conformance,
     list = process.argv.indexOf("--list") >= 0,
     testTypes = Object.create(null);
 
+require("../../ext/textformat");
+
 var TEST_TYPES = [
-    {
-        name: "protobuf_test_messages.proto2.TestAllTypesProto2",
-        type: generated.protobuf_test_messages.proto2.TestAllTypesProto2
-    },
-    {
-        name: "protobuf_test_messages.proto3.TestAllTypesProto3",
-        type: generated.protobuf_test_messages.proto3.TestAllTypesProto3
-    },
-    {
-        name: "protobuf_test_messages.editions.proto2.TestAllTypesProto2",
-        type: generated.protobuf_test_messages.editions.proto2.TestAllTypesProto2
-    },
-    {
-        name: "protobuf_test_messages.editions.proto3.TestAllTypesProto3",
-        type: generated.protobuf_test_messages.editions.proto3.TestAllTypesProto3
-    },
-    {
-        name: "protobuf_test_messages.editions.TestAllTypesEdition2023",
-        type: generated.protobuf_test_messages.editions.TestAllTypesEdition2023
-    }
+    makeTestType("protobuf_test_messages.proto2.TestAllTypesProto2", generated.protobuf_test_messages.proto2.TestAllTypesProto2),
+    makeTestType("protobuf_test_messages.proto3.TestAllTypesProto3", generated.protobuf_test_messages.proto3.TestAllTypesProto3),
+    makeTestType("protobuf_test_messages.editions.proto2.TestAllTypesProto2", generated.protobuf_test_messages.editions.proto2.TestAllTypesProto2),
+    makeTestType("protobuf_test_messages.editions.proto3.TestAllTypesProto3", generated.protobuf_test_messages.editions.proto3.TestAllTypesProto3),
+    makeTestType("protobuf_test_messages.editions.TestAllTypesEdition2023", generated.protobuf_test_messages.editions.TestAllTypesEdition2023)
 ];
 
 // Register the local stable-edition copy of UNSTABLE if included by generate.js.
 if (generated.protobuf_test_messages.edition_unstable) {
-    TEST_TYPES.push({
-        name: "protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable",
-        type: generated.protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable
-    });
+    TEST_TYPES.push(makeTestType(
+        "protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable",
+        generated.protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable
+    ));
 }
 
-TEST_TYPES.forEach(function(testType) {
-    if (!testType.type)
-        throw Error("missing generated test type: " + testType.name);
-    testTypes[testType.name] = testType.type;
+TEST_TYPES.forEach(function(testCase) {
+    if (!testCase.type)
+        throw Error("missing generated test type: " + testCase.name);
+    if (!testCase.textType)
+        throw Error("missing reflected test type: " + testCase.name);
+    testTypes[testCase.name] = testCase;
 });
+
+function makeTestType(name, type) {
+    return {
+        name: name,
+        type: type,
+        textType: reflectionRoot.lookupType(name)
+    };
+}
 
 // Keep stdout synchronous because it carries the framed testee protocol.
 if (process.stdout._handle)
@@ -54,6 +53,7 @@ var count = 0,
     requestBuffer,
     response,
     sizeBuffer,
+    testCase,
     type;
 
 try {
@@ -79,10 +79,11 @@ try {
         } else if (list) {
             response = { skipped: "list mode" };
         } else {
-            type = testTypes[request.messageType];
-            if (!type) {
+            testCase = testTypes[request.messageType];
+            if (!testCase) {
                 response = { runtimeError: "unknown message type: " + request.messageType };
             } else {
+                type = testCase.type;
                 // Parse the request payload into the requested generated type.
                 try {
                     switch (request.payload) {
@@ -96,7 +97,7 @@ try {
                             response = { parseError: "JSPB not supported" };
                             break;
                         case "textPayload":
-                            response = { parseError: "TextFormat not supported" };
+                            message = testCase.textType.fromText(request.textPayload);
                             break;
                         default:
                             response = { parseError: "unsupported format" };
@@ -127,7 +128,11 @@ try {
                                 response = { skipped: "JSPB not supported" };
                                 break;
                             case conformance.WireFormat.TEXT_FORMAT:
-                                response = { skipped: "text format not supported" };
+                                response = {
+                                    textPayload: testCase.textType.toText(message, {
+                                        unknowns: request.printUnknownFields
+                                    })
+                                };
                                 break;
                             default:
                                 response = { runtimeError: "unknown output format: " + request.requestedOutputFormat };

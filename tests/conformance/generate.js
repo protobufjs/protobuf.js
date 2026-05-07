@@ -8,6 +8,7 @@ var rootDir = path.resolve(__dirname, "../.."),
     upstreamDir = process.env.PROTOBUF_UPSTREAM || path.join(__dirname, "upstream"),
     outputDir = path.join(__dirname, "generated"),
     outputFile = path.join(outputDir, "messages.js"),
+    outputJsonFile = path.join(outputDir, "messages.json"),
     upstreamUnstableSchemaFile = "conformance/test_protos/test_messages_edition_unstable.proto",
     unstableSchemaFile = path.join(outputDir, "test_messages_edition_unstable.proto"),
     importRoots = [
@@ -46,7 +47,17 @@ if (fs.existsSync(fromUpstream(upstreamUnstableSchemaFile))) {
     schemaFiles.push(unstableSchemaFile);
 }
 
-runPbjs(importRoots.map(fromUpstream), schemaFiles.map(fromSchemaFile));
+runPbjs({
+    target: "static-module",
+    wrap: "commonjs",
+    dependency: "../../../minimal",
+    out: outputFile
+}, importRoots.map(fromUpstream), schemaFiles.map(fromSchemaFile));
+
+runPbjs({
+    target: "json",
+    out: outputJsonFile
+}, importRoots.map(fromUpstream), schemaFiles.map(fromSchemaFile));
 
 function fromUpstream(relativePath) {
     return path.join(upstreamDir, relativePath);
@@ -56,14 +67,16 @@ function fromSchemaFile(schemaFile) {
     return path.isAbsolute(schemaFile) ? schemaFile : fromUpstream(schemaFile);
 }
 
-function runPbjs(importPaths, protoFiles) {
+function runPbjs(options, importPaths, protoFiles) {
     var args = [
         path.join(rootDir, "cli/bin/pbjs"),
-        "-t", "static-module",
-        "-w", "commonjs",
-        "--dependency", "../../../minimal",
-        "-o", outputFile
+        "-t", options.target
     ];
+    if (options.wrap)
+        args.push("-w", options.wrap);
+    if (options.dependency)
+        args.push("--dependency", options.dependency);
+    args.push("-o", options.out);
 
     importPaths.forEach(function(importPath) {
         args.push("-p", importPath);
@@ -78,5 +91,6 @@ function runPbjs(importPaths, protoFiles) {
     if (result.error)
         throw result.error;
 
-    process.exit(result.status || 0);
+    if (result.status)
+        process.exit(result.status);
 }
