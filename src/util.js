@@ -23,7 +23,7 @@ var reservedRe = util.patterns.reservedRe,
  * Node's fs module if available.
  * @type {Object.<string,*>}
  */
-util.fs = util.inquire("fs");
+util.fs = require("./util/fs");
 
 /**
  * Converts an object's values to an array.

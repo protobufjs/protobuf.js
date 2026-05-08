@@ -2,9 +2,7 @@
 module.exports = fetch;
 
 var asPromise = require("./aspromise"),
-    inquire   = require("./inquire");
-
-var fs = inquire("fs");
+    fs        = require("./fs");
 
 /**
  * Node-style callback as used by {@link util.fetch}.

@@ -125,7 +125,7 @@ util.isSet = function isSet(obj, prop) {
  */
 util.Buffer = (function() {
     try {
-        var Buffer = util.inquire("buffer").Buffer;
+        var Buffer = util.global.Buffer;
         // refuse to use non-node buffers if not explicitly assigned (perf reasons):
         return Buffer.prototype.utf8Write ? Buffer : /* istanbul ignore next */ null;
     } catch (e) {
