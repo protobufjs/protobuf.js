@@ -133,7 +133,9 @@ For nested reflected properties like `MyMessage.MyEnum`, type, service and enum 
 
 ## protoc plugin
 
-The CLI provides an optional `protoc-gen-pbjs` plugin for projects that already use `protoc`. It is an aggregate generator: each invocation writes one JavaScript module and, with `dts`, one matching declaration file.
+The CLI also provides `protoc-gen-pbjs` for projects that already use `protoc` but prefer protobuf.js code generation.
+
+The plugin is an aggregate generator: each invocation writes one JavaScript module and, with `dts`, one matching declaration file.
 
 ```sh
 protoc \
