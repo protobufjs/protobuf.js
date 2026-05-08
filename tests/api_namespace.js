@@ -114,6 +114,27 @@ tape.test("reflected namespaces", function(test) {
     test.equal(specialRoot.lookup("__proto__"), null, "should ignore reserved nested object names");
     test.equal(Object.getPrototypeOf(specialRoot._lookupCache), null, "should isolate lookup cache keys");
 
+    var fallbackRoot = protobuf.Root.fromJSON({
+        nested: {
+            A: {
+                nested: {
+                    Point3D: { fields: {} }
+                }
+            },
+            C: {
+                nested: {
+                    Point3D: { fields: {} }
+                }
+            },
+            B: {
+                fields: {
+                    p: { type: "Point3D", id: 1 }
+                }
+            }
+        }
+    }).resolveAll();
+    test.equal(fallbackRoot.lookupType("B").fields.p.resolvedType.fullName, ".A.Point3D", "should preserve legacy first-match nested fallback lookup");
+
     ns = protobuf.Namespace.fromJSON("My", {
         nested: {
             Message: { fields: {} },
