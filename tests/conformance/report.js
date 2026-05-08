@@ -42,12 +42,31 @@ if (!runnerSummary) {
 }
 
 totals = report.totals;
-printTable([
+if (printTable("Wire format by syntax", "Syntax", [
+    binarySyntax("proto2"),
+    binarySyntax("proto3"),
+    binarySyntax("editions")
+].filter(Boolean)))
+    console.log("");
+printTable("By harness category", "Category", [
     suite("Binary", "binary"),
     suite("ProtoJSON", "json"),
     suite("TextFormat", "textFormat"),
     ["Overall", formatResult(totals.overall), formatResult(totals.byRequirement.required), formatResult(totals.byRequirement.recommended)]
 ].filter(Boolean));
+
+function binarySyntax(syntax) {
+    var byRequirement = totals.byBinarySyntaxRequirement && totals.byBinarySyntaxRequirement[syntax],
+        total = totals.byBinarySyntax && totals.byBinarySyntax[syntax];
+    if (!total)
+        return null;
+    return [
+        total.label,
+        formatResult(total),
+        formatResult(byRequirement && byRequirement.required),
+        formatResult(byRequirement && byRequirement.recommended)
+    ];
+}
 
 function suite(label, format) {
     var byRequirement = totals.byFormatRequirement && totals.byFormatRequirement[format];
@@ -61,8 +80,8 @@ function suite(label, format) {
     ];
 }
 
-function printTable(rows) {
-    var suiteWidth = maxWidth(["Category"].concat(rows.map(function(row) {
+function printTable(title, firstColumn, rows) {
+    var suiteWidth = maxWidth([firstColumn].concat(rows.map(function(row) {
             return row[0];
         }))),
         totalWidth = maxWidth(["Total"].concat(rows.map(function(row) {
@@ -75,11 +94,17 @@ function printTable(rows) {
             return row[3];
         })));
 
-    console.log("| " + padRight("Category", suiteWidth) + " | " + padLeft("Total", totalWidth) + " | " + padLeft("Required", requiredWidth) + " | " + padLeft("Recommended", recommendedWidth) + " |");
-    console.log("| " + repeat("-", suiteWidth) + " | " + repeat("-", totalWidth) + ": | " + repeat("-", requiredWidth) + ": | " + repeat("-", recommendedWidth) + ": |");
+    if (!rows.length)
+        return false;
+
+    console.log(title + ":");
+    console.log("");
+    console.log("| " + padRight(firstColumn, suiteWidth) + " | " + padLeft("Total", totalWidth) + " | " + padLeft("Required", requiredWidth) + " | " + padLeft("Recommended", recommendedWidth) + " |");
+    console.log("| " + repeat("-", suiteWidth) + " | " + repeat("-", totalWidth - 1) + ": | " + repeat("-", requiredWidth - 1) + ": | " + repeat("-", recommendedWidth - 1) + ": |");
     rows.forEach(function(row) {
         console.log("| " + padRight(row[0], suiteWidth) + " | " + padLeft(row[1], totalWidth) + " | " + padLeft(row[2], requiredWidth) + " | " + padLeft(row[3], recommendedWidth) + " |");
     });
+    return true;
 }
 
 function formatResult(value) {

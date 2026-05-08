@@ -94,11 +94,17 @@ function readRunnerSummary(file) {
 }
 
 function summarize(tests, failures, skips) {
+    var binaryTests = tests.filter(function(test) {
+        return test.format === "binary";
+    });
+
     return {
         overall: summarizeTests(tests, failures, skips),
         byRequirement: summarizeGroups(tests, failures, skips, "requirement", requirementOrder()),
         byFormat: summarizeGroups(tests, failures, skips, "format", formatOrder()),
         byFormatRequirement: summarizeMatrix(tests, failures, skips, "format", "requirement", formatOrder(), requirementOrder()),
+        byBinarySyntax: summarizeGroups(binaryTests, failures, skips, "syntax", syntaxOrder()),
+        byBinarySyntaxRequirement: summarizeMatrix(binaryTests, failures, skips, "syntax", "requirement", syntaxOrder(), requirementOrder()),
         bySyntax: summarizeGroups(tests, failures, skips, "syntax", syntaxOrder())
     };
 }
@@ -203,8 +209,8 @@ function formatOrder() {
 
 function syntaxOrder() {
     return [
-        { id: "proto2", label: "proto2" },
-        { id: "proto3", label: "proto3" },
+        { id: "proto2", label: "Proto2" },
+        { id: "proto3", label: "Proto3" },
         { id: "editions", label: "Editions" },
         { id: "other", label: "Other" }
     ];
