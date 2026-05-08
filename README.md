@@ -266,24 +266,6 @@ Custom constructors are populated with static `create`, `encode`, `encodeDelimit
 
 protobuf.js supports service clients built from reflected service definitions. The service API is transport-agnostic: provide an `rpcImpl` function to connect it to HTTP, WebSocket, gRPC, or another transport. See [examples/streaming-rpc.js](./examples/streaming-rpc.js) for details.
 
-### Decorators
-
-Experimental decorators are available for defining message classes directly in code.
-
-* **Type.d(typeName?: `string`)** &nbsp; *(optional)*<br />
-  Annotates a class as a protobuf message type.
-
-* **Field.d&lt;T>(fieldId: `number`, fieldType: `string | Constructor<T>`, fieldRule?: `"optional" | "required" | "repeated"`, defaultValue?: `T`)**<br />
-  Annotates a property as a protobuf field.
-
-* **MapField.d&lt;T extends { [key: string]: any }>(fieldId: `number`, fieldKeyType: `string`, fieldValueType: `string | Constructor<{}>`)**<br />
-  Annotates a property as a protobuf map field.
-
-* **OneOf.d&lt;T extends string>(...fieldNames: `string[]`)**<br />
-  Annotates a property as a protobuf oneof discriminator.
-
-See [examples/decorators.ts](./examples/decorators.ts) for an example.
-
 ### Descriptors
 
 For protobuf descriptor interoperability, see [ext/descriptor](./ext/descriptor). Note that because the internals of this package do not rely on `google/protobuf/descriptor.proto`, options are parsed and presented literally.

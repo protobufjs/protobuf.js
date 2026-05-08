@@ -267,6 +267,7 @@ export class Field extends FieldBase {
      * @param fieldType Field type
      * @param [fieldRule="optional"] Field rule
      * @returns Decorator function
+     * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
      */
     public static d<T extends Message<T>>(fieldId: number, fieldType: (Constructor<T>|string), fieldRule?: ("optional"|"required"|"repeated")): FieldDecorator;
 
@@ -304,6 +305,7 @@ export class Field extends FieldBase {
      * @param [fieldRule="optional"] Field rule
      * @param [defaultValue] Default value
      * @returns Decorator function
+     * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
      */
     public static d<T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
 }
@@ -418,6 +420,7 @@ export interface IExtensionField extends IField {
  * Decorator function as returned by {@link Field.d} and {@link MapField.d} (TypeScript).
  * @param prototype Target prototype
  * @param fieldName Field name
+ * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 type FieldDecorator = (prototype: object, fieldName: string) => void;
 
@@ -512,6 +515,7 @@ export class MapField extends FieldBase {
      * @param fieldKeyType Field key type
      * @param fieldValueType Field value type
      * @returns Decorator function
+     * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
      */
     public static d<T extends { [key: string]: number | Long | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|Constructor<{}>)): FieldDecorator;
 }
@@ -1077,6 +1081,7 @@ export class OneOf extends ReflectionObject {
      * OneOf decorator (TypeScript).
      * @param fieldNames Field names
      * @returns Decorator function
+     * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
      */
     public static d<T extends string>(...fieldNames: string[]): OneOfDecorator;
 }
@@ -1095,6 +1100,7 @@ export interface IOneOf {
  * Decorator function as returned by {@link OneOf.d} (TypeScript).
  * @param prototype Target prototype
  * @param oneofName OneOf name
+ * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 type OneOfDecorator = (prototype: object, oneofName: string) => void;
 
@@ -1775,6 +1781,7 @@ export class Type extends NamespaceBase {
      * Type decorator (TypeScript).
      * @param [typeName] Type name, defaults to the constructor's name
      * @returns Decorator function
+     * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
      */
     public static d<T extends Message<T>>(typeName?: string): TypeDecorator<T>;
 }
@@ -1841,6 +1848,7 @@ export interface IConversionOptions {
 /**
  * Decorator function as returned by {@link Type.d} (TypeScript).
  * @param target Target constructor
+ * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 type TypeDecorator<T extends Message<T>> = (target: Constructor<T>) => void;
 
@@ -2615,6 +2623,7 @@ export namespace util {
      * @param ctor Constructor function
      * @param [typeName] Type name, defaults to the constructor's name
      * @returns Reflected type
+     * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
      */
     function decorateType<T extends Message<T>>(ctor: Constructor<T>, typeName?: string): Type;
 
@@ -2622,6 +2631,7 @@ export namespace util {
      * Decorator helper for enums (TypeScript).
      * @param object Enum object
      * @returns Reflected enum
+     * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
      */
     function decorateEnum(object: object): Enum;
 
@@ -2635,7 +2645,10 @@ export namespace util {
      */
     function setProperty(dst: { [k: string]: any }, path: string, value: object, ifNotSet?: (boolean|undefined)): { [k: string]: any };
 
-    /** Decorator root (TypeScript). */
+    /**
+     * Decorator root (TypeScript).
+     * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
+     */
     let decorateRoot: Root;
 }
 

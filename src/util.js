@@ -118,6 +118,7 @@ util.compareFieldsById = function compareFieldsById(a, b) {
  * @returns {Type} Reflected type
  * @template T extends Message<T>
  * @property {Root} root Decorators root
+ * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 util.decorateType = function decorateType(ctor, typeName) {
 
@@ -149,6 +150,7 @@ var decorateEnumIndex = 0;
  * Decorator helper for enums (TypeScript).
  * @param {Object} object Enum object
  * @returns {Enum} Reflected enum
+ * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 util.decorateEnum = function decorateEnum(object) {
 
@@ -207,6 +209,7 @@ util.setProperty = function setProperty(dst, path, value, ifNotSet) {
  * @name util.decorateRoot
  * @type {Root}
  * @readonly
+ * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 Object.defineProperty(util, "decorateRoot", {
     get: function() {
