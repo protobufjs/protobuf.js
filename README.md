@@ -268,7 +268,11 @@ protobuf.js supports service clients built from reflected service definitions. T
 
 ### Descriptors
 
-For protobuf descriptor interoperability, see [ext/descriptor](./ext/README.md#descriptor). Note that because protobuf.js does not use `descriptor.proto` internally, options are parsed and presented literally.
+For `google/protobuf/descriptor.proto` interoperability, see [ext/descriptor](./ext/README.md#descriptor). Note that because protobuf.js does not use `descriptor.proto` internally, options are parsed and presented literally.
+
+### Text format
+
+Protocol Buffers [Text Format](https://protobuf.dev/reference/protobuf/textformat-spec/) is supported via [ext/textformat](./ext/README.md#textformat).
 
 ### Content Security Policy
 
@@ -291,8 +295,6 @@ protobuf.js targets full binary wire-format conformance for **Proto2**, **Proto3
 | Proto2   |   100.00% (694/694) | 100.00% (485/485) | 100.00% (209/209) |
 | Proto3   |   100.00% (689/689) | 100.00% (482/482) | 100.00% (207/207) |
 | Editions | 100.00% (1176/1176) | 100.00% (926/926) | 100.00% (250/250) |
-
-**TextFormat** is supported via [ext/textformat](./ext/README.md#textformat) and also passes required and recommended conformance tests.
 
 ## Performance
 
