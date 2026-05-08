@@ -179,7 +179,15 @@ util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore n
  */
 util.Long = /* istanbul ignore next */ util.global.dcodeIO && /* istanbul ignore next */ util.global.dcodeIO.Long
          || /* istanbul ignore next */ util.global.Long
-         || util.inquire("long");
+         || (function() {
+                try {
+                    var Long = require("long");
+                    return Long && Long.isLong ? Long : null;
+                } catch (e) {
+                    /* istanbul ignore next */
+                    return null;
+                }
+            })();
 
 /**
  * Regular expression used to verify 2 bit (`bool`) map keys.
