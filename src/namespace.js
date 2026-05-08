@@ -466,8 +466,10 @@ Namespace.prototype._lookupImpl = function lookup(path, flatPath) {
     // Otherwise try each nested namespace
     } else {
         for (var i = 0; i < this.nestedArray.length; ++i)
-            if (this._nestedArray[i] instanceof Namespace && (found = this._nestedArray[i]._lookupImpl(path, flatPath)))
+            if (this._nestedArray[i] instanceof Namespace && (found = this._nestedArray[i]._lookupImpl(path, flatPath))) {
                 exact = found;
+                break;
+            }
     }
 
     // Set this even when null, so that when we walk up the tree we can quickly bail on repeated checks back down.
