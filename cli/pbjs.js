@@ -24,15 +24,77 @@ var lintDefault = "eslint-disable " + [
     "jsdoc/require-param"
 ].join(", ");
 
+var defaults = {
+    "target": "json",
+    "create": true,
+    "encode": true,
+    "decode": true,
+    "verify": true,
+    "convert": true,
+    "delimited": true,
+    "typeurl": true,
+    "beautify": true,
+    "comments": true,
+    "service": true,
+    "dts": false,
+    "es6": null,
+    "lint": lintDefault,
+    "keep-case": false,
+    "alt-comment": false,
+    "force-long": false,
+    "force-number": false,
+    "force-enum-string": false,
+    "force-message": false,
+    "null-defaults": false,
+    "null-semantics": false
+};
+
+var opts = {
+    alias: {
+        target: "t",
+        out: "o",
+        path: "p",
+        wrap: "w",
+        root: "r",
+        dts: "d",
+        lint: "l",
+        // backward compatibility:
+        "force-long": "strict-long",
+        "force-message": "strict-message"
+    },
+    string: [ "target", "out", "path", "wrap", "dependency", "root", "lint", "filter" ],
+    boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "dts", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults", "null-semantics"],
+    default: defaults
+};
+
+function normalizeOptions(options) {
+    options = protobuf.util.merge({}, options || {});
+    protobuf.util.merge(options, defaults, true);
+
+    Object.keys(options).forEach(function(key) {
+        var camelKey = key.replace(/-([a-z])/g, function($0, $1) {
+            return $1.toUpperCase();
+        });
+        if (camelKey !== key)
+            options[camelKey] = options[key];
+    });
+
+    if (util.isEsmWrapper(options.wrap))
+        options.es6 = true;
+
+    return options;
+}
+
 /**
  * Generates JavaScript and optional TypeScript declarations from a root.
  * @param {Root} root Reflected root
- * @param {Object} options Normalized pbjs options
+ * @param {Object} options pbjs options
  * @param {function(?Error, string=, string=)} callback Completion callback
  * @returns {undefined}
  * @private
  */
 exports.generate = function generate(root, options, callback) {
+    options = normalizeOptions(options);
     var target = targets[options.target];
     if (!target) {
         // Require custom target
@@ -42,10 +104,6 @@ exports.generate = function generate(root, options, callback) {
             return callback(err);
         }
     }
-
-    // ES module wrappers imply `--es6` but not the other way around. You can still use e.g. `--es6 --wrap commonjs`
-    if (util.isEsmWrapper(options.wrap))
-        options.es6 = true;
 
     target(root, options, function targetCallback(err, output) {
         if (err)
@@ -157,56 +215,10 @@ function sparsify(root, mainFiles) {
  * @returns {number|undefined} Exit code, if known
  */
 exports.main = function main(args, callback) {
-    var argv = minimist(args, {
-        alias: {
-            target: "t",
-            out: "o",
-            path: "p",
-            wrap: "w",
-            root: "r",
-            dts: "d",
-            lint: "l",
-            // backward compatibility:
-            "force-long": "strict-long",
-            "force-message": "strict-message"
-        },
-        string: [ "target", "out", "path", "wrap", "dependency", "root", "lint", "filter" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "dts", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults", "null-semantics"],
-        default: {
-            target: "json",
-            create: true,
-            encode: true,
-            decode: true,
-            verify: true,
-            convert: true,
-            delimited: true,
-            typeurl: true,
-            beautify: true,
-            comments: true,
-            service: true,
-            dts: false,
-            es6: null,
-            lint: lintDefault,
-            "keep-case": false,
-            "alt-comment": false,
-            "force-long": false,
-            "force-number": false,
-            "force-enum-string": false,
-            "force-message": false,
-            "null-defaults": false,
-            "null-semantics": false
-        }
-    });
+    var argv = normalizeOptions(minimist(args, opts));
 
     var files  = argv._,
         paths  = typeof argv.path === "string" ? [ argv.path ] : argv.path || [];
-
-    // alias hyphen args in camel case
-    Object.keys(argv).forEach(function(key) {
-        var camelKey = key.replace(/-([a-z])/g, function($0, $1) { return $1.toUpperCase(); });
-        if (camelKey !== key)
-            argv[camelKey] = argv[key];
-    });
 
     // protobuf.js package directory contains additional, otherwise non-bundled google types
     paths.push(path.relative(process.cwd(), path.join(__dirname, "../protobufjs")) || ".");

@@ -18,76 +18,36 @@ var FEATURE_SUPPORTS_EDITIONS = 2;
 var EDITION_2023 = 1000;
 var EDITION_2024 = 1001;
 
-var allowedTargets = {
-    "static-module": true,
-    "json-module": true
-};
-
-var allowedWrappers = {
-    "default": true,
-    "commonjs": true,
-    "amd": true,
-    "esm": true,
-    "es6": true,
-    "closure": true
-};
-
-var stringOptions = {
-    file: true,
-    target: true,
-    wrap: true,
-    root: true,
-    dependency: true,
-    lint: true
-};
-
-var booleanOptions = {
-    dts: true,
-    create: true,
-    encode: true,
-    decode: true,
-    verify: true,
-    convert: true,
-    delimited: true,
-    typeurl: true,
-    beautify: true,
-    comments: true,
-    service: true,
-    sparse: true,
-    "keep-case": true,
-    "force-long": true,
-    "force-number": true,
-    "force-enum-string": true,
-    "force-message": true,
-    "null-defaults": true,
-    "null-semantics": true
-};
+var targets = new Set([ "static-module", "json-module" ]);
+var wrappers = new Set([ "default", "commonjs", "amd", "esm", "es6", "closure" ]);
+var stringOptions = new Set([ "file", "target", "wrap", "root", "dependency", "lint" ]);
+var booleanOptions = new Set([
+    "dts",
+    "create",
+    "encode",
+    "decode",
+    "verify",
+    "convert",
+    "delimited",
+    "typeurl",
+    "beautify",
+    "comments",
+    "service",
+    "sparse",
+    "keep-case",
+    "force-long",
+    "force-number",
+    "force-enum-string",
+    "force-message",
+    "null-defaults",
+    "null-semantics",
+    "es6"
+]);
 
 var optionDefaults = {
     file: "index.js",
     target: "static-module",
-    wrap: "esm",
-    create: true,
-    encode: true,
-    decode: true,
-    verify: true,
-    convert: true,
-    delimited: true,
-    typeurl: true,
-    beautify: true,
-    comments: true,
-    service: true,
-    sparse: false,
-    dts: false,
-    es6: null,
-    lint: "eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param",
-    "keep-case": false,
-    "force-long": false,
-    "force-number": false,
-    "force-enum-string": false,
-    "force-message": false,
-    "null-defaults": false,
-    "null-semantics": false
+    wrap: "esm"
 };
 
 /**
@@ -149,7 +109,7 @@ exports.run = function run(input, callback) {
 function parseParameters(parameter) {
     var options = protobuf.util.merge({}, optionDefaults);
     if (!parameter)
-        return normalizeOptions(options);
+        return options;
 
     parameter.split(",").forEach(function(part) {
         var name,
@@ -165,19 +125,19 @@ function parseParameters(parameter) {
             name = part;
             value = "true";
         }
-        if (name.substring(0, 3) === "no-" && !stringOptions[name]) {
+        if (name.substring(0, 3) === "no-" && !stringOptions.has(name)) {
             name = name.substring(3);
             value = "false";
         }
-        if (stringOptions[name]) {
+        if (stringOptions.has(name)) {
             options[name] = value;
-        } else if (booleanOptions[name]) {
+        } else if (booleanOptions.has(name)) {
             options[name] = parseBoolean(name, value);
         } else {
             throw Error("unknown option: " + name);
         }
     });
-    return normalizeOptions(options);
+    return options;
 }
 
 function parseBoolean(name, value) {
@@ -186,17 +146,6 @@ function parseBoolean(name, value) {
     if (value === "false" || value === "0")
         return false;
     throw Error("invalid boolean value for " + name + ": " + value);
-}
-
-function normalizeOptions(options) {
-    Object.keys(options).forEach(function(key) {
-        var camelKey = key.replace(/-([a-z])/g, function($0, $1) { return $1.toUpperCase(); });
-        if (camelKey !== key)
-            options[camelKey] = options[key];
-    });
-    if (util.isEsmWrapper(options.wrap))
-        options.es6 = true;
-    return options;
 }
 
 function validateOptions(options) {
@@ -211,9 +160,9 @@ function validateOptions(options) {
         throw Error("file must end in .js, .mjs or .cjs: " + options.file);
     options.file = normalizedFile;
 
-    if (!allowedTargets[options.target])
+    if (!targets.has(options.target))
         throw Error("unsupported target: " + options.target);
-    if (!allowedWrappers[options.wrap])
+    if (!wrappers.has(options.wrap))
         throw Error("unsupported wrapper: " + options.wrap);
     if (options.dts && options.wrap !== "commonjs" && !util.isEsmWrapper(options.wrap))
         throw Error("dts requires wrap=commonjs or wrap=esm");
@@ -235,16 +184,16 @@ function cloneDescriptor(file, keepCase) {
         objects: true
     });
     if (!keepCase) {
-        (object.messageType || []).forEach(camelCaseMessage);
+        (object.messageType || []).forEach(camelCaseMembers);
         (object.extension || []).forEach(camelCaseField);
     }
     return object;
 }
 
-function camelCaseMessage(message) {
+function camelCaseMembers(message) {
     (message.field || []).forEach(camelCaseField);
     (message.extension || []).forEach(camelCaseField);
-    (message.nestedType || []).forEach(camelCaseMessage);
+    (message.nestedType || []).forEach(camelCaseMembers);
     (message.oneofDecl || []).forEach(function(oneof) {
         if (oneof.name)
             oneof.name = protobuf.util.camelCase(oneof.name);
