@@ -19,6 +19,11 @@
   "main": "index.js",
   "type": "commonjs",
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./light": "./light.js",
+    "./minimal": "./minimal.js"
+  },
   "scripts": {
     "bench": "node bench",
     "build": "npm run build:bundle && npm run build:types",
