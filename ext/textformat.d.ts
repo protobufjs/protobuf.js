@@ -1,7 +1,7 @@
 import * as $protobuf from "..";
 
 export interface ITextFormatOptions {
-    /** Also includes and formats unknown fields`. */
+    /** Also includes and formats unknown fields. */
     unknowns?: boolean;
 }
 
