@@ -1,0 +1,126 @@
+{
+  "nested": {
+    "google": {
+      "nested": {
+        "protobuf": {
+          "nested": {
+            "compiler": {
+              "options": {
+                "java_package": "com.google.protobuf.compiler",
+                "java_outer_classname": "PluginProtos",
+                "csharp_namespace": "Google.Protobuf.Compiler",
+                "go_package": "google.golang.org/protobuf/types/pluginpb"
+              },
+              "nested": {
+                "Version": {
+                  "edition": "proto2",
+                  "fields": {
+                    "major": {
+                      "type": "int32",
+                      "id": 1
+                    },
+                    "minor": {
+                      "type": "int32",
+                      "id": 2
+                    },
+                    "patch": {
+                      "type": "int32",
+                      "id": 3
+                    },
+                    "suffix": {
+                      "type": "string",
+                      "id": 4
+                    }
+                  }
+                },
+                "CodeGeneratorRequest": {
+                  "edition": "proto2",
+                  "fields": {
+                    "fileToGenerate": {
+                      "rule": "repeated",
+                      "type": "string",
+                      "id": 1
+                    },
+                    "parameter": {
+                      "type": "string",
+                      "id": 2
+                    },
+                    "protoFile": {
+                      "rule": "repeated",
+                      "type": "FileDescriptorProto",
+                      "id": 15
+                    },
+                    "sourceFileDescriptors": {
+                      "rule": "repeated",
+                      "type": "FileDescriptorProto",
+                      "id": 17
+                    },
+                    "compilerVersion": {
+                      "type": "Version",
+                      "id": 3
+                    }
+                  }
+                },
+                "CodeGeneratorResponse": {
+                  "edition": "proto2",
+                  "fields": {
+                    "error": {
+                      "type": "string",
+                      "id": 1
+                    },
+                    "supportedFeatures": {
+                      "type": "uint64",
+                      "id": 2
+                    },
+                    "minimumEdition": {
+                      "type": "int32",
+                      "id": 3
+                    },
+                    "maximumEdition": {
+                      "type": "int32",
+                      "id": 4
+                    },
+                    "file": {
+                      "rule": "repeated",
+                      "type": "File",
+                      "id": 15
+                    }
+                  },
+                  "nested": {
+                    "Feature": {
+                      "values": {
+                        "FEATURE_NONE": 0,
+                        "FEATURE_PROTO3_OPTIONAL": 1,
+                        "FEATURE_SUPPORTS_EDITIONS": 2
+                      }
+                    },
+                    "File": {
+                      "fields": {
+                        "name": {
+                          "type": "string",
+                          "id": 1
+                        },
+                        "insertionPoint": {
+                          "type": "string",
+                          "id": 2
+                        },
+                        "content": {
+                          "type": "string",
+                          "id": 15
+                        },
+                        "generatedCodeInfo": {
+                          "type": "GeneratedCodeInfo",
+                          "id": 16
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

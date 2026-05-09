@@ -21,6 +21,8 @@ function cliTest(test, testFunc) {
             return request;
         if (request === "protobufjs/ext/descriptor")
             return path.resolve("ext/descriptor/index.js");
+        if (request === "protobufjs/google/protobuf/compiler/plugin.json")
+            return path.resolve("google/protobuf/compiler/plugin.json");
         return savedResolveFilename(request, parent);
     };
     require.cache.protobufjs = require.cache[path.resolve("index.js")];

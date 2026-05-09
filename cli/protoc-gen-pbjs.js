@@ -8,7 +8,10 @@ var descriptor = require("protobufjs/ext/descriptor");
 var pbjs = require("./pbjs");
 var util = require("./util");
 
-var pluginRoot = protobuf.Root.fromJSON(require("./google/protobuf/compiler/plugin.json"));
+var pluginJson = require("protobufjs/google/protobuf/compiler/plugin.json");
+if (!descriptor.root.lookup(".google.protobuf.compiler"))
+    descriptor.addJSON(pluginJson.nested.google.nested.protobuf.nested).resolveAll();
+var pluginRoot = descriptor.root;
 
 exports.CodeGeneratorRequest = pluginRoot.lookupType("google.protobuf.compiler.CodeGeneratorRequest");
 exports.CodeGeneratorResponse = pluginRoot.lookupType("google.protobuf.compiler.CodeGeneratorResponse");
