@@ -48,17 +48,21 @@ function Service(name, options) {
  * Constructs a service from a service descriptor.
  * @param {string} name Service name
  * @param {IService} json Service descriptor
+ * @param {number} [depth] Depth of recursion to control nested calls; 0 if omitted
  * @returns {Service} Created service
  * @throws {TypeError} If arguments are invalid
  */
-Service.fromJSON = function fromJSON(name, json) {
+Service.fromJSON = function fromJSON(name, json, depth) {
+    if (depth === undefined) depth = 0;
+    if (depth > util.recursionLimit)
+        throw Error("max depth exceeded");
     var service = new Service(name, json.options);
     /* istanbul ignore else */
     if (json.methods)
         for (var names = Object.keys(json.methods), i = 0; i < names.length; ++i)
             service.add(Method.fromJSON(names[i], json.methods[names[i]]));
     if (json.nested)
-        service.addJSON(json.nested);
+        service.addJSON(json.nested, depth);
     if (json.edition)
         service._edition = json.edition;
     service.comment = json.comment;

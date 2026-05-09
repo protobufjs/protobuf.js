@@ -55,14 +55,18 @@ function Root(options) {
  * Loads a namespace descriptor into a root namespace.
  * @param {INamespace} json Namespace descriptor
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
+ * @param {number} [depth] Depth of recursion to control nested calls; 0 if omitted
  * @returns {Root} Root namespace
  */
-Root.fromJSON = function fromJSON(json, root) {
+Root.fromJSON = function fromJSON(json, root, depth) {
+    if (depth === undefined) depth = 0;
+    if (depth > util.recursionLimit)
+        throw Error("max depth exceeded");
     if (!root)
         root = new Root();
     if (json.options)
         root.setOptions(json.options);
-    return root.addJSON(json.nested).resolveAll();
+    return root.addJSON(json.nested, depth).resolveAll();
 };
 
 /**
