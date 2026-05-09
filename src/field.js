@@ -405,6 +405,7 @@ Field.prototype._resolveFeatures = function _resolveFeatures(edition) {
  * @param {Object} prototype Target prototype
  * @param {string} fieldName Field name
  * @returns {undefined}
+ * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 
 /**
@@ -417,6 +418,7 @@ Field.prototype._resolveFeatures = function _resolveFeatures(edition) {
  * @param {T} [defaultValue] Default value
  * @returns {FieldDecorator} Decorator function
  * @template T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]
+ * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
 
@@ -449,5 +451,6 @@ Field._configure = function configure(Type_) {
  * @returns {FieldDecorator} Decorator function
  * @template T extends Message<T>
  * @variation 2
+ * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 // like Field.d but without a default value

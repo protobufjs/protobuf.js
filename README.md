@@ -266,27 +266,13 @@ Custom constructors are populated with static `create`, `encode`, `encodeDelimit
 
 protobuf.js supports service clients built from reflected service definitions. The service API is transport-agnostic: provide an `rpcImpl` function to connect it to HTTP, WebSocket, gRPC, or another transport. See [examples/streaming-rpc.js](./examples/streaming-rpc.js) for details.
 
-### Decorators
-
-Experimental decorators are available for defining message classes directly in code.
-
-* **Type.d(typeName?: `string`)** &nbsp; *(optional)*<br />
-  Annotates a class as a protobuf message type.
-
-* **Field.d&lt;T>(fieldId: `number`, fieldType: `string | Constructor<T>`, fieldRule?: `"optional" | "required" | "repeated"`, defaultValue?: `T`)**<br />
-  Annotates a property as a protobuf field.
-
-* **MapField.d&lt;T extends { [key: string]: any }>(fieldId: `number`, fieldKeyType: `string`, fieldValueType: `string | Constructor<{}>`)**<br />
-  Annotates a property as a protobuf map field.
-
-* **OneOf.d&lt;T extends string>(...fieldNames: `string[]`)**<br />
-  Annotates a property as a protobuf oneof discriminator.
-
-See [examples/decorators.ts](./examples/decorators.ts) for an example.
-
 ### Descriptors
 
-For protobuf descriptor interoperability, see [ext/descriptor](./ext/descriptor). Note that because the internals of this package do not rely on `google/protobuf/descriptor.proto`, options are parsed and presented literally.
+For `google/protobuf/descriptor.proto` interoperability, see [ext/descriptor](./ext/README.md#descriptor). Note that because protobuf.js does not use `descriptor.proto` internally, options are parsed and presented literally.
+
+### Text format
+
+Protocol Buffers [Text Format](https://protobuf.dev/reference/protobuf/textformat-spec/) is supported via [ext/textformat](./ext/README.md#textformat).
 
 ### Content Security Policy
 
@@ -303,6 +289,12 @@ protobuf.js favors transparent disclosure. Security-impacting reports are handle
 ## Conformance
 
 protobuf.js targets full binary wire-format conformance for **Proto2**, **Proto3** and **Editions**. CI runs the official Protocol Buffers conformance suite, with logs uploaded as artifacts.
+
+| Syntax   |               Total |          Required |       Recommended |
+| -------- | ------------------: | ----------------: | ----------------: |
+| Proto2   |   100.00% (694/694) | 100.00% (485/485) | 100.00% (209/209) |
+| Proto3   |   100.00% (689/689) | 100.00% (482/482) | 100.00% (207/207) |
+| Editions | 100.00% (1176/1176) | 100.00% (926/926) | 100.00% (250/250) |
 
 ## Performance
 

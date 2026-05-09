@@ -618,6 +618,7 @@ Type.prototype.getTypeUrl = function getTypeUrl(prefix) {
  * @param {Constructor<T>} target Target constructor
  * @returns {undefined}
  * @template T extends Message<T>
+ * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 
 /**
@@ -625,6 +626,7 @@ Type.prototype.getTypeUrl = function getTypeUrl(prefix) {
  * @param {string} [typeName] Type name, defaults to the constructor's name
  * @returns {TypeDecorator<T>} Decorator function
  * @template T extends Message<T>
+ * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 Type.d = function decorateType(typeName) {
     return function typeDecorator(target) {

@@ -145,6 +145,29 @@ tape.test("writer & reader", function(test) {
         test.end();
     });
 
+    test.test(test.name + " - finishInto", function(test) {
+
+        // writes at offset and preserves existing data
+        var w2 = Writer.create();
+        w2.uint32(100).string("hello").bool(true);
+        var expected = w2.finish();
+
+        var w3 = Writer.create();
+        w3.uint32(100).string("hello").bool(true);
+        var offset = 3;
+        var buf3 = new Uint8Array(offset + w3.len);
+        for (var i = 0; i < offset; ++i)
+            buf3[i] = 99;
+        w3.finishInto(buf3, offset);
+
+        for (var i = 0; i < offset; ++i)
+            test.equal(buf3[i], 99, "preserves byte at index " + i + " before offset");
+        for (var i = 0; i < expected.length; ++i)
+            test.equal(buf3[offset + i], expected[i], "byte at offset+" + i + " matches finish()");
+
+        test.end();
+    });
+
     test.throws(function() {
       const root = protobuf.Root.fromJSON({
         nested: {
