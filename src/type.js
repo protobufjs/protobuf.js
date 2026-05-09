@@ -235,13 +235,11 @@ function clearCache(type) {
  * Creates a message type from a message type descriptor.
  * @param {string} name Message name
  * @param {IType} json Message type descriptor
- * @param {number} [depth] Depth of recursion to control nested calls; 0 if omitted
+ * @param {number} [depth] Current nesting depth, defaults to `0`
  * @returns {Type} Created message type
  */
 Type.fromJSON = function fromJSON(name, json, depth) {
-    if (depth === undefined) depth = 0;
-    if (depth > util.recursionLimit)
-        throw Error("max depth exceeded");
+    depth = util.checkDepth(depth);
     var type = new Type(name, json.options);
     type.extensions = json.extensions;
     type.reserved = json.reserved;

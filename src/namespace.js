@@ -29,14 +29,12 @@ var Type,    // cyclic
  * @function
  * @param {string} name Namespace name
  * @param {Object.<string,*>} json JSON object
- * @param {number} [depth] Depth of recursion to control nested calls; 0 if omitted
+ * @param {number} [depth] Current nesting depth, defaults to `0`
  * @returns {Namespace} Created namespace
  * @throws {TypeError} If arguments are invalid
  */
 Namespace.fromJSON = function fromJSON(name, json, depth) {
-    if (depth === undefined) depth = 0;
-    if (depth > util.recursionLimit)
-        throw Error("max depth exceeded");
+    depth = util.checkDepth(depth);
     return new Namespace(name, json.options).addJSON(json.nested, depth);
 };
 
@@ -195,13 +193,11 @@ Namespace.prototype.toJSON = function toJSON(toJSONOptions) {
 /**
  * Adds nested objects to this namespace from nested object descriptors.
  * @param {Object.<string,AnyNestedObject>} nestedJson Any nested object descriptors
- * @param {number} [depth] Depth of recursion to control nested calls; 0 if omitted
+ * @param {number} [depth] Current nesting depth, defaults to `0`
  * @returns {Namespace} `this`
  */
 Namespace.prototype.addJSON = function addJSON(nestedJson, depth) {
-    if (depth === undefined) depth = 0;
-    if (depth > util.recursionLimit)
-        throw Error("max depth exceeded");
+    depth = util.checkDepth(depth);
     var ns = this;
     /* istanbul ignore else */
     if (nestedJson) {
