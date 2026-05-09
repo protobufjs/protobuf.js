@@ -62,7 +62,7 @@ jobs:
 
       - name: Publish API docs
         if: ${{ steps.release.outputs.release_created == 'true' }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          npm run docs:publish
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run docs:publish
