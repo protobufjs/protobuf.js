@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.5.7](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.6...protobufjs-v7.5.7) (2026-05-09)
+
+
+### Bug Fixes
+
+* Restore first-match namespace lookup ([#2236](https://github.com/protobufjs/protobuf.js/issues/2236)) ([cc7d595](https://github.com/protobufjs/protobuf.js/commit/cc7d59559d4e8c533a35218310c67f4a5dda54f5))
+
 ## [7.5.6](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.5...protobufjs-v7.5.6) (2026-04-27)
 
 
