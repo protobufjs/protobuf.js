@@ -1,6 +1,6 @@
 # Changelog
 
-## [8.1.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.0.3...protobufjs-v8.1.0) (2026-05-09)
+## [8.2.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.0.3...protobufjs-v8.2.0) (2026-05-09)
 
 
 ### Features
@@ -44,6 +44,10 @@
 * Preallocate arrays in converters ([#2219](https://github.com/protobufjs/protobuf.js/issues/2219)) ([62d2155](https://github.com/protobufjs/protobuf.js/commit/62d21559ce1c223ab26a2e998d3b2bce5d22c0d1))
 * Reduce generated code overhead ([#2212](https://github.com/protobufjs/protobuf.js/issues/2212)) ([45ec503](https://github.com/protobufjs/protobuf.js/commit/45ec503c299ea16523e990b8a50cad977ef93e6a))
 * Tweak reader varint32 and string cases ([#2220](https://github.com/protobufjs/protobuf.js/issues/2220)) ([4076ea8](https://github.com/protobufjs/protobuf.js/commit/4076ea84d0b1804d9a421a77c5cac8b141917833))
+
+## 8.1.0 (skipped)
+
+This version was skipped. Note that the 8.1.x-experimental line has diverged and should not be used.
 
 ## [8.0.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.0.2...protobufjs-v8.0.3) (2026-04-27)
 

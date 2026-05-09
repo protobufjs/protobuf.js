@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.1.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.0.3...protobufjs-cli-v2.1.0) (2026-05-09)
+## [2.2.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.0.3...protobufjs-cli-v2.2.0) (2026-05-09)
 
 
 ### Features
@@ -25,6 +25,10 @@
 ### Performance Improvements
 
 * Reduce generated code overhead ([#2212](https://github.com/protobufjs/protobuf.js/issues/2212)) ([45ec503](https://github.com/protobufjs/protobuf.js/commit/45ec503c299ea16523e990b8a50cad977ef93e6a))
+
+## 2.1.0 (skipped)
+
+This version was skipped.
 
 ## [2.0.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.0.2...protobufjs-cli-v2.0.3) (2026-04-28)
 
