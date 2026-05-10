@@ -50,6 +50,8 @@ jobs:
         node-version: "lts/*"
     - name: "Install dependencies"
       run: npm install
+    - name: "Install benchmark dependencies"
+      run: npm --prefix bench install --omit=dev
     - name: "Run benchmark"
       run: |
         set -o pipefail

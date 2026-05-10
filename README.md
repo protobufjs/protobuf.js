@@ -278,14 +278,6 @@ Protocol Buffers [Text Format](https://protobuf.dev/reference/protobuf/textforma
 
 In [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval, use generated static code instead of runtime code generation.
 
-## Compatibility
-
-Supported runtimes are browsers, Node.js v12+, Deno (`deno add npm:protobufjs`) and Bun (`bun add protobufjs`). When using the CLI with Bun, Node.js must also be installed.
-
-## Security
-
-protobuf.js favors transparent disclosure. Security-impacting reports are handled through coordinated GitHub Security Advisories where appropriate. See [SECURITY.md](./SECURITY.md) for supported release lines, reporting instructions, and notes on untrusted schema input.
-
 ## Conformance
 
 protobuf.js targets full binary wire-format conformance for **Proto2**, **Proto3** and **Editions**. CI runs the official Protocol Buffers conformance suite, with logs uploaded as artifacts.
@@ -298,61 +290,70 @@ protobuf.js targets full binary wire-format conformance for **Proto2**, **Proto3
 
 ## Performance
 
-In both reflection and static modes, protobuf.js builds specialized encoders and decoders for each message type instead of interpreting descriptors at runtime.
+In both reflection and static modes, protobuf.js builds specialized encoders and decoders instead of interpreting descriptors at runtime.
 
-The repository includes a small benchmark for the bundled fixture in [`bench/`](./bench/). It compares protobuf.js reflection and static code against native `JSON.stringify`/`JSON.parse` and [google-protobuf](https://www.npmjs.com/package/google-protobuf) (`protoc-gen-js`). Results depend on hardware, Node.js version, and the message shape, so they should be treated as indicative rather than absolute.
+The repository includes a [small benchmark](./bench). It compares protobuf.js reflection and static code against JSON encode/decode, protoc-gen-js, and protoc-gen-es. Results depend on hardware, Node.js version, and message shape, so they should be treated as indicative rather than absolute.
 
-One run on an AMD Ryzen 9 9950X3D with Node.js 24.13.0 and google-protobuf 4.0.2 produced:
+One run on an AMD Ryzen 9 9950X3D with Node.js 24.15.0 produced:
 
 ```
-benchmarking encoding performance ...
+benchmarking encode performance ...
 
-protobuf.js (reflect) x 2,492,315 ops/sec ±0.56% (94 runs sampled)
-protobuf.js (static) x 2,316,421 ops/sec ±0.49% (96 runs sampled)
-JSON (string) x 2,581,565 ops/sec ±0.22% (99 runs sampled)
-JSON (buffer) x 2,086,216 ops/sec ±0.68% (92 runs sampled)
-google-protobuf x 1,052,145 ops/sec ±0.24% (101 runs sampled)
+protobuf.js reflect x 2,430,103 ops/sec ±0.62% (95 runs sampled)
+protobuf.js static x 2,390,407 ops/sec ±0.42% (96 runs sampled)
+JSON encode x 2,155,918 ops/sec ±0.63% (92 runs sampled)
+protoc-gen-js x 995,429 ops/sec ±0.18% (98 runs sampled)
+protoc-gen-es x 403,334 ops/sec ±0.14% (96 runs sampled)
 
-          JSON (string) was fastest
-  protobuf.js (reflect) was 3.8% ops/sec slower (factor 1.0)
-   protobuf.js (static) was 10.5% ops/sec slower (factor 1.1)
-          JSON (buffer) was 19.6% ops/sec slower (factor 1.2)
-        google-protobuf was 59.3% ops/sec slower (factor 2.5)
+    protobuf.js reflect was fastest
+     protobuf.js static was 1.4% ops/sec slower (factor 1.0)
+            JSON encode was 11.3% ops/sec slower (factor 1.1)
+          protoc-gen-js was 58.9% ops/sec slower (factor 2.4)
+          protoc-gen-es was 83.3% ops/sec slower (factor 6.0)
 
-benchmarking decoding performance ...
+benchmarking decode performance ...
 
-protobuf.js (reflect) x 6,053,370 ops/sec ±0.25% (98 runs sampled)
-protobuf.js (static) x 6,081,190 ops/sec ±0.35% (97 runs sampled)
-JSON (string) x 1,579,677 ops/sec ±0.11% (100 runs sampled)
-JSON (buffer) x 1,383,484 ops/sec ±0.15% (98 runs sampled)
-google-protobuf x 931,575 ops/sec ±0.25% (97 runs sampled)
+protobuf.js reflect x 6,440,387 ops/sec ±0.25% (97 runs sampled)
+protobuf.js static x 6,463,283 ops/sec ±0.27% (101 runs sampled)
+JSON decode x 1,409,923 ops/sec ±0.11% (97 runs sampled)
+protoc-gen-js x 947,647 ops/sec ±0.15% (99 runs sampled)
+protoc-gen-es x 731,819 ops/sec ±0.28% (98 runs sampled)
 
-   protobuf.js (static) was fastest
-  protobuf.js (reflect) was 0.4% ops/sec slower (factor 1.0)
-          JSON (string) was 74.0% ops/sec slower (factor 3.8)
-          JSON (buffer) was 77.2% ops/sec slower (factor 4.4)
-        google-protobuf was 84.7% ops/sec slower (factor 6.5)
+     protobuf.js static was fastest
+    protobuf.js reflect was 0.3% ops/sec slower (factor 1.0)
+            JSON decode was 78.2% ops/sec slower (factor 4.6)
+          protoc-gen-js was 85.3% ops/sec slower (factor 6.8)
+          protoc-gen-es was 88.7% ops/sec slower (factor 8.8)
 
-benchmarking combined performance ...
+benchmarking round-trip performance ...
 
-protobuf.js (reflect) x 1,259,417 ops/sec ±0.33% (101 runs sampled)
-protobuf.js (static) x 1,296,628 ops/sec ±0.20% (98 runs sampled)
-JSON (string) x 848,422 ops/sec ±0.10% (100 runs sampled)
-JSON (buffer) x 727,866 ops/sec ±0.30% (100 runs sampled)
-google-protobuf x 477,041 ops/sec ±0.22% (101 runs sampled)
+protobuf.js reflect x 1,310,677 ops/sec ±0.21% (97 runs sampled)
+protobuf.js static x 1,310,926 ops/sec ±0.26% (101 runs sampled)
+JSON encode/decode x 741,714 ops/sec ±0.24% (99 runs sampled)
+protoc-gen-js x 472,844 ops/sec ±0.09% (96 runs sampled)
+protoc-gen-es x 254,044 ops/sec ±0.05% (101 runs sampled)
 
-   protobuf.js (static) was fastest
-  protobuf.js (reflect) was 3.0% ops/sec slower (factor 1.0)
-          JSON (string) was 34.5% ops/sec slower (factor 1.5)
-          JSON (buffer) was 43.9% ops/sec slower (factor 1.8)
-        google-protobuf was 63.2% ops/sec slower (factor 2.7)
+    protobuf.js reflect was fastest
+     protobuf.js static was 0.0% ops/sec slower (factor 1.0)
+     JSON encode/decode was 43.4% ops/sec slower (factor 1.8)
+          protoc-gen-js was 63.9% ops/sec slower (factor 2.8)
+          protoc-gen-es was 80.6% ops/sec slower (factor 5.2)
 ```
 
 Run it locally with:
 
 ```sh
+npm --prefix bench install
 npm run bench
 ```
+
+## Compatibility
+
+Supported runtimes are browsers, Node.js v12+, Deno and Bun. When using the CLI with Bun, Node.js must also be installed.
+
+## Security
+
+protobuf.js favors transparent disclosure. Security-impacting reports are handled through coordinated GitHub Security Advisories where appropriate. See [SECURITY.md](./SECURITY.md) for supported release lines, reporting instructions, and notes on untrusted schema input.
 
 ## Development
 

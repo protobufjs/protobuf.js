@@ -1,19 +1,14 @@
 "use strict";
 
-// NOTE: This benchmark partly compares apples and oranges in that it measures protocol buffers,
-// which is purely a binary format, and JSON, which is purely a string format.
-//
-// This matters because strings aren't actually transfered over the network but must still be
-// converted to binary somewhere down the road. Because this can't be measured reliably, this
-// benchmark compares both pure string performance of JSON and additional binary conversion of the
-// same data using node buffers. Actual JSON performance on the network level should be somewhere
-// in between.
+// Measures encode, decode, and round-trip throughput for the benchmark fixture.
+// JSON cases include binary conversion so all variants operate on transferable bytes.
 
 var newSuite  = require("./suite"),
-    payload   = require("./data/bench.json"),
-    protobuf = require("..");
+    payload   = require("./data/bench.json");
 
 var Buffer_from = Buffer.from !== Uint8Array.from && Buffer.from || function(value, encoding) { return new Buffer(value, encoding); };
+var BigInt_from = global.BigInt;
+var BigInt_32 = BigInt_from(32);
 
 // protobuf.js dynamic: load the proto and set up a buffer
 var pbjsCls = require("..").loadSync(require.resolve("./data/bench.proto")).resolveAll().lookup("Test");
@@ -21,108 +16,90 @@ var pbjsMsg = payload; // alt: pbjsCls.fromObject(payload);
 var pbjsBuf = pbjsCls.encode(pbjsMsg).finish();
 
 // protobuf.js static: load the proto
-var pbjsStaticCls = require("./data/static_pbjs.js").Test;
+var pbjsStaticCls = require("./data/bench_protobufjs.js").Test;
 
 // JSON: set up a string and a buffer
 var jsonMsg = payload;
 var jsonStr = JSON.stringify(jsonMsg);
 var jsonBuf = Buffer_from(jsonStr, "utf8");
 
-// google-protobuf: load the proto, set up an Uint8Array and a message
-var jspbCls = require("./data/static_jspb.js").Test;
-var jspbBuf = new Uint8Array(Array.prototype.slice.call(pbjsBuf));
-var jspbMsg = jspbCls.deserializeBinary(jspbBuf);
+// protoc-gen-js: load the proto, set up an Uint8Array and a message
+var jsCls = require("./data/bench_protoc_gen_js.js").Test;
+var jsBuf = new Uint8Array(Array.prototype.slice.call(pbjsBuf));
+var jsMsg = jsCls.deserializeBinary(jsBuf);
 
-newSuite("encoding")
+// protoc-gen-es: load the schema, set up a buffer and a message
+var es  = require("@bufbuild/protobuf");
+var esCls = require("./data/bench_protoc_gen_es.js").TestSchema;
+var esBuf = new Uint8Array(Array.prototype.slice.call(pbjsBuf));
+var esMsg = es.create(esCls, {
+    string: payload.string,
+    uint32: payload.uint32,
+    inner: {
+        int32: payload.inner.int32,
+        innerInner: {
+            long: BigInt_from(payload.inner.innerInner.long.high) << BigInt_32 | BigInt_from(payload.inner.innerInner.long.low >>> 0),
+            enum: payload.inner.innerInner.enum,
+            sint32: payload.inner.innerInner.sint32
+        },
+        outer: payload.inner.outer
+    },
+    float: payload.float
+});
 
-.add("protobuf.js (reflect)", function() {
+newSuite("encode")
+
+.add("protobuf.js reflect", function() {
     pbjsCls.encode(pbjsMsg).finish();
 })
-.add("protobuf.js (static)", function() {
+.add("protobuf.js static", function() {
     pbjsStaticCls.encode(pbjsMsg).finish();
 })
-.add("JSON (string)", function() {
-    JSON.stringify(jsonMsg);
-})
-.add("JSON (buffer)", function() {
+.add("JSON encode", function() {
     Buffer_from(JSON.stringify(jsonMsg), "utf8");
 })
-.add("google-protobuf", function() {
-    jspbMsg.serializeBinary();
+.add("protoc-gen-js", function() {
+    jsMsg.serializeBinary();
+})
+.add("protoc-gen-es", function() {
+    es.toBinary(esCls, esMsg);
 })
 .run();
 
-newSuite("decoding")
+newSuite("decode")
 
-.add("protobuf.js (reflect)", function() {
-    pbjsCls.decode(pbjsBuf); // no allocation overhead, if you wondered
+.add("protobuf.js reflect", function() {
+    pbjsCls.decode(pbjsBuf);
 })
-.add("protobuf.js (static)", function() {
+.add("protobuf.js static", function() {
     pbjsStaticCls.decode(pbjsBuf);
 })
-.add("JSON (string)", function() {
-    JSON.parse(jsonStr);
-})
-.add("JSON (buffer)", function() {
+.add("JSON decode", function() {
     JSON.parse(jsonBuf.toString("utf8"));
 })
-.add("google-protobuf", function() {
-    jspbCls.deserializeBinary(jspbBuf);
+.add("protoc-gen-js", function() {
+    jsCls.deserializeBinary(jsBuf);
+})
+.add("protoc-gen-es", function() {
+    es.fromBinary(esCls, esBuf);
 })
 .run();
 
-newSuite("combined")
+newSuite("round-trip")
 
-.add("protobuf.js (reflect)", function() {
+.add("protobuf.js reflect", function() {
     pbjsCls.decode(pbjsCls.encode(pbjsMsg).finish());
 })
-.add("protobuf.js (static)", function() {
+.add("protobuf.js static", function() {
     pbjsStaticCls.decode(pbjsStaticCls.encode(pbjsMsg).finish());
 })
-.add("JSON (string)", function() {
-    JSON.parse(JSON.stringify(jsonMsg));
-})
-.add("JSON (buffer)", function() {
+.add("JSON encode/decode", function() {
     JSON.parse(Buffer_from(JSON.stringify(jsonMsg), "utf8").toString("utf8"));
 })
-.add("google-protobuf", function() {
-    jspbCls.deserializeBinary(jspbMsg.serializeBinary());
+.add("protoc-gen-js", function() {
+    jsCls.deserializeBinary(jsMsg.serializeBinary());
+})
+.add("protoc-gen-es", function() {
+    es.fromBinary(esCls, es.toBinary(esCls, esMsg));
 })
 .run();
-
-var json = require("../tests/data/test.json");
-newSuite("fromJSON")
-.add("isolated", function() {
-    protobuf.Root.fromJSON(json);
-})
-.add("isolated (resolveAll)", function() {
-    protobuf.Root.fromJSON(json).resolveAll();
-})
-.add("shared (unique)", function() {
-    var root = protobuf.Root.fromJSON(json);
-    for (var i = 0; i < 1000; ++i) {
-        var jsonCopy = {
-            options: json.options,
-            nested: {}
-        };
-        // eslint-disable-next-line no-loop-func
-        Object.keys(json).forEach(key => {
-            jsonCopy.nested[key + i] = json[key];
-        });
-
-        protobuf.Root.fromJSON(jsonCopy, root);
-    }
-}).run();
-
-var resolveAllRoot = protobuf.Root.fromJSON(json);
-newSuite("resolveAll")
-.add("isolated", function() {
-    resolveAllRoot.resolveAll();
-}).run();
-
-newSuite("load")
-.add("sync", function() {
-    protobuf.loadSync("bench/data/bench.proto");
-})
-.run();
-
