@@ -31,19 +31,7 @@ utf8.length = function utf8_length(string) {
     return len;
 };
 
-/**
- * Reads UTF8 bytes as a string.
- * @param {Uint8Array} buffer Source buffer
- * @param {number} start Source start
- * @param {number} end Source end
- * @returns {string} String read
- */
-utf8.read = function utf8_read(buffer, start, end) {
-    if (end - start < 1) {
-        return "";
-    }
-
-    var str = "";
+function utf8_read_js(buffer, start, end, str) {
     for (var i = start; i < end;) {
         var t = buffer[i++];
         if (t <= 0x7F) {
@@ -64,6 +52,44 @@ utf8.read = function utf8_read(buffer, start, end) {
                 str += String.fromCharCode(0xDC00 + (t2 & 0x3FF));
             }
         }
+    }
+    return str;
+}
+
+/**
+ * Reads UTF8 bytes as a string.
+ * @param {Uint8Array} buffer Source buffer
+ * @param {number} start Source start
+ * @param {number} end Source end
+ * @returns {string} String read
+ */
+utf8.read = function utf8_read_ascii(buffer, start, end) {
+    if (end - start < 1)
+        return "";
+
+    var str = "",
+        i = start,
+        c1, c2, c3, c4, c5, c6, c7, c8;
+
+    for (; i + 7 < end; i += 8) {
+        c1 = buffer[i];
+        c2 = buffer[i + 1];
+        c3 = buffer[i + 2];
+        c4 = buffer[i + 3];
+        c5 = buffer[i + 4];
+        c6 = buffer[i + 5];
+        c7 = buffer[i + 6];
+        c8 = buffer[i + 7];
+        if ((c1 | c2 | c3 | c4 | c5 | c6 | c7 | c8) & 0x80)
+            return utf8_read_js(buffer, i, end, str);
+        str += String.fromCharCode(c1, c2, c3, c4, c5, c6, c7, c8);
+    }
+
+    for (; i < end; ++i) {
+        c1 = buffer[i];
+        if (c1 & 0x80)
+            return utf8_read_js(buffer, i, end, str);
+        str += String.fromCharCode(c1);
     }
 
     return str;

@@ -173,6 +173,11 @@ function writeByte(val, buf, pos) {
     buf[pos] = val & 255;
 }
 
+function writeStringAscii(val, buf, pos) {
+    for (var i = 0; i < val.length;)
+        buf[pos++] = val.charCodeAt(i++);
+}
+
 function writeVarint32(val, buf, pos) {
     while (val > 127) {
         buf[pos++] = val & 127 | 128;
@@ -401,7 +406,7 @@ Writer.prototype.raw = function write_raw(value) {
 Writer.prototype.string = function write_string(value) {
     var len = utf8.length(value);
     return len
-        ? this.uint32(len)._push(utf8.write, len, value)
+        ? this.uint32(len)._push(len === value.length ? writeStringAscii : utf8.write, len, value)
         : this._push(writeByte, 1, 0);
 };
 

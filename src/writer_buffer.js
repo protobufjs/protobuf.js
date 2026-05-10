@@ -66,6 +66,11 @@ BufferWriter.prototype.raw = function write_raw_buffer(value) {
     return len ? this._push(BufferWriter.writeBytesBuffer, len, value) : this;
 };
 
+function writeStringBufferAscii(val, buf, pos) {
+    for (var i = 0; i < val.length;)
+        buf[pos++] = val.charCodeAt(i++);
+}
+
 function writeStringBuffer(val, buf, pos) {
     if (val.length < 40) // plain js is faster for short strings (probably due to redundant assertions)
         util.utf8.write(val, buf, pos);
@@ -82,7 +87,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
     var len = util.Buffer.byteLength(value);
     this.uint32(len);
     if (len)
-        this._push(writeStringBuffer, len, value);
+        this._push(len === value.length && len < 40 ? writeStringBufferAscii : writeStringBuffer, len, value);
     return this;
 };
 

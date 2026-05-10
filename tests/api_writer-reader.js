@@ -98,6 +98,8 @@ tape.test("writer & reader", function(test) {
     // string, see also util_utf8
 
     test.ok(expect("string", "123", [3,49,50,51]), "should write \"123\" as a string prefixed with its length as a varint and read it back equally");
+    test.ok(expect("string", "hello world", [11,104,101,108,108,111,32,119,111,114,108,100], Writer), "should write ascii strings with the array writer");
+    test.ok(expect("string", "ä", [2,195,164], Writer), "should write non-ascii strings with the array writer");
     test.ok(expect("string", "", [0]), "should write \"\" as a string prefixed with its length as a varint and read it back equally");
     test.throws(function() {
         Reader.create(protobuf.util.newBuffer([ 3, 49, 50 ])).string();
