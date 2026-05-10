@@ -107,15 +107,15 @@ converter.fromObject = function fromObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
     var gen = util.codegen(["d", "q"], mtype.name + "$fromObject")
-    ("if(d instanceof this.ctor)")
+    ("if(d instanceof C)")
         ("return d")
     ("if(q===undefined)q=0")
     ("if(q>util.recursionLimit)")
         ("throw Error(\"max depth exceeded\")");
     if (!fields.length) return gen
-    ("return new this.ctor");
+    ("return new C");
     gen
-    ("var m=new this.ctor");
+    ("var m=new C");
     for (var i = 0; i < fields.length; ++i) {
         var field  = fields[i].resolve(),
             prop   = util.safeProp(field.name),

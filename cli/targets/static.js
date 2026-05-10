@@ -254,11 +254,14 @@ function buildFunction(type, functionName, gen, scope) {
                     "type": "Identifier",
                     "name": renameVars[node.name]
                 };
-            // replace this.ctor with the actual ctor
+            // replace generated constructor alias with the actual ctor
             if (
-                node.type === "MemberExpression"
-             && node.object.type === "ThisExpression"
-             && node.property.type === "Identifier" && node.property.name === "ctor"
+                node.type === "Identifier"
+             && node.name === "C"
+             && (
+                    (parent.type === "NewExpression" && parent.callee === node)
+                 || (parent.type === "BinaryExpression" && parent.operator === "instanceof" && parent.right === node)
+                )
             )
                 return {
                     "type": "Identifier",

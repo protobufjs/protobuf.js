@@ -53,6 +53,19 @@ tape.test("reflected types", function(test) {
     test.ok(typeof MyMessageManual.encode === "function", "should populate static methods on assigned constructors");
     test.equal(new MyMessageManual().a, 0, "should initialize prototype defaults on assigned constructors if already extending message");
 
+    function MyDecodeMessage() {}
+    type = protobuf.Type.fromJSON("DecodeTest", {
+        fields: {
+            a: { type: "uint32", id: 1 }
+        }
+    });
+    var buf = protobuf.Writer.create().uint32(8).uint32(42).finish();
+    test.notOk(type.decode(buf) instanceof MyDecodeMessage, "should decode with the generated constructor before assignment");
+    test.notOk(type.fromObject({ a: 42 }) instanceof MyDecodeMessage, "should convert with the generated constructor before assignment");
+    type.ctor = MyDecodeMessage;
+    test.ok(type.decode(buf) instanceof MyDecodeMessage, "should decode with assigned constructor after setup");
+    test.ok(type.fromObject({ a: 42 }) instanceof MyDecodeMessage, "should convert with assigned constructor after setup");
+
     type = protobuf.Type.fromJSON("My", {
         fields: {
             a: {

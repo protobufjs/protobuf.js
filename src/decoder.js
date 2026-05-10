@@ -32,7 +32,7 @@ function decoder(mtype) {
     ("if(q===undefined)q=0")
     ("if(q>Reader.recursionLimit)")
         ("throw Error(\"max depth exceeded\")")
-    ("var c=l===undefined?r.len:r.pos+l,m=g||new this.ctor" + (hasMapField ? ",k,v" : hasImplicitPresenceField ? ",v" : ""))
+    ("var c=l===undefined?r.len:r.pos+l,m=g||new C" + (hasMapField ? ",k,v" : hasImplicitPresenceField ? ",v" : ""))
     ("while(r.pos<c){")
         ("var s=r.pos")
         ("var t=r.tag()")

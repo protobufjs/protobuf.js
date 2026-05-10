@@ -171,6 +171,8 @@ Object.defineProperties(Type.prototype, {
             util.merge(ctor, Message, true);
 
             this._ctor = ctor;
+            delete this.decode;
+            delete this.fromObject;
 
             // Messages have non-enumerable default values on their prototype
             var i = 0;
@@ -479,7 +481,8 @@ Type.prototype.setup = function setup() {
     this.decode = decoder(this)({
         Reader : Reader,
         types  : types,
-        util   : util
+        util   : util,
+        C      : this.ctor
     });
     this.verify = verifier(this)({
         types : types,
@@ -487,7 +490,8 @@ Type.prototype.setup = function setup() {
     });
     this.fromObject = converter.fromObject(this)({
         types : types,
-        util  : util
+        util  : util,
+        C     : this.ctor
     });
     this.toObject = converter.toObject(this)({
         types : types,
