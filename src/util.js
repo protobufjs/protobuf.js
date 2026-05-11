@@ -26,6 +26,20 @@ var reservedRe = util.patterns.reservedRe,
 util.fs = util.inquire("fs");
 
 /**
+ * Checks a recursion depth.
+ * @param {number|undefined} depth Depth of recursion
+ * @returns {number} Depth of recursion
+ * @throws {Error} If depth exceeds util.recursionLimit
+ */
+util.checkDepth = function checkDepth(depth) {
+    if (depth === undefined)
+        depth = 0;
+    if (depth > util.recursionLimit)
+        throw Error("max depth exceeded");
+    return depth;
+};
+
+/**
  * Converts an object's values to an array.
  * @param {Object.<string,*>} object Object to convert
  * @returns {Array.<*>} Converted array

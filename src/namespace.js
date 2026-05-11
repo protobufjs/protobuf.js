@@ -29,11 +29,13 @@ var Type,    // cyclic
  * @function
  * @param {string} name Namespace name
  * @param {Object.<string,*>} json JSON object
+ * @param {number} [depth] Current nesting depth, defaults to `0`
  * @returns {Namespace} Created namespace
  * @throws {TypeError} If arguments are invalid
  */
-Namespace.fromJSON = function fromJSON(name, json) {
-    return new Namespace(name, json.options).addJSON(json.nested);
+Namespace.fromJSON = function fromJSON(name, json, depth) {
+    depth = util.checkDepth(depth);
+    return new Namespace(name, json.options).addJSON(json.nested, depth);
 };
 
 /**
@@ -191,9 +193,11 @@ Namespace.prototype.toJSON = function toJSON(toJSONOptions) {
 /**
  * Adds nested objects to this namespace from nested object descriptors.
  * @param {Object.<string,AnyNestedObject>} nestedJson Any nested object descriptors
+ * @param {number} [depth] Current nesting depth, defaults to `0`
  * @returns {Namespace} `this`
  */
-Namespace.prototype.addJSON = function addJSON(nestedJson) {
+Namespace.prototype.addJSON = function addJSON(nestedJson, depth) {
+    depth = util.checkDepth(depth);
     var ns = this;
     /* istanbul ignore else */
     if (nestedJson) {
@@ -208,7 +212,7 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
                 ? Service.fromJSON
                 : nested.id !== undefined
                 ? Field.fromJSON
-                : Namespace.fromJSON )(names[i], nested)
+                : Namespace.fromJSON )(names[i], nested, depth + 1)
             );
         }
     }

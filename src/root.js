@@ -55,14 +55,16 @@ function Root(options) {
  * Loads a namespace descriptor into a root namespace.
  * @param {INamespace} json Namespace descriptor
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
+ * @param {number} [depth] Current nesting depth, defaults to `0`
  * @returns {Root} Root namespace
  */
-Root.fromJSON = function fromJSON(json, root) {
+Root.fromJSON = function fromJSON(json, root, depth) {
+    depth = util.checkDepth(depth);
     if (!root)
         root = new Root();
     if (json.options)
         root.setOptions(json.options);
-    return root.addJSON(json.nested).resolveAll();
+    return root.addJSON(json.nested, depth).resolveAll();
 };
 
 /**

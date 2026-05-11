@@ -714,10 +714,11 @@ export class Namespace extends NamespaceBase {
      * Constructs a namespace from JSON.
      * @param name Namespace name
      * @param json JSON object
+     * @param [depth] Current nesting depth, defaults to `0`
      * @returns Created namespace
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: { [k: string]: any }): Namespace;
+    public static fromJSON(name: string, json: { [k: string]: any }, depth?: number): Namespace;
 
     /**
      * Converts an array of reflection objects to JSON.
@@ -769,9 +770,10 @@ export abstract class NamespaceBase extends ReflectionObject {
     /**
      * Adds nested objects to this namespace from nested object descriptors.
      * @param nestedJson Any nested object descriptors
+     * @param [depth] Current nesting depth, defaults to `0`
      * @returns `this`
      */
-    public addJSON(nestedJson: { [k: string]: AnyNestedObject }): Namespace;
+    public addJSON(nestedJson: { [k: string]: AnyNestedObject }, depth?: number): Namespace;
 
     /**
      * Gets the nested object of the specified name.
@@ -1318,9 +1320,10 @@ export class Root extends NamespaceBase {
      * Loads a namespace descriptor into a root namespace.
      * @param json Namespace descriptor
      * @param [root] Root namespace, defaults to create a new one if omitted
+     * @param [depth] Current nesting depth, defaults to `0`
      * @returns Root namespace
      */
-    public static fromJSON(json: INamespace, root?: Root): Root;
+    public static fromJSON(json: INamespace, root?: Root, depth?: number): Root;
 
     /**
      * Resolves the path of an imported file, relative to the importing origin.
@@ -1471,10 +1474,11 @@ export class Service extends NamespaceBase {
      * Constructs a service from a service descriptor.
      * @param name Service name
      * @param json Service descriptor
+     * @param [depth] Current nesting depth, defaults to `0`
      * @returns Created service
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: IService): Service;
+    public static fromJSON(name: string, json: IService, depth?: number): Service;
 
     /**
      * Converts this service to a service descriptor.
@@ -1625,9 +1629,10 @@ export class Type extends NamespaceBase {
      * Creates a message type from a message type descriptor.
      * @param name Message name
      * @param json Message type descriptor
+     * @param [depth] Current nesting depth, defaults to `0`
      * @returns Created message type
      */
-    public static fromJSON(name: string, json: IType): Type;
+    public static fromJSON(name: string, json: IType, depth?: number): Type;
 
     /**
      * Converts this message type to a message type descriptor.
@@ -2198,6 +2203,14 @@ export namespace util {
 
     /** Node's fs module if available. */
     let fs: { [k: string]: any };
+
+    /**
+     * Checks a recursion depth.
+     * @param depth Depth of recursion
+     * @returns Depth of recursion
+     * @throws {Error} If depth exceeds util.recursionLimit
+     */
+    function checkDepth(depth: (number|undefined)): number;
 
     /**
      * Converts an object's values to an array.
