@@ -99,7 +99,20 @@ tape.test("util", function(test) {
 
         util.setProperty(o, 'prop.subprop', { subsub2: 7});
         test.same(o, {prop1: [5, 6], prop: {subprop: [{subsub: [5,6]}, {subsub2: 7}]}}, "should convert nested properties to array");
-        
+
+        var recursionLimit = util.recursionLimit;
+        util.recursionLimit = 3;
+        try {
+            test.doesNotThrow(function() {
+                util.setProperty({}, 'a.b.c', 1);
+            }, "should set property paths up to the recursion limit");
+            test.throws(function() {
+                util.setProperty({}, 'a.b.c.d', 1);
+            }, /max depth exceeded/, "should reject excessively nested property paths");
+        } finally {
+            util.recursionLimit = recursionLimit;
+        }
+
         util.setProperty({}, "__proto__.test", "value");
         test.is({}.test, undefined);
 

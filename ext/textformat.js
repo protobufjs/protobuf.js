@@ -10,21 +10,6 @@ var Type    = protobuf.Type,
 
 var textformat = protobuf.textformat = module.exports = {};
 
-var recursionLimit;
-
-/**
- * Maximum recursion depth for text format parsing and formatting. Defaults to util.recursionLimit.
- * @type {number}
- */
-Object.defineProperty(textformat, "recursionLimit", {
-    get: function get() {
-        return recursionLimit === undefined ? util.recursionLimit : recursionLimit;
-    },
-    set: function set(value) {
-        recursionLimit = value == null ? undefined : value;
-    }
-});
-
 /**
  * Maximum recursion depth for formatting length-delimited unknown fields.
  * @type {number}
@@ -88,7 +73,7 @@ function formatText(type, message, options) {
         throw TypeError("type must be a Type");
     type.root.resolveAll();
     var lines = [];
-    writeMessage(type, message, lines, 0, options || {}, 0, textformat.recursionLimit);
+    writeMessage(type, message, lines, 0, options || {}, 0);
     return lines.join("\n");
 }
 
@@ -318,7 +303,6 @@ Tokenizer.prototype.readCodePoint = function readCodePoint(size) {
 
 function Parser(source) {
     this.tn = new Tokenizer(source);
-    this.recursionLimit = textformat.recursionLimit;
 }
 
 Parser.prototype.error = function error(message) {
@@ -331,13 +315,9 @@ Parser.prototype.expectEnd = function expectEnd() {
         this.error("unexpected token '" + token.value + "'");
 };
 
-Parser.prototype.checkRecursion = function checkRecursion(depth) {
-    if (depth > this.recursionLimit)
-        this.error("max depth exceeded");
-};
-
 Parser.prototype.parseMessage = function parseMessage(type, end, depth) {
-    this.checkRecursion(depth);
+    if (depth > util.recursionLimit)
+        this.error("max depth exceeded");
     var object = {},
         seen = {};
     for (;;) {
@@ -473,7 +453,8 @@ Parser.prototype.parseMessageFieldDelimiter = function parseMessageFieldDelimite
 };
 
 Parser.prototype.parseMapEntry = function parseMapEntry(field, depth) {
-    this.checkRecursion(depth);
+    if (depth > util.recursionLimit)
+        this.error("max depth exceeded");
     var end;
     if (this.tn.skip("{"))
         end = "}";
@@ -617,7 +598,7 @@ Parser.prototype.skipBalanced = function skipBalanced(open, close, depth) {
         if (!token)
             this.error("expected '" + close + "'");
         if (token.value === open) {
-            if (depth + ++balance > this.recursionLimit)
+            if (depth + ++balance > util.recursionLimit)
                 this.error("max depth exceeded");
         }
         else if (token.value === close)
@@ -855,13 +836,9 @@ function parseIntegerBigInt(digits, radix, sign, unsigned, bits) {
     return Number(value);
 }
 
-function checkRecursion(depth, recursionLimit) {
-    if (depth > recursionLimit)
+function writeMessage(type, message, lines, indent, options, depth) {
+    if (depth > util.recursionLimit)
         throw Error("max depth exceeded");
-}
-
-function writeMessage(type, message, lines, indent, options, depth, recursionLimit) {
-    checkRecursion(depth, recursionLimit);
     var fields = type.fieldsArray.slice().sort(util.compareFieldsById);
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
@@ -869,25 +846,26 @@ function writeMessage(type, message, lines, indent, options, depth, recursionLim
         if (value == null || !Object.prototype.hasOwnProperty.call(message, field.name))
             continue;
         if (field.map)
-            writeMapField(field, value, lines, indent, options, depth, recursionLimit);
+            writeMapField(field, value, lines, indent, options, depth);
         else if (field.repeated)
             for (var j = 0; j < value.length; ++j)
-                writeField(field, value[j], lines, indent, options, depth, recursionLimit);
+                writeField(field, value[j], lines, indent, options, depth);
         else
-            writeField(field, value, lines, indent, options, depth, recursionLimit);
+            writeField(field, value, lines, indent, options, depth);
     }
     if (options.unknowns && message.$unknowns != null && Object.prototype.hasOwnProperty.call(message, "$unknowns"))
         writeUnknowns(message.$unknowns, lines, indent);
 }
 
-function writeMapField(field, map, lines, indent, options, depth, recursionLimit) {
+function writeMapField(field, map, lines, indent, options, depth) {
     var keys = Object.keys(map).sort(),
         keyField = mapKeyField(field),
         valueField = mapValueField(field),
         name = formatFieldName(field),
         sp = spaces(indent);
     for (var i = 0; i < keys.length; ++i) {
-        checkRecursion(depth + 1, recursionLimit);
+        if (depth + 1 > util.recursionLimit)
+            throw Error("max depth exceeded");
         var key = keyField.long ? util.longFromKey(keys[i], keyField.type === "uint64" || keyField.type === "fixed64") : keys[i];
         if (keyField.type === "bool")
             key = util.boolFromKey(keys[i]);
@@ -895,7 +873,7 @@ function writeMapField(field, map, lines, indent, options, depth, recursionLimit
         lines.push(spaces(indent + 2) + "key: " + formatScalar(keyField, key));
         if (valueField.resolvedType instanceof Type) {
             lines.push(spaces(indent + 2) + "value {");
-            writeMessage(valueField.resolvedType, map[keys[i]], lines, indent + 4, options, depth + 2, recursionLimit);
+            writeMessage(valueField.resolvedType, map[keys[i]], lines, indent + 4, options, depth + 2);
             lines.push(spaces(indent + 2) + "}");
         } else
             lines.push(spaces(indent + 2) + "value: " + formatScalar(valueField, map[keys[i]]));
@@ -903,12 +881,12 @@ function writeMapField(field, map, lines, indent, options, depth, recursionLimit
     }
 }
 
-function writeField(field, value, lines, indent, options, depth, recursionLimit) {
+function writeField(field, value, lines, indent, options, depth) {
     var name = formatFieldName(field),
         sp = spaces(indent);
     if (field.resolvedType instanceof Type) {
         lines.push(sp + name + " {");
-        writeMessage(field.resolvedType, value, lines, indent + 2, options, depth + 1, recursionLimit);
+        writeMessage(field.resolvedType, value, lines, indent + 2, options, depth + 1);
         lines.push(sp + "}");
     } else
         lines.push(sp + name + ": " + formatScalar(field, value));

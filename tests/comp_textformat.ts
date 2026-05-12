@@ -19,9 +19,7 @@ const type = root.lookupType("Message");
 const message = type.fromText("value: 1");
 const text: string = type.toText(message, { unknowns: true });
 
-textformat.recursionLimit = protobuf.util.recursionLimit;
 textformat.unknownRecursionLimit = 10;
-protobuf.textformat.recursionLimit = textformat.recursionLimit;
 
 if (text.length < 0)
     throw Error("unreachable");

@@ -221,9 +221,14 @@ var unnamedMessageIndex = 0;
  * @param {IDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  * @param {boolean} [nested=false] Whether or not this is a nested object
+ * @param {number} [depth] Current nesting depth, defaults to `0`
  * @returns {Type} Type instance
  */
-Type.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
+Type.fromDescriptor = function fromDescriptor(descriptor, edition, nested, depth) {
+    if (depth === undefined)
+        depth = 0;
+    if (depth > $protobuf.util.nestingLimit)
+        throw Error("max depth exceeded");
     descriptor = decodeDescriptor(descriptor, exports.DescriptorProto);
 
     var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++, fromDescriptorOptions(descriptor.options, exports.MessageOptions)),
@@ -255,7 +260,7 @@ Type.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
         for (i = 0; i < descriptor.nestedType.length; ++i) {
             if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry)
                 continue;
-            type.add(Type.fromDescriptor(descriptor.nestedType[i], edition, true));
+            type.add(Type.fromDescriptor(descriptor.nestedType[i], edition, true, depth + 1));
         }
     /* Nested enums */ if (descriptor.enumType)
         for (i = 0; i < descriptor.enumType.length; ++i)

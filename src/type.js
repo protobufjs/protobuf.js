@@ -239,7 +239,10 @@ function clearCache(type) {
  * @returns {Type} Created message type
  */
 Type.fromJSON = function fromJSON(name, json, depth) {
-    depth = util.checkDepth(depth);
+    if (depth === undefined)
+        depth = 0;
+    if (depth > util.nestingLimit)
+        throw Error("max depth exceeded");
     var type = new Type(name, json.options);
     type.extensions = json.extensions;
     type.reserved = json.reserved;

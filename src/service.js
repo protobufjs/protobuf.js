@@ -53,7 +53,10 @@ function Service(name, options) {
  * @throws {TypeError} If arguments are invalid
  */
 Service.fromJSON = function fromJSON(name, json, depth) {
-    depth = util.checkDepth(depth);
+    if (depth === undefined)
+        depth = 0;
+    if (depth > util.recursionLimit)
+        throw Error("max depth exceeded");
     var service = new Service(name, json.options);
     /* istanbul ignore else */
     if (json.methods)

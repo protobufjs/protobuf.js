@@ -274,11 +274,18 @@ function merge(dst, src, ifNotSet) { // used by converters
 util.merge = merge;
 
 /**
+ * Schema declaration nesting limit.
+ * @memberof util
+ * @type {number}
+ */
+util.nestingLimit = 32; // protoc: MaxMessageDeclarationNestingDepth
+
+/**
  * Recursion limit.
  * @memberof util
  * @type {number}
  */
-util.recursionLimit = 100;
+util.recursionLimit = 100; // protoc: CodedInputStream::default_recursion_limit_
 
 /**
  * Makes a property safe for assignment as an own property.

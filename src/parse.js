@@ -312,7 +312,9 @@ function parse(source, root, options) {
 
 
     function parseCommon(parent, token, depth) {
-        depth = util.checkDepth(depth);
+        if (depth === undefined)
+            depth = 0;
+        // depth is checked by dispatched functions
         switch (token) {
 
             case "option":
@@ -378,7 +380,10 @@ function parse(source, root, options) {
     }
 
     function parseType(parent, token, depth) {
-        depth = util.checkDepth(depth);
+        if (depth === undefined)
+            depth = 0;
+        if (depth > util.nestingLimit)
+            throw Error("max depth exceeded");
 
         /* istanbul ignore if */
         if (!nameRe.test(token = next()))
@@ -507,7 +512,10 @@ function parse(source, root, options) {
     }
 
     function parseGroup(parent, rule, extend, depth) {
-        depth = util.checkDepth(depth);
+        if (depth === undefined)
+            depth = 0;
+        if (depth > util.nestingLimit)
+            throw Error("max depth exceeded");
         if (edition >= 2023) {
             throw illegal("group");
         }
@@ -754,7 +762,10 @@ function parse(source, root, options) {
     }
 
     function parseOptionValue(parent, name, depth) {
-        depth = util.checkDepth(depth);
+        if (depth === undefined)
+            depth = 0;
+        if (depth > util.recursionLimit)
+            throw Error("max depth exceeded");
         // { a: "foo" b { c: "bar" } }
         if (skip("{", true)) {
             var objectResult = {};
@@ -845,7 +856,10 @@ function parse(source, root, options) {
     }
 
     function parseService(parent, token, depth) {
-        depth = util.checkDepth(depth);
+        if (depth === undefined)
+            depth = 0;
+        if (depth > util.recursionLimit)
+            throw Error("max depth exceeded");
 
         /* istanbul ignore if */
         if (!nameRe.test(token = next()))

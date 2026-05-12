@@ -2436,6 +2436,9 @@ export namespace util {
      */
     function merge(dst: { [k: string]: any }, src: { [k: string]: any }, ifNotSet?: boolean): { [k: string]: any };
 
+    /** Schema declaration nesting limit. */
+    let nestingLimit: number;
+
     /** Recursion limit. */
     let recursionLimit: number;
 
@@ -2573,14 +2576,6 @@ export namespace util {
 
     /** Node's fs module if available. */
     let fs: { [k: string]: any };
-
-    /**
-     * Checks a recursion depth.
-     * @param depth Depth of recursion
-     * @returns Depth of recursion
-     * @throws {Error} If depth exceeds util.recursionLimit
-     */
-    function checkDepth(depth: (number|undefined)): number;
 
     /**
      * Converts an object's values to an array.

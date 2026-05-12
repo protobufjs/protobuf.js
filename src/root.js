@@ -59,7 +59,10 @@ function Root(options) {
  * @returns {Root} Root namespace
  */
 Root.fromJSON = function fromJSON(json, root, depth) {
-    depth = util.checkDepth(depth);
+    if (depth === undefined)
+        depth = 0;
+    if (depth > util.recursionLimit)
+        throw Error("max depth exceeded");
     if (!root)
         root = new Root();
     if (json.options)

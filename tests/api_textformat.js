@@ -180,10 +180,8 @@ tape.test("textformat - enforces recursion limit", function(test) {
     var RecRoot = protobuf.parse("syntax = \"proto3\"; message Node { Node child = 1; reserved \"old\"; }").root,
         Node = RecRoot.lookupType("Node"),
         limit = protobuf.util.recursionLimit;
-    protobuf.textformat.recursionLimit = undefined;
     protobuf.util.recursionLimit = 1;
     try {
-        test.equal(protobuf.textformat.recursionLimit, 1, "defaults to util recursion limit");
         test.doesNotThrow(function() {
             Node.fromText("child {}");
         }, "parses nesting at limit");
@@ -199,15 +197,7 @@ tape.test("textformat - enforces recursion limit", function(test) {
         test.throws(function() {
             Node.toText({ child: { child: {} } });
         }, /max depth exceeded/, "rejects format nesting over limit");
-
-        protobuf.textformat.recursionLimit = 2;
-        protobuf.util.recursionLimit = 0;
-        test.equal(protobuf.textformat.recursionLimit, 2, "supports textformat-specific override");
-        test.doesNotThrow(function() {
-            Node.fromText("child { child {} }");
-        }, "parse override is independent from util recursion limit");
     } finally {
-        protobuf.textformat.recursionLimit = undefined;
         protobuf.util.recursionLimit = limit;
     }
     test.end();

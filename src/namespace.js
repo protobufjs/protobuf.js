@@ -34,7 +34,10 @@ var Type,    // cyclic
  * @throws {TypeError} If arguments are invalid
  */
 Namespace.fromJSON = function fromJSON(name, json, depth) {
-    depth = util.checkDepth(depth);
+    if (depth === undefined)
+        depth = 0;
+    if (depth > util.recursionLimit)
+        throw Error("max depth exceeded");
     return new Namespace(name, json.options).addJSON(json.nested, depth);
 };
 
@@ -197,7 +200,10 @@ Namespace.prototype.toJSON = function toJSON(toJSONOptions) {
  * @returns {Namespace} `this`
  */
 Namespace.prototype.addJSON = function addJSON(nestedJson, depth) {
-    depth = util.checkDepth(depth);
+    if (depth === undefined)
+        depth = 0;
+    if (depth > util.recursionLimit)
+        throw Error("max depth exceeded");
     var ns = this;
     /* istanbul ignore else */
     if (nestedJson) {
@@ -337,6 +343,8 @@ Namespace.prototype.define = function define(path, json) {
         throw TypeError("illegal path");
     if (path && path.length && path[0] === "")
         throw Error("path must be relative");
+    if (path.length > util.recursionLimit)
+        throw Error("max depth exceeded");
 
     var ptr = this;
     while (path.length > 0) {
