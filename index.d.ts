@@ -1457,12 +1457,15 @@ export namespace rpc {
         /**
          * Calls a service method through {@link rpc.Service#rpcImpl|rpcImpl}.
          * @param method Reflected or static method
+         * @param serviceName Service name
+         * @param methodName Method name
+         * @param methodIndex Method index
          * @param requestCtor Request constructor
          * @param responseCtor Response constructor
          * @param request Request message or plain object
          * @param callback Service callback
          */
-        public rpcCall<TReq extends Message<TReq>, TRes extends Message<TRes>>(method: (Method|rpc.ServiceMethod<TReq, TRes>), requestCtor: Constructor<TReq>, responseCtor: Constructor<TRes>, request: (TReq|Properties<TReq>), callback: rpc.ServiceMethodCallback<TRes>): void;
+        public rpcCall<TReq extends Message<TReq>, TRes extends Message<TRes>>(method: (Method|rpc.ServiceMethod<TReq, TRes>), serviceName: string, methodName: string, methodIndex: number, requestCtor: Constructor<TReq>, responseCtor: Constructor<TRes>, request: (TReq|Properties<TReq>), callback: rpc.ServiceMethodCallback<TRes>): void;
 
         /**
          * Ends this service and emits the `end` event.
@@ -1478,8 +1481,11 @@ export namespace rpc {
  * @param method Reflected or static method being called
  * @param requestData Request data
  * @param callback Callback function
+ * @param serviceName serviceName
+ * @param methodName methodName
+ * @param methodIndex methodIndex
  */
-type RPCImpl = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, callback: RPCImplCallback) => void;
+type RPCImpl = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, callback: RPCImplCallback, serviceName: string, methodName: string, methodIndex: number) => void;
 
 /**
  * Node-style callback as used by {@link RPCImpl}.
