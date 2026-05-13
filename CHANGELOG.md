@@ -1,5 +1,18 @@
 # Changelog
 
+## [8.2.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.2.0...protobufjs-v8.2.1) (2026-05-13)
+
+
+### Bug Fixes
+
+* Consolidate depth limit checks ([#2246](https://github.com/protobufjs/protobuf.js/issues/2246)) ([9050289](https://github.com/protobufjs/protobuf.js/commit/9050289ad214ea351d3b030cbc74385e81e02d79))
+* Preserve explicit enum zero if not the default ([#2249](https://github.com/protobufjs/protobuf.js/issues/2249)) ([9621b35](https://github.com/protobufjs/protobuf.js/commit/9621b35eb1f6bbecf098f8f5ba59e8d02eca7524))
+
+
+### Performance Improvements
+
+* Slightly optimize generated code ([#2242](https://github.com/protobufjs/protobuf.js/issues/2242)) ([c41160c](https://github.com/protobufjs/protobuf.js/commit/c41160cda6a5f65b0960b194e7f32dd7e7d5ed49))
+
 ## [8.2.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.0.3...protobufjs-v8.2.0) (2026-05-09)
 
 
