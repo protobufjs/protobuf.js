@@ -144,23 +144,14 @@ util._Buffer_allocUnsafe = null;
  * @returns {Uint8Array|Buffer} Buffer
  */
 util.newBuffer = function newBuffer(sizeOrArray) {
-    /* istanbul ignore next */
     return typeof sizeOrArray === "number"
         ? util.Buffer
             ? util._Buffer_allocUnsafe(sizeOrArray)
-            : new util.Array(sizeOrArray)
+            : new Uint8Array(sizeOrArray)
         : util.Buffer
             ? util._Buffer_from(sizeOrArray)
-            : typeof Uint8Array === "undefined"
-                ? sizeOrArray
-                : new Uint8Array(sizeOrArray);
+            : new Uint8Array(sizeOrArray);
 };
-
-/**
- * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
- * @type {Constructor<Uint8Array>}
- */
-util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
 /**
  * Any compatible Long instance.

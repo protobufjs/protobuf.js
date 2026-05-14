@@ -12,7 +12,7 @@ function indexOutOfRange(reader, writeLength) {
 
 /**
  * Constructs a new reader instance using the specified buffer.
- * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
+ * @classdesc Wire format reader using `Uint8Array`.
  * @constructor
  * @param {Uint8Array} buffer Buffer to read from
  */
@@ -37,18 +37,11 @@ function Reader(buffer) {
     this.len = buffer.length;
 }
 
-var create_array = typeof Uint8Array !== "undefined"
-    ? function create_typed_array(buffer) {
-        if (buffer instanceof Uint8Array || Array.isArray(buffer))
-            return new Reader(buffer);
-        throw Error("illegal buffer");
-    }
-    /* istanbul ignore next */
-    : function create_array(buffer) {
-        if (Array.isArray(buffer))
-            return new Reader(buffer);
-        throw Error("illegal buffer");
-    };
+function create_array(buffer) {
+    if (buffer instanceof Uint8Array || Array.isArray(buffer))
+        return new Reader(buffer);
+    throw Error("illegal buffer");
+}
 
 var create = function create() {
     return util.Buffer
@@ -73,7 +66,7 @@ var create = function create() {
  */
 Reader.create = create();
 
-Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
+Reader.prototype._slice = Uint8Array.prototype.subarray;
 
 /**
  * Returns raw bytes from the backing buffer without advancing the reader.

@@ -82,7 +82,7 @@ function State(writer) {
 
 /**
  * Constructs a new writer instance.
- * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
+ * @classdesc Wire format writer using `Uint8Array`.
  * @constructor
  */
 function Writer() {
@@ -144,13 +144,11 @@ Writer.create = create();
  * @returns {Uint8Array} Buffer
  */
 Writer.alloc = function alloc(size) {
-    return new util.Array(size);
+    return new Uint8Array(size);
 };
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
-/* istanbul ignore else */
-if (util.Array !== Array)
-    Writer.alloc = util.pool(Writer.alloc, util.Array.prototype.subarray);
+Writer.alloc = util.pool(Writer.alloc, Uint8Array.prototype.subarray);
 
 /**
  * Pushes a new operation to the queue.
@@ -358,15 +356,9 @@ Writer.prototype.double = function write_double(value) {
     return this._push(util.float.writeDoubleLE, 8, value);
 };
 
-var writeBytes = util.Array.prototype.set
-    ? function writeBytes_set(val, buf, pos) {
-        buf.set(val, pos); // also works for plain array values
-    }
-    /* istanbul ignore next */
-    : function writeBytes_for(val, buf, pos) {
-        for (var i = 0; i < val.length; ++i)
-            buf[pos + i] = val[i];
-    };
+function writeBytes(val, buf, pos) {
+    buf.set(val, pos); // also works for plain array values
+}
 
 /**
  * Writes a sequence of bytes.
