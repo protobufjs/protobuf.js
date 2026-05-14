@@ -4,7 +4,7 @@
  * @memberof util
  * @constructor
  */
-function EventEmitter() {
+export function EventEmitter() {
 
     /**
      * Registered listeners.
@@ -79,5 +79,3 @@ EventEmitter.prototype.emit = function emit(evt) {
     }
     return this;
 };
-
-export { EventEmitter };

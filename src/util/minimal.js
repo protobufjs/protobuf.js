@@ -7,7 +7,7 @@ import { LongBits } from "./longbits.js";
 import { isNode } from "./is-node.js";
 import Long from "long";
 
-var util = {};
+export var util = {};
 
 // converts to / from base64 encoded strings
 util.base64 = base64;
@@ -489,5 +489,3 @@ util._configure = function() {
             return new Buffer(size);
         };
 };
-
-export { util };

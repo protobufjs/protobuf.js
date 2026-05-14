@@ -9,7 +9,7 @@
  * @param {string} string Base64 encoded string
  * @returns {number} Byte length
  */
-function length(string) {
+export function length(string) {
     var p = string.length;
     if (!p)
         return 0;
@@ -39,7 +39,7 @@ s64[95] = 63; // _ -> /
  * @param {number} end Source end
  * @returns {string} Base64 encoded string
  */
-function encode(buffer, start, end) {
+export function encode(buffer, start, end) {
     var parts = null,
         chunk = [];
     var i = 0, // output index
@@ -94,7 +94,7 @@ var invalidEncoding = "invalid encoding";
  * @returns {number} Number of bytes written
  * @throws {Error} If encoding is invalid
  */
-function decode(string, buffer, offset) {
+export function decode(string, buffer, offset) {
     var start = offset;
     var j = 0, // goto index
         t;     // temporary
@@ -140,9 +140,7 @@ var base64Re = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
  * @param {string} string String to test
  * @returns {boolean} `true` if probably base64 encoded, otherwise false
  */
-function test(string) {
+export function test(string) {
     return base64Re.test(string)
         || base64UrlRe.test(string) && base64UrlNoPaddingRe.test(string);
 }
-
-export { length, encode, decode, test };

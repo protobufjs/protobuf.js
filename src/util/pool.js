@@ -25,7 +25,7 @@
  * @param {number} [size=8192] Slab size
  * @returns {PoolAllocator} Pooled allocator
  */
-function pool(alloc, slice, size) {
+export function pool(alloc, slice, size) {
     var SIZE   = size || 8192;
     var MAX    = SIZE >>> 1;
     var slab   = null;
@@ -43,5 +43,3 @@ function pool(alloc, slice, size) {
         return buf;
     };
 }
-
-export { pool };

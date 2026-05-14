@@ -2,15 +2,16 @@
  * Reads / writes floats / doubles from / to buffers.
  * @namespace util.float
  */
-var float = factory({}),
-    writeFloatLE = float.writeFloatLE,
-    writeFloatBE = float.writeFloatBE,
-    readFloatLE = float.readFloatLE,
-    readFloatBE = float.readFloatBE,
-    writeDoubleLE = float.writeDoubleLE,
-    writeDoubleBE = float.writeDoubleBE,
-    readDoubleLE = float.readDoubleLE,
-    readDoubleBE = float.readDoubleBE;
+var float = factory({});
+
+export var writeFloatLE = float.writeFloatLE,
+           writeFloatBE = float.writeFloatBE,
+           readFloatLE = float.readFloatLE,
+           readFloatBE = float.readFloatBE,
+           writeDoubleLE = float.writeDoubleLE,
+           writeDoubleBE = float.writeDoubleBE,
+           readDoubleLE = float.readDoubleLE,
+           readDoubleBE = float.readDoubleBE;
 
 /**
  * Writes a 32 bit float to a buffer using little endian byte order.
@@ -307,17 +308,6 @@ function factory(target) {
 
     return target;
 }
-
-export {
-    writeFloatLE,
-    writeFloatBE,
-    readFloatLE,
-    readFloatBE,
-    writeDoubleLE,
-    writeDoubleBE,
-    readDoubleLE,
-    readDoubleBE
-};
 
 // uint helpers
 

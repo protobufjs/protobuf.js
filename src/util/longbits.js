@@ -1,4 +1,4 @@
-import { util } from "../util/minimal.js";
+import { util } from "./minimal.js";
 
 /**
  * Constructs new long bits.
@@ -8,7 +8,7 @@ import { util } from "../util/minimal.js";
  * @param {number} lo Low 32 bits, unsigned
  * @param {number} hi High 32 bits, unsigned
  */
-function LongBits(lo, hi) {
+export function LongBits(lo, hi) {
 
     // note that the casts below are theoretically unnecessary as of today, but older statically
     // generated converter code might still call the ctor with signed 32bits. kept for compat.
@@ -195,5 +195,3 @@ LongBits.prototype.length = function length() {
              : part1 < 2097152 ? 7 : 8
          : part2 < 128 ? 9 : 10;
 };
-
-export { LongBits };

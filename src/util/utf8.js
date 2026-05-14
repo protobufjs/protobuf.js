@@ -10,7 +10,7 @@ var replacementChar = "\ufffd";
  * @param {string} string String
  * @returns {number} Byte length
  */
-function length(string) {
+export function length(string) {
     var len = 0,
         c = 0;
     for (var i = 0; i < string.length; ++i) {
@@ -61,7 +61,7 @@ function utf8_read_js(buffer, start, end, str) {
  * @param {number} end Source end
  * @returns {string} String read
  */
-function read(buffer, start, end) {
+export function read(buffer, start, end) {
     if (end - start < 1)
         return "";
 
@@ -101,7 +101,7 @@ function read(buffer, start, end) {
  * @param {number} offset Destination offset
  * @returns {number} Bytes written
  */
-function write(string, buffer, offset) {
+export function write(string, buffer, offset) {
     var start = offset,
         c1, // character 1
         c2; // character 2
@@ -127,5 +127,3 @@ function write(string, buffer, offset) {
     }
     return offset - start;
 }
-
-export { length, read, write };

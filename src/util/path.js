@@ -9,7 +9,7 @@
  * @param {string} path Path to test
  * @returns {boolean} `true` if path is absolute
  */
-function isAbsolute(path) {
+export function isAbsolute(path) {
     return /^(?:\/|\w+:|\\\\\w+)/.test(path);
 }
 
@@ -19,7 +19,7 @@ function isAbsolute(path) {
  * @param {string} path Path to normalize
  * @returns {string} Normalized path
  */
-function normalize(path) {
+export function normalize(path) {
     var firstTwoCharacters = path.substring(0,2);
     var uncPrefix = "";
     if (firstTwoCharacters === "\\\\") {
@@ -58,7 +58,7 @@ function normalize(path) {
  * @param {boolean} [alreadyNormalized=false] `true` if both paths are already known to be normalized
  * @returns {string} Path to the include file
  */
-function resolve(originPath, includePath, alreadyNormalized) {
+export function resolve(originPath, includePath, alreadyNormalized) {
     if (!alreadyNormalized)
         includePath = normalize(includePath);
     if (isAbsolute(includePath))
@@ -67,5 +67,3 @@ function resolve(originPath, includePath, alreadyNormalized) {
         originPath = normalize(originPath);
     return (originPath = originPath.replace(/(?:\/|^)[^/]+$/, "")).length ? normalize(originPath + "/" + includePath) : includePath;
 }
-
-export { isAbsolute, normalize, resolve };

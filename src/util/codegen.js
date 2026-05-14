@@ -1,6 +1,4 @@
-import * as patterns from "./patterns.js";
-
-var reservedRe = patterns.reservedRe;
+import { reservedRe } from "./patterns.js";
 
 /**
  * Begins generating a function.
@@ -9,7 +7,7 @@ var reservedRe = patterns.reservedRe;
  * @param {string} [functionName] Function name if not anonymous
  * @returns {Codegen} Appender that appends code to the function's body
  */
-function codegen(functionParams, functionName) {
+export function codegen(functionParams, functionName) {
 
     /* istanbul ignore if */
     if (typeof functionParams === "string") {
@@ -109,5 +107,3 @@ function safeFunctionName(name) {
         name = "_" + name;
     return reservedRe.test(name) ? name + "_" : name;
 }
-
-export { codegen };
