@@ -1,29 +1,25 @@
-"use strict";
-
 /**
  * A minimal path module to resolve Unix, Windows and URL paths alike.
- * @memberof util
- * @namespace
+ * @namespace util.path
  */
-var path = exports;
 
-var isAbsolute =
 /**
  * Tests if the specified path is absolute.
+ * @memberof util.path
  * @param {string} path Path to test
  * @returns {boolean} `true` if path is absolute
  */
-path.isAbsolute = function isAbsolute(path) {
+function isAbsolute(path) {
     return /^(?:\/|\w+:|\\\\\w+)/.test(path);
-};
+}
 
-var normalize =
 /**
  * Normalizes the specified path.
+ * @memberof util.path
  * @param {string} path Path to normalize
  * @returns {string} Normalized path
  */
-path.normalize = function normalize(path) {
+function normalize(path) {
     var firstTwoCharacters = path.substring(0,2);
     var uncPrefix = "";
     if (firstTwoCharacters === "\\\\") {
@@ -52,16 +48,17 @@ path.normalize = function normalize(path) {
             ++i;
     }
     return uncPrefix + prefix + parts.join("/");
-};
+}
 
 /**
  * Resolves the specified include path against the specified origin path.
+ * @memberof util.path
  * @param {string} originPath Path to the origin file
  * @param {string} includePath Include path relative to origin path
  * @param {boolean} [alreadyNormalized=false] `true` if both paths are already known to be normalized
  * @returns {string} Path to the include file
  */
-path.resolve = function resolve(originPath, includePath, alreadyNormalized) {
+function resolve(originPath, includePath, alreadyNormalized) {
     if (!alreadyNormalized)
         includePath = normalize(includePath);
     if (isAbsolute(includePath))
@@ -69,4 +66,6 @@ path.resolve = function resolve(originPath, includePath, alreadyNormalized) {
     if (!alreadyNormalized)
         originPath = normalize(originPath);
     return (originPath = originPath.replace(/(?:\/|^)[^/]+$/, "")).length ? normalize(originPath + "/" + includePath) : includePath;
-};
+}
+
+export { isAbsolute, normalize, resolve };

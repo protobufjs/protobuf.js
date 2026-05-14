@@ -1,12 +1,10 @@
-"use strict";
-
 /**
  * Common type constants.
  * @namespace
  */
-var types = exports;
+var types = {};
 
-var util = require("./util");
+import { util } from "./util.js";
 
 var s = [
     "double",   // 0
@@ -194,3 +192,5 @@ types.packed = bake([
     /* sfixed64 */ 1,
     /* bool     */ 0
 ]);
+
+export { types };

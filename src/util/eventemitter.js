@@ -1,6 +1,3 @@
-"use strict";
-module.exports = EventEmitter;
-
 /**
  * Constructs a new event emitter instance.
  * @classdesc A minimal event emitter.
@@ -82,3 +79,5 @@ EventEmitter.prototype.emit = function emit(evt) {
     }
     return this;
 };
+
+export { EventEmitter };

@@ -1,6 +1,3 @@
-"use strict";
-module.exports = pool;
-
 /**
  * An allocator as used by {@link util.pool}.
  * @typedef PoolAllocator
@@ -46,3 +43,5 @@ function pool(alloc, slice, size) {
         return buf;
     };
 }
+
+export { pool };

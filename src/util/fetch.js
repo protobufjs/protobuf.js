@@ -1,8 +1,5 @@
-"use strict";
-module.exports = fetch;
-
-var asPromise = require("./aspromise"),
-    fs        = require("./fs");
+import { asPromise } from "./aspromise.js";
+import { fs } from "./fs.js";
 
 /**
  * Node-style callback as used by {@link util.fetch}.
@@ -110,3 +107,5 @@ fetch.xhr = function fetch_xhr(filename, options, callback) {
     xhr.open("GET", filename);
     xhr.send();
 };
+
+export { fetch };

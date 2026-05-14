@@ -1,11 +1,8 @@
-"use strict";
-module.exports = BufferWriter;
+import { Writer } from "./writer.js";
+import { util } from "./util/minimal.js";
 
 // extends Writer
-var Writer = require("./writer");
 (BufferWriter.prototype = Object.create(Writer.prototype)).constructor = BufferWriter;
-
-var util = require("./util/minimal");
 
 /**
  * Constructs a new buffer writer instance.
@@ -100,3 +97,5 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
  */
 
 BufferWriter._configure();
+
+export { BufferWriter };

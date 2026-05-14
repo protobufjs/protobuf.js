@@ -1,21 +1,18 @@
-"use strict";
-module.exports = parse;
+import { tokenize } from "./tokenize.js";
+import { Root } from "./root.js";
+import { Type } from "./type.js";
+import { Field } from "./field.js";
+import { MapField } from "./mapfield.js";
+import { OneOf } from "./oneof.js";
+import { Enum } from "./enum.js";
+import { Service } from "./service.js";
+import { Method } from "./method.js";
+import { ReflectionObject } from "./object.js";
+import { types } from "./types.js";
+import { util } from "./util.js";
 
 parse.filename = null;
 parse.defaults = { keepCase: false };
-
-var tokenize  = require("./tokenize"),
-    Root      = require("./root"),
-    Type      = require("./type"),
-    Field     = require("./field"),
-    MapField  = require("./mapfield"),
-    OneOf     = require("./oneof"),
-    Enum      = require("./enum"),
-    Service   = require("./service"),
-    Method    = require("./method"),
-    ReflectionObject = require("./object"),
-    types     = require("./types"),
-    util      = require("./util");
 
 var base10Re    = /^[1-9][0-9]*$/,
     base10NegRe = /^-?[1-9][0-9]*$/,
@@ -1049,3 +1046,5 @@ function parse(source, root, options) {
  * @property {IParseOptions} defaults Default {@link IParseOptions}
  * @variation 2
  */
+
+export { parse };

@@ -1,12 +1,9 @@
-"use strict";
-module.exports = Enum;
+import { ReflectionObject } from "./object.js";
+import { Namespace } from "./namespace.js";
+import { util } from "./util.js";
 
 // extends ReflectionObject
-var ReflectionObject = require("./object");
 ((Enum.prototype = Object.create(ReflectionObject.prototype)).constructor = Enum).className = "Enum";
-
-var Namespace = require("./namespace"),
-    util = require("./util");
 
 /**
  * Constructs a new enum instance.
@@ -229,3 +226,5 @@ Enum.prototype.isReservedId = function isReservedId(id) {
 Enum.prototype.isReservedName = function isReservedName(name) {
     return Namespace.isReservedName(this.reserved, name);
 };
+
+export { Enum };

@@ -1,14 +1,11 @@
-"use strict";
-module.exports = Root;
+import { Namespace } from "./namespace.js";
+import { Field } from "./field.js";
+import { Enum } from "./enum.js";
+import { OneOf } from "./oneof.js";
+import { util } from "./util.js";
 
 // extends Namespace
-var Namespace = require("./namespace");
 ((Root.prototype = Object.create(Namespace.prototype)).constructor = Root).className = "Root";
-
-var Field   = require("./field"),
-    Enum    = require("./enum"),
-    OneOf   = require("./oneof"),
-    util    = require("./util");
 
 var Type,   // cyclic
     parse,  // might be excluded
@@ -408,3 +405,5 @@ Root._configure = function(Type_, parse_, common_) {
     parse  = parse_;
     common = common_;
 };
+
+export { Root };

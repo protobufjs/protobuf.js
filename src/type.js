@@ -1,24 +1,21 @@
-"use strict";
-module.exports = Type;
+import { Namespace } from "./namespace.js";
+import { Enum } from "./enum.js";
+import { OneOf } from "./oneof.js";
+import { Field } from "./field.js";
+import { MapField } from "./mapfield.js";
+import { Service } from "./service.js";
+import { Message } from "./message.js";
+import { Reader } from "./reader.js";
+import { Writer } from "./writer.js";
+import { util } from "./util.js";
+import { encoder } from "./encoder.js";
+import { decoder } from "./decoder.js";
+import { verifier } from "./verifier.js";
+import { converter } from "./converter.js";
+import { wrappers } from "./wrappers.js";
 
 // extends Namespace
-var Namespace = require("./namespace");
 ((Type.prototype = Object.create(Namespace.prototype)).constructor = Type).className = "Type";
-
-var Enum      = require("./enum"),
-    OneOf     = require("./oneof"),
-    Field     = require("./field"),
-    MapField  = require("./mapfield"),
-    Service   = require("./service"),
-    Message   = require("./message"),
-    Reader    = require("./reader"),
-    Writer    = require("./writer"),
-    util      = require("./util"),
-    encoder   = require("./encoder"),
-    decoder   = require("./decoder"),
-    verifier  = require("./verifier"),
-    converter = require("./converter"),
-    wrappers  = require("./wrappers");
 
 /**
  * Constructs a new reflected message type instance.
@@ -644,3 +641,5 @@ Type.d = function decorateType(typeName) {
         util.decorateType(target, typeName);
     };
 };
+
+export { Type };

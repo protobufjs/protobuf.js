@@ -1,12 +1,9 @@
-"use strict";
-module.exports = MapField;
+import { Field } from "./field.js";
+import { types } from "./types.js";
+import { util } from "./util.js";
 
 // extends Field
-var Field = require("./field");
 ((MapField.prototype = Object.create(Field.prototype)).constructor = MapField).className = "MapField";
-
-var types   = require("./types"),
-    util    = require("./util");
 
 /**
  * Constructs a new map field instance.
@@ -125,3 +122,5 @@ MapField.d = function decorateMapField(fieldId, fieldKeyType, fieldValueType) {
             .add(new MapField(fieldName, fieldId, fieldKeyType, fieldValueType));
     };
 };
+
+export { MapField };

@@ -1,7 +1,4 @@
-"use strict";
-module.exports = LongBits;
-
-var util = require("../util/minimal");
+import { util } from "../util/minimal.js";
 
 /**
  * Constructs new long bits.
@@ -198,3 +195,5 @@ LongBits.prototype.length = function length() {
              : part1 < 2097152 ? 7 : 8
          : part2 < 128 ? 9 : 10;
 };
+
+export { LongBits };

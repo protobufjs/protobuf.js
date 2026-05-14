@@ -1,19 +1,16 @@
-"use strict";
-
 /**
  * A minimal UTF8 implementation for number arrays.
- * @memberof util
- * @namespace
+ * @namespace util.utf8
  */
-var utf8 = exports,
-    replacementChar = "\ufffd";
+var replacementChar = "\ufffd";
 
 /**
  * Calculates the UTF8 byte length of a string.
+ * @memberof util.utf8
  * @param {string} string String
  * @returns {number} Byte length
  */
-utf8.length = function utf8_length(string) {
+function length(string) {
     var len = 0,
         c = 0;
     for (var i = 0; i < string.length; ++i) {
@@ -29,7 +26,7 @@ utf8.length = function utf8_length(string) {
             len += 3;
     }
     return len;
-};
+}
 
 function utf8_read_js(buffer, start, end, str) {
     for (var i = start; i < end;) {
@@ -58,12 +55,13 @@ function utf8_read_js(buffer, start, end, str) {
 
 /**
  * Reads UTF8 bytes as a string.
+ * @memberof util.utf8
  * @param {Uint8Array} buffer Source buffer
  * @param {number} start Source start
  * @param {number} end Source end
  * @returns {string} String read
  */
-utf8.read = function utf8_read_ascii(buffer, start, end) {
+function read(buffer, start, end) {
     if (end - start < 1)
         return "";
 
@@ -93,16 +91,17 @@ utf8.read = function utf8_read_ascii(buffer, start, end) {
     }
 
     return str;
-};
+}
 
 /**
  * Writes a string as UTF8 bytes.
+ * @memberof util.utf8
  * @param {string} string Source string
  * @param {Uint8Array} buffer Destination buffer
  * @param {number} offset Destination offset
  * @returns {number} Bytes written
  */
-utf8.write = function utf8_write(string, buffer, offset) {
+function write(string, buffer, offset) {
     var start = offset,
         c1, // character 1
         c2; // character 2
@@ -127,4 +126,6 @@ utf8.write = function utf8_write(string, buffer, offset) {
         }
     }
     return offset - start;
-};
+}
+
+export { length, read, write };

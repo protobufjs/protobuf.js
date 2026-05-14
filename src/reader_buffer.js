@@ -1,11 +1,8 @@
-"use strict";
-module.exports = BufferReader;
+import { Reader } from "./reader.js";
+import { util } from "./util/minimal.js";
 
 // extends Reader
-var Reader = require("./reader");
 (BufferReader.prototype = Object.create(Reader.prototype)).constructor = BufferReader;
-
-var util = require("./util/minimal");
 
 /**
  * Constructs a new buffer reader instance.
@@ -70,3 +67,5 @@ BufferReader.prototype.string = function read_string_buffer() {
  */
 
 BufferReader._configure();
+
+export { BufferReader };

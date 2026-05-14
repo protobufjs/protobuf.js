@@ -1,7 +1,5 @@
-"use strict";
-module.exports = codegen;
+import * as patterns from "./patterns.js";
 
-var patterns = require("./patterns");
 var reservedRe = patterns.reservedRe;
 
 /**
@@ -111,3 +109,5 @@ function safeFunctionName(name) {
         name = "_" + name;
     return reservedRe.test(name) ? name + "_" : name;
 }
+
+export { codegen };

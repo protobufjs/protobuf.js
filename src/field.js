@@ -1,13 +1,10 @@
-"use strict";
-module.exports = Field;
+import { ReflectionObject } from "./object.js";
+import { Enum } from "./enum.js";
+import { types } from "./types.js";
+import { util } from "./util.js";
 
 // extends ReflectionObject
-var ReflectionObject = require("./object");
 ((Field.prototype = Object.create(ReflectionObject.prototype)).constructor = Field).className = "Field";
-
-var Enum  = require("./enum"),
-    types = require("./types"),
-    util  = require("./util");
 
 var Type; // cyclic
 
@@ -442,6 +439,8 @@ Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
 Field._configure = function configure(Type_) {
     Type = Type_;
 };
+
+export { Field };
 
 /**
  * Field decorator (TypeScript).

@@ -1,7 +1,4 @@
-"use strict";
-module.exports = Reader;
-
-var util      = require("./util/minimal");
+import { util } from "./util/minimal.js";
 
 var BufferReader; // cyclic
 
@@ -529,3 +526,5 @@ Reader._configure = function(BufferReader_) {
 
     });
 };
+
+export { Reader };

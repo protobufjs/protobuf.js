@@ -1,29 +1,37 @@
-"use strict";
-var util = exports;
+import { asPromise } from "./aspromise.js";
+import * as base64 from "./base64.js";
+import { EventEmitter } from "./eventemitter.js";
+import * as float from "./float.js";
+import { inquire } from "./inquire.js";
+import * as utf8 from "./utf8.js";
+import { pool } from "./pool.js";
+import { LongBits } from "./longbits.js";
+
+var util = {};
 
 // used to return a Promise where callback is omitted
-util.asPromise = require("./aspromise");
+util.asPromise = asPromise;
 
 // converts to / from base64 encoded strings
-util.base64 = require("./base64");
+util.base64 = base64;
 
 // base class of rpc.Service
-util.EventEmitter = require("./eventemitter");
+util.EventEmitter = EventEmitter;
 
 // float handling accross browsers
-util.float = require("./float");
+util.float = float;
 
 // requires modules optionally and hides the call from bundlers
-util.inquire = require("./inquire");
+util.inquire = inquire;
 
 // converts to / from utf8 encoded strings
-util.utf8 = require("./utf8");
+util.utf8 = utf8;
 
 // provides a node-like buffer pool in the browser
-util.pool = require("./pool");
+util.pool = pool;
 
 // utility to work with the low and high bits of a 64 bit value
-util.LongBits = require("./longbits");
+util.LongBits = LongBits;
 
 /**
  * Whether running within node or not.
@@ -181,12 +189,15 @@ util.Long = /* istanbul ignore next */ util.global.dcodeIO && /* istanbul ignore
          || /* istanbul ignore next */ util.global.Long
          || (function() {
                 try {
-                    var Long = require("long");
-                    return Long && Long.isLong ? Long : null;
+                    if (typeof require === "function") {
+                        var Long = require("long");
+                        return Long && Long.isLong ? Long : null;
+                    }
                 } catch (e) {
                     /* istanbul ignore next */
                     return null;
                 }
+                return null;
             })();
 
 /**
@@ -498,3 +509,5 @@ util._configure = function() {
             return new Buffer(size);
         };
 };
+
+export { util };

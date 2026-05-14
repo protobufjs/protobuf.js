@@ -1,9 +1,6 @@
-"use strict";
-module.exports = encoder;
-
-var Enum     = require("./enum"),
-    types    = require("./types"),
-    util     = require("./util");
+import { Enum } from "./enum.js";
+import { types } from "./types.js";
+import { util } from "./util.js";
 
 /**
  * Generates a partial message type encoder.
@@ -106,3 +103,5 @@ function encoder(mtype) {
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
+
+export { encoder };

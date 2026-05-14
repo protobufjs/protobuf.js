@@ -1,13 +1,11 @@
-"use strict";
-
 /**
  * Wrappers for common types.
  * @type {Object.<string,IWrapper>}
  * @const
  */
-var wrappers = exports;
+var wrappers = {};
 
-var Message = require("./message");
+import { Message } from "./message.js";
 
 /**
  * From object converter part of an {@link IWrapper}.
@@ -101,3 +99,5 @@ wrappers[".google.protobuf.Any"] = {
         return this.toObject(message, options);
     }
 };
+
+export { wrappers };

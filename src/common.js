@@ -1,6 +1,3 @@
-"use strict";
-module.exports = common;
-
 var commonRe = /\/|\./;
 
 /**
@@ -397,3 +394,5 @@ common("field_mask", {
 common.get = function get(file) {
     return common[file] || null;
 };
+
+export { common };

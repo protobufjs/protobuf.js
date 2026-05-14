@@ -1,12 +1,16 @@
-"use strict";
-
-module.exports = factory(factory);
-
 /**
  * Reads / writes floats / doubles from / to buffers.
- * @name util.float
- * @namespace
+ * @namespace util.float
  */
+var float = factory({}),
+    writeFloatLE = float.writeFloatLE,
+    writeFloatBE = float.writeFloatBE,
+    readFloatLE = float.readFloatLE,
+    readFloatBE = float.readFloatBE,
+    writeDoubleLE = float.writeDoubleLE,
+    writeDoubleBE = float.writeDoubleBE,
+    readDoubleLE = float.readDoubleLE,
+    readDoubleBE = float.readDoubleBE;
 
 /**
  * Writes a 32 bit float to a buffer using little endian byte order.
@@ -85,7 +89,7 @@ module.exports = factory(factory);
  */
 
 // Factory function for the purpose of node-based testing in modified global environments
-function factory(exports) {
+function factory(target) {
 
     // float: typed array
     if (typeof Float32Array !== "undefined") (function() {
@@ -111,9 +115,9 @@ function factory(exports) {
         }
 
         /* istanbul ignore next */
-        exports.writeFloatLE = le ? writeFloat_f32_cpy : writeFloat_f32_rev;
+        target.writeFloatLE = le ? writeFloat_f32_cpy : writeFloat_f32_rev;
         /* istanbul ignore next */
-        exports.writeFloatBE = le ? writeFloat_f32_rev : writeFloat_f32_cpy;
+        target.writeFloatBE = le ? writeFloat_f32_rev : writeFloat_f32_cpy;
 
         function readFloat_f32_cpy(buf, pos) {
             f8b[0] = buf[pos    ];
@@ -132,9 +136,9 @@ function factory(exports) {
         }
 
         /* istanbul ignore next */
-        exports.readFloatLE = le ? readFloat_f32_cpy : readFloat_f32_rev;
+        target.readFloatLE = le ? readFloat_f32_cpy : readFloat_f32_rev;
         /* istanbul ignore next */
-        exports.readFloatBE = le ? readFloat_f32_rev : readFloat_f32_cpy;
+        target.readFloatBE = le ? readFloat_f32_rev : readFloat_f32_cpy;
 
     // float: ieee754
     })(); else (function() {
@@ -158,8 +162,8 @@ function factory(exports) {
             }
         }
 
-        exports.writeFloatLE = writeFloat_ieee754.bind(null, writeUintLE);
-        exports.writeFloatBE = writeFloat_ieee754.bind(null, writeUintBE);
+        target.writeFloatLE = writeFloat_ieee754.bind(null, writeUintLE);
+        target.writeFloatBE = writeFloat_ieee754.bind(null, writeUintBE);
 
         function readFloat_ieee754(readUint, buf, pos) {
             var uint = readUint(buf, pos),
@@ -175,8 +179,8 @@ function factory(exports) {
                 : sign * Math.pow(2, exponent - 150) * (mantissa + 8388608);
         }
 
-        exports.readFloatLE = readFloat_ieee754.bind(null, readUintLE);
-        exports.readFloatBE = readFloat_ieee754.bind(null, readUintBE);
+        target.readFloatLE = readFloat_ieee754.bind(null, readUintLE);
+        target.readFloatBE = readFloat_ieee754.bind(null, readUintBE);
 
     })();
 
@@ -212,9 +216,9 @@ function factory(exports) {
         }
 
         /* istanbul ignore next */
-        exports.writeDoubleLE = le ? writeDouble_f64_cpy : writeDouble_f64_rev;
+        target.writeDoubleLE = le ? writeDouble_f64_cpy : writeDouble_f64_rev;
         /* istanbul ignore next */
-        exports.writeDoubleBE = le ? writeDouble_f64_rev : writeDouble_f64_cpy;
+        target.writeDoubleBE = le ? writeDouble_f64_rev : writeDouble_f64_cpy;
 
         function readDouble_f64_cpy(buf, pos) {
             f8b[0] = buf[pos    ];
@@ -241,9 +245,9 @@ function factory(exports) {
         }
 
         /* istanbul ignore next */
-        exports.readDoubleLE = le ? readDouble_f64_cpy : readDouble_f64_rev;
+        target.readDoubleLE = le ? readDouble_f64_cpy : readDouble_f64_rev;
         /* istanbul ignore next */
-        exports.readDoubleBE = le ? readDouble_f64_rev : readDouble_f64_cpy;
+        target.readDoubleBE = le ? readDouble_f64_rev : readDouble_f64_cpy;
 
     // double: ieee754
     })(); else (function() {
@@ -278,8 +282,8 @@ function factory(exports) {
             }
         }
 
-        exports.writeDoubleLE = writeDouble_ieee754.bind(null, writeUintLE, 0, 4);
-        exports.writeDoubleBE = writeDouble_ieee754.bind(null, writeUintBE, 4, 0);
+        target.writeDoubleLE = writeDouble_ieee754.bind(null, writeUintLE, 0, 4);
+        target.writeDoubleBE = writeDouble_ieee754.bind(null, writeUintBE, 4, 0);
 
         function readDouble_ieee754(readUint, off0, off1, buf, pos) {
             var lo = readUint(buf, pos + off0),
@@ -296,13 +300,24 @@ function factory(exports) {
                 : sign * Math.pow(2, exponent - 1075) * (mantissa + 4503599627370496);
         }
 
-        exports.readDoubleLE = readDouble_ieee754.bind(null, readUintLE, 0, 4);
-        exports.readDoubleBE = readDouble_ieee754.bind(null, readUintBE, 4, 0);
+        target.readDoubleLE = readDouble_ieee754.bind(null, readUintLE, 0, 4);
+        target.readDoubleBE = readDouble_ieee754.bind(null, readUintBE, 4, 0);
 
     })();
 
-    return exports;
+    return target;
 }
+
+export {
+    writeFloatLE,
+    writeFloatBE,
+    readFloatLE,
+    readFloatBE,
+    writeDoubleLE,
+    writeDoubleBE,
+    readDoubleLE,
+    readDoubleBE
+};
 
 // uint helpers
 

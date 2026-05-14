@@ -1,13 +1,12 @@
-"use strict";
 /**
  * Runtime message from/to plain object converters.
  * @namespace
  */
-var converter = exports;
+var converter = {};
 
-var Enum  = require("./enum"),
-    types = require("./types"),
-    util  = require("./util");
+import { Enum } from "./enum.js";
+import { types } from "./types.js";
+import { util } from "./util.js";
 
 /**
  * Generates a partial value fromObject conveter.
@@ -335,3 +334,5 @@ converter.toObject = function toObject(mtype) {
     ("return d");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
+
+export { converter };

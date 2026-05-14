@@ -1,6 +1,3 @@
-"use strict";
-module.exports = asPromise;
-
 /**
  * Callback as used by {@link util.asPromise}.
  * @typedef asPromiseCallback
@@ -50,3 +47,5 @@ function asPromise(fn, ctx/*, varargs */) {
         }
     });
 }
+
+export { asPromise };

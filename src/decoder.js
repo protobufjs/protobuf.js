@@ -1,9 +1,6 @@
-"use strict";
-module.exports = decoder;
-
-var Enum    = require("./enum"),
-    types   = require("./types"),
-    util    = require("./util");
+import { Enum } from "./enum.js";
+import { types } from "./types.js";
+import { util } from "./util.js";
 
 function missing(field) {
     return "missing required '" + field.name + "'";
@@ -202,3 +199,5 @@ function decoder(mtype) {
     ("return m");
     /* eslint-enable no-unexpected-multiline */
 }
+
+export { decoder };

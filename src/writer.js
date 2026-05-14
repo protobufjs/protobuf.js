@@ -1,7 +1,4 @@
-"use strict";
-module.exports = Writer;
-
-var util      = require("./util/minimal");
+import { util } from "./util/minimal.js";
 
 var BufferWriter; // cyclic
 
@@ -491,3 +488,5 @@ Writer._configure = function(BufferWriter_) {
     Writer.create = create();
     BufferWriter._configure();
 };
+
+export { Writer };

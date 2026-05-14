@@ -1,8 +1,5 @@
-"use strict";
-module.exports = verifier;
-
-var Enum      = require("./enum"),
-    util      = require("./util");
+import { Enum } from "./enum.js";
+import { util } from "./util.js";
 
 function invalid(field, expected) {
     return field.name + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
@@ -178,3 +175,5 @@ function verifier(mtype) {
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }
+
+export { verifier };

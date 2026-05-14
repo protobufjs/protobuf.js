@@ -1,7 +1,4 @@
-"use strict";
-module.exports = Service;
-
-var util = require("../util/minimal");
+import { util } from "../util/minimal.js";
 
 // Extends EventEmitter
 (Service.prototype = Object.create(util.EventEmitter.prototype)).constructor = Service;
@@ -140,3 +137,5 @@ Service.prototype.end = function end(endedByRPC) {
     }
     return this;
 };
+
+export { Service };

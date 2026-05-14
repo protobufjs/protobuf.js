@@ -1,5 +1,4 @@
-"use strict";
-module.exports = {};
+var roots = {};
 
 /**
  * Named roots.
@@ -16,3 +15,5 @@ module.exports = {};
  * // in any subsequent module:
  * var root = protobuf.roots["myroot"];
  */
+
+export { roots };
