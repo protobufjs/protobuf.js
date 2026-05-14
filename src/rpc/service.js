@@ -23,7 +23,7 @@ import { util } from "../util/minimal.js";
  * @type {function}
  * @param {TReq|Properties<TReq>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback<TRes>} [callback] Node-style callback called with the error, if any, and the response message
- * @returns {Promise<Message<TRes>>} Promise if `callback` has been omitted, otherwise `undefined`
+ * @returns {Promise<TRes|null>} Promise if `callback` has been omitted, otherwise `undefined`
  */
 
 /**
@@ -68,59 +68,90 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
  * @param {Constructor<TReq>} requestCtor Request constructor
  * @param {Constructor<TRes>} responseCtor Response constructor
  * @param {TReq|Properties<TReq>} request Request message or plain object
- * @param {rpc.ServiceMethodCallback<TRes>} callback Service callback
- * @returns {undefined}
+ * @param {rpc.ServiceMethodCallback<TRes>} [callback] Service callback
+ * @returns {Promise<TRes|null>} Promise if `callback` has been omitted, otherwise `undefined`
  * @template TReq extends Message<TReq>
  * @template TRes extends Message<TRes>
  */
 Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, request, callback) {
-
     if (!request)
         throw TypeError("request must be specified");
 
-    var self = this;
-    if (!callback)
-        return util.asPromise(rpcCall, self, method, requestCtor, responseCtor, request);
+    var self = this,
+        promise,
+        resolvePromise,
+        rejectPromise;
+    if (!callback) {
+        promise = new Promise(function executor(resolve, reject) {
+            resolvePromise = resolve;
+            rejectPromise = reject;
+        });
+        callback = function promiseCallback(err, response) {
+            if (err)
+                rejectPromise(err);
+            else
+                resolvePromise(response);
+        };
+    }
 
     if (!self.rpcImpl) {
         setTimeout(function() { callback(Error("already ended")); }, 0);
-        return undefined;
+        return promise;
+    }
+
+    var settled = false;
+    function rpcCallback(err, response) {
+        if (settled)
+            return;
+        settled = true;
+
+        if (err) {
+            self.emit("error", err, method);
+            callback(err);
+            return;
+        }
+
+        if (response === null) {
+            self.end(/* endedByRPC */ true);
+            if (promise)
+                callback(null, null);
+            return;
+        }
+
+        if (!(response instanceof responseCtor)) {
+            try {
+                response = responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
+            } catch (err) {
+                self.emit("error", err, method);
+                callback(err);
+                return;
+            }
+        }
+
+        self.emit("data", response, method);
+        callback(null, response);
     }
 
     try {
-        return self.rpcImpl(
+        var pending = self.rpcImpl(
             method,
             requestCtor[self.requestDelimited ? "encodeDelimited" : "encode"](request).finish(),
-            function rpcCallback(err, response) {
-
-                if (err) {
-                    self.emit("error", err, method);
-                    return callback(err);
-                }
-
-                if (response === null) {
-                    self.end(/* endedByRPC */ true);
-                    return undefined;
-                }
-
-                if (!(response instanceof responseCtor)) {
-                    try {
-                        response = responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
-                    } catch (err) {
-                        self.emit("error", err, method);
-                        return callback(err);
-                    }
-                }
-
-                self.emit("data", response, method);
-                return callback(null, response);
-            }
+            rpcCallback
         );
+        if (pending && typeof pending.then === "function")
+            pending.then(function(response) {
+                rpcCallback(null, response);
+            }, function(err) {
+                rpcCallback(err);
+            });
     } catch (err) {
-        self.emit("error", err, method);
-        setTimeout(function() { callback(err); }, 0);
-        return undefined;
+        if (!settled) {
+            settled = true;
+            self.emit("error", err, method);
+            setTimeout(function() { callback(err); }, 0);
+        }
     }
+    return promise;
 };
 
 /**

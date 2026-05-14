@@ -918,7 +918,7 @@ function buildService(ref, service) {
             "@memberof " + exportName(service),
             "@instance",
             "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
-            "@returns {Promise<" + exportName(method.resolvedResponseType) + ">} Promise",
+            "@returns {Promise<" + exportName(method.resolvedResponseType) + "|null>} Promise",
             "@variation 2"
         ]);
     });

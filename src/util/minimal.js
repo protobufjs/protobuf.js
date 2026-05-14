@@ -1,16 +1,13 @@
-import { asPromise } from "./aspromise.js";
 import * as base64 from "./base64.js";
 import { EventEmitter } from "./eventemitter.js";
 import * as float from "./float.js";
-import { inquire } from "./inquire.js";
 import * as utf8 from "./utf8.js";
 import { pool } from "./pool.js";
 import { LongBits } from "./longbits.js";
+import { isNode } from "./is-node.js";
+import Long from "long";
 
 var util = {};
-
-// used to return a Promise where callback is omitted
-util.asPromise = asPromise;
 
 // converts to / from base64 encoded strings
 util.base64 = base64;
@@ -20,9 +17,6 @@ util.EventEmitter = EventEmitter;
 
 // float handling accross browsers
 util.float = float;
-
-// requires modules optionally and hides the call from bundlers
-util.inquire = inquire;
 
 // converts to / from utf8 encoded strings
 util.utf8 = utf8;
@@ -38,11 +32,7 @@ util.LongBits = LongBits;
  * @memberof util
  * @type {boolean}
  */
-util.isNode = Boolean(typeof global !== "undefined"
-                   && global
-                   && global.process
-                   && global.process.versions
-                   && global.process.versions.node);
+util.isNode = isNode;
 
 /**
  * Global object reference.
@@ -187,18 +177,8 @@ util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore n
  */
 util.Long = /* istanbul ignore next */ util.global.dcodeIO && /* istanbul ignore next */ util.global.dcodeIO.Long
          || /* istanbul ignore next */ util.global.Long
-         || (function() {
-                try {
-                    if (typeof require === "function") {
-                        var Long = require("long");
-                        return Long && Long.isLong ? Long : null;
-                    }
-                } catch (e) {
-                    /* istanbul ignore next */
-                    return null;
-                }
-                return null;
-            })();
+         || Long && Long.isLong && Long
+         || null;
 
 /**
  * Regular expression used to verify 2 bit (`bool`) map keys.

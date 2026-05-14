@@ -5,28 +5,19 @@
 import { util } from "./util/minimal.js";
 import { roots } from "./roots.js";
 import { codegen } from "./util/codegen.js";
-import { fetch } from "./util/fetch.js";
 import * as path from "./util/path.js";
 import * as patterns from "./util/patterns.js";
-import { fs } from "./util/fs.js";
 
 var Type, // configured
     Enum,
     Root;
 
 util.codegen  = codegen;
-util.fetch    = fetch;
 util.path     = path;
 util.patterns = patterns;
 
 var reservedRe = util.patterns.reservedRe,
     unsafePropertyRe = util.patterns.unsafePropertyRe;
-
-/**
- * Node's fs module if available.
- * @type {Object.<string,*>}
- */
-util.fs = fs;
 
 /**
  * Converts an object's values to an array.
