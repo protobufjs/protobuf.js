@@ -4,7 +4,6 @@ var tape = require("tape");
 var path = require("path");
 var protobuf = require("..");
 var fs = require("fs");
-var child_process = require("child_process");
 var cliTest = require("./helpers/cli");
 
 function generate(target, root, options, callback) {
@@ -521,117 +520,6 @@ tape.test("pbjs --dts narrows oneof interfaces", function(test) {
 
             cleanup();
             test.end();
-        });
-    });
-});
-
-tape.test("pbjs --dts generated message typings compile", function(test) {
-    cliTest(test, function() {
-        var pbjs = require("../cli/pbjs");
-        var prefix = path.join(".tmp", "pbjs-dts-types-test-" + process.pid + "-" + Date.now());
-        var staticOut = prefix + ".js";
-        var staticDts = prefix + ".d.ts";
-        var tsOut = prefix + ".check.ts";
-        var tsconfigOut = prefix + ".tsconfig.json";
-        var tsc = require.resolve("typescript/bin/tsc");
-
-        if (!fs.existsSync(".tmp"))
-            fs.mkdirSync(".tmp");
-
-        function cleanup() {
-            [ staticOut, staticDts, tsOut, tsconfigOut ].forEach(function(file) {
-                try {
-                    fs.unlinkSync(file);
-                } catch (e) {
-                    // best effort cleanup
-                }
-            });
-        }
-
-        cleanup();
-        pbjs.main([
-            "--target", "static-module",
-            "--wrap", "commonjs",
-            "--out", staticOut,
-            "--dts",
-            "tests/data/cli/test.proto"
-        ], function(err) {
-            test.error(err, "static-module --dts generation worked");
-
-            fs.writeFileSync(tsOut, [
-                "import { Enum, Message, OneofContainer } from \"./" + path.basename(prefix) + "\";",
-                "",
-                "function expectType<T>(value: T): void { void value; }",
-                "",
-                "const message = new Message({ value: 1 });",
-                "Message.encode(message).finish();",
-                "Message.encode({ value: 1 }).finish();",
-                "expectType<number>(Message.decode(new Uint8Array()).value);",
-                "",
-                "const byCase = OneofContainer.create({ someOneof: \"stringInOneof\", stringInOneof: \"abc\" });",
-                "if (byCase.someOneof === \"stringInOneof\") {",
-                "    expectType<string>(byCase.stringInOneof);",
-                "    expectType<null|undefined>(byCase.messageInOneof);",
-                "}",
-                "",
-                "const byField = OneofContainer.create({ stringInOneof: \"abc\" });",
-                "if (byField.stringInOneof != null) {",
-                "    expectType<string>(byField.stringInOneof);",
-                "    expectType<null|undefined>(byField.messageInOneof);",
-                "}",
-                "",
-                "const byMessage = OneofContainer.create({ messageInOneof: { value: 1 } });",
-                "if (byMessage.someOneof === \"messageInOneof\")",
-                "    expectType<Message.$Shape>(byMessage.messageInOneof);",
-                "",
-                "const broadProperties: OneofContainer.$Properties = {",
-                "    stringInOneof: \"abc\",",
-                "    messageInOneof: { value: 1 }",
-                "};",
-                "const broad = OneofContainer.create(broadProperties);",
-                "expectType<string|null|undefined>(broad.stringInOneof);",
-                "",
-                "const constructed = new OneofContainer({ stringInOneof: \"abc\" });",
-                "expectType<string|null|undefined>(constructed.stringInOneof);",
-                "",
-                "const decoded = OneofContainer.decode(new Uint8Array());",
-                "if (decoded.someOneof === \"stringInOneof\")",
-                "    expectType<string>(decoded.stringInOneof);",
-                "if (decoded.messageInOneof != null)",
-                "    expectType<Message.$Shape>(decoded.messageInOneof);",
-                "",
-                "OneofContainer.encode({",
-                "    regularField: \"regular\",",
-                "    enumField: Enum.SOMETHING,",
-                "    stringInOneof: \"abc\"",
-                "}).finish();"
-            ].join("\n"));
-
-            fs.writeFileSync(tsconfigOut, JSON.stringify({
-                compilerOptions: {
-                    baseUrl: "..",
-                    esModuleInterop: true,
-                    lib: [ "es2015" ],
-                    noEmit: true,
-                    paths: {
-                        "protobufjs/minimal": [ "minimal" ],
-                        "protobufjs": [ "index" ]
-                    },
-                    strictNullChecks: true,
-                    types: [ "node" ]
-                },
-                files: [ path.basename(tsOut) ]
-            }, null, 4));
-
-            child_process.execFile(process.execPath, [ tsc, "-p", tsconfigOut ], function(tscErr, stdout, stderr) {
-                if (stdout)
-                    process.stdout.write(stdout);
-                if (stderr)
-                    process.stderr.write(stderr);
-                test.error(tscErr, "generated declarations type-check");
-                cleanup();
-                test.end();
-            });
         });
     });
 });

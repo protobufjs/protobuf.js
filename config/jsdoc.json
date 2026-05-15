@@ -11,7 +11,8 @@
         "excludePattern": "(^|\\/|\\\\)_"
     },
     "plugins": [
-        "./node_modules/jsdoc/plugins/markdown"
+        "./cli/lib/tsd-jsdoc/plugin",
+        "./cli/node_modules/jsdoc/plugins/markdown"
     ],
     "templates": {
         "cleverLinks"   : false,

@@ -34,6 +34,8 @@ jobs:
         node-version: ${{ matrix.node_version }}
     - name: "Install dependencies"
       run: npm install --ignore-scripts
+    - name: "Install CLI dependencies"
+      run: npm --prefix cli install --ignore-scripts
     - name: "Test sources"
       run: npm run test:sources
     - name: "Test types"

@@ -400,6 +400,7 @@ protobuf.js favors transparent disclosure. Security-impacting reports are handle
 git clone https://github.com/protobufjs/protobuf.js
 cd protobuf.js
 npm install
+npm --prefix cli install
 ```
 
 Running the tests:
