@@ -1,21 +1,29 @@
-"use strict";
-var protobuf = require("../light");
+import {
+    Type,
+    Enum,
+    Field,
+    Reader,
+    types,
+    util
+} from "../light.js";
 
-var Type    = protobuf.Type,
-    Enum    = protobuf.Enum,
-    Field   = protobuf.Field,
-    Reader  = protobuf.Reader,
-    types   = protobuf.types,
-    util    = protobuf.util;
-
-var textformat = module.exports = {};
+var textformat = {},
+    unknownRecursionLimit = 10;
 
 /**
  * Maximum recursion depth for formatting length-delimited unknown fields.
  * @name unknownRecursionLimit
  * @type {number}
  */
-textformat.unknownRecursionLimit = 10;
+Object.defineProperty(textformat, "unknownRecursionLimit", {
+    enumerable: true,
+    get: function() {
+        return unknownRecursionLimit;
+    },
+    set: function(value) {
+        unknownRecursionLimit = value;
+    }
+});
 
 var punct = {
     "{": true,
@@ -64,7 +72,7 @@ function parseText(type, text) {
 
 /**
  * Text format options.
- * @interface ITextFormatOptions
+ * @interface TextFormatOptions
  * @property {boolean} [unknowns=false] Also includes and formats unknown fields.
  */
 
@@ -72,7 +80,7 @@ function parseText(type, text) {
  * Formats a message as protobuf text format using the specified reflected type.
  * @param {Type} type Reflected message type
  * @param {Message<{}>|Object.<string,*>} message Message instance or plain object
- * @param {ITextFormatOptions} [options] Text format options
+ * @param {TextFormatOptions} [options] Text format options
  * @returns {string} Text format output
  * @private
  */
@@ -97,7 +105,7 @@ Type.prototype.fromText = function fromText(text) {
 /**
  * Formats a message of this type as protobuf text format.
  * @param {Message<{}>|Object.<string,*>} message Message instance or plain object
- * @param {ITextFormatOptions} [options] Text format options
+ * @param {TextFormatOptions} [options] Text format options
  * @returns {string} Text format output
  */
 Type.prototype.toText = function toText(message, options) {
@@ -1233,3 +1241,5 @@ function underScore(str) {
          + str.substring(1)
                .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
 }
+
+export { textformat as default, unknownRecursionLimit };

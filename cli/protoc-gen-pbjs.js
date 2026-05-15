@@ -4,6 +4,7 @@ var path = require("path");
 
 var protobuf = require("protobufjs");
 var descriptor = require("protobufjs/ext/descriptor");
+descriptor = descriptor.default || descriptor;
 
 var pbjs = require("./pbjs");
 var util = require("./util");

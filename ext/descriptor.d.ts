@@ -1,86 +1,79 @@
-import * as $protobuf from "..";
-import {
-    IDescriptorProto,
-    IEnumDescriptorProto,
-    IFieldDescriptorProto,
-    IFileDescriptorSet,
-    IMethodDescriptorProto,
-    IOneofDescriptorProto,
-    IServiceDescriptorProto
-} from "./descriptor.generated";
+import type * as descriptorGenerated from "./descriptor.generated";
 
 export * from "./descriptor.generated";
 
-type DescriptorInput<T> = T | $protobuf.Reader | Uint8Array;
+declare const descriptor: typeof descriptorGenerated;
+
+export default descriptor;
 
 declare module ".." {
     namespace Root {
         /** Creates a root from a descriptor set. */
-        function fromDescriptor(descriptor: DescriptorInput<IFileDescriptorSet>): $protobuf.Root;
+        function fromDescriptor(descriptor: descriptorGenerated.FileDescriptorSet.$Properties | Reader | Uint8Array): Root;
     }
 
     interface Root {
         /** Converts this root to a descriptor set. */
-        toDescriptor(edition?: string): $protobuf.Message<IFileDescriptorSet> & IFileDescriptorSet;
+        toDescriptor(edition?: string): Message<descriptorGenerated.FileDescriptorSet.$Properties> & descriptorGenerated.FileDescriptorSet.$Properties;
     }
 
     namespace Type {
         /** Creates a type from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IDescriptorProto>, edition?: string, nested?: boolean): $protobuf.Type;
+        function fromDescriptor(descriptor: descriptorGenerated.DescriptorProto.$Properties | Reader | Uint8Array, edition?: string, nested?: boolean): Type;
     }
 
     interface Type {
         /** Converts this type to a descriptor. */
-        toDescriptor(edition?: string): $protobuf.Message<IDescriptorProto> & IDescriptorProto;
+        toDescriptor(edition?: string): Message<descriptorGenerated.DescriptorProto.$Properties> & descriptorGenerated.DescriptorProto.$Properties;
     }
 
     namespace Field {
         /** Creates a field from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IFieldDescriptorProto>, edition?: string, nested?: boolean): $protobuf.Field;
+        function fromDescriptor(descriptor: descriptorGenerated.FieldDescriptorProto.$Properties | Reader | Uint8Array, edition?: string, nested?: boolean): Field;
     }
 
     interface Field {
         /** Converts this field to a descriptor. */
-        toDescriptor(edition?: string): $protobuf.Message<IFieldDescriptorProto> & IFieldDescriptorProto;
+        toDescriptor(edition?: string): Message<descriptorGenerated.FieldDescriptorProto.$Properties> & descriptorGenerated.FieldDescriptorProto.$Properties;
     }
 
     namespace Enum {
         /** Creates an enum from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IEnumDescriptorProto>, edition?: string, nested?: boolean): $protobuf.Enum;
+        function fromDescriptor(descriptor: descriptorGenerated.EnumDescriptorProto.$Properties | Reader | Uint8Array, edition?: string, nested?: boolean): Enum;
     }
 
     interface Enum {
         /** Converts this enum to a descriptor. */
-        toDescriptor(): $protobuf.Message<IEnumDescriptorProto> & IEnumDescriptorProto;
+        toDescriptor(): Message<descriptorGenerated.EnumDescriptorProto.$Properties> & descriptorGenerated.EnumDescriptorProto.$Properties;
     }
 
     namespace OneOf {
         /** Creates a oneof from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IOneofDescriptorProto>): $protobuf.OneOf;
+        function fromDescriptor(descriptor: descriptorGenerated.OneofDescriptorProto.$Properties | Reader | Uint8Array): OneOf;
     }
 
     interface OneOf {
         /** Converts this oneof to a descriptor. */
-        toDescriptor(): $protobuf.Message<IOneofDescriptorProto> & IOneofDescriptorProto;
+        toDescriptor(): Message<descriptorGenerated.OneofDescriptorProto.$Properties> & descriptorGenerated.OneofDescriptorProto.$Properties;
     }
 
     namespace Service {
         /** Creates a service from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IServiceDescriptorProto>, edition?: string, nested?: boolean): $protobuf.Service;
+        function fromDescriptor(descriptor: descriptorGenerated.ServiceDescriptorProto.$Properties | Reader | Uint8Array, edition?: string, nested?: boolean): Service;
     }
 
     interface Service {
         /** Converts this service to a descriptor. */
-        toDescriptor(): $protobuf.Message<IServiceDescriptorProto> & IServiceDescriptorProto;
+        toDescriptor(): Message<descriptorGenerated.ServiceDescriptorProto.$Properties> & descriptorGenerated.ServiceDescriptorProto.$Properties;
     }
 
     namespace Method {
         /** Creates a method from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IMethodDescriptorProto>): $protobuf.Method;
+        function fromDescriptor(descriptor: descriptorGenerated.MethodDescriptorProto.$Properties | Reader | Uint8Array): Method;
     }
 
     interface Method {
         /** Converts this method to a descriptor. */
-        toDescriptor(): $protobuf.Message<IMethodDescriptorProto> & IMethodDescriptorProto;
+        toDescriptor(): Message<descriptorGenerated.MethodDescriptorProto.$Properties> & descriptorGenerated.MethodDescriptorProto.$Properties;
     }
 }

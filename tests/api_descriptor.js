@@ -1,7 +1,7 @@
 var path = require("path");
 var tape = require("tape");
 var protobuf = require("../index");
-var descriptor = require("../ext/descriptor");
+var descriptor = require("../ext/descriptor").default;
 
 tape.test("descriptor - proto2 to proto3", async function (test) {
     // load document with extended field imported multiple times

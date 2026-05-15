@@ -35,7 +35,7 @@ export default [
             jsdoc: jsdoc
         },
         languageOptions: {
-            ecmaVersion: 2020,
+            ecmaVersion: "latest",
             sourceType: "module",
             globals: Object.assign(
                 {},
@@ -168,8 +168,7 @@ export default [
     {
         files: [
             "bench/**/*.js",
-            "cli/**/*.js",
-            "ext/**/*.js"
+            "cli/**/*.js"
         ],
         languageOptions: {
             sourceType: "commonjs"

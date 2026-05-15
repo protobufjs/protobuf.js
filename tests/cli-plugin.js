@@ -20,7 +20,7 @@ function cliTest(test, testFunc) {
         if (request === "protobufjs")
             return request;
         if (request === "protobufjs/ext/descriptor")
-            return path.resolve("ext/descriptor/index.js");
+            return path.resolve("ext/descriptor.js");
         if (request === "protobufjs/google/protobuf/compiler/plugin.json")
             return path.resolve("google/protobuf/compiler/plugin.json");
         return savedResolveFilename(request, parent);
@@ -55,7 +55,7 @@ function runPlugin(test, plugin, request, message) {
 
 tape.test("protoc-gen-pbjs generates static-module responses", async function(test) {
     await cliTest(test, async function() {
-        var descriptor = require("../ext/descriptor");
+        var descriptor = require("../ext/descriptor").default;
         var plugin = require("../cli/protoc-gen-pbjs");
         var root = await protobuf.load("tests/data/cli/test.proto");
         var set = root.toDescriptor("proto3");
@@ -150,7 +150,7 @@ tape.test("protoc-gen-pbjs validates options", async function(test) {
 
 tape.test("protoc-gen-pbjs supports keep-case and edition 2024 descriptors", async function(test) {
     await cliTest(test, async function() {
-        var descriptor = require("../ext/descriptor");
+        var descriptor = require("../ext/descriptor").default;
         var plugin = require("../cli/protoc-gen-pbjs");
         var set = descriptor.FileDescriptorSet.create({
             file: [ {

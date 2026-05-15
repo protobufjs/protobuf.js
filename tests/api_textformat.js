@@ -1,7 +1,7 @@
 var tape = require("tape");
 
 var protobuf = require("..");
-var textformat = require("../ext/textformat");
+var textformat = require("../ext/textformat").default;
 
 var proto = "syntax = \"proto3\";\
 message Child { string name = 1; }\
