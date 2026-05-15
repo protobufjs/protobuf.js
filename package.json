@@ -7,7 +7,7 @@
   "repository": "protobufjs/protobuf.js",
   "bugs": "https://github.com/protobufjs/protobuf.js/issues",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.13.0"
   },
   "keywords": [
     "protobuf",
@@ -39,7 +39,7 @@
     "test": "npm run test:sources && npm run test:types",
     "test:sources": "tape -r ./lib/tape-adapter tests/*.js",
     "test:bundles": "tape -r ./lib/tape-adapter tests/node/comp_bundles.js",
-    "test:types": "tsc tests/comp_typescript.ts --ignoreConfig --target es2019 --module commonjs --types node --lib es2019 --esModuleInterop --strictNullChecks --strictPropertyInitialization false --experimentalDecorators --emitDecoratorMetadata && tsc -p tsconfig.test-types.json",
+    "test:types": "tsc tests/comp_typescript.ts --ignoreConfig --target es2022 --module commonjs --types node --lib es2022 --esModuleInterop --strictNullChecks --strictPropertyInitialization false --experimentalDecorators --emitDecoratorMetadata && tsc -p tsconfig.test-types.json",
     "make": "npm run lint:sources && npm run build && npm run lint:types && node ./scripts/gentests.js && npm test"
   },
   "dependencies": {
