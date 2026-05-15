@@ -15,7 +15,7 @@
  * @param {number} start Start offset
  * @param {number} end End offset
  * @returns {Uint8Array} Buffer slice
- * @this {Uint8Array}
+ * @this Uint8Array
  */
 
 /**
