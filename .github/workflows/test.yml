@@ -17,7 +17,7 @@ jobs:
       with:
         node-version: "lts/*"
     - name: "Install dependencies"
-      run: npm install
+      run: npm install --ignore-scripts
     - name: "Lint sources"
       run: npm run lint:sources -- --max-warnings 0
     - name: "Lint types"
@@ -33,7 +33,7 @@ jobs:
       with:
         node-version: ${{ matrix.node_version }}
     - name: "Install dependencies"
-      run: npm install
+      run: npm install --ignore-scripts
     - name: "Test sources"
       run: npm run test:sources
     - name: "Test types"
@@ -46,9 +46,9 @@ jobs:
       with:
         node-version: "lts/*"
     - name: "Install dependencies"
-      run: npm install
+      run: npm install --ignore-scripts
     - name: "Install benchmark dependencies"
-      run: npm --prefix bench install --omit=dev
+      run: npm --prefix bench install --omit=dev --ignore-scripts
     - name: "Run benchmark"
       run: |
         set -o pipefail
