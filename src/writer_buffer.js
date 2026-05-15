@@ -19,7 +19,7 @@ BufferWriter._configure = function () {
      * Allocates a buffer of the specified size.
      * @function
      * @param {number} size Buffer size
-     * @returns {Buffer} Buffer
+     * @returns {util.Buffer} Buffer
      */
     BufferWriter.alloc = util._Buffer_allocUnsafe;
 
@@ -93,7 +93,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
  * Finishes the write operation.
  * @name BufferWriter#finish
  * @function
- * @returns {Buffer} Finished buffer
+ * @returns {util.Buffer} Finished buffer
  */
 
 BufferWriter._configure();

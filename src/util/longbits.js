@@ -1,4 +1,5 @@
-import { util } from "./minimal.js";
+import isString from "./is-string.js";
+import { getLong } from "./long.js";
 
 /**
  * Constructs new long bits.
@@ -8,7 +9,7 @@ import { util } from "./minimal.js";
  * @param {number} lo Low 32 bits, unsigned
  * @param {number} hi High 32 bits, unsigned
  */
-export function LongBits(lo, hi) {
+function LongBits(lo, hi) {
 
     // note that the casts below are theoretically unnecessary as of today, but older statically
     // generated converter code might still call the ctor with signed 32bits. kept for compat.
@@ -77,10 +78,11 @@ LongBits.fromNumber = function fromNumber(value) {
 LongBits.from = function from(value) {
     if (typeof value === "number")
         return LongBits.fromNumber(value);
-    if (util.isString(value)) {
+    if (isString(value)) {
+        var Long = getLong();
         /* istanbul ignore else */
-        if (util.Long)
-            value = util.Long.fromString(value);
+        if (Long)
+            value = Long.fromString(value);
         else
             return LongBits.fromNumber(parseInt(value, 10));
     }
@@ -109,8 +111,9 @@ LongBits.prototype.toNumber = function toNumber(unsigned) {
  * @returns {Long} Long
  */
 LongBits.prototype.toLong = function toLong(unsigned) {
-    return util.Long
-        ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
+    var Long = getLong();
+    return Long
+        ? new Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
         /* istanbul ignore next */
         : { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
 };
@@ -195,3 +198,5 @@ LongBits.prototype.length = function length() {
              : part1 < 2097152 ? 7 : 8
          : part2 < 128 ? 9 : 10;
 };
+
+export default LongBits;

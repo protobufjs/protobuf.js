@@ -1,5 +1,6 @@
 /**
  * An allocator as used by {@link util.pool}.
+ * @memberof util
  * @typedef PoolAllocator
  * @type {function}
  * @param {number} size Buffer size
@@ -8,6 +9,7 @@
 
 /**
  * A slicer as used by {@link util.pool}.
+ * @memberof util
  * @typedef PoolSlicer
  * @type {function}
  * @param {number} start Start offset
@@ -18,7 +20,7 @@
 
 /**
  * A general purpose buffer pool.
- * @memberof util
+ * @name util.pool
  * @function
  * @param {PoolAllocator} alloc Allocator
  * @param {PoolSlicer} slice Slicer

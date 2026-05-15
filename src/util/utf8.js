@@ -6,7 +6,8 @@ var replacementChar = "\ufffd";
 
 /**
  * Calculates the UTF8 byte length of a string.
- * @memberof util.utf8
+ * @name util.utf8.length
+ * @function
  * @param {string} string String
  * @returns {number} Byte length
  */
@@ -55,7 +56,8 @@ function utf8_read_js(buffer, start, end, str) {
 
 /**
  * Reads UTF8 bytes as a string.
- * @memberof util.utf8
+ * @name util.utf8.read
+ * @function
  * @param {Uint8Array} buffer Source buffer
  * @param {number} start Source start
  * @param {number} end Source end
@@ -95,7 +97,8 @@ export function read(buffer, start, end) {
 
 /**
  * Writes a string as UTF8 bytes.
- * @memberof util.utf8
+ * @name util.utf8.write
+ * @function
  * @param {string} string Source string
  * @param {Uint8Array} buffer Destination buffer
  * @param {number} offset Destination offset

@@ -7,11 +7,11 @@ function invalid(field, expected) {
 
 /**
  * Generates a partial value verifier.
- * @param {Codegen} gen Codegen instance
+ * @param {util.Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
  * @param {string} ref Variable reference
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  * @ignore
  */
 function genVerifyValue(gen, field, fieldIndex, ref) {
@@ -77,10 +77,10 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
 
 /**
  * Generates a partial key verifier.
- * @param {Codegen} gen Codegen instance
+ * @param {util.Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {string} ref Variable reference
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  * @ignore
  */
 function genVerifyKey(gen, field, ref) {
@@ -114,7 +114,7 @@ function genVerifyKey(gen, field, ref) {
 /**
  * Generates a verifier specific to the specified message type.
  * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  */
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */

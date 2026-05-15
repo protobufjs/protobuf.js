@@ -60,7 +60,7 @@ var create = function create() {
 /**
  * Creates a new reader using the specified buffer.
  * @function
- * @param {Uint8Array|Buffer} buffer Buffer to read from
+ * @param {Uint8Array|util.Buffer} buffer Buffer to read from
  * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
  * @throws {Error} If `buffer` is not a valid buffer
  */
@@ -246,21 +246,21 @@ function readLongVarint() {
  * Reads a varint as a signed 64 bit value.
  * @name Reader#int64
  * @function
- * @returns {Long} Value read
+ * @returns {util.Long} Value read
  */
 
 /**
  * Reads a varint as an unsigned 64 bit value.
  * @name Reader#uint64
  * @function
- * @returns {Long} Value read
+ * @returns {util.Long} Value read
  */
 
 /**
  * Reads a zig-zag encoded varint as a signed 64 bit value.
  * @name Reader#sint64
  * @function
- * @returns {Long} Value read
+ * @returns {util.Long} Value read
  */
 
 /**
@@ -334,14 +334,14 @@ function readFixed64(/* this: Reader */) {
  * Reads fixed 64 bits.
  * @name Reader#fixed64
  * @function
- * @returns {Long} Value read
+ * @returns {util.Long} Value read
  */
 
 /**
  * Reads zig-zag encoded fixed 64 bits.
  * @name Reader#sfixed64
  * @function
- * @returns {Long} Value read
+ * @returns {util.Long} Value read
  */
 
 /**

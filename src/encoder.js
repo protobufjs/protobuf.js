@@ -4,11 +4,11 @@ import { util } from "./util.js";
 
 /**
  * Generates a partial message type encoder.
- * @param {Codegen} gen Codegen instance
+ * @param {util.Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
  * @param {string} ref Variable reference
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  * @ignore
  */
 function genTypePartial(gen, field, fieldIndex, ref) {
@@ -20,7 +20,7 @@ function genTypePartial(gen, field, fieldIndex, ref) {
 /**
  * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */

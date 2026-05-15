@@ -9,7 +9,7 @@ import { util } from "./util/minimal.js";
  * @classdesc Wire format reader using node buffers.
  * @extends Reader
  * @constructor
- * @param {Buffer} buffer Buffer to read from
+ * @param {util.Buffer} buffer Buffer to read from
  */
 function BufferReader(buffer) {
     Reader.call(this, buffer);
@@ -17,7 +17,7 @@ function BufferReader(buffer) {
     /**
      * Read buffer.
      * @name BufferReader#buf
-     * @type {Buffer}
+     * @type {util.Buffer}
      */
 }
 
@@ -33,7 +33,7 @@ BufferReader._configure = function () {
  * @function
  * @param {number} start Start offset
  * @param {number} end End offset
- * @returns {Buffer} Raw bytes
+ * @returns {util.Buffer} Raw bytes
  */
 BufferReader.prototype.raw = function read_raw_buffer(start, end) {
     if (start === end)
@@ -63,7 +63,7 @@ BufferReader.prototype.string = function read_string_buffer() {
  * Reads a sequence of bytes preceeded by its length as a varint.
  * @name BufferReader#bytes
  * @function
- * @returns {Buffer} Value read
+ * @returns {util.Buffer} Value read
  */
 
 BufferReader._configure();

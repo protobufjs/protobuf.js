@@ -1,12 +1,17 @@
 import * as base64 from "./base64.js";
-import { EventEmitter } from "./eventemitter.js";
 import * as float from "./float.js";
 import * as utf8 from "./utf8.js";
+import EventEmitter from "./eventemitter.js";
+import isString from "./is-string.js";
 import { pool } from "./pool.js";
-import { LongBits } from "./longbits.js";
+import LongBits from "./longbits.js";
+import { getLong, setLong } from "./long.js";
 import { isNode } from "./is-node.js";
-import Long from "long";
 
+/**
+ * Various utility functions.
+ * @namespace
+ */
 export var util = {};
 
 // converts to / from base64 encoded strings
@@ -74,9 +79,7 @@ util.isInteger = Number.isInteger || /* istanbul ignore next */ function isInteg
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is a string
  */
-util.isString = function isString(value) {
-    return typeof value === "string" || value instanceof String;
-};
+util.isString = isString;
 
 /**
  * Tests if the specified value is a non-null object.
@@ -113,6 +116,7 @@ util.isSet = function isSet(obj, prop) {
 /**
  * Any compatible Buffer instance.
  * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
+ * @memberof util
  * @interface Buffer
  * @extends Uint8Array
  */
@@ -156,6 +160,7 @@ util.newBuffer = function newBuffer(sizeOrArray) {
 /**
  * Any compatible Long instance.
  * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
+ * @memberof util
  * @interface Long
  * @property {number} low Low bits
  * @property {number} high High bits
@@ -166,10 +171,13 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  * Long.js's Long class if available.
  * @type {Constructor<Long>}
  */
-util.Long = /* istanbul ignore next */ util.global.dcodeIO && /* istanbul ignore next */ util.global.dcodeIO.Long
-         || /* istanbul ignore next */ util.global.Long
-         || Long && Long.isLong && Long
-         || null;
+util.Long = getLong();
+Object.defineProperty(util, "Long", {
+    configurable: true,
+    enumerable: true,
+    get: getLong,
+    set: setLong
+});
 
 /**
  * Regular expression used to verify 2 bit (`bool`) map keys.
@@ -381,6 +389,7 @@ util.ProtocolError = newError("ProtocolError");
 
 /**
  * A OneOf getter as returned by {@link util.oneOfGetter}.
+ * @memberof util
  * @typedef OneOfGetter
  * @type {function}
  * @returns {string|undefined} Set field name, if any
@@ -410,6 +419,7 @@ util.oneOfGetter = function getOneOf(fieldNames) {
 
 /**
  * A OneOf setter as returned by {@link util.oneOfSetter}.
+ * @memberof util
  * @typedef OneOfSetter
  * @type {function}
  * @param {string|undefined} value Field name

@@ -4,7 +4,7 @@
  * @memberof util
  * @constructor
  */
-export function EventEmitter() {
+function EventEmitter() {
 
     /**
      * Registered listeners.
@@ -16,6 +16,7 @@ export function EventEmitter() {
 
 /**
  * Event listener as used by {@link util.EventEmitter}.
+ * @memberof util
  * @typedef EventEmitterListener
  * @type {function}
  * @param {...*} args Arguments
@@ -79,3 +80,5 @@ EventEmitter.prototype.emit = function emit(evt) {
     }
     return this;
 };
+
+export default EventEmitter;

@@ -2,10 +2,11 @@ import { reservedRe } from "./patterns.js";
 
 /**
  * Begins generating a function.
- * @memberof util
+ * @name util.codegen
+ * @function
  * @param {string[]} functionParams Function parameter names
  * @param {string} [functionName] Function name if not anonymous
- * @returns {Codegen} Appender that appends code to the function's body
+ * @returns {util.Codegen} Appender that appends code to the function's body
  */
 export function codegen(functionParams, functionName) {
 
@@ -19,11 +20,12 @@ export function codegen(functionParams, functionName) {
 
     /**
      * Appends code to the function's body or finishes generation.
+     * @memberof util
      * @typedef Codegen
      * @type {function}
      * @param {string|Object.<string,*>} [formatStringOrScope] Format string or, to finish the function, an object of additional scope variables, if any
      * @param {...*} [formatParams] Format parameters
-     * @returns {Codegen|Function} Itself or the generated function if finished
+     * @returns {util.Codegen|Function} Itself or the generated function if finished
      * @throws {Error} If format parameter counts do not match
      */
 
@@ -83,10 +85,10 @@ export function codegen(functionParams, functionName) {
 
 /**
  * Begins generating a function.
- * @memberof util
- * @function codegen
+ * @name util.codegen
+ * @function
  * @param {string} [functionName] Function name if not anonymous
- * @returns {Codegen} Appender that appends code to the function's body
+ * @returns {util.Codegen} Appender that appends code to the function's body
  * @variation 2
  */
 

@@ -1,7 +1,3 @@
-/**
- * Various utility functions.
- * @namespace
- */
 import { util } from "./util/minimal.js";
 import { roots } from "./roots.js";
 import { codegen } from "./util/codegen.js";

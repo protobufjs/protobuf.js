@@ -10,11 +10,11 @@ import { util } from "./util.js";
 
 /**
  * Generates a partial value fromObject conveter.
- * @param {Codegen} gen Codegen instance
+ * @param {util.Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
  * @param {string} prop Property reference
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  * @ignore
  */
 function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
@@ -100,7 +100,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
 /**
  * Generates a plain object to runtime message converter specific to the specified message type.
  * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  */
 converter.fromObject = function fromObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -177,12 +177,12 @@ converter.fromObject = function fromObject(mtype) {
 
 /**
  * Generates a partial value toObject converter.
- * @param {Codegen} gen Codegen instance
+ * @param {util.Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
  * @param {string} dstProp Destination property reference
  * @param {string} [srcProp] Source property reference
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  * @ignore
  */
 function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
@@ -228,7 +228,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
 /**
  * Generates a runtime message to plain object converter specific to the specified message type.
  * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  */
 converter.toObject = function toObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */

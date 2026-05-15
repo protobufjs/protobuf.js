@@ -9,7 +9,7 @@ function missing(field) {
 /**
  * Generates a decoder specific to the specified message type.
  * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */

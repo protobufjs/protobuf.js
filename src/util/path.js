@@ -5,7 +5,8 @@
 
 /**
  * Tests if the specified path is absolute.
- * @memberof util.path
+ * @name util.path.isAbsolute
+ * @function
  * @param {string} path Path to test
  * @returns {boolean} `true` if path is absolute
  */
@@ -15,7 +16,8 @@ export function isAbsolute(path) {
 
 /**
  * Normalizes the specified path.
- * @memberof util.path
+ * @name util.path.normalize
+ * @function
  * @param {string} path Path to normalize
  * @returns {string} Normalized path
  */
@@ -52,7 +54,8 @@ export function normalize(path) {
 
 /**
  * Resolves the specified include path against the specified origin path.
- * @memberof util.path
+ * @name util.path.resolve
+ * @function
  * @param {string} originPath Path to the origin file
  * @param {string} includePath Include path relative to origin path
  * @param {boolean} [alreadyNormalized=false] `true` if both paths are already known to be normalized

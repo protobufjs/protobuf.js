@@ -5,7 +5,8 @@
 
 /**
  * Calculates the byte length of a base64 encoded string.
- * @memberof util.base64
+ * @name util.base64.length
+ * @function
  * @param {string} string Base64 encoded string
  * @returns {number} Byte length
  */
@@ -33,7 +34,8 @@ s64[95] = 63; // _ -> /
 
 /**
  * Encodes a buffer to a base64 encoded string.
- * @memberof util.base64
+ * @name util.base64.encode
+ * @function
  * @param {Uint8Array} buffer Source buffer
  * @param {number} start Source start
  * @param {number} end Source end
@@ -87,7 +89,8 @@ var invalidEncoding = "invalid encoding";
 
 /**
  * Decodes a base64 encoded string to a buffer.
- * @memberof util.base64
+ * @name util.base64.decode
+ * @function
  * @param {string} string Source string
  * @param {Uint8Array} buffer Destination buffer
  * @param {number} offset Destination offset
@@ -136,7 +139,8 @@ var base64Re = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
 
 /**
  * Tests if the specified string appears to be base64 encoded.
- * @memberof util.base64
+ * @name util.base64.test
+ * @function
  * @param {string} string String to test
  * @returns {boolean} `true` if probably base64 encoded, otherwise false
  */
