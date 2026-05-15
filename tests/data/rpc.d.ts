@@ -5,7 +5,7 @@ export class MyService extends $protobuf.rpc.Service {
     constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
     static create(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): MyService;
     myMethod(request: IMyRequest, callback: MyService.MyMethodCallback): void;
-    myMethod(request: IMyRequest): Promise<(MyResponse|null)>;
+    myMethod(request: IMyRequest): Promise<MyResponse>;
 }
 
 export namespace MyService {

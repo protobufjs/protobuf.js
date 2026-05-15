@@ -95,6 +95,22 @@ tape.test("reflected services", function(test) {
         });
     });
 
+    test.test(test.name + " - should reject promise if rpc ends without response", function(test) {
+        var service2 = MyService.create(function(method, requestData, callback) { callback(null, null); });
+        var ended = false;
+        service2.on("end", function() {
+            ended = true;
+        });
+        service2.doSomething({}).then(function() {
+            test.fail("should not resolve");
+            test.end();
+        }, function(err) {
+            test.equal(err.message, "rpc ended without response", "should reject with rpc end error");
+            test.ok(ended, "should end the service");
+            test.end();
+        });
+    });
+
     var dataEmitted = false;
     service.on("data", function(responseData) {
         dataEmitted = true;

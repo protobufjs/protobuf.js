@@ -23,7 +23,7 @@ import { util } from "../util/minimal.js";
  * @type {function}
  * @param {TReq|Properties<TReq>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback<TRes>} [callback] Node-style callback called with the error, if any, and the response message
- * @returns {Promise<TRes|null>} Promise if `callback` has been omitted, otherwise `undefined`
+ * @returns {Promise<TRes>} Promise if `callback` has been omitted, otherwise `undefined`
  */
 
 /**
@@ -69,7 +69,7 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
  * @param {Constructor<TRes>} responseCtor Response constructor
  * @param {TReq|Properties<TReq>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback<TRes>} [callback] Service callback
- * @returns {Promise<TRes|null>} Promise if `callback` has been omitted, otherwise `undefined`
+ * @returns {Promise<TRes>} Promise if `callback` has been omitted, otherwise `undefined`
  * @template TReq extends Message<TReq>
  * @template TRes extends Message<TRes>
  */
@@ -79,6 +79,7 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
 
     var self = this,
         promise,
+        promiseSettled = false,
         resolvePromise,
         rejectPromise;
     if (!callback) {
@@ -87,6 +88,9 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
             rejectPromise = reject;
         });
         callback = function promiseCallback(err, response) {
+            if (promiseSettled)
+                return;
+            promiseSettled = true;
             if (err)
                 rejectPromise(err);
             else
@@ -99,12 +103,7 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
         return promise;
     }
 
-    var settled = false;
     function rpcCallback(err, response) {
-        if (settled)
-            return;
-        settled = true;
-
         if (err) {
             self.emit("error", err, method);
             callback(err);
@@ -113,8 +112,10 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
 
         if (response === null) {
             self.end(/* endedByRPC */ true);
-            if (promise)
-                resolvePromise(null);
+            if (promise) {
+                callback(Error("rpc ended without response"));
+                return;
+            }
             return;
         }
 
@@ -145,11 +146,8 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
                 rpcCallback(err);
             });
     } catch (err) {
-        if (!settled) {
-            settled = true;
-            self.emit("error", err, method);
-            setTimeout(function() { callback(err); }, 0);
-        }
+        self.emit("error", err, method);
+        setTimeout(function() { callback(err); }, 0);
     }
     return promise;
 };

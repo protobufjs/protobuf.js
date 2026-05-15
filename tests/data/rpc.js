@@ -70,7 +70,7 @@ $root.MyService = (function() {
      * @memberof MyService
      * @instance
      * @param {IMyRequest} request MyRequest message or plain object
-     * @returns {Promise<MyResponse|null>} Promise
+     * @returns {Promise<MyResponse>} Promise
      * @variation 2
      */
 

@@ -1398,7 +1398,7 @@ export namespace rpc {
      * @param [callback] Node-style callback called with the error, if any, and the response message
      * @returns Promise if `callback` has been omitted, otherwise `undefined`
      */
-    type ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> = (request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>) => Promise<(TRes|null)>;
+    type ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> = (request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>) => Promise<TRes>;
 
     /** An RPC service as returned by {@link Service#create}. */
     class Service extends util.EventEmitter {
@@ -1429,7 +1429,7 @@ export namespace rpc {
          * @param [callback] Service callback
          * @returns Promise if `callback` has been omitted, otherwise `undefined`
          */
-        rpcCall<TReq extends Message<TReq>, TRes extends Message<TRes>>(method: (Method|rpc.ServiceMethod<TReq, TRes>), requestCtor: Constructor<TReq>, responseCtor: Constructor<TRes>, request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>): Promise<(TRes|null)>;
+        rpcCall<TReq extends Message<TReq>, TRes extends Message<TRes>>(method: (Method|rpc.ServiceMethod<TReq, TRes>), requestCtor: Constructor<TReq>, responseCtor: Constructor<TRes>, request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>): Promise<TRes>;
 
         /**
          * Ends this service and emits the `end` event.
