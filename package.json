@@ -17,7 +17,7 @@
     "typescript"
   ],
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "types": "index.d.ts",
   "browser": {
     "fs": false
