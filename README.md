@@ -386,7 +386,7 @@ npm run bench
 
 ## Compatibility
 
-Supported runtimes are browsers, Node.js v12+, Deno and Bun. When using the CLI with Bun, Node.js must also be installed.
+Supported runtimes are browsers, Node.js v22+, Deno and Bun. When using the CLI with Bun, Node.js must also be installed.
 
 ## Security
 
