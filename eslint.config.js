@@ -15,10 +15,7 @@ export default [
             "examples/**",
             "lib/deep-equal/**",
             "lib/jsdoc-template/**",
-            "lib/prelude.js",
-            "lib/polyfill.js",
             "lib/tape-adapter.js",
-            "sandbox/**",
             "scripts/**",
             "tests/**"
         ]

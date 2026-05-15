@@ -45,15 +45,14 @@ The full build includes the light build, and the light build includes the minima
 Pick the distribution matching your runtime variant and pin an exact version:
 
 ```html
-<!-- Full -->
-<script src="https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/protobuf.min.js"></script>
-<!-- Light -->
-<script src="https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/light/protobuf.min.js"></script>
-<!-- Minimal -->
-<script src="https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/minimal/protobuf.min.js"></script>
+<script type="module">
+  import * as protobuf from "https://cdn.jsdelivr.net/npm/protobufjs@9.X.X/dist/index.js";
+  import * as light from "https://cdn.jsdelivr.net/npm/protobufjs@9.X.X/dist/light.js";
+  import * as minimal from "https://cdn.jsdelivr.net/npm/protobufjs@9.X.X/dist/minimal.js";
+</script>
 ```
 
-Browser builds support CommonJS and AMD loaders and export globally as `window.protobuf`.
+Browser builds are ESM bundles and do not install a global `protobuf` object.
 
 ## Usage
 

@@ -1,7 +1,5 @@
-var fs   = require("fs"),
-    path = require("path"),
-    vm   = require("vm"),
-    long = require("long"),
+var path = require("path"),
+    url  = require("url"),
     tape = require("tape");
 
 var distPath = path.join(__dirname, "..", "..", "dist");
@@ -9,80 +7,45 @@ var distPath = path.join(__dirname, "..", "..", "dist");
 [
     {
         name: "full",
-        data: fs.readFileSync(path.join(distPath, "protobuf.min.js")).toString("utf8")
+        file: path.join(distPath, "index.js"),
+        verify: function(test, protobuf) {
+            test.equal(protobuf.build, "full", "should load the full build");
+            test.ok(protobuf.Root, "should export reflection");
+            test.ok(protobuf.parse, "should export parser");
+        }
     },
     {
         name: "light",
-        data: fs.readFileSync(path.join(distPath, "light/protobuf.min.js")).toString("utf8")
+        file: path.join(distPath, "light.js"),
+        verify: function(test, protobuf) {
+            test.equal(protobuf.build, "light", "should load the light build");
+            test.ok(protobuf.Root, "should export reflection");
+            test.notOk(protobuf.parse, "should not export parser");
+        }
     },
     {
         name: "minimal",
-        data: fs.readFileSync(path.join(distPath, "minimal/protobuf.min.js")).toString("utf8")
+        file: path.join(distPath, "minimal.js"),
+        verify: function(test, protobuf) {
+            test.equal(protobuf.build, "minimal", "should load the minimal build");
+            test.ok(protobuf.Reader, "should export reader");
+            test.ok(protobuf.Writer, "should export writer");
+        }
     }
 ]
 .forEach(function(dist) {
 
-    tape.test(dist.name + " build", function(test) {
-
-        test.test(test.name + " - script tags", function(test) {
-            var sandbox;
-
-            var dcodeIO = { Long: long };
-
-            vm.runInNewContext(dist.data, sandbox = {
-                window: {
-                    dcodeIO: dcodeIO
-                },
-                dcodeIO: dcodeIO
-            });
-
-            test.ok(sandbox.window.protobuf, "should load the library as a global");
-            test.ok(sandbox.window.protobuf.util.Long, "should load long.js to util");
-            test.end();
-        });
-
-        test.test(test.name + " - webworkers", function(test) {
-            var sandbox;
-
-            var dcodeIO = { Long: long };
-
-            vm.runInNewContext(dist.data, sandbox = {
-                self: {
-                    dcodeIO: dcodeIO
-                },
-                dcodeIO: dcodeIO
-            });
-
-            test.ok(sandbox.self.protobuf, "should load the library as a global");
-            test.ok(sandbox.self.protobuf.util.Long, "should load long.js to util");
-            test.end();
-        });
-
-        test.test(test.name + " - amd loaders", function(test) {
-            var sandbox;
-
-            function fakeDefine(deps, factory) {
-                test.same(deps, [ "long" ], "should request long.js as a dependency");
-                test.notOk(sandbox.window.protobuf.util.Long, "should not have loaded long.js before calling the factory function");
-                factory(long);
-                test.ok(sandbox.window.protobuf.util.Long, "should have loaded long.js after calling the factory function");
-            }
-            fakeDefine.amd = true;
-
-            vm.runInNewContext(dist.data, sandbox = {
-                define: fakeDefine,
-                window: {},
-                require: undefined,
-                console: console
-            });
-
-            test.ok(sandbox.window.protobuf, "should load the library as a global");
-            test.end();
-
-        });
-
+    tape.test(dist.name + " ESM bundle", async function(test) {
+        var previous = globalThis.protobuf;
+        delete globalThis.protobuf;
+        var protobuf = await import(url.pathToFileURL(dist.file).href);
+        dist.verify(test, protobuf);
+        test.ok(protobuf.util, "should export util");
+        test.ok(protobuf.util.Long && protobuf.util.Long.isLong, "should bundle long.js");
+        test.equal(globalThis.protobuf, undefined, "should not install a global");
+        if (previous !== undefined)
+            globalThis.protobuf = previous;
+        test.end();
     });
 
 });
-
-// commonjs uses ./src
