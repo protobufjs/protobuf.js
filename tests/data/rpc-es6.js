@@ -68,7 +68,7 @@ export const MyService = $root.MyService = (() => {
      * @memberof MyService
      * @instance
      * @param {IMyRequest} request MyRequest message or plain object
-     * @returns {Promise<MyResponse>} Promise
+     * @returns {Promise<MyResponse|null>} Promise
      * @variation 2
      */
 

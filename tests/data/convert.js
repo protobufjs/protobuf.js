@@ -297,7 +297,7 @@ $root.Message = (function() {
             case 7: {
                     if (wireType !== 0)
                         break;
-                    if (value = reader.int32())
+                    if ((value = reader.int32()) !== 1)
                         message.enumVal = value;
                     else
                         delete message.enumVal;
