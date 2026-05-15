@@ -10,8 +10,10 @@ var Buffer_from = Buffer.from !== Uint8Array.from && Buffer.from || function(val
 var BigInt_from = global.BigInt;
 var BigInt_32 = BigInt_from(32);
 
+(async function main() {
+
 // protobuf.js dynamic: load the proto and set up a buffer
-var pbjsCls = require("..").loadSync(require.resolve("./data/bench.proto")).resolveAll().lookup("Test");
+var pbjsCls = (await require("..").load(require.resolve("./data/bench.proto"))).resolveAll().lookup("Test");
 var pbjsMsg = payload; // alt: pbjsCls.fromObject(payload);
 var pbjsBuf = pbjsCls.encode(pbjsMsg).finish();
 
@@ -103,3 +105,8 @@ newSuite("round-trip")
     es.fromBinary(esCls, es.toBinary(esCls, esMsg));
 })
 .run();
+
+}()).catch(function(err) {
+    process.stderr.write((err && err.stack || err) + "\n");
+    process.exitCode = 1;
+});

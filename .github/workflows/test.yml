@@ -36,8 +36,12 @@ jobs:
       run: npm install --ignore-scripts
     - name: "Install CLI dependencies"
       run: npm --prefix cli install --ignore-scripts
+    - name: "Build bundles"
+      run: npm run build:bundle
     - name: "Test sources"
       run: npm run test:sources
+    - name: "Test bundles"
+      run: npm run test:bundles
     - name: "Test types"
       run: npm run test:types
   benchmark:

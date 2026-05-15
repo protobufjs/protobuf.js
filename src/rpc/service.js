@@ -114,7 +114,7 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
         if (response === null) {
             self.end(/* endedByRPC */ true);
             if (promise)
-                callback(null, null);
+                resolvePromise(null);
             return;
         }
 
