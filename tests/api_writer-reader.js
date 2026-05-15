@@ -11,9 +11,9 @@ tape.test("writer & reader", function(test) {
         Reader.create(1);
     }, "should throw when creating a Reader from something else than a buffer");
 
-    test.doesNotThrow(function() {
+    test.throws(function() {
         Reader.create([]);
-    }, "should not throw when creating a Reader from an array (comp)");
+    }, "should throw when creating a Reader from an array");
 
     // uint32, int32, sint32
 
@@ -39,7 +39,7 @@ tape.test("writer & reader", function(test) {
     test.ok(expect("uint32", -1 >>> 0, [ 255, 255, 255, 255, 15 ]), "should write -1 as an unsigned varint of length 5");
     test.ok(expect("int32", -1, [ 255, 255, 255, 255, 255, 255, 255, 255, 255, 1 ]), "should write -1 as a signed varint of length 10");
     test.ok(expect("sint32", -1, [ 1 ]), "should write -1 as a signed zig-zag encoded varint of length 1");
-    var reader = Reader.create([ 128, 128, 128, 128, 128, 0, 1 ]);
+    var reader = Reader.create(protobuf.util.newBuffer([ 128, 128, 128, 128, 128, 0, 1 ]));
     test.equal(reader.uint32(), 0, "should read non-minimal uint32 varints");
     test.equal(reader.uint32(), 1, "should stop after the non-minimal uint32 varint");
 
@@ -93,7 +93,7 @@ tape.test("writer & reader", function(test) {
 
     test.ok(expect("bool", true, [1]), "should write true as a varint of length 1 and read it back equally");
     test.ok(expect("bool", false, [0]), "should write false as a varint of length 1 and read it back equally");
-    test.equal(Reader.create([ 128, 128, 128, 128, 16 ]).bool(), true, "should read 64 bit non-zero bool varints as true");
+    test.equal(Reader.create(protobuf.util.newBuffer([ 128, 128, 128, 128, 16 ])).bool(), true, "should read 64 bit non-zero bool varints as true");
 
     // string, see also util_utf8
 
@@ -113,7 +113,7 @@ tape.test("writer & reader", function(test) {
 
     // raw bytes
 
-    var rawReader = Reader.create([0,1,2,3]);
+    var rawReader = Reader.create(protobuf.util.newBuffer([0,1,2,3]));
     test.deepEqual(Array.prototype.slice.call(rawReader.raw(1, 3)), [1,2], "should read raw bytes without a length prefix");
     test.equal(rawReader.pos, 0, "should read raw bytes without advancing");
     if (protobuf.util.Buffer)

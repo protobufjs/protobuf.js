@@ -38,7 +38,7 @@ function Reader(buffer) {
 }
 
 function create_array(buffer) {
-    if (buffer instanceof Uint8Array || Array.isArray(buffer))
+    if (buffer instanceof Uint8Array)
         return new Reader(buffer);
     throw Error("illegal buffer");
 }
@@ -75,9 +75,6 @@ Reader.prototype._slice = Uint8Array.prototype.subarray;
  * @returns {Uint8Array} Raw bytes
  */
 Reader.prototype.raw = function read_raw(start, end) {
-    if (Array.isArray(this.buf)) // plain array
-        return this.buf.slice(start, end);
-
     if (start === end) // fix for IE 10/Win8 and others' subarray returning array of size 1
         return new this.buf.constructor(0);
     return this._slice.call(this.buf, start, end);
