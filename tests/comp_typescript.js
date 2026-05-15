@@ -64,9 +64,10 @@ var AwesomeEnum;
 (function (AwesomeEnum) {
     AwesomeEnum[AwesomeEnum["ONE"] = 1] = "ONE";
     AwesomeEnum[AwesomeEnum["TWO"] = 2] = "TWO";
-})(AwesomeEnum = exports.AwesomeEnum || (exports.AwesomeEnum = {}));
+})(AwesomeEnum || (exports.AwesomeEnum = AwesomeEnum = {}));
 class AwesomeSubMessage extends __1.Message {
 }
+exports.AwesomeSubMessage = AwesomeSubMessage;
 __decorate([
     __1.Field.d(1, "string"),
     __metadata("design:type", String)
@@ -83,9 +84,9 @@ __decorate([
     __1.MapField.d(4, "string", AwesomeSubMessage),
     __metadata("design:type", Object)
 ], AwesomeSubMessage.prototype, "awesomeMapMessage", void 0);
-exports.AwesomeSubMessage = AwesomeSubMessage;
 let AwesomeMessage = class AwesomeMessage extends __1.Message {
 };
+exports.AwesomeMessage = AwesomeMessage;
 __decorate([
     __1.Field.d(1, "string", "optional", "awesome default string"),
     __metadata("design:type", String)
@@ -102,10 +103,9 @@ __decorate([
     __1.OneOf.d("awesomeSubMessage", "awesomeEnum"),
     __metadata("design:type", String)
 ], AwesomeMessage.prototype, "which", void 0);
-AwesomeMessage = __decorate([
+exports.AwesomeMessage = AwesomeMessage = __decorate([
     __1.Type.d("SuperAwesomeMessage")
 ], AwesomeMessage);
-exports.AwesomeMessage = AwesomeMessage;
 let awesomeMessage = new AwesomeMessage({ awesomeField: "hi" });
 let awesomeBuffer = AwesomeMessage.encode(awesomeMessage).finish();
 let awesomeDecoded = AwesomeMessage.decode(awesomeBuffer);

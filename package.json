@@ -42,11 +42,11 @@
     "prof": "node bench/prof",
     "test": "npm run test:sources && npm run test:types",
     "test:sources": "tape -r ./lib/tape-adapter tests/*.js tests/node/*.js",
-    "test:types": "tsc tests/comp_typescript.ts --target es2019 --module commonjs --types node --lib es2019 --esModuleInterop --strictNullChecks --experimentalDecorators --emitDecoratorMetadata && tsc -p tsconfig.test-types.json",
+    "test:types": "tsc tests/comp_typescript.ts --ignoreConfig --target es2019 --module commonjs --types node --lib es2019 --esModuleInterop --strictNullChecks --strictPropertyInitialization false --experimentalDecorators --emitDecoratorMetadata && tsc -p tsconfig.test-types.json",
     "make": "npm run lint:sources && npm run build && npm run lint:types && node ./scripts/gentests.js && npm test"
   },
   "dependencies": {
-    "long": "^5.0.0"
+    "long": "^5.3.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
@@ -72,7 +72,7 @@
     "reflect-metadata": "^0.2.0",
     "tape": "^5.0.0",
     "tslint": "^6.0.0",
-    "typescript": "^3.7.5",
+    "typescript": "^6.0.3",
     "uglify-js": "^3.7.7",
     "vinyl-buffer": "^1.0.1",
     "vinyl-fs": "^4.0.0",
