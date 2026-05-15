@@ -13,6 +13,9 @@
 
 ## Getting started
 
+> [!NOTE]
+> protobuf.js v9.x has switched to ESM.
+
 ### Install
 
 ```sh
@@ -71,13 +74,13 @@ protobuf.js converts `.proto` field names to camelCase by default, so `awesome_f
 ### Load a schema
 
 ```ts
-const protobuf = require("protobufjs");
+import * as protobuf from "protobufjs";
 
-const root = protobuf.loadSync("awesome.proto");
+const root = await protobuf.load("awesome.proto");
 const AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");
 ```
 
-Use `protobuf.load()` for the asynchronous variant.
+Or use named imports to benefit from tree-shaking.
 
 ### Encode and decode
 
@@ -198,7 +201,7 @@ npx pbjs -t json -o awesome.json awesome1.proto awesome2.proto ...
 ```
 
 ```ts
-const bundle = require("./awesome.json");
+import bundle from "./awesome.json";
 
 const root = protobuf.Root.fromJSON(bundle);
 const AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");

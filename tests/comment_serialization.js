@@ -2,12 +2,9 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("by default, drop comments through de/serialization", function(test) {
+tape.test("by default, drop comments through de/serialization", async function(test) {
     test.plan(16);
-    protobuf.load("tests/data/comment_serialization.proto", function(err, root) {
-        if (err) {
-            throw test.fail(err.message);
-        }
+    var root = await protobuf.load("tests/data/comment_serialization.proto");
 
         var copy = protobuf.Root.fromJSON(root.toJSON());
         test.ok(root.lookup("TestMessage").comment);
@@ -33,16 +30,11 @@ tape.test("by default, drop comments through de/serialization", function(test) {
         test.ok(rootEnum.comments.VALUE);
         test.notOk(copyEnum.comments.VALUE);
 
-        test.end();
-    });
 });
 
-tape.test("preserve comments through de/serialization if option set", function(test) {
+tape.test("preserve comments through de/serialization if option set", async function(test) {
     test.plan(8);
-    protobuf.load("tests/data/comment_serialization.proto", function(err, root) {
-        if (err) {
-            throw test.fail(err.message);
-        }
+    var root = await protobuf.load("tests/data/comment_serialization.proto");
 
         var toJSONOptions = {keepComments: true};
         var copy = protobuf.Root.fromJSON(root.toJSON(toJSONOptions));
@@ -61,6 +53,4 @@ tape.test("preserve comments through de/serialization if option set", function(t
         test.equal(rootEnum.comment, copyEnum.comment);
         test.equal(rootEnum.comments.VALUE, copyEnum.comments.VALUE);
 
-        test.end();
-    });
 });

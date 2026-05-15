@@ -1,6 +1,6 @@
 "use strict";
 var $protobuf = require("../light");
-module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).lookup(".google.protobuf");
+module.exports = exports = $protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).lookup(".google.protobuf");
 
 var Namespace = $protobuf.Namespace,
     Root      = $protobuf.Root,

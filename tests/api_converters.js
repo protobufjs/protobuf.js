@@ -2,11 +2,9 @@ var tape = require("tape");
 
 var protobuf  = require("..");
 
-tape.test("converters", function(test) {
+tape.test("converters", async function(test) {
 
-    protobuf.load("tests/data/convert.proto", function(err, root) {
-        if (err)
-            return test.fail(err.message);
+    var root = await protobuf.load("tests/data/convert.proto");
 
         var Message = root.lookup("Message");
 
@@ -217,8 +215,5 @@ tape.test("converters", function(test) {
             };
             msg.toJSON();
         });
-
-        test.end();
-    });
 
 });

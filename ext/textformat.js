@@ -8,7 +8,7 @@ var Type    = protobuf.Type,
     types   = protobuf.types,
     util    = protobuf.util;
 
-var textformat = protobuf.textformat = module.exports = {};
+var textformat = module.exports = {};
 
 /**
  * Maximum recursion depth for formatting length-delimited unknown fields.

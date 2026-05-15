@@ -3,13 +3,11 @@ var tape = require("tape");
 var protobuf = require(".."),
     Message  = protobuf.Message;
 
-tape.test("google.protobuf.Any class", function(test) {
+tape.test("google.protobuf.Any class", async function(test) {
 
     test.plan(1);
 
-    protobuf.load("tests/data/common.proto", function(err, root) {
-        if (err)
-            return test.fail(err.message);
+    var root = await protobuf.load("tests/data/common.proto");
 
         function Any(properties) {
             Message.call(this, properties);
@@ -81,5 +79,4 @@ tape.test("google.protobuf.Any class", function(test) {
 
             test.end();
         });
-    });
 });

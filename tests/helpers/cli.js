@@ -15,11 +15,19 @@ module.exports = function cliTest(test, testFunc) {
     };
     require.cache.protobufjs = require.cache[path.resolve("index.js")];
 
-    try {
-        testFunc();
-    } finally {
-        // Rollback all the require() related mess we made
+    function restore() {
         delete require.cache.protobufjs;
         Module._resolveFilename = savedResolveFilename;
+    }
+
+    try {
+        var result = testFunc();
+        if (result && typeof result.finally === "function")
+            return result.finally(restore);
+        restore();
+        return result;
+    } catch (err) {
+        restore();
+        throw err;
     }
 };

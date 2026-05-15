@@ -3,9 +3,9 @@ var tape = require("tape");
 var protobuf = require("../index");
 var descriptor = require("../ext/descriptor");
 
-tape.test("descriptor - proto2 to proto3", function (test) {
+tape.test("descriptor - proto2 to proto3", async function (test) {
     // load document with extended field imported multiple times
-    var root = protobuf.loadSync(path.resolve(__dirname, "data/test.proto"));
+    var root = await protobuf.load(path.resolve(__dirname, "data/test.proto"));
 
     // convert to Descriptor Set
     var decodedDescriptorSet = root.toDescriptor("proto3");

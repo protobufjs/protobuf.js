@@ -1,7 +1,7 @@
 var tape = require("tape");
 
 var protobuf = require("..");
-require("../ext/textformat");
+var textformat = require("../ext/textformat");
 
 var proto = "syntax = \"proto3\";\
 message Child { string name = 1; }\
@@ -232,13 +232,13 @@ tape.test("textformat - optionally formats unknown fields", function(test) {
         "}"
     ].join("\n"), "formats unknown fields with numeric text format syntax");
 
-    var unknownLimit = protobuf.textformat.unknownRecursionLimit,
+    var unknownLimit = textformat.unknownRecursionLimit,
         nestedOnly = M.decode(protobuf.Writer.create().uint32(1002 << 3 | 2).bytes(nested).finish());
-    protobuf.textformat.unknownRecursionLimit = 0;
+    textformat.unknownRecursionLimit = 0;
     try {
         test.equal(M.toText(nestedOnly, { unknowns: true }), "1002: \"\\010o\"", "unknown recursion limit disables nested heuristic");
     } finally {
-        protobuf.textformat.unknownRecursionLimit = unknownLimit;
+        textformat.unknownRecursionLimit = unknownLimit;
     }
     test.end();
 });

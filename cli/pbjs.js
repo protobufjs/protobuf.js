@@ -395,18 +395,17 @@ exports.main = function main(args, callback) {
 
     // Load from disk
     } else {
-        try {
-            root.loadSync(files, parseOptions).resolveAll(); // sync is deterministic while async is not
+        root.load(files, parseOptions).then(function() {
             if (argv.sparse)
                 sparsify(root, mainFiles);
             callTarget();
-        } catch (err) {
+        }).catch(function(err) {
             if (callback) {
                 callback(err);
-                return undefined;
+                return;
             }
             throw err;
-        }
+        });
     }
 
     function filterMessage() {

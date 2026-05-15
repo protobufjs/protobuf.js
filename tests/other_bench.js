@@ -3,11 +3,9 @@ var tape = require("tape");
 var protobuf = require(".."),
     util = protobuf.util;
 
-tape.test("bench.proto and bench.json", function(test) {
+tape.test("bench.proto and bench.json", async function(test) {
     test.plan(4);
-    protobuf.load("bench/data/bench.proto", undefined, function(err, root) { // no require.resolve to support browsers
-        if (err)
-            return test.fail(err.message);
+    var root = await protobuf.load("bench/data/bench.proto"); // no require.resolve to support browsers
 
         var Test = root.lookup("Test");
 
@@ -21,6 +19,4 @@ tape.test("bench.proto and bench.json", function(test) {
 
         test.deepEqual(Test.toObject(decoded), data, "should convert back to the original object");
 
-        test.end();
-    });
 });

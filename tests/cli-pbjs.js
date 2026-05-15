@@ -7,14 +7,28 @@ var fs = require("fs");
 var child_process = require("child_process");
 var cliTest = require("./helpers/cli");
 
-tape.test("pbjs generates static code", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync("tests/data/cli/test.proto");
+function generate(target, root, options, callback) {
+    return new Promise(function(resolve, reject) {
+        target(root, options, function(err, output, dtsOutput) {
+            try {
+                callback(err, output, dtsOutput);
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
+        });
+    });
+}
+
+tape.test("pbjs generates static code", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load("tests/data/cli/test.proto");
         root.resolveAll();
+        var dynamicRoot = await protobuf.load("tests/data/cli/test.proto");
 
         var staticTarget = require("../cli/targets/static");
 
-        staticTarget(root, {
+        await generate(staticTarget, root, {
             create: true,
             decode: true,
             encode: true,
@@ -46,8 +60,7 @@ tape.test("pbjs generates static code", function(test) {
             test.deepEqual(obj, obj1, "fromObject and toObject work for plain object");
 
             // Check that dynamic fromObject and toObject work for static instance
-            var root = protobuf.loadSync("tests/data/cli/test.proto");
-            var OneofContainerDynamic = root.lookup("OneofContainer");
+            var OneofContainerDynamic = dynamicRoot.lookup("OneofContainer");
             var instance = new OneofContainer();
             instance.messageInOneof = new Message();
             instance.messageInOneof.value = 42;
@@ -67,14 +80,14 @@ tape.test("pbjs generates static code", function(test) {
     });
 });
 
-tape.test("pbjs generates correct ES module static-module imports", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync("tests/data/cli/test.proto");
+tape.test("pbjs generates correct ES module static-module imports", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load("tests/data/cli/test.proto");
         root.resolveAll();
 
         var staticModuleTarget = require("../cli/targets/static-module");
 
-        staticModuleTarget(root, {
+        await generate(staticModuleTarget, root, {
             wrap: "esm",
         }, function(err, jsCode) {
             test.error(err, "static-module code generation worked");
@@ -102,14 +115,14 @@ tape.test("pbjs emits file overview comments on one line", function(test) {
     });
 });
 
-tape.test("pbjs keeps es6 as an ES module wrapper alias", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync("tests/data/cli/test.proto");
+tape.test("pbjs keeps es6 as an ES module wrapper alias", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load("tests/data/cli/test.proto");
         root.resolveAll();
 
         var staticModuleTarget = require("../cli/targets/static-module");
 
-        staticModuleTarget(root, {
+        await generate(staticModuleTarget, root, {
             wrap: "es6",
         }, function(err, jsCode) {
             test.error(err, "static-module code generation worked");
@@ -123,7 +136,7 @@ tape.test("pbjs supports custom target paths", function(test) {
     cliTest(test, function() {
         var pbjs = require("../cli/pbjs");
         var tmpDir = path.join(".tmp", "pbjs-custom-target-" + process.pid + "-" + Date.now());
-        var targetPath = path.join(tmpDir, "custom-target.js");
+        var targetPath = path.join(tmpDir, "custom-target.cjs");
         var outPath = path.join(tmpDir, "out.js");
 
         fs.mkdirSync(tmpDir, { recursive: true });
@@ -149,9 +162,9 @@ tape.test("pbjs supports custom target paths", function(test) {
     });
 });
 
-tape.test("pbjs json-module exports reflection root", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync([
+tape.test("pbjs json-module exports reflection root", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load([
             "tests/data/package.proto",
             "tests/data/comment_serialization.proto"
         ]);
@@ -198,7 +211,7 @@ tape.test("pbjs json-module exports reflection root", function(test) {
 
         var jsonModuleTarget = require("../cli/targets/json-module");
 
-        jsonModuleTarget(root, {
+        await generate(jsonModuleTarget, root, {
             wrap: "commonjs",
             root: "jsonCompat",
             es6: true,
@@ -270,9 +283,9 @@ tape.test("pbjs json-module exports reflection root", function(test) {
     });
 });
 
-tape.test("pbjs json-module emits ES module named exports", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync([
+tape.test("pbjs json-module emits ES module named exports", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load([
             "tests/data/package.proto",
             "tests/data/comment_serialization.proto"
         ]);
@@ -325,7 +338,7 @@ tape.test("pbjs json-module emits ES module named exports", function(test) {
 
         var jsonModuleTarget = require("../cli/targets/json-module");
 
-        jsonModuleTarget(root, {
+        await generate(jsonModuleTarget, root, {
             wrap: "esm",
             es6: true,
             root: "jsonCompatEsm",
@@ -644,9 +657,9 @@ tape.test("pbjs escapes static target names", function(test) {
     });
 });
 
-tape.test("pbjs generates static code with message filter", function (test) {
-    cliTest(test, function () {
-        var root = protobuf.loadSync("tests/data/cli/test-filter.proto");
+tape.test("pbjs generates static code with message filter", async function (test) {
+    await cliTest(test, async function () {
+        var root = await protobuf.load("tests/data/cli/test-filter.proto");
         root.resolveAll();
 
         var staticTarget = require("../cli/targets/static");
@@ -656,7 +669,7 @@ tape.test("pbjs generates static code with message filter", function (test) {
 
         util.filterMessage(root, needMessageConfig);
 
-        staticTarget(root, {
+        await generate(staticTarget, root, {
             create: true,
             decode: true,
             encode: true,

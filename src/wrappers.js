@@ -78,8 +78,12 @@ wrappers[".google.protobuf.Any"] = {
             prefix = message.type_url.substring(0, message.type_url.lastIndexOf("/") + 1);
             var type = this.lookup(name);
             /* istanbul ignore else */
-            if (type)
-                message = type.decode(message.value);
+            if (type) {
+                var value = message.value;
+                if (!(value instanceof Uint8Array))
+                    value = new Uint8Array(value);
+                message = type.decode(value);
+            }
         }
 
         // wrap value if unmapped

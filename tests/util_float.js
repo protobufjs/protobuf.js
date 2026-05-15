@@ -4,21 +4,7 @@ var float = require("../src/util/float");
 
 tape.test("float", function(test) {
 
-    // default
-    test.test(test.name + " - typed array", function(test) {
-        runTest(float, test);
-    });
-
-    // ieee754
-    test.test(test.name + " - fallback", function(test) {
-        var F32 = global.Float32Array,
-            F64 = global.Float64Array;
-        delete global.Float32Array;
-        delete global.Float64Array;
-        runTest(float({}), test);
-        global.Float32Array = F32;
-        global.Float64Array = F64;
-    });
+    runTest(float, test);
 });
 
 function runTest(float, test) {

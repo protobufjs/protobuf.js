@@ -50,6 +50,7 @@ tape.test("proto3 implicit scalar defaults", function(test) {
     var Message = root.lookupType("Message");
 
     function reencode(buf) {
+        buf = protobuf.util.newBuffer(buf);
         return Array.prototype.slice.call(Message.encode(Message.decode(buf)).finish());
     }
 

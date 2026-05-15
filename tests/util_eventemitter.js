@@ -1,6 +1,6 @@
 var tape = require("tape");
 
-var EventEmitter = require("../src/util/eventemitter");
+var EventEmitter = require("../src/util/eventemitter").EventEmitter;
 
 tape.test("eventemitter", function(test) {
 
