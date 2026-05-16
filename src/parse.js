@@ -587,6 +587,9 @@ function parse(source, root, options) {
                             throw illegal(token);
                     }
                     break;
+                case "reserved":
+                    readRanges(type.reserved || (type.reserved = []), true);
+                    break;
 
                 /* istanbul ignore next */
                 default:
