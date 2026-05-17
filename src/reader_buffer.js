@@ -1,5 +1,6 @@
 import { Reader } from "./reader.js";
 import { util } from "./util/minimal.js";
+import { readStrict as readUtf8Strict } from "./util/utf8.js";
 
 // extends Reader
 (BufferReader.prototype = Object.create(Reader.prototype)).constructor = BufferReader;
@@ -57,6 +58,22 @@ BufferReader.prototype.string = function read_string_buffer() {
     return this.buf.utf8Slice
         ? this.buf.utf8Slice(start, end)
         : this.buf.toString("utf-8", start, end);
+};
+
+/**
+ * @override
+ */
+BufferReader.prototype.stringVerify = function read_string_buffer_verify() {
+    var len = this.uint32(), // modifies pos
+        start = this.pos,
+        end = this.pos + len;
+
+    /* istanbul ignore if */
+    if (end > this.len)
+        throw RangeError("index out of range: " + this.pos + " + " + len + " > " + this.len);
+
+    this.pos = end;
+    return readUtf8Strict(this.buf, start, end);
 };
 
 /**

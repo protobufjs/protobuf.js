@@ -99,10 +99,19 @@ tape.test("writer & reader", function(test) {
     test.ok(expect("string", "123", [3,49,50,51]), "should write \"123\" as a string prefixed with its length as a varint and read it back equally");
     test.ok(expect("string", "hello world", [11,104,101,108,108,111,32,119,111,114,108,100], Writer), "should write ascii strings with the array writer");
     test.ok(expect("string", "ä", [2,195,164], Writer), "should write non-ascii strings with the array writer");
+    test.same(Array.prototype.slice.call(new Writer().string("\ud800").finish()), [3,239,191,189], "should write lone surrogates as replacement characters with the array writer");
+    test.same(Array.prototype.slice.call(Writer.create().string("\ud800").finish()), [3,239,191,189], "should write lone surrogates as replacement characters with the default writer");
     test.ok(expect("string", "", [0]), "should write \"\" as a string prefixed with its length as a varint and read it back equally");
     test.throws(function() {
         Reader.create(protobuf.util.newBuffer([ 3, 49, 50 ])).string();
     }, /index out of range/, "should throw on truncated strings");
+    var invalidUtf8 = [ 2, 0xc0, 0xaf ],
+        invalidReplacement = protobuf.util.Buffer
+            ? protobuf.util.Buffer.from(invalidUtf8.slice(1)).toString("utf8")
+            : "\ufffd\ufffd";
+    test.equal(Reader.create(Uint8Array.from(invalidUtf8)).string(), invalidReplacement, "should replace invalid UTF-8 strings");
+    if (protobuf.util.Buffer)
+        test.equal(Reader.create(protobuf.util.Buffer.from(invalidUtf8)).string(), invalidReplacement, "should replace invalid UTF-8 strings with the buffer reader");
 
     // bytes
 
@@ -150,21 +159,21 @@ tape.test("writer & reader", function(test) {
 
         // writes at offset and preserves existing data
         var w2 = Writer.create();
-        w2.uint32(100).string("hello").bool(true);
+        w2.uint32(100).string("hello").string("\u00e4".repeat(30)).bool(true);
         var expected = w2.finish();
 
         var w3 = Writer.create();
-        w3.uint32(100).string("hello").bool(true);
-        var offset = 3;
-        var buf3 = new Uint8Array(offset + w3.len);
-        for (var i = 0; i < offset; ++i)
-            buf3[i] = 99;
+        w3.uint32(100).string("hello").string("\u00e4".repeat(30)).bool(true);
+        var padding = 5,
+            offset = 3,
+            storage = new Uint8Array(padding + offset + w3.len),
+            buf3 = storage.subarray(padding);
+        for (var i = 0; i < padding + offset; ++i)
+            storage[i] = 99;
         w3.finishInto(buf3, offset);
 
-        for (var i = 0; i < offset; ++i)
-            test.equal(buf3[i], 99, "preserves byte at index " + i + " before offset");
-        for (var i = 0; i < expected.length; ++i)
-            test.equal(buf3[offset + i], expected[i], "byte at offset+" + i + " matches finish()");
+        test.same(Array.prototype.slice.call(storage, 0, padding + offset), Array(padding + offset).fill(99), "preserves bytes before output");
+        test.same(Array.prototype.slice.call(buf3, offset, offset + expected.length), Array.prototype.slice.call(expected), "writes bytes at offset");
 
         test.end();
     });

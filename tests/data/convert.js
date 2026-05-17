@@ -238,7 +238,7 @@ $root.Message = (function() {
             case 1: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.stringVal = value;
                     else
                         delete message.stringVal;
@@ -249,7 +249,7 @@ $root.Message = (function() {
                         break;
                     if (!(message.stringRepeated && message.stringRepeated.length))
                         message.stringRepeated = [];
-                    message.stringRepeated.push(reader.string());
+                    message.stringRepeated.push(reader.stringVerify());
                     continue;
                 }
             case 3: {
@@ -334,7 +334,7 @@ $root.Message = (function() {
                         case 1:
                             if (wireType !== 2)
                                 break;
-                            key = reader.string();
+                            key = reader.stringVerify();
                             continue;
                         case 2:
                             if (wireType !== 0)

@@ -6,6 +6,7 @@ import {
     types,
     util
 } from "../light.js";
+import { length as utf8Length, read as readUtf8, write as writeUtf8 } from "../src/util/utf8.js";
 
 var textformat = {},
     unknownRecursionLimit = 10;
@@ -1105,7 +1106,7 @@ function utf8Read(bytes, strict) {
     if (strict && !validUtf8(bytes))
         throw Error("invalid UTF-8 string");
     var buffer = util.newBuffer(bytes);
-    return util.utf8.read(buffer, 0, buffer.length);
+    return readUtf8(buffer, 0, buffer.length);
 }
 
 function validUtf8(bytes) {
@@ -1141,8 +1142,8 @@ function validUtf8(bytes) {
 }
 
 function utf8Bytes(str) {
-    var buffer = util.newBuffer(util.utf8.length(str));
-    util.utf8.write(str, buffer, 0);
+    var buffer = util.newBuffer(utf8Length(str));
+    writeUtf8(str, buffer, 0);
     return buffer;
 }
 

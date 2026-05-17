@@ -322,7 +322,7 @@ $root.Package = (function() {
             case 1: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.name = value;
                     else
                         delete message.name;
@@ -331,7 +331,7 @@ $root.Package = (function() {
             case 2: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.version = value;
                     else
                         delete message.version;
@@ -340,7 +340,7 @@ $root.Package = (function() {
             case 19: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.versionScheme = value;
                     else
                         delete message.versionScheme;
@@ -349,7 +349,7 @@ $root.Package = (function() {
             case 3: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.description = value;
                     else
                         delete message.description;
@@ -358,7 +358,7 @@ $root.Package = (function() {
             case 4: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.author = value;
                     else
                         delete message.author;
@@ -367,7 +367,7 @@ $root.Package = (function() {
             case 5: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.license = value;
                     else
                         delete message.license;
@@ -382,7 +382,7 @@ $root.Package = (function() {
             case 7: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.bugs = value;
                     else
                         delete message.bugs;
@@ -391,7 +391,7 @@ $root.Package = (function() {
             case 8: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.homepage = value;
                     else
                         delete message.homepage;
@@ -402,13 +402,13 @@ $root.Package = (function() {
                         break;
                     if (!(message.keywords && message.keywords.length))
                         message.keywords = [];
-                    message.keywords.push(reader.string());
+                    message.keywords.push(reader.stringVerify());
                     continue;
                 }
             case 10: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.main = value;
                     else
                         delete message.main;
@@ -429,12 +429,12 @@ $root.Package = (function() {
                         case 1:
                             if (wireType !== 2)
                                 break;
-                            key = reader.string();
+                            key = reader.stringVerify();
                             continue;
                         case 2:
                             if (wireType !== 2)
                                 break;
-                            value = reader.string();
+                            value = reader.stringVerify();
                             continue;
                         }
                         reader.skipType(wireType, _depth, tag2);
@@ -459,12 +459,12 @@ $root.Package = (function() {
                         case 1:
                             if (wireType !== 2)
                                 break;
-                            key = reader.string();
+                            key = reader.stringVerify();
                             continue;
                         case 2:
                             if (wireType !== 2)
                                 break;
-                            value = reader.string();
+                            value = reader.stringVerify();
                             continue;
                         }
                         reader.skipType(wireType, _depth, tag2);
@@ -489,12 +489,12 @@ $root.Package = (function() {
                         case 1:
                             if (wireType !== 2)
                                 break;
-                            key = reader.string();
+                            key = reader.stringVerify();
                             continue;
                         case 2:
                             if (wireType !== 2)
                                 break;
-                            value = reader.string();
+                            value = reader.stringVerify();
                             continue;
                         }
                         reader.skipType(wireType, _depth, tag2);
@@ -519,12 +519,12 @@ $root.Package = (function() {
                         case 1:
                             if (wireType !== 2)
                                 break;
-                            key = reader.string();
+                            key = reader.stringVerify();
                             continue;
                         case 2:
                             if (wireType !== 2)
                                 break;
-                            value = reader.string();
+                            value = reader.stringVerify();
                             continue;
                         }
                         reader.skipType(wireType, _depth, tag2);
@@ -537,7 +537,7 @@ $root.Package = (function() {
             case 17: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.types = value;
                     else
                         delete message.types;
@@ -548,7 +548,7 @@ $root.Package = (function() {
                         break;
                     if (!(message.cliDependencies && message.cliDependencies.length))
                         message.cliDependencies = [];
-                    message.cliDependencies.push(reader.string());
+                    message.cliDependencies.push(reader.stringVerify());
                     continue;
                 }
             }
@@ -1049,7 +1049,7 @@ $root.Package = (function() {
                 case 1: {
                         if (wireType !== 2)
                             break;
-                        if ((value = reader.string()).length)
+                        if ((value = reader.stringVerify()).length)
                             message.type = value;
                         else
                             delete message.type;
@@ -1058,7 +1058,7 @@ $root.Package = (function() {
                 case 2: {
                         if (wireType !== 2)
                             break;
-                        if ((value = reader.string()).length)
+                        if ((value = reader.stringVerify()).length)
                             message.url = value;
                         else
                             delete message.url;

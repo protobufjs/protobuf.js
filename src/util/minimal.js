@@ -1,6 +1,5 @@
 import * as base64 from "./base64.js";
 import * as float from "./float.js";
-import * as utf8 from "./utf8.js";
 import EventEmitter from "./eventemitter.js";
 import isString from "./is-string.js";
 import { pool } from "./pool.js";
@@ -20,9 +19,6 @@ util.EventEmitter = EventEmitter;
 
 // float handling accross browsers
 util.float = float;
-
-// converts to / from utf8 encoded strings
-util.utf8 = utf8;
 
 // provides a node-like buffer pool in the browser
 util.pool = pool;

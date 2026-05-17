@@ -367,7 +367,7 @@ export class FieldBase extends ReflectionObject {
     /** The field's default value on prototypes. */
     defaultValue: any;
 
-    /** Whether this field's value should be treated as a long. */
+    /** Whether this field's value is a 64-bit integer. */
     long: boolean;
 
     /** Whether this field's value is a buffer. */
@@ -1280,6 +1280,12 @@ export class Reader {
     string(): string;
 
     /**
+     * Reads a string preceeded by its byte length as a varint, rejecting invalid UTF8.
+     * @returns Value read
+     */
+    stringVerify(): string;
+
+    /**
      * Skips the specified number of bytes if specified, otherwise skips a varint.
      * @param [length] Length if known, otherwise a varint is assumed
      * @returns `this`
@@ -1839,7 +1845,7 @@ export type TypeDecorator<T extends Message<T>> = (target: Constructor<T>) => vo
 /** Common type constants. */
 export namespace types {
 
-    /** Basic type wire types. */
+    /** Basic field types with their associated wire type. */
     const basic: {
         "double": number,
         "float": number,
@@ -1878,7 +1884,7 @@ export namespace types {
         "message": null
     };
 
-    /** Basic long type wire types. */
+    /** 64-bit integer field types with their associated wire type. */
     const long: {
         "int64": number,
         "uint64": number,
@@ -2327,35 +2333,6 @@ export namespace util {
      * @returns Pooled allocator
      */
     function pool(alloc: PoolAllocator, slice: PoolSlicer, size?: number): PoolAllocator;
-
-    /** A minimal UTF8 implementation for number arrays. */
-    namespace utf8 {
-
-        /**
-         * Calculates the UTF8 byte length of a string.
-         * @param string String
-         * @returns Byte length
-         */
-        function length(string: string): number;
-
-        /**
-         * Reads UTF8 bytes as a string.
-         * @param buffer Source buffer
-         * @param start Source start
-         * @param end Source end
-         * @returns String read
-         */
-        function read(buffer: Uint8Array, start: number, end: number): string;
-
-        /**
-         * Writes a string as UTF8 bytes.
-         * @param string Source string
-         * @param buffer Destination buffer
-         * @param offset Destination offset
-         * @returns Bytes written
-         */
-        function write(string: string, buffer: Uint8Array, offset: number): number;
-    }
 
     /**
      * Converts an object's values to an array.

@@ -1,11 +1,11 @@
 import { util } from "./util/minimal.js";
+import { length as utf8Length, write as writeUtf8 } from "./util/utf8.js";
 
 /* eslint-disable no-invalid-this */
 
 var BufferWriter; // cyclic
 
-var base64    = util.base64,
-    utf8      = util.utf8;
+var base64 = util.base64;
 
 /**
  * Constructs a new writer operation instance.
@@ -178,6 +178,36 @@ function writeStringAscii(buf, pos) {
     var val = this.val;
     for (var i = 0; i < val.length;)
         buf[pos++] = val.charCodeAt(i++);
+}
+
+function writeStringUtf8Short(buf, pos) {
+    var val = this.val,
+        c1,
+        c2;
+    for (var i = 0; i < val.length; ++i) {
+        c1 = val.charCodeAt(i);
+        if (c1 < 128) {
+            buf[pos++] = c1;
+        } else if (c1 < 2048) {
+            buf[pos++] = c1 >> 6 | 192;
+            buf[pos++] = c1 & 63 | 128;
+        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
+            ++i;
+            buf[pos++] = c1 >> 18 | 240;
+            buf[pos++] = c1 >> 12 & 63 | 128;
+            buf[pos++] = c1 >> 6 & 63 | 128;
+            buf[pos++] = c1 & 63 | 128;
+        } else if ((c1 & 0xF800) === 0xD800) {
+            buf[pos++] = 0xEF;
+            buf[pos++] = 0xBF;
+            buf[pos++] = 0xBD;
+        } else {
+            buf[pos++] = c1 >> 12 | 224;
+            buf[pos++] = c1 >> 6 & 63 | 128;
+            buf[pos++] = c1 & 63 | 128;
+        }
+    }
 }
 
 function writeVarint32(buf, pos) {
@@ -432,7 +462,7 @@ function writeBytes(buf, pos) {
 }
 
 function writeStringUtf8(buf, pos) {
-    utf8.write(this.val, buf, pos);
+    writeUtf8(this.val, buf, pos);
 }
 
 /**
@@ -473,9 +503,9 @@ Writer.prototype.raw = function write_raw(value) {
  * @returns {Writer} `this`
  */
 Writer.prototype.string = function write_string(value) {
-    var len = utf8.length(value);
+    var len = utf8Length(value);
     if (len) {
-        this.uint32(len).len += (this.tail = this.tail.next = new Op(len === value.length ? writeStringAscii : writeStringUtf8, len, value)).len;
+        this.uint32(len).len += (this.tail = this.tail.next = new Op(len === value.length ? writeStringAscii : len < 40 ? writeStringUtf8Short : writeStringUtf8, len, value)).len;
     } else {
         this.len += (this.tail = this.tail.next = new Op(writeByte, 1, 0)).len;
     }
@@ -564,4 +594,4 @@ Writer._configure = function(BufferWriter_) {
     BufferWriter._configure();
 };
 
-export { Op, Writer, writeByte, writeStringAscii };
+export { Op, Writer, writeByte, writeStringAscii, writeStringUtf8Short };

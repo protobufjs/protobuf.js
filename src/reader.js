@@ -1,8 +1,7 @@
 import { util } from "./util/minimal.js";
+import { read as readUtf8, readStrict as readUtf8Strict } from "./util/utf8.js";
 
 var BufferReader; // cyclic
-
-var utf8 = util.utf8;
 
 /* istanbul ignore next */
 function indexOutOfRange(reader, writeLength) {
@@ -470,7 +469,24 @@ Reader.prototype.string = function read_string() {
         throw indexOutOfRange(this, length);
 
     this.pos = end;
-    return utf8.read(this.buf, start, end);
+    return readUtf8(this.buf, start, end);
+};
+
+/**
+ * Reads a string preceeded by its byte length as a varint, rejecting invalid UTF8.
+ * @returns {string} Value read
+ */
+Reader.prototype.stringVerify = function read_string_verify() {
+    var length = this.uint32(),
+        start  = this.pos,
+        end    = this.pos + length;
+
+    /* istanbul ignore if */
+    if (end > this.len)
+        throw indexOutOfRange(this, length);
+
+    this.pos = end;
+    return readUtf8Strict(this.buf, start, end);
 };
 
 /**

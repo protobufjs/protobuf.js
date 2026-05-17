@@ -2,6 +2,7 @@ import { ReflectionObject } from "./object.js";
 import { Enum } from "./enum.js";
 import { types } from "./types.js";
 import { util } from "./util.js";
+import { length as utf8Length, write as writeUtf8 } from "./util/utf8.js";
 
 // extends ReflectionObject
 ((Field.prototype = Object.create(ReflectionObject.prototype)).constructor = Field).className = "Field";
@@ -335,7 +336,7 @@ Field.prototype.resolve = function resolve() {
         if (util.base64.test(this.typeDefault))
             util.base64.decode(this.typeDefault, buf = util.newBuffer(util.base64.length(this.typeDefault)), 0);
         else
-            util.utf8.write(this.typeDefault, buf = util.newBuffer(util.utf8.length(this.typeDefault)), 0);
+            writeUtf8(this.typeDefault, buf = util.newBuffer(utf8Length(this.typeDefault)), 0);
         this.typeDefault = buf;
     }
 

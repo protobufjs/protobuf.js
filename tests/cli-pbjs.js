@@ -90,7 +90,7 @@ tape.test("pbjs generates correct ES module static-module imports", async functi
             wrap: "esm",
         }, function(err, jsCode) {
             test.error(err, "static-module code generation worked");
-            test.ok(jsCode.includes("import $protobuf from \"protobufjs/minimal.js\";"), "esm wrapper uses a default import and explicit .js extension");
+            test.ok(jsCode.includes("import * as $protobuf from \"protobufjs/minimal.js\";"), "esm wrapper uses a namespace import and explicit .js extension");
             test.end();
         });
     });
@@ -145,7 +145,7 @@ tape.test("pbjs keeps es6 as an ES module wrapper alias", async function(test) {
             wrap: "es6",
         }, function(err, jsCode) {
             test.error(err, "static-module code generation worked");
-            test.ok(jsCode.includes("import $protobuf from \"protobufjs/minimal.js\";"), "es6 wrapper alias uses ESM imports");
+            test.ok(jsCode.includes("import * as $protobuf from \"protobufjs/minimal.js\";"), "es6 wrapper alias uses ESM imports");
             test.end();
         });
     });

@@ -1,5 +1,6 @@
-import { Op, Writer, writeByte, writeStringAscii } from "./writer.js";
+import { Op, Writer, writeByte, writeStringAscii, writeStringUtf8Short } from "./writer.js";
 import { util } from "./util/minimal.js";
+import { write as writeUtf8 } from "./util/utf8.js";
 
 /* eslint-disable no-invalid-this */
 
@@ -69,13 +70,12 @@ BufferWriter.prototype.raw = function write_raw_buffer(value) {
 };
 
 function writeStringBuffer(buf, pos) {
-    var val = this.val;
-    if (val.length < 40) // plain js is faster for short strings (probably due to redundant assertions)
-        util.utf8.write(val, buf, pos);
-    else if (buf.utf8Write)
-        buf.utf8Write(val, pos);
-    else
-        buf.write(val, pos);
+    if (buf.utf8Write)
+        buf.utf8Write(this.val, pos);
+    else if (buf.write)
+        buf.write(this.val, pos);
+    else /* finishInto(Uint8Array) */
+        writeUtf8(this.val, buf, pos);
 }
 
 /**
@@ -84,12 +84,11 @@ function writeStringBuffer(buf, pos) {
 BufferWriter.prototype.string = function write_string_buffer(value) {
     var len = util.Buffer.byteLength(value);
     if (len)
-        this.uint32(len).len += (this.tail = this.tail.next = new Op(len === value.length && len < 40 ? writeStringAscii : writeStringBuffer, len, value)).len;
+        this.uint32(len).len += (this.tail = this.tail.next = new Op(len < 40 ? len === value.length ? writeStringAscii : writeStringUtf8Short : writeStringBuffer, len, value)).len;
     else
         this.len += (this.tail = this.tail.next = new Op(writeByte, 1, 0)).len;
     return this;
 };
-
 
 /**
  * Finishes the write operation.
