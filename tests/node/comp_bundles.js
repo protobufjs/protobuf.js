@@ -66,7 +66,6 @@ var fullExports = [
         file: path.join(distPath, "index.js"),
         verify: function(test, protobuf) {
             verifyPresent(test, protobuf, [ ...minimalExports, ...lightExports, ...fullExports ]);
-            test.ok(protobuf.util.Long && protobuf.util.Long.isLong, "should bundle long.js");
         }
     },
     {
@@ -75,7 +74,6 @@ var fullExports = [
         verify: function(test, protobuf) {
             verifyPresent(test, protobuf, [ ...minimalExports, ...lightExports ]);
             verifyMissing(test, protobuf, fullExports);
-            test.ok(protobuf.util.Long && protobuf.util.Long.isLong, "should bundle long.js");
         }
     },
     {
@@ -84,7 +82,6 @@ var fullExports = [
         verify: function(test, protobuf) {
             verifyPresent(test, protobuf, minimalExports);
             verifyMissing(test, protobuf, [ ...lightExports, ...fullExports ]);
-            test.ok(protobuf.util.Long && protobuf.util.Long.isLong, "should bundle long.js");
         }
     }
 ]

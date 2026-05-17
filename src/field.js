@@ -327,10 +327,7 @@ Field.prototype.resolve = function resolve() {
 
     // convert to internal data type if necesssary
     if (this.long && this.typeDefault !== null) {
-        if (typeof this.typeDefault === "object")
-            this.typeDefault = BigInt(this.typeDefault.high >>> 0) << 32n | BigInt(this.typeDefault.low >>> 0);
-        else
-            this.typeDefault = BigInt(this.typeDefault);
+        this.typeDefault = BigInt(this.typeDefault);
         if (this.type.charAt(0) !== "u")
             this.typeDefault = BigInt.asIntN(64, this.typeDefault);
     } else if (this.bytes && typeof this.typeDefault === "string") {

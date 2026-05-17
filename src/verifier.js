@@ -99,8 +99,8 @@ function genVerifyKey(gen, field, ref) {
         case "sint64":
         case "fixed64":
         case "sfixed64": gen
-            ("if(!util.key64Re.test(%s))", ref) // see comment above: x is ok, d is not
-                ("return%j", invalid(field, "integer|bigint key"));
+            ("if(!util.key64Re.test(%s))", ref)
+                ("return%j", invalid(field, "integer key"));
             break;
         case "bool": gen
             ("if(!util.key2Re.test(%s))", ref)

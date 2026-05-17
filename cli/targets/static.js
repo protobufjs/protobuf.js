@@ -377,7 +377,7 @@ function toJsType(field, parentIsInterface = false, withNarrowing = false) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            type = "number|bigint";
+            type = config.forceNumber ? "number" : "number|bigint";
             break;
         case "bool":
             type = "boolean";

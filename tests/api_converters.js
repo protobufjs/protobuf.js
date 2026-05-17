@@ -96,15 +96,15 @@ tape.test("converters", async function(test) {
                 var buf = protobuf.util.newBuffer(3);
                 buf[0] = buf[1] = buf[2] = 49; // "111"
                 var msg = Message.create({
-                    uint64Val: protobuf.util.Long.fromNumber(1),
+                    uint64Val: 1n,
                     uint64Repeated: [2, 3],
                     bytesVal: buf,
                     bytesRepeated: [buf, buf],
                     enumVal: 2,
                     enumRepeated: [1, 100, 2],
                     int64Map: {
-                        a: protobuf.util.Long.fromNumber(2),
-                        b: protobuf.util.Long.fromNumber(3)
+                        a: 2n,
+                        b: 3n
                     }
                 });
 

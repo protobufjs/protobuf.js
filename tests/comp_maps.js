@@ -261,6 +261,14 @@ tape.test("maps", function(test) {
         assertReencode(boolBuf, "should re-encode false boolean keys");
 
         longCases.forEach(function(testCase) {
+            var fieldName = Object.keys(testCase[2])[0],
+                expectedMap = testCase[2][fieldName],
+                decodedMap = MapMessage.decode(testCase[1])[fieldName];
+            test.deepEqual(
+                Object.keys(decodedMap),
+                Object.keys(expectedMap),
+                "should decode " + testCase[0] + " keys as decimal strings"
+            );
             assertReencode(testCase[1], "should re-encode " + testCase[0] + " keys");
             test.equal(
                 MapMessage.verify(MapMessage.decode(testCase[1])),

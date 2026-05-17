@@ -42,9 +42,6 @@
     "test:types": "tsc tests/comp_typescript.ts --ignoreConfig --target es2022 --module commonjs --types node --lib es2022 --esModuleInterop --strictNullChecks --strictPropertyInitialization false --experimentalDecorators --emitDecoratorMetadata && tsc -p tsconfig.test-types.json",
     "make": "npm run lint:sources && npm run build && npm run lint:types && node ./scripts/gentests.js && npm test"
   },
-  "dependencies": {
-    "long": "^5.3.2"
-  },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
     "@types/node": "^22.12.0",

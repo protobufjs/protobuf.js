@@ -39,7 +39,6 @@ var booleanOptions = new Set([
     "service",
     "sparse",
     "keep-case",
-    "force-long",
     "force-number",
     "force-enum-string",
     "force-message",

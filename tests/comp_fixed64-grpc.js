@@ -31,7 +31,6 @@ tape.test("fixed64 (grpc)", function(test) {
     test.equal(buffer[0], 9, "should encode id 1, wireType 1");
 
     var decoded = Test.decode(buffer);
-    // decoded.int_64 is a Long here, so this implicitly calls Long#toString:
     test.ok(decoded.int_64 == '314159265358979', "should decode back the original value");
 
     test.end();

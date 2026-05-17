@@ -114,6 +114,26 @@ tape.test("pbjs emits file overview comments on one line", function(test) {
     });
 });
 
+tape.test("pbjs preserves force-number static long types", function(test) {
+    cliTest(test, function() {
+        var root = new protobuf.Root().add(new protobuf.Type("Message")
+            .add(new protobuf.Field("value", 1, "int64")));
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {
+            comments: true,
+            forceNumber: true
+        }, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+            test.ok(jsCode.indexOf("@member {number} value") >= 0, "emits number member type");
+            test.equal(jsCode.indexOf("number|bigint"), -1, "does not emit bigint member type");
+            test.end();
+        });
+    });
+});
+
 tape.test("pbjs keeps es6 as an ES module wrapper alias", async function(test) {
     await cliTest(test, async function() {
         var root = await protobuf.load("tests/data/cli/test.proto");

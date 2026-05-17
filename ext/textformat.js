@@ -877,7 +877,7 @@ function writeMapField(field, map, lines, indent, options, depth) {
     for (var i = 0; i < keys.length; ++i) {
         if (depth + 1 > util.recursionLimit)
             throw Error("max depth exceeded");
-        var key = keyField.long ? util.longFromKey(keys[i], keyField.type === "uint64" || keyField.type === "fixed64") : keys[i];
+        var key = keyField.long ? BigInt(keys[i]) : keys[i];
         if (keyField.type === "bool")
             key = util.boolFromKey(keys[i]);
         lines.push(sp + name + " {");

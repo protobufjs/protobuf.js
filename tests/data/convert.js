@@ -255,7 +255,7 @@ $root.Message = (function() {
             case 3: {
                     if (wireType !== 0)
                         break;
-                    if (typeof (value = reader.uint64()) === "bigint" ? value !== 0n : typeof value === "object" ? value.low || value.high : value !== 0)
+                    if ((value = reader.uint64()) !== 0n)
                         message.uint64Val = value;
                     else
                         delete message.uint64Val;
@@ -478,20 +478,14 @@ $root.Message = (function() {
                 message.stringRepeated[i] = String(object.stringRepeated[i]);
         }
         if (object.uint64Val != null)
-            if (typeof object.uint64Val === "object" ? object.uint64Val.low || object.uint64Val.high : Number(object.uint64Val) !== 0)
-                if (typeof object.uint64Val === "object")
-                    message.uint64Val = BigInt(object.uint64Val.high >>> 0) << 32n | BigInt(object.uint64Val.low >>> 0);
-                else
-                    message.uint64Val = BigInt.asUintN(64, BigInt(object.uint64Val));
+            if (BigInt(object.uint64Val) !== 0n)
+                message.uint64Val = BigInt.asUintN(64, BigInt(object.uint64Val));
         if (object.uint64Repeated) {
             if (!Array.isArray(object.uint64Repeated))
                 throw TypeError(".Message.uint64Repeated: array expected");
             message.uint64Repeated = Array(object.uint64Repeated.length);
             for (var i = 0; i < object.uint64Repeated.length; ++i)
-                if (typeof object.uint64Repeated[i] === "object")
-                    message.uint64Repeated[i] = BigInt(object.uint64Repeated[i].high >>> 0) << 32n | BigInt(object.uint64Repeated[i].low >>> 0);
-                else
-                    message.uint64Repeated[i] = BigInt.asUintN(64, BigInt(object.uint64Repeated[i]));
+                message.uint64Repeated[i] = BigInt.asUintN(64, BigInt(object.uint64Repeated[i]));
         }
         if (object.bytesVal != null)
             if (object.bytesVal.length)
@@ -554,10 +548,7 @@ $root.Message = (function() {
             for (var keys = Object.keys(object.int64Map), i = 0; i < keys.length; ++i) {
                 if (keys[i] === "__proto__")
                     $util.makeProp(message.int64Map, keys[i]);
-                if (typeof object.int64Map[keys[i]] === "object")
-                    message.int64Map[keys[i]] = BigInt.asIntN(64, BigInt(object.int64Map[keys[i]].high >>> 0) << 32n | BigInt(object.int64Map[keys[i]].low >>> 0));
-                else
-                    message.int64Map[keys[i]] = BigInt.asIntN(64, BigInt(object.int64Map[keys[i]]));
+                message.int64Map[keys[i]] = BigInt.asIntN(64, BigInt(object.int64Map[keys[i]]));
             }
         }
         return message;
@@ -604,25 +595,11 @@ $root.Message = (function() {
                 object.stringRepeated[j] = message.stringRepeated[j];
         }
         if (message.uint64Val != null && message.hasOwnProperty("uint64Val"))
-            if (typeof message.uint64Val === "bigint")
-                object.uint64Val = options.longs === String ? String(message.uint64Val) : options.longs === Number ? Number(message.uint64Val) : message.uint64Val;
-            else if (typeof message.uint64Val === "number")
-                object.uint64Val = options.longs === String ? String(message.uint64Val) : message.uint64Val;
-            else {
-                var long = BigInt(message.uint64Val.high >>> 0) << 32n | BigInt(message.uint64Val.low >>> 0);
-                object.uint64Val = options.longs === String ? String(long) : options.longs === Number ? Number(long) : long;
-            }
+            object.uint64Val = options.longs === String ? String(message.uint64Val) : options.longs === Number ? Number(message.uint64Val) : message.uint64Val;
         if (message.uint64Repeated && message.uint64Repeated.length) {
             object.uint64Repeated = Array(message.uint64Repeated.length);
             for (var j = 0; j < message.uint64Repeated.length; ++j)
-                if (typeof message.uint64Repeated[j] === "bigint")
-                    object.uint64Repeated[j] = options.longs === String ? String(message.uint64Repeated[j]) : options.longs === Number ? Number(message.uint64Repeated[j]) : message.uint64Repeated[j];
-                else if (typeof message.uint64Repeated[j] === "number")
-                    object.uint64Repeated[j] = options.longs === String ? String(message.uint64Repeated[j]) : message.uint64Repeated[j];
-                else {
-                    var long = BigInt(message.uint64Repeated[j].high >>> 0) << 32n | BigInt(message.uint64Repeated[j].low >>> 0);
-                    object.uint64Repeated[j] = options.longs === String ? String(long) : options.longs === Number ? Number(long) : long;
-                }
+                object.uint64Repeated[j] = options.longs === String ? String(message.uint64Repeated[j]) : options.longs === Number ? Number(message.uint64Repeated[j]) : message.uint64Repeated[j];
         }
         if (message.bytesVal != null && message.hasOwnProperty("bytesVal"))
             object.bytesVal = options.bytes === String ? $util.base64.encode(message.bytesVal, 0, message.bytesVal.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesVal) : message.bytesVal;
@@ -644,14 +621,7 @@ $root.Message = (function() {
             for (var j = 0; j < keys2.length; ++j) {
                 if (keys2[j] === "__proto__")
                     $util.makeProp(object.int64Map, keys2[j]);
-                if (typeof message.int64Map[keys2[j]] === "bigint")
-                    object.int64Map[keys2[j]] = options.longs === String ? String(message.int64Map[keys2[j]]) : options.longs === Number ? Number(message.int64Map[keys2[j]]) : message.int64Map[keys2[j]];
-                else if (typeof message.int64Map[keys2[j]] === "number")
-                    object.int64Map[keys2[j]] = options.longs === String ? String(message.int64Map[keys2[j]]) : message.int64Map[keys2[j]];
-                else {
-                    var long = BigInt.asIntN(64, BigInt(message.int64Map[keys2[j]].high >>> 0) << 32n | BigInt(message.int64Map[keys2[j]].low >>> 0));
-                    object.int64Map[keys2[j]] = options.longs === String ? String(long) : options.longs === Number ? Number(long) : long;
-                }
+                object.int64Map[keys2[j]] = options.longs === String ? String(message.int64Map[keys2[j]]) : options.longs === Number ? Number(message.int64Map[keys2[j]]) : message.int64Map[keys2[j]];
             }
         }
         return object;

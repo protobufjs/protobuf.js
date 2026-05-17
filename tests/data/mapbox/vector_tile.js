@@ -616,20 +616,11 @@ $root.vector_tile = (function() {
                 if (object.doubleValue != null)
                     message.doubleValue = Number(object.doubleValue);
                 if (object.intValue != null)
-                    if (typeof object.intValue === "object")
-                        message.intValue = BigInt.asIntN(64, BigInt(object.intValue.high >>> 0) << 32n | BigInt(object.intValue.low >>> 0));
-                    else
-                        message.intValue = BigInt.asIntN(64, BigInt(object.intValue));
+                    message.intValue = BigInt.asIntN(64, BigInt(object.intValue));
                 if (object.uintValue != null)
-                    if (typeof object.uintValue === "object")
-                        message.uintValue = BigInt(object.uintValue.high >>> 0) << 32n | BigInt(object.uintValue.low >>> 0);
-                    else
-                        message.uintValue = BigInt.asUintN(64, BigInt(object.uintValue));
+                    message.uintValue = BigInt.asUintN(64, BigInt(object.uintValue));
                 if (object.sintValue != null)
-                    if (typeof object.sintValue === "object")
-                        message.sintValue = BigInt.asIntN(64, BigInt(object.sintValue.high >>> 0) << 32n | BigInt(object.sintValue.low >>> 0));
-                    else
-                        message.sintValue = BigInt.asIntN(64, BigInt(object.sintValue));
+                    message.sintValue = BigInt.asIntN(64, BigInt(object.sintValue));
                 if (object.boolValue != null)
                     message.boolValue = Boolean(object.boolValue);
                 return message;
@@ -664,32 +655,11 @@ $root.vector_tile = (function() {
                 if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     object.doubleValue = options.json && !isFinite(message.doubleValue) ? String(message.doubleValue) : message.doubleValue;
                 if (message.intValue != null && message.hasOwnProperty("intValue"))
-                    if (typeof message.intValue === "bigint")
-                        object.intValue = options.longs === String ? String(message.intValue) : options.longs === Number ? Number(message.intValue) : message.intValue;
-                    else if (typeof message.intValue === "number")
-                        object.intValue = options.longs === String ? String(message.intValue) : message.intValue;
-                    else {
-                        var long = BigInt.asIntN(64, BigInt(message.intValue.high >>> 0) << 32n | BigInt(message.intValue.low >>> 0));
-                        object.intValue = options.longs === String ? String(long) : options.longs === Number ? Number(long) : long;
-                    }
+                    object.intValue = options.longs === String ? String(message.intValue) : options.longs === Number ? Number(message.intValue) : message.intValue;
                 if (message.uintValue != null && message.hasOwnProperty("uintValue"))
-                    if (typeof message.uintValue === "bigint")
-                        object.uintValue = options.longs === String ? String(message.uintValue) : options.longs === Number ? Number(message.uintValue) : message.uintValue;
-                    else if (typeof message.uintValue === "number")
-                        object.uintValue = options.longs === String ? String(message.uintValue) : message.uintValue;
-                    else {
-                        var long = BigInt(message.uintValue.high >>> 0) << 32n | BigInt(message.uintValue.low >>> 0);
-                        object.uintValue = options.longs === String ? String(long) : options.longs === Number ? Number(long) : long;
-                    }
+                    object.uintValue = options.longs === String ? String(message.uintValue) : options.longs === Number ? Number(message.uintValue) : message.uintValue;
                 if (message.sintValue != null && message.hasOwnProperty("sintValue"))
-                    if (typeof message.sintValue === "bigint")
-                        object.sintValue = options.longs === String ? String(message.sintValue) : options.longs === Number ? Number(message.sintValue) : message.sintValue;
-                    else if (typeof message.sintValue === "number")
-                        object.sintValue = options.longs === String ? String(message.sintValue) : message.sintValue;
-                    else {
-                        var long = BigInt.asIntN(64, BigInt(message.sintValue.high >>> 0) << 32n | BigInt(message.sintValue.low >>> 0));
-                        object.sintValue = options.longs === String ? String(long) : options.longs === Number ? Number(long) : long;
-                    }
+                    object.sintValue = options.longs === String ? String(message.sintValue) : options.longs === Number ? Number(message.sintValue) : message.sintValue;
                 if (message.boolValue != null && message.hasOwnProperty("boolValue"))
                     object.boolValue = message.boolValue;
                 return object;
@@ -1020,10 +990,7 @@ $root.vector_tile = (function() {
                     throw Error("max depth exceeded");
                 var message = new $root.vector_tile.Tile.Feature();
                 if (object.id != null)
-                    if (typeof object.id === "object")
-                        message.id = BigInt(object.id.high >>> 0) << 32n | BigInt(object.id.low >>> 0);
-                    else
-                        message.id = BigInt.asUintN(64, BigInt(object.id));
+                    message.id = BigInt.asUintN(64, BigInt(object.id));
                 if (object.tags) {
                     if (!Array.isArray(object.tags))
                         throw TypeError(".vector_tile.Tile.Feature.tags: array expected");
@@ -1087,14 +1054,7 @@ $root.vector_tile = (function() {
                     object.type = options.enums === String ? "UNKNOWN" : 0;
                 }
                 if (message.id != null && message.hasOwnProperty("id"))
-                    if (typeof message.id === "bigint")
-                        object.id = options.longs === String ? String(message.id) : options.longs === Number ? Number(message.id) : message.id;
-                    else if (typeof message.id === "number")
-                        object.id = options.longs === String ? String(message.id) : message.id;
-                    else {
-                        var long = BigInt(message.id.high >>> 0) << 32n | BigInt(message.id.low >>> 0);
-                        object.id = options.longs === String ? String(long) : options.longs === Number ? Number(long) : long;
-                    }
+                    object.id = options.longs === String ? String(message.id) : options.longs === Number ? Number(message.id) : message.id;
                 if (message.tags && message.tags.length) {
                     object.tags = Array(message.tags.length);
                     for (var j = 0; j < message.tags.length; ++j)

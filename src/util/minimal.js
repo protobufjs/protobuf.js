@@ -4,8 +4,6 @@ import * as utf8 from "./utf8.js";
 import EventEmitter from "./eventemitter.js";
 import isString from "./is-string.js";
 import { pool } from "./pool.js";
-import LongBits from "./longbits.js";
-import { getLong, setLong } from "./long.js";
 import { isNode } from "./is-node.js";
 
 /**
@@ -28,9 +26,6 @@ util.utf8 = utf8;
 
 // provides a node-like buffer pool in the browser
 util.pool = pool;
-
-// utility to work with the low and high bits of a 64 bit value
-util.LongBits = LongBits;
 
 /**
  * Whether running within node or not.
@@ -158,28 +153,6 @@ util.newBuffer = function newBuffer(sizeOrArray) {
 };
 
 /**
- * Any compatible Long instance.
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @memberof util
- * @interface Long
- * @property {number} low Low bits
- * @property {number} high High bits
- * @property {boolean} unsigned Whether unsigned or not
- */
-
-/**
- * Long.js's Long class if available.
- * @type {Constructor<Long>}
- */
-util.Long = getLong();
-Object.defineProperty(util, "Long", {
-    configurable: true,
-    enumerable: true,
-    get: getLong,
-    set: setLong
-});
-
-/**
  * Regular expression used to verify 2 bit (`bool`) map keys.
  * @type {RegExp}
  * @const
@@ -198,42 +171,7 @@ util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
  * @type {RegExp}
  * @const
  */
-util.key64Re = /^(?:[\x00-\xff]{8}|-?(?:0|[1-9][0-9]*))$/; // eslint-disable-line no-control-regex
-
-/**
- * Converts a number, bigint or long to an 8 characters long hash string.
- * @param {number|bigint|Long} value Value to convert
- * @returns {string} Hash
- */
-util.longToHash = function longToHash(value) {
-    return value
-        ? util.LongBits.from(value).toHash()
-        : util.LongBits.zeroHash;
-};
-
-/**
- * Converts an 8 characters long hash string to a bigint.
- * @param {string} hash Hash
- * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {bigint} Original value
- */
-util.longFromHash = function longFromHash(hash, unsigned) {
-    var bits = util.LongBits.fromHash(hash);
-    var value = BigInt(bits.hi) << 32n | BigInt(bits.lo); // TODO: this is slow
-    return unsigned ? value : BigInt.asIntN(64, value);
-};
-
-/**
- * Converts a 64 bit key to a bigint if it is an 8 characters long hash string.
- * @param {string} key Map key
- * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {bigint|string} Original value
- */
-util.longFromKey = function longFromKey(key, unsigned) {
-    return util.key64Re.test(key) && !util.key32Re.test(key)
-        ? util.longFromHash(key, unsigned)
-        : key;
-};
+util.key64Re = /^-?(?:0|[1-9][0-9]*)$/;
 
 /**
  * Converts a boolean key to a boolean value.
@@ -450,7 +388,7 @@ util.oneOfSetter = function setOneOf(fieldNames) {
  *
  * These options are close to proto3's JSON mapping with the exception that internal types like Any are handled just like messages. More precisely:
  *
- * - Longs become strings
+ * - 64-bit integer values become strings
  * - Enums become string keys
  * - Bytes become base64 encoded strings
  * - (Sub-)Messages become plain objects

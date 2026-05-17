@@ -1,5 +1,4 @@
 import * as $protobuf from "../..";
-import Long = require("long");
 
 export interface IMessage extends Message.$Properties {
 }

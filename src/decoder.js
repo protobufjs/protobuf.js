@@ -92,7 +92,7 @@ function decoder(mtype) {
 
             var val = types.basic[type] === undefined ? "v||new types[" + i + "].ctor" : "v";
             if (types.long[field.keyType] !== undefined) gen
-                ("%s[typeof k===\"bigint\"||typeof k===\"object\"?util.longToHash(k):k]=%s", ref, val);
+                ("%s[String(k)]=%s", ref, val);
             else {
                 if (field.keyType === "string") gen
                 ("if(k===\"__proto__\")")
@@ -160,7 +160,7 @@ function decoder(mtype) {
             else if (type === "string" || type === "bytes") gen
                 ("if((v=r.%s()).length)", type);
             else if (types.long[type] !== undefined) gen
-                ("if(typeof(v=r.%s())===\"bigint\"?v!==0n:typeof v===\"object\"?v.low||v.high:v!==0)", type);
+                ("if((v=r.%s())!==0n)", type);
             else if (type === "double" || type === "float") gen
                 ("if((v=r.%s())!==0)", type);
             else gen

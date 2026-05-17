@@ -66,18 +66,11 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             case "int64":
             case "sint64":
             case "fixed64":
-            case "sfixed64": gen
-                ("if(typeof d%s===\"object\")", prop);
-                    if (isUnsigned) gen
-                    ("m%s=BigInt(d%s.high>>>0)<<32n|BigInt(d%s.low>>>0)", prop, prop, prop);
-                    else gen
-                    ("m%s=BigInt.asIntN(64,BigInt(d%s.high>>>0)<<32n|BigInt(d%s.low>>>0))", prop, prop, prop);
-                gen
-                ("else");
-                    if (isUnsigned) gen
-                    ("m%s=BigInt.asUintN(64,BigInt(d%s))", prop, prop);
-                    else gen
-                    ("m%s=BigInt.asIntN(64,BigInt(d%s))", prop, prop);
+            case "sfixed64":
+                if (isUnsigned) gen
+                ("m%s=BigInt.asUintN(64,BigInt(d%s))", prop, prop);
+                else gen
+                ("m%s=BigInt.asIntN(64,BigInt(d%s))", prop, prop);
                 break;
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", prop)
@@ -163,7 +156,7 @@ converter.fromObject = function fromObject(mtype) {
                 else if (field.type === "bool") gen
     ("if(d%s){", prop);
                 else if (types.long[field.type] !== undefined) gen
-    ("if(typeof d%s===\"object\"?d%s.low||d%s.high:Number(d%s)!==0){", prop, prop, prop, prop);
+    ("if(BigInt(d%s)!==0n){", prop);
                 else gen
     ("if(Number(d%s)!==0){", prop);
             }
@@ -198,31 +191,17 @@ function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
         else gen
             ("d%s=types[%i].toObject(m%s,o)", dstProp, fieldIndex, srcProp);
     } else {
-        var isUnsigned = false;
         switch (field.type) {
             case "double":
             case "float": gen
             ("d%s=o.json&&!isFinite(m%s)?String(m%s):m%s", dstProp, srcProp, srcProp, srcProp);
                 break;
             case "uint64":
-                isUnsigned = true;
-                // eslint-disable-next-line no-fallthrough
             case "int64":
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-            ("if(typeof m%s===\"bigint\")", srcProp)
-                ("d%s=o.longs===String?String(m%s):o.longs===Number?Number(m%s):m%s", dstProp, srcProp, srcProp, srcProp)
-            ("else if(typeof m%s===\"number\")", srcProp)
-                ("d%s=o.longs===String?String(m%s):m%s", dstProp, srcProp, srcProp)
-            ("else{"); // Long-like
-                if (isUnsigned) gen
-                ("var n=BigInt(m%s.high>>>0)<<32n|BigInt(m%s.low>>>0)", srcProp, srcProp);
-                else gen
-                ("var n=BigInt.asIntN(64,BigInt(m%s.high>>>0)<<32n|BigInt(m%s.low>>>0))", srcProp, srcProp);
-                gen
-                ("d%s=o.longs===String?String(n):o.longs===Number?Number(n):n", dstProp)
-            ("}");
+            ("d%s=o.longs===String?String(m%s):o.longs===Number?Number(m%s):m%s", dstProp, srcProp, srcProp, srcProp);
                 break;
             case "bytes": gen
             ("d%s=o.bytes===String?util.base64.encode(m%s,0,m%s.length):o.bytes===Array?Array.prototype.slice.call(m%s):m%s", dstProp, srcProp, srcProp, srcProp, srcProp);
@@ -309,17 +288,11 @@ converter.toObject = function toObject(mtype) {
     ("var ks2");
             } gen
     ("if(m%s&&(ks2=Object.keys(m%s)).length){", prop, prop)
-        ("d%s={}", prop);
-            var longKey = types.long[field.keyType] !== undefined,
-                srcProp = prop + "[ks2[j]]";
-            gen
-        ("for(var j=0;j<ks2.length;++j){");
-            if (longKey) gen
-            ("var k2=util.longFromKey(ks2[j],%j).toString()", field.keyType === "uint64" || field.keyType === "fixed64");
-            gen
+        ("d%s={}", prop)
+        ("for(var j=0;j<ks2.length;++j){")
         ("if(ks2[j]===\"__proto__\")")
             ("util.makeProp(d%s,ks2[j])", prop);
-            genValuePartial_toObject(gen, field, /* sorted */ index, longKey ? prop + "[k2]" : srcProp, srcProp)
+            genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[ks2[j]]")
         ("}");
         } else if (field.repeated) { gen
     ("if(m%s&&m%s.length){", prop, prop)

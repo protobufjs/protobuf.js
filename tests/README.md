@@ -4,7 +4,6 @@ Tests should only use the cross-platform API that is also available in browsers:
 
 * Use `Reader.create`, not `BufferReader`
 * Use `Writer.create`, not `BufferWriter`
-* It is safe to use `Long`, but TypeScript tests must import the type from `"long"`
 
 If a test case must use node-specific features, you can use this pattern:
 

@@ -2110,63 +2110,6 @@ export namespace util {
      */
     function isString(value: any): boolean;
 
-    /** Helper class for working with the low and high bits of a 64 bit value. */
-    class LongBits {
-
-        /**
-         * Constructs new long bits.
-         * @param lo Low 32 bits, unsigned
-         * @param hi High 32 bits, unsigned
-         */
-        constructor(lo: number, hi: number);
-
-        /** Low bits. */
-        lo: number;
-
-        /** High bits. */
-        hi: number;
-
-        /** Zero bits. */
-        static zero: util.LongBits;
-
-        /** Zero hash. */
-        static zeroHash: string;
-
-        /**
-         * Constructs new long bits from the specified number.
-         * @param value Value
-         * @returns Instance
-         */
-        static fromNumber(value: number): util.LongBits;
-
-        /**
-         * Constructs new long bits from a number, bigint, long or string.
-         * @param value Value
-         * @returns Instance
-         */
-        static from(value: (number|bigint|Long|string)): util.LongBits;
-
-        /**
-         * Converts this long bits to a possibly unsafe JavaScript number.
-         * @param [unsigned=false] Whether unsigned or not
-         * @returns Possibly unsafe number
-         */
-        toNumber(unsigned?: boolean): number;
-
-        /**
-         * Constructs new long bits from the specified 8 characters long hash.
-         * @param hash Hash
-         * @returns Bits
-         */
-        static fromHash(hash: string): util.LongBits;
-
-        /**
-         * Converts this long bits to a 8 characters long hash.
-         * @returns Hash
-         */
-        toHash(): string;
-    }
-
     /** Whether running within node or not. */
     let isNode: boolean;
 
@@ -2224,22 +2167,6 @@ export namespace util {
      */
     function newBuffer(sizeOrArray?: (number|number[])): (Uint8Array|Buffer);
 
-    /**
-     * Any compatible Long instance.
-     * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
-     */
-    interface Long {
-
-        /** Low bits */
-        low: number;
-
-        /** High bits */
-        high: number;
-
-        /** Whether unsigned or not */
-        unsigned: boolean;
-    }
-
     /** Regular expression used to verify 2 bit (`bool`) map keys. */
     const key2Re: RegExp;
 
@@ -2248,29 +2175,6 @@ export namespace util {
 
     /** Regular expression used to verify 64 bit (`int64` etc.) map keys. */
     const key64Re: RegExp;
-
-    /**
-     * Converts a number, bigint or long to an 8 characters long hash string.
-     * @param value Value to convert
-     * @returns Hash
-     */
-    function longToHash(value: (number|bigint|Long)): string;
-
-    /**
-     * Converts an 8 characters long hash string to a bigint.
-     * @param hash Hash
-     * @param [unsigned=false] Whether unsigned or not
-     * @returns Original value
-     */
-    function longFromHash(hash: string, unsigned?: boolean): bigint;
-
-    /**
-     * Converts a 64 bit key to a bigint if it is an 8 characters long hash string.
-     * @param key Map key
-     * @param [unsigned=false] Whether unsigned or not
-     * @returns Original value
-     */
-    function longFromKey(key: string, unsigned?: boolean): (bigint|string);
 
     /**
      * Converts a boolean key to a boolean value.
@@ -2361,7 +2265,7 @@ export namespace util {
      *
      * These options are close to proto3's JSON mapping with the exception that internal types like Any are handled just like messages. More precisely:
      *
-     * - Longs become strings
+     * - 64-bit integer values become strings
      * - Enums become string keys
      * - Bytes become base64 encoded strings
      * - (Sub-)Messages become plain objects

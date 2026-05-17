@@ -4374,10 +4374,7 @@ $root.jspb = (function() {
                 if (object.boolField != null)
                     message.boolField = Boolean(object.boolField);
                 if (object.intField != null)
-                    if (typeof object.intField === "object")
-                        message.intField = BigInt.asIntN(64, BigInt(object.intField.high >>> 0) << 32n | BigInt(object.intField.low >>> 0));
-                    else
-                        message.intField = BigInt.asIntN(64, BigInt(object.intField));
+                    message.intField = BigInt.asIntN(64, BigInt(object.intField));
                 switch (object.enumField) {
                 default:
                     if (typeof object.enumField === "number") {
@@ -4440,14 +4437,7 @@ $root.jspb = (function() {
                 if (message.boolField != null && message.hasOwnProperty("boolField"))
                     object.boolField = message.boolField;
                 if (message.intField != null && message.hasOwnProperty("intField"))
-                    if (typeof message.intField === "bigint")
-                        object.intField = options.longs === String ? String(message.intField) : options.longs === Number ? Number(message.intField) : message.intField;
-                    else if (typeof message.intField === "number")
-                        object.intField = options.longs === String ? String(message.intField) : message.intField;
-                    else {
-                        var long = BigInt.asIntN(64, BigInt(message.intField.high >>> 0) << 32n | BigInt(message.intField.low >>> 0));
-                        object.intField = options.longs === String ? String(long) : options.longs === Number ? Number(long) : long;
-                    }
+                    object.intField = options.longs === String ? String(message.intField) : options.longs === Number ? Number(message.intField) : message.intField;
                 if (message.enumField != null && message.hasOwnProperty("enumField"))
                     object.enumField = options.enums === String ? $root.jspb.test.DefaultValues.Enum[message.enumField] === undefined ? message.enumField : $root.jspb.test.DefaultValues.Enum[message.enumField] : message.enumField;
                 if (message.emptyField != null && message.hasOwnProperty("emptyField"))
@@ -9473,7 +9463,7 @@ $root.jspb = (function() {
                         writer.uint32(/* id 8, wireType 2 =*/66).fork().uint32(/* id 1, wireType 0 =*/8).int32(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.mapInt32String[keys[i]]).ldelim();
                 if (message.mapInt64String != null && Object.hasOwnProperty.call(message, "mapInt64String"))
                     for (var keys = Object.keys(message.mapInt64String), i = 0; i < keys.length; ++i)
-                        writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 0 =*/8).int64(BigInt($util.longFromKey(keys[i], false))).uint32(/* id 2, wireType 2 =*/18).string(message.mapInt64String[keys[i]]).ldelim();
+                        writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 0 =*/8).int64(BigInt(keys[i])).uint32(/* id 2, wireType 2 =*/18).string(message.mapInt64String[keys[i]]).ldelim();
                 if (message.mapBoolString != null && Object.hasOwnProperty.call(message, "mapBoolString"))
                     for (var keys = Object.keys(message.mapBoolString), i = 0; i < keys.length; ++i)
                         writer.uint32(/* id 10, wireType 2 =*/82).fork().uint32(/* id 1, wireType 0 =*/8).bool($util.boolFromKey(keys[i])).uint32(/* id 2, wireType 2 =*/18).string(message.mapBoolString[keys[i]]).ldelim();
@@ -9794,7 +9784,7 @@ $root.jspb = (function() {
                                 }
                                 reader.skipType(wireType, _depth, tag2);
                             }
-                            message.mapInt64String[typeof key === "bigint" || typeof key === "object" ? $util.longToHash(key) : key] = value;
+                            message.mapInt64String[String(key)] = value;
                             continue;
                         }
                     case 10: {
@@ -9983,7 +9973,7 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapInt64String);
                     for (var i = 0; i < key.length; ++i) {
                         if (!$util.key64Re.test(key[i]))
-                            return "mapInt64String: integer|bigint key{k:int64} expected";
+                            return "mapInt64String: integer key{k:int64} expected";
                         if (!$util.isString(message.mapInt64String[key[i]]))
                             return "mapInt64String: string{k:int64} expected";
                     }
@@ -10060,10 +10050,7 @@ $root.jspb = (function() {
                     for (var keys = Object.keys(object.mapStringInt64), i = 0; i < keys.length; ++i) {
                         if (keys[i] === "__proto__")
                             $util.makeProp(message.mapStringInt64, keys[i]);
-                        if (typeof object.mapStringInt64[keys[i]] === "object")
-                            message.mapStringInt64[keys[i]] = BigInt.asIntN(64, BigInt(object.mapStringInt64[keys[i]].high >>> 0) << 32n | BigInt(object.mapStringInt64[keys[i]].low >>> 0));
-                        else
-                            message.mapStringInt64[keys[i]] = BigInt.asIntN(64, BigInt(object.mapStringInt64[keys[i]]));
+                        message.mapStringInt64[keys[i]] = BigInt.asIntN(64, BigInt(object.mapStringInt64[keys[i]]));
                     }
                 }
                 if (object.mapStringBool) {
@@ -10227,14 +10214,7 @@ $root.jspb = (function() {
                     for (var j = 0; j < keys2.length; ++j) {
                         if (keys2[j] === "__proto__")
                             $util.makeProp(object.mapStringInt64, keys2[j]);
-                        if (typeof message.mapStringInt64[keys2[j]] === "bigint")
-                            object.mapStringInt64[keys2[j]] = options.longs === String ? String(message.mapStringInt64[keys2[j]]) : options.longs === Number ? Number(message.mapStringInt64[keys2[j]]) : message.mapStringInt64[keys2[j]];
-                        else if (typeof message.mapStringInt64[keys2[j]] === "number")
-                            object.mapStringInt64[keys2[j]] = options.longs === String ? String(message.mapStringInt64[keys2[j]]) : message.mapStringInt64[keys2[j]];
-                        else {
-                            var long = BigInt.asIntN(64, BigInt(message.mapStringInt64[keys2[j]].high >>> 0) << 32n | BigInt(message.mapStringInt64[keys2[j]].low >>> 0));
-                            object.mapStringInt64[keys2[j]] = options.longs === String ? String(long) : options.longs === Number ? Number(long) : long;
-                        }
+                        object.mapStringInt64[keys2[j]] = options.longs === String ? String(message.mapStringInt64[keys2[j]]) : options.longs === Number ? Number(message.mapStringInt64[keys2[j]]) : message.mapStringInt64[keys2[j]];
                     }
                 }
                 if (message.mapStringBool && (keys2 = Object.keys(message.mapStringBool)).length) {
@@ -10280,10 +10260,9 @@ $root.jspb = (function() {
                 if (message.mapInt64String && (keys2 = Object.keys(message.mapInt64String)).length) {
                     object.mapInt64String = {};
                     for (var j = 0; j < keys2.length; ++j) {
-                        var k2 = $util.longFromKey(keys2[j], false).toString();
                         if (keys2[j] === "__proto__")
                             $util.makeProp(object.mapInt64String, keys2[j]);
-                        object.mapInt64String[k2] = message.mapInt64String[keys2[j]];
+                        object.mapInt64String[keys2[j]] = message.mapInt64String[keys2[j]];
                     }
                 }
                 if (message.mapBoolString && (keys2 = Object.keys(message.mapBoolString)).length) {
@@ -22156,15 +22135,9 @@ $root.google = (function() {
                 if (object.identifierValue != null)
                     message.identifierValue = String(object.identifierValue);
                 if (object.positiveIntValue != null)
-                    if (typeof object.positiveIntValue === "object")
-                        message.positiveIntValue = BigInt(object.positiveIntValue.high >>> 0) << 32n | BigInt(object.positiveIntValue.low >>> 0);
-                    else
-                        message.positiveIntValue = BigInt.asUintN(64, BigInt(object.positiveIntValue));
+                    message.positiveIntValue = BigInt.asUintN(64, BigInt(object.positiveIntValue));
                 if (object.negativeIntValue != null)
-                    if (typeof object.negativeIntValue === "object")
-                        message.negativeIntValue = BigInt.asIntN(64, BigInt(object.negativeIntValue.high >>> 0) << 32n | BigInt(object.negativeIntValue.low >>> 0));
-                    else
-                        message.negativeIntValue = BigInt.asIntN(64, BigInt(object.negativeIntValue));
+                    message.negativeIntValue = BigInt.asIntN(64, BigInt(object.negativeIntValue));
                 if (object.doubleValue != null)
                     message.doubleValue = Number(object.doubleValue);
                 if (object.stringValue != null)
@@ -22214,23 +22187,9 @@ $root.google = (function() {
                 if (message.identifierValue != null && message.hasOwnProperty("identifierValue"))
                     object.identifierValue = message.identifierValue;
                 if (message.positiveIntValue != null && message.hasOwnProperty("positiveIntValue"))
-                    if (typeof message.positiveIntValue === "bigint")
-                        object.positiveIntValue = options.longs === String ? String(message.positiveIntValue) : options.longs === Number ? Number(message.positiveIntValue) : message.positiveIntValue;
-                    else if (typeof message.positiveIntValue === "number")
-                        object.positiveIntValue = options.longs === String ? String(message.positiveIntValue) : message.positiveIntValue;
-                    else {
-                        var long = BigInt(message.positiveIntValue.high >>> 0) << 32n | BigInt(message.positiveIntValue.low >>> 0);
-                        object.positiveIntValue = options.longs === String ? String(long) : options.longs === Number ? Number(long) : long;
-                    }
+                    object.positiveIntValue = options.longs === String ? String(message.positiveIntValue) : options.longs === Number ? Number(message.positiveIntValue) : message.positiveIntValue;
                 if (message.negativeIntValue != null && message.hasOwnProperty("negativeIntValue"))
-                    if (typeof message.negativeIntValue === "bigint")
-                        object.negativeIntValue = options.longs === String ? String(message.negativeIntValue) : options.longs === Number ? Number(message.negativeIntValue) : message.negativeIntValue;
-                    else if (typeof message.negativeIntValue === "number")
-                        object.negativeIntValue = options.longs === String ? String(message.negativeIntValue) : message.negativeIntValue;
-                    else {
-                        var long = BigInt.asIntN(64, BigInt(message.negativeIntValue.high >>> 0) << 32n | BigInt(message.negativeIntValue.low >>> 0));
-                        object.negativeIntValue = options.longs === String ? String(long) : options.longs === Number ? Number(long) : long;
-                    }
+                    object.negativeIntValue = options.longs === String ? String(message.negativeIntValue) : options.longs === Number ? Number(message.negativeIntValue) : message.negativeIntValue;
                 if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     object.doubleValue = options.json && !isFinite(message.doubleValue) ? String(message.doubleValue) : message.doubleValue;
                 if (message.stringValue != null && message.hasOwnProperty("stringValue"))
