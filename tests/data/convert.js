@@ -531,9 +531,9 @@ $root.Message = (function() {
             object.stringVal = "";
             if ($util.Long) {
                 var long = new $util.Long(0, 0, true);
-                object.uint64Val = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                object.uint64Val = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
             } else
-                object.uint64Val = options.longs === String ? "0" : 0;
+                object.uint64Val = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
             if (options.bytes === String)
                 object.bytesVal = "";
             else {
@@ -551,14 +551,18 @@ $root.Message = (function() {
                 object.stringRepeated[j] = message.stringRepeated[j];
         }
         if (message.uint64Val != null && message.hasOwnProperty("uint64Val"))
-            if (typeof message.uint64Val === "number")
+            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                object.uint64Val = typeof message.uint64Val === "number" ? BigInt(message.uint64Val) : $util.Long.fromBits(message.uint64Val.low >>> 0, message.uint64Val.high >>> 0, true).toBigInt();
+            else if (typeof message.uint64Val === "number")
                 object.uint64Val = options.longs === String ? String(message.uint64Val) : message.uint64Val;
             else
                 object.uint64Val = options.longs === String ? $util.Long.prototype.toString.call(message.uint64Val) : options.longs === Number ? new $util.LongBits(message.uint64Val.low >>> 0, message.uint64Val.high >>> 0).toNumber(true) : message.uint64Val;
         if (message.uint64Repeated && message.uint64Repeated.length) {
             object.uint64Repeated = [];
             for (var j = 0; j < message.uint64Repeated.length; ++j)
-                if (typeof message.uint64Repeated[j] === "number")
+                if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                    object.uint64Repeated[j] = typeof message.uint64Repeated[j] === "number" ? BigInt(message.uint64Repeated[j]) : $util.Long.fromBits(message.uint64Repeated[j].low >>> 0, message.uint64Repeated[j].high >>> 0, true).toBigInt();
+                else if (typeof message.uint64Repeated[j] === "number")
                     object.uint64Repeated[j] = options.longs === String ? String(message.uint64Repeated[j]) : message.uint64Repeated[j];
                 else
                     object.uint64Repeated[j] = options.longs === String ? $util.Long.prototype.toString.call(message.uint64Repeated[j]) : options.longs === Number ? new $util.LongBits(message.uint64Repeated[j].low >>> 0, message.uint64Repeated[j].high >>> 0).toNumber(true) : message.uint64Repeated[j];
@@ -583,7 +587,9 @@ $root.Message = (function() {
             for (var j = 0; j < keys2.length; ++j) {
                 if (keys2[j] === "__proto__")
                     $util.makeProp(object.int64Map, keys2[j]);
-                if (typeof message.int64Map[keys2[j]] === "number")
+                if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                    object.int64Map[keys2[j]] = typeof message.int64Map[keys2[j]] === "number" ? BigInt(message.int64Map[keys2[j]]) : $util.Long.fromBits(message.int64Map[keys2[j]].low >>> 0, message.int64Map[keys2[j]].high >>> 0, false).toBigInt();
+                else if (typeof message.int64Map[keys2[j]] === "number")
                     object.int64Map[keys2[j]] = options.longs === String ? String(message.int64Map[keys2[j]]) : message.int64Map[keys2[j]];
                 else
                     object.int64Map[keys2[j]] = options.longs === String ? $util.Long.prototype.toString.call(message.int64Map[keys2[j]]) : options.longs === Number ? new $util.LongBits(message.int64Map[keys2[j]].low >>> 0, message.int64Map[keys2[j]].high >>> 0).toNumber() : message.int64Map[keys2[j]];

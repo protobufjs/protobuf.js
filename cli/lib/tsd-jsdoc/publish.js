@@ -138,7 +138,8 @@ var keepTags = [
     "param",
     "returns",
     "throws",
-    "see"
+    "see",
+    "deprecated"
 ];
 
 // parses a comment into text and tags
