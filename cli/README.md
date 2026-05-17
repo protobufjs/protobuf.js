@@ -75,7 +75,6 @@ Translates between file formats and generates static code.
   --no-comments    Does not output any JSDoc comments.
   --no-service     Does not output service classes.
 
-  --force-long     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.
   --force-number   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.
   --force-message  Enforces the use of message instances instead of plain objects.
 
@@ -147,7 +146,7 @@ protoc \
 
 By default, the plugin emits `index.js` with `target=static-module` and `wrap=esm`. Use `file=PATH` to choose the aggregate output file, `target=json-module` for a JSON module, `wrap=commonjs` for CommonJS output, and `keep-case` to preserve descriptor field names.
 
-Other `pbjs` code generation options can be passed as usual, for example `root=NAME`, `dependency=ID`, `lint=CONFIG`, `no-create`, `force-long`, or `null-semantics`. See the `pbjs` help output above for the full option set.
+Other `pbjs` code generation options can be passed as usual, for example `root=NAME`, `dependency=ID`, `lint=CONFIG`, `no-create`, or `null-semantics`. See the `pbjs` help output above for the full option set.
 
 ## Command line API
 

@@ -1,24 +1,21 @@
-"use strict";
-module.exports = Type;
+import { Namespace } from "./namespace.js";
+import { Enum } from "./enum.js";
+import { OneOf } from "./oneof.js";
+import { Field } from "./field.js";
+import { MapField } from "./mapfield.js";
+import { Service } from "./service.js";
+import { Message } from "./message.js";
+import { Reader } from "./reader.js";
+import { Writer } from "./writer.js";
+import { util } from "./util.js";
+import { encoder } from "./encoder.js";
+import { decoder } from "./decoder.js";
+import { verifier } from "./verifier.js";
+import { converter } from "./converter.js";
+import { wrappers } from "./wrappers.js";
 
 // extends Namespace
-var Namespace = require("./namespace");
 ((Type.prototype = Object.create(Namespace.prototype)).constructor = Type).className = "Type";
-
-var Enum      = require("./enum"),
-    OneOf     = require("./oneof"),
-    Field     = require("./field"),
-    MapField  = require("./mapfield"),
-    Service   = require("./service"),
-    Message   = require("./message"),
-    Reader    = require("./reader"),
-    Writer    = require("./writer"),
-    util      = require("./util"),
-    encoder   = require("./encoder"),
-    decoder   = require("./decoder"),
-    verifier  = require("./verifier"),
-    converter = require("./converter"),
-    wrappers  = require("./wrappers");
 
 /**
  * Constructs a new reflected message type instance.
@@ -197,7 +194,7 @@ Object.defineProperties(Type.prototype, {
 /**
  * Generates a constructor function for the specified type.
  * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  */
 Type.generateConstructor = function generateConstructor(mtype) {
     /* eslint-disable no-unexpected-multiline */
@@ -584,9 +581,9 @@ Type.prototype.fromObject = function fromObject(object) { // eslint-disable-line
 /**
  * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
  * @interface IConversionOptions
- * @property {Function} [longs] Long conversion type.
+ * @property {Function} [longs] 64-bit integer conversion type.
  * Valid values are `String` and `Number` (the global types).
- * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
+ * Defaults to copy the present value, which is usually a bigint.
  * @property {Function} [enums] Enum value conversion type.
  * Only valid value is `String` (the global type).
  * Defaults to copy the present value, which is the numeric id.
@@ -644,3 +641,5 @@ Type.d = function decorateType(typeName) {
         util.decorateType(target, typeName);
     };
 };
+
+export { Type };

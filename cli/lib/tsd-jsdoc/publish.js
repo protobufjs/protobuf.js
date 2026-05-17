@@ -536,7 +536,7 @@ function handleElement(element, parent) {
             }
             // eslint-disable-next-line no-fallthrough
         case "namespace":
-            handleNamespace(element, parent);
+            handleNamespace(element);
             break;
         case "constant":
         case "member":
@@ -556,7 +556,7 @@ function handleElement(element, parent) {
 }
 
 // handles (just) a namespace
-function handleNamespace(element/*, parent*/) {
+function handleNamespace(element) {
     var children = getChildrenOf(element);
     if (!children.length)
         return;
@@ -587,6 +587,36 @@ function handleNamespace(element/*, parent*/) {
     if (!first) {
         --indent;
         writeln("}");
+    }
+}
+
+function handleNamespaceTypes(element, ensureParent) {
+    var opened = false;
+
+    getChildrenOf(element).forEach(function(child) {
+        if (child.scope === "inner" || seen[child.longname])
+            return;
+        if (child.kind === "typedef") {
+            open();
+            handleElement(child, element);
+        } else if (isNamespace(child))
+            handleNamespaceTypes(child, open);
+    });
+
+    if (opened) {
+        --indent;
+        writeln("}");
+    }
+
+    function open() {
+        if (opened)
+            return;
+        if (ensureParent)
+            ensureParent();
+        begin(element);
+        writeln("namespace ", element.name, " {");
+        ++indent;
+        opened = true;
     }
 }
 
@@ -753,6 +783,9 @@ function handleMember(element, parent) {
         writeln("};");
     } else
         writeln(getTypeOf(element), ";");
+
+    if (!inClass)
+        handleNamespaceTypes(element);
 }
 
 function writeFunctionName(element, insideClass, exported) {

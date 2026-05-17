@@ -1,5 +1,4 @@
 import * as $protobuf from "../..";
-import Long = require("long");
 
 export class MyService extends $protobuf.rpc.Service {
     constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);

@@ -41,7 +41,6 @@ var defaults = {
     "lint": lintDefault,
     "keep-case": false,
     "alt-comment": false,
-    "force-long": false,
     "force-number": false,
     "force-enum-string": false,
     "force-message": false,
@@ -59,11 +58,10 @@ var opts = {
         dts: "d",
         lint: "l",
         // backward compatibility:
-        "force-long": "strict-long",
         "force-message": "strict-message"
     },
     string: [ "target", "out", "path", "wrap", "dependency", "root", "lint", "filter" ],
-    boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "dts", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults", "null-semantics"],
+    boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "dts", "sparse", "keep-case", "alt-comment", "force-number", "force-enum-string", "force-message", "null-defaults", "null-semantics"],
     default: defaults
 };
 
@@ -288,7 +286,6 @@ exports.main = function main(args, callback) {
                 "  --no-comments    Does not output any JSDoc comments.",
                 "  --no-service     Does not output service classes.",
                 "",
-                "  --force-long     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
                 "  --force-number   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.",
                 "  --force-message  Enforces the use of message instances instead of plain objects.",
                 "",
@@ -300,9 +297,6 @@ exports.main = function main(args, callback) {
             ].join("\n"));
         return 1;
     }
-
-    if (typeof argv["strict-long"] === "boolean")
-        argv["force-long"] = argv["strict-long"];
 
     // Resolve glob expressions
     for (var i = 0; i < files.length;) {
@@ -395,18 +389,17 @@ exports.main = function main(args, callback) {
 
     // Load from disk
     } else {
-        try {
-            root.loadSync(files, parseOptions).resolveAll(); // sync is deterministic while async is not
+        root.load(files, parseOptions).then(function() {
             if (argv.sparse)
                 sparsify(root, mainFiles);
             callTarget();
-        } catch (err) {
+        }).catch(function(err) {
             if (callback) {
                 callback(err);
-                return undefined;
+                return;
             }
             throw err;
-        }
+        });
     }
 
     function filterMessage() {

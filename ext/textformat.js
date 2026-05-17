@@ -1,21 +1,30 @@
-"use strict";
-var protobuf = require("../light");
+import {
+    Type,
+    Enum,
+    Field,
+    Reader,
+    types,
+    util
+} from "../light.js";
+import { length as utf8Length, read as readUtf8, write as writeUtf8 } from "../src/util/utf8.js";
 
-var Type    = protobuf.Type,
-    Enum    = protobuf.Enum,
-    Field   = protobuf.Field,
-    Reader  = protobuf.Reader,
-    types   = protobuf.types,
-    util    = protobuf.util;
-
-var textformat = protobuf.textformat = module.exports = {};
+var textformat = {},
+    unknownRecursionLimit = 10;
 
 /**
  * Maximum recursion depth for formatting length-delimited unknown fields.
  * @name unknownRecursionLimit
  * @type {number}
  */
-textformat.unknownRecursionLimit = 10;
+Object.defineProperty(textformat, "unknownRecursionLimit", {
+    enumerable: true,
+    get: function() {
+        return unknownRecursionLimit;
+    },
+    set: function(value) {
+        unknownRecursionLimit = value;
+    }
+});
 
 var punct = {
     "{": true,
@@ -64,7 +73,7 @@ function parseText(type, text) {
 
 /**
  * Text format options.
- * @interface ITextFormatOptions
+ * @interface TextFormatOptions
  * @property {boolean} [unknowns=false] Also includes and formats unknown fields.
  */
 
@@ -72,7 +81,7 @@ function parseText(type, text) {
  * Formats a message as protobuf text format using the specified reflected type.
  * @param {Type} type Reflected message type
  * @param {Message<{}>|Object.<string,*>} message Message instance or plain object
- * @param {ITextFormatOptions} [options] Text format options
+ * @param {TextFormatOptions} [options] Text format options
  * @returns {string} Text format output
  * @private
  */
@@ -97,7 +106,7 @@ Type.prototype.fromText = function fromText(text) {
 /**
  * Formats a message of this type as protobuf text format.
  * @param {Message<{}>|Object.<string,*>} message Message instance or plain object
- * @param {ITextFormatOptions} [options] Text format options
+ * @param {TextFormatOptions} [options] Text format options
  * @returns {string} Text format output
  */
 Type.prototype.toText = function toText(message, options) {
@@ -810,10 +819,7 @@ function parseInteger(token, sign, unsigned, bits) {
     if (typeof util.global.BigInt === "function")
         return parseIntegerBigInt(digits, radix, sign, unsigned, bits);
 
-    var value = parseInt(digits, radix) * sign;
-    if (bits === 64 && util.Long)
-        return util.Long.fromString(String(value), unsigned);
-    return value;
+    return parseInt(digits, radix) * sign;
 }
 
 function parseIntegerBigInt(digits, radix, sign, unsigned, bits) {
@@ -839,9 +845,7 @@ function parseIntegerBigInt(digits, radix, sign, unsigned, bits) {
     }
     if (value < min || value > max)
         throw Error((unsigned ? "unsigned " : "") + "integer value out of range");
-    if (bits === 64 && util.Long)
-        return util.Long.fromString(value.toString(), unsigned, 10);
-    return Number(value);
+    return bits === 64 ? value : Number(value);
 }
 
 function writeMessage(type, message, lines, indent, options, depth) {
@@ -874,7 +878,7 @@ function writeMapField(field, map, lines, indent, options, depth) {
     for (var i = 0; i < keys.length; ++i) {
         if (depth + 1 > util.recursionLimit)
             throw Error("max depth exceeded");
-        var key = keyField.long ? util.longFromKey(keys[i], keyField.type === "uint64" || keyField.type === "fixed64") : keys[i];
+        var key = keyField.long ? BigInt(keys[i]) : keys[i];
         if (keyField.type === "bool")
             key = util.boolFromKey(keys[i]);
         lines.push(sp + name + " {");
@@ -1102,7 +1106,7 @@ function utf8Read(bytes, strict) {
     if (strict && !validUtf8(bytes))
         throw Error("invalid UTF-8 string");
     var buffer = util.newBuffer(bytes);
-    return util.utf8.read(buffer, 0, buffer.length);
+    return readUtf8(buffer, 0, buffer.length);
 }
 
 function validUtf8(bytes) {
@@ -1138,8 +1142,8 @@ function validUtf8(bytes) {
 }
 
 function utf8Bytes(str) {
-    var buffer = util.newBuffer(util.utf8.length(str));
-    util.utf8.write(str, buffer, 0);
+    var buffer = util.newBuffer(utf8Length(str));
+    writeUtf8(str, buffer, 0);
     return buffer;
 }
 
@@ -1233,3 +1237,5 @@ function underScore(str) {
          + str.substring(1)
                .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
 }
+
+export { textformat as default, unknownRecursionLimit };

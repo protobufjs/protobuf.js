@@ -17,6 +17,20 @@ var out = [];
 var indent = 0;
 var config = {};
 
+function parseCode(code) {
+    return espree.parse(code, { ecmaVersion: "latest" });
+}
+
+function generateCode(ast) {
+    return escodegen.generate(ast, {
+        format: {
+            newline: "\n",
+            quotes: "double"
+        },
+        parse: parseCode
+    });
+}
+
 static_target.description = "Static code without reflection (non-functional on its own)";
 
 function static_target(root, options, callback) {
@@ -193,7 +207,7 @@ function beautifyCode(code) {
         output: { beautify: true }
     }).code;
     // Properly beautify
-    var ast = espree.parse(code);
+    var ast = parseCode(code);
     estraverse.replace(ast, {
         enter: function(node, parent) {
             // rename short vars
@@ -213,12 +227,7 @@ function beautifyCode(code) {
             return undefined;
         }
     });
-    code = escodegen.generate(ast, {
-        format: {
-            newline: "\n",
-            quotes: "double"
-        }
-    });
+    code = generateCode(ast);
     // Add id, wireType comments
     if (config.comments)
         code = code.replace(/\.uint32\((\d+)\)/g, function($0, $1) {
@@ -238,7 +247,7 @@ var renameVars = {
 function buildFunction(type, functionName, gen, scope) {
     var code = gen.toString(functionName);
 
-    var ast = espree.parse(code);
+    var ast = parseCode(code);
     /* eslint-disable no-extra-parens */
     estraverse.replace(ast, {
         enter: function(node, parent) {
@@ -305,12 +314,7 @@ function buildFunction(type, functionName, gen, scope) {
         }
     });
     /* eslint-enable no-extra-parens */
-    code = escodegen.generate(ast, {
-        format: {
-            newline: "\n",
-            quotes: "double"
-        }
-    });
+    code = generateCode(ast);
 
     if (config.beautify)
         code = beautifyCode(code);
@@ -373,7 +377,7 @@ function toJsType(field, parentIsInterface = false, withNarrowing = false) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            type = config.forceLong ? "Long" : config.forceNumber ? "number" : "number|Long";
+            type = config.forceNumber ? "number" : "number|bigint";
             break;
         case "bool":
             type = "boolean";
@@ -630,11 +634,7 @@ function buildType(ref, type) {
         else if (field.partOf || nullDefault)
             push(escapeName(type.name) + ".prototype" + prop + " = null;"); // do not set default value for oneof members
         else if (field.long)
-            push(escapeName(type.name) + ".prototype" + prop + " = $util.Long ? $util.Long.fromBits("
-                    + JSON.stringify(field.typeDefault.low) + ","
-                    + JSON.stringify(field.typeDefault.high) + ","
-                    + JSON.stringify(field.typeDefault.unsigned)
-                + ") : " + field.typeDefault.toNumber(field.type.charAt(0) === "u") + ";");
+            push(escapeName(type.name) + ".prototype" + prop + " = " + field.typeDefault.toString() + "n;");
         else if (field.bytes) {
             push(escapeName(type.name) + ".prototype" + prop + " = $util.newBuffer(" + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ");");
         } else

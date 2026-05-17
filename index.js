@@ -1,4 +1,1 @@
-// full library entry point.
-
-"use strict";
-module.exports = require("./src/index");
+export * from "./src/index.js";

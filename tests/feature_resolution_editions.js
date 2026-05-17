@@ -501,10 +501,8 @@ tape.test("feature resolution inheritance file to service and service to method"
     test.end();
 });
 
-tape.test("feature resolution editions precedence", function(test) {
-    protobuf.load("tests/data/feature-resolution.proto", function(err, root) {
-        if (err)
-            throw test.fail(err.message);
+tape.test("feature resolution editions precedence", async function(test) {
+    var root = await protobuf.load("tests/data/feature-resolution.proto");
 
         test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage")._features,
         {
@@ -518,8 +516,7 @@ tape.test("feature resolution editions precedence", function(test) {
             default_symbol_visibility: "EXPORT_ALL",
             amazing_feature: 'G'
         })
-        test.end();
-    });
+    test.end();
 });
 
 tape.test("feature resolution extension sister", function(test) {

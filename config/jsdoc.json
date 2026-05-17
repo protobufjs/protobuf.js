@@ -12,7 +12,7 @@
     },
     "plugins": [
         "./cli/lib/tsd-jsdoc/patch",
-        "./node_modules/jsdoc/plugins/markdown"
+        "./cli/node_modules/jsdoc/plugins/markdown"
     ],
     "templates": {
         "cleverLinks"   : false,

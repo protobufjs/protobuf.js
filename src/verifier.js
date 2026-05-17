@@ -1,8 +1,5 @@
-"use strict";
-module.exports = verifier;
-
-var Enum      = require("./enum"),
-    util      = require("./util");
+import { Enum } from "./enum.js";
+import { util } from "./util.js";
 
 function invalid(field, expected) {
     return field.name + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
@@ -10,11 +7,11 @@ function invalid(field, expected) {
 
 /**
  * Generates a partial value verifier.
- * @param {Codegen} gen Codegen instance
+ * @param {util.Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
  * @param {string} ref Variable reference
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  * @ignore
  */
 function genVerifyValue(gen, field, fieldIndex, ref) {
@@ -52,8 +49,8 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-                ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
-                    ("return%j", invalid(field, "integer|Long"));
+                ("if(typeof %s!==\"bigint\"&&!util.isInteger(%s))", ref, ref)
+                    ("return%j", invalid(field, "integer|bigint"));
                 break;
             case "float":
             case "double": gen
@@ -80,10 +77,10 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
 
 /**
  * Generates a partial key verifier.
- * @param {Codegen} gen Codegen instance
+ * @param {util.Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {string} ref Variable reference
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  * @ignore
  */
 function genVerifyKey(gen, field, ref) {
@@ -102,8 +99,8 @@ function genVerifyKey(gen, field, ref) {
         case "sint64":
         case "fixed64":
         case "sfixed64": gen
-            ("if(!util.key64Re.test(%s))", ref) // see comment above: x is ok, d is not
-                ("return%j", invalid(field, "integer|Long key"));
+            ("if(!util.key64Re.test(%s))", ref)
+                ("return%j", invalid(field, "integer key"));
             break;
         case "bool": gen
             ("if(!util.key2Re.test(%s))", ref)
@@ -117,7 +114,7 @@ function genVerifyKey(gen, field, ref) {
 /**
  * Generates a verifier specific to the specified message type.
  * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  */
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
@@ -178,3 +175,5 @@ function verifier(mtype) {
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }
+
+export { verifier };

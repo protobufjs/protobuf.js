@@ -4,7 +4,7 @@
 export let unknownRecursionLimit: number;
 
 /** Text format options. */
-export interface ITextFormatOptions {
+export interface TextFormatOptions {
 
     /** Also includes and formats unknown fields. */
     unknowns?: boolean;

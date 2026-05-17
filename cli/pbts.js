@@ -237,9 +237,6 @@ function run(options) {
                 Object.keys(imports).forEach(function(key) {
                     output.push("import * as " + key + " from \"" + imports[key] + "\";");
                 });
-
-                if (!argv.main)
-                    output.push("import Long = require(\"long\");");
                 output.push("");
             }
 

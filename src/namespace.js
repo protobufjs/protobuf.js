@@ -1,13 +1,10 @@
-"use strict";
-module.exports = Namespace;
+import { ReflectionObject } from "./object.js";
+import { Field } from "./field.js";
+import { util } from "./util.js";
+import { OneOf } from "./oneof.js";
 
 // extends ReflectionObject
-var ReflectionObject = require("./object");
 ((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
-
-var Field    = require("./field"),
-    util     = require("./util"),
-    OneOf    = require("./oneof");
 
 var Type,    // cyclic
     Service,
@@ -563,3 +560,5 @@ Namespace._configure = function(Type_, Service_, Enum_) {
     Service = Service_;
     Enum    = Enum_;
 };
+
+export { Namespace };

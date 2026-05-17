@@ -1,5 +1,10 @@
-"use strict";
-var protobuf = exports;
+import { Writer } from "./writer.js";
+import { BufferWriter } from "./writer_buffer.js";
+import { Reader } from "./reader.js";
+import { BufferReader } from "./reader_buffer.js";
+import { util } from "./util/minimal.js";
+import { rpc } from "./rpc.js";
+import { roots } from "./roots.js";
 
 /**
  * Build type, one of `"full"`, `"light"` or `"minimal"`.
@@ -7,19 +12,7 @@ var protobuf = exports;
  * @type {string}
  * @const
  */
-protobuf.build = "minimal";
-
-// Serialization
-protobuf.Writer       = require("./writer");
-protobuf.BufferWriter = require("./writer_buffer");
-protobuf.Reader       = require("./reader");
-protobuf.BufferReader = require("./reader_buffer");
-
-// Utility
-protobuf.util         = require("./util/minimal");
-protobuf.rpc          = require("./rpc");
-protobuf.roots        = require("./roots");
-protobuf.configure    = configure;
+var build = "minimal";
 
 /* istanbul ignore next */
 /**
@@ -27,10 +20,22 @@ protobuf.configure    = configure;
  * @returns {undefined}
  */
 function configure() {
-    protobuf.util._configure();
-    protobuf.Writer._configure(protobuf.BufferWriter);
-    protobuf.Reader._configure(protobuf.BufferReader);
+    util._configure();
+    Writer._configure(BufferWriter);
+    Reader._configure(BufferReader);
 }
 
 // Set up buffer utility according to the environment
 configure();
+
+export {
+    build,
+    Writer,
+    BufferWriter,
+    Reader,
+    BufferReader,
+    util,
+    rpc,
+    roots,
+    configure
+};

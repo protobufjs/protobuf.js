@@ -1,25 +1,23 @@
-"use strict";
-
 /**
  * A minimal base64 implementation for number arrays.
- * @memberof util
- * @namespace
+ * @namespace util.base64
  */
-var base64 = exports;
 
 /**
  * Calculates the byte length of a base64 encoded string.
+ * @name util.base64.length
+ * @function
  * @param {string} string Base64 encoded string
  * @returns {number} Byte length
  */
-base64.length = function length(string) {
+export function length(string) {
     var p = string.length;
     if (!p)
         return 0;
     while (p > 0 && string.charAt(p - 1) === "=")
         --p;
     return Math.floor(p * 3 / 4);
-};
+}
 
 // Base64 encoding table
 var b64 = new Array(64);
@@ -36,12 +34,14 @@ s64[95] = 63; // _ -> /
 
 /**
  * Encodes a buffer to a base64 encoded string.
+ * @name util.base64.encode
+ * @function
  * @param {Uint8Array} buffer Source buffer
  * @param {number} start Source start
  * @param {number} end Source end
  * @returns {string} Base64 encoded string
  */
-base64.encode = function encode(buffer, start, end) {
+export function encode(buffer, start, end) {
     var parts = null,
         chunk = [];
     var i = 0, // output index
@@ -83,19 +83,21 @@ base64.encode = function encode(buffer, start, end) {
         return parts.join("");
     }
     return String.fromCharCode.apply(String, chunk.slice(0, i));
-};
+}
 
 var invalidEncoding = "invalid encoding";
 
 /**
  * Decodes a base64 encoded string to a buffer.
+ * @name util.base64.decode
+ * @function
  * @param {string} string Source string
  * @param {Uint8Array} buffer Destination buffer
  * @param {number} offset Destination offset
  * @returns {number} Number of bytes written
  * @throws {Error} If encoding is invalid
  */
-base64.decode = function decode(string, buffer, offset) {
+export function decode(string, buffer, offset) {
     var start = offset;
     var j = 0, // goto index
         t;     // temporary
@@ -129,7 +131,7 @@ base64.decode = function decode(string, buffer, offset) {
     if (j === 1)
         throw Error(invalidEncoding);
     return offset - start;
-};
+}
 
 var base64Re = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/,
     base64UrlRe = /[-_]/,
@@ -137,10 +139,12 @@ var base64Re = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
 
 /**
  * Tests if the specified string appears to be base64 encoded.
+ * @name util.base64.test
+ * @function
  * @param {string} string String to test
  * @returns {boolean} `true` if probably base64 encoded, otherwise false
  */
-base64.test = function test(string) {
+export function test(string) {
     return base64Re.test(string)
         || base64UrlRe.test(string) && base64UrlNoPaddingRe.test(string);
-};
+}

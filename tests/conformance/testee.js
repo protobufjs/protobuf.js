@@ -1,14 +1,12 @@
-"use strict";
+import fs from "node:fs";
+import * as protobuf from "../../index.js";
+import generated from "./generated/messages.js";
+import "../../ext/textformat.js";
 
-var fs = require("fs"),
-    protobuf = require("../.."),
-    generated = require("./generated/messages.js"),
-    reflectionRoot = protobuf.Root.fromJSON(require("./generated/messages.json")).resolveAll(),
+var reflectionRoot = protobuf.Root.fromJSON(JSON.parse(fs.readFileSync(new URL("./generated/messages.json", import.meta.url), "utf8"))).resolveAll(),
     conformance = generated.conformance,
     list = process.argv.indexOf("--list") >= 0,
     testTypes = Object.create(null);
-
-require("../../ext/textformat");
 
 var TEST_TYPES = [
     makeTestType("protobuf_test_messages.proto2.TestAllTypesProto2", generated.protobuf_test_messages.proto2.TestAllTypesProto2),

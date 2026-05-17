@@ -54,7 +54,6 @@ tape.test("pbts supports explicit import mappings", function(test) {
     ].join("\n"), ["--import", "\\$protobuf=.."], function(err, tsCode) {
         test.error(err, "definition generation worked");
         test.ok(tsCode.indexOf("import * as $protobuf from \"..\";") >= 0, "overrides the protobuf import");
-        test.ok(tsCode.indexOf("import Long = require(\"long\");") >= 0, "keeps default Long import");
         test.end();
     });
 });
@@ -73,7 +72,6 @@ tape.test("pbts supports explicit imports with main output", function(test) {
         test.error(err, "definition generation worked");
         test.ok(tsCode.indexOf("// DO NOT EDIT!") >= 0, "emits generated header");
         test.ok(tsCode.indexOf("import * as $protobuf from \"..\";") >= 0, "emits explicit import");
-        test.equal(tsCode.indexOf("import Long = require(\"long\");"), -1, "does not emit default Long import");
         test.end();
     });
 });

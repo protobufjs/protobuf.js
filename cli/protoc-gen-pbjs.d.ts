@@ -1,4 +1,4 @@
-import { Long, Message, Reader, Type, Writer } from "protobufjs";
+import { Message, Reader, Type, Writer } from "protobufjs";
 
 export interface ICodeGeneratorRequest {
     fileToGenerate?: string[];
@@ -17,7 +17,7 @@ export interface ICodeGeneratorResponseFile {
 
 export interface ICodeGeneratorResponse {
     error?: string;
-    supportedFeatures?: number | Long;
+    supportedFeatures?: number | bigint;
     minimumEdition?: number;
     maximumEdition?: number;
     file?: ICodeGeneratorResponseFile[];

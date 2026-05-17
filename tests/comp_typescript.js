@@ -9,7 +9,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AwesomeMessage = exports.AwesomeSubMessage = exports.AwesomeEnum = exports.Hello = void 0;
 const __1 = require("..");
@@ -29,9 +28,9 @@ const root = __1.Root.fromJSON({
 });
 const HelloReflected = root.lookupType("Hello");
 HelloReflected.create({ value: "hi" });
-const parsedOptionValue = (_a = HelloReflected.parsedOptions) === null || _a === void 0 ? void 0 : _a[0]["(custom_option)"];
+const parsedOptionValue = HelloReflected.parsedOptions?.[0]["(custom_option)"];
 const reflectedMethod = new __1.Method("Call", undefined, "Hello", "Hello", false, false, undefined, undefined, [{ option: 1 }]);
-const parsedMethodOptionValue = (_b = reflectedMethod.parsedOptions) === null || _b === void 0 ? void 0 : _b[0].option;
+const parsedMethodOptionValue = reflectedMethod.parsedOptions?.[0].option;
 const enumDescriptor = {
     edition: "proto2",
     values: { A: 0 },
@@ -47,6 +46,7 @@ const serviceDescriptor = { edition: "2023", methods: { Call: methodDescriptor }
 const typeDescriptor = { edition: "2023", fields: { value: fieldDescriptor }, oneofs: { choice: oneofDescriptor }, comment: null };
 // Custom classes
 class Hello extends __1.Message {
+    value; // for MessageProperties<T> coercion
     foo() {
         this.value = "hi";
         return this;
@@ -64,9 +64,14 @@ var AwesomeEnum;
 (function (AwesomeEnum) {
     AwesomeEnum[AwesomeEnum["ONE"] = 1] = "ONE";
     AwesomeEnum[AwesomeEnum["TWO"] = 2] = "TWO";
-})(AwesomeEnum = exports.AwesomeEnum || (exports.AwesomeEnum = {}));
+})(AwesomeEnum || (exports.AwesomeEnum = AwesomeEnum = {}));
 class AwesomeSubMessage extends __1.Message {
+    awesomeString;
+    awesomeMapString;
+    awesomeMapEnum;
+    awesomeMapMessage;
 }
+exports.AwesomeSubMessage = AwesomeSubMessage;
 __decorate([
     __1.Field.d(1, "string"),
     __metadata("design:type", String)
@@ -83,9 +88,13 @@ __decorate([
     __1.MapField.d(4, "string", AwesomeSubMessage),
     __metadata("design:type", Object)
 ], AwesomeSubMessage.prototype, "awesomeMapMessage", void 0);
-exports.AwesomeSubMessage = AwesomeSubMessage;
 let AwesomeMessage = class AwesomeMessage extends __1.Message {
+    awesomeField;
+    awesomeSubMessage;
+    awesomeEnum;
+    which;
 };
+exports.AwesomeMessage = AwesomeMessage;
 __decorate([
     __1.Field.d(1, "string", "optional", "awesome default string"),
     __metadata("design:type", String)
@@ -102,10 +111,9 @@ __decorate([
     __1.OneOf.d("awesomeSubMessage", "awesomeEnum"),
     __metadata("design:type", String)
 ], AwesomeMessage.prototype, "which", void 0);
-AwesomeMessage = __decorate([
+exports.AwesomeMessage = AwesomeMessage = __decorate([
     __1.Type.d("SuperAwesomeMessage")
 ], AwesomeMessage);
-exports.AwesomeMessage = AwesomeMessage;
 let awesomeMessage = new AwesomeMessage({ awesomeField: "hi" });
 let awesomeBuffer = AwesomeMessage.encode(awesomeMessage).finish();
 let awesomeDecoded = AwesomeMessage.decode(awesomeBuffer);

@@ -1,13 +1,10 @@
-"use strict";
-module.exports = Service;
+import { Namespace } from "./namespace.js";
+import { Method } from "./method.js";
+import { util } from "./util.js";
+import { rpc } from "./rpc.js";
 
 // extends Namespace
-var Namespace = require("./namespace");
 ((Service.prototype = Object.create(Namespace.prototype)).constructor = Service).className = "Service";
-
-var Method = require("./method"),
-    util   = require("./util"),
-    rpc    = require("./rpc");
 
 var reservedRe = util.patterns.reservedRe;
 
@@ -198,3 +195,5 @@ Service.prototype.create = function create(rpcImpl, requestDelimited, responseDe
     }
     return rpcService;
 };
+
+export { Service };

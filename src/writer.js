@@ -1,28 +1,27 @@
-"use strict";
-module.exports = Writer;
+import { util } from "./util/minimal.js";
+import { length as utf8Length, write as writeUtf8 } from "./util/utf8.js";
 
-var util      = require("./util/minimal");
+/* eslint-disable no-invalid-this */
 
 var BufferWriter; // cyclic
 
-var LongBits  = util.LongBits,
-    base64    = util.base64,
-    utf8      = util.utf8;
+var base64 = util.base64;
 
 /**
  * Constructs a new writer operation instance.
  * @classdesc Scheduled writer operation.
  * @constructor
- * @param {function(*, Uint8Array, number)} fn Function to call
+ * @param {function(Uint8Array, number)} fn Function to call
  * @param {number} len Value byte length
  * @param {*} val Value to write
+ * @param {*} [val2] Second value to write
  * @ignore
  */
-function Op(fn, len, val) {
+function Op(fn, len, val, val2) {
 
     /**
      * Function to call.
-     * @type {function(Uint8Array, number, *)}
+     * @type {function(Uint8Array, number)}
      */
     this.fn = fn;
 
@@ -34,7 +33,7 @@ function Op(fn, len, val) {
 
     /**
      * Next operation.
-     * @type {Writer.Op|undefined}
+     * @type {Op|undefined}
      */
     this.next = undefined;
 
@@ -43,7 +42,22 @@ function Op(fn, len, val) {
      * @type {*}
      */
     this.val = val; // type varies
+
+    /**
+     * Second value to write.
+     * @type {*}
+     */
+    this.val2 = val2; // type varies
 }
+
+/**
+ * Applies this operation to the specified buffer.
+ * @param {Uint8Array} buf Target buffer
+ * @param {number} pos Target offset
+ */
+Op.prototype.apply = function apply(buf, pos) {
+    this.fn(buf, pos);
+};
 
 /* istanbul ignore next */
 function noop() {} // eslint-disable-line no-empty-function
@@ -60,13 +74,13 @@ function State(writer) {
 
     /**
      * Current head.
-     * @type {Writer.Op}
+     * @type {Op}
      */
     this.head = writer.head;
 
     /**
      * Current tail.
-     * @type {Writer.Op}
+     * @type {Op}
      */
     this.tail = writer.tail;
 
@@ -85,7 +99,7 @@ function State(writer) {
 
 /**
  * Constructs a new writer instance.
- * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
+ * @classdesc Wire format writer using `Uint8Array`.
  * @constructor
  */
 function Writer() {
@@ -98,19 +112,22 @@ function Writer() {
 
     /**
      * Operations head.
-     * @type {Object}
+     * @type {Op}
+     * @private
      */
     this.head = new Op(noop, 0, 0);
 
     /**
      * Operations tail
-     * @type {Object}
+     * @type {Op}
+     * @private
      */
     this.tail = this.head;
 
     /**
      * Linked forked states.
-     * @type {Object|null}
+     * @type {State|null}
+     * @private
      */
     this.states = null;
 
@@ -147,62 +164,60 @@ Writer.create = create();
  * @returns {Uint8Array} Buffer
  */
 Writer.alloc = function alloc(size) {
-    return new util.Array(size);
+    return new Uint8Array(size);
 };
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
-/* istanbul ignore else */
-if (util.Array !== Array)
-    Writer.alloc = util.pool(Writer.alloc, util.Array.prototype.subarray);
+Writer.alloc = util.pool(Writer.alloc, Uint8Array.prototype.subarray);
 
-/**
- * Pushes a new operation to the queue.
- * @param {function(Uint8Array, number, *)} fn Function to call
- * @param {number} len Value byte length
- * @param {number} val Value to write
- * @returns {Writer} `this`
- * @private
- */
-Writer.prototype._push = function push(fn, len, val) {
-    this.tail = this.tail.next = new Op(fn, len, val);
-    this.len += len;
-    return this;
-};
-
-function writeByte(val, buf, pos) {
-    buf[pos] = val & 255;
+function writeByte(buf, pos) {
+    buf[pos] = this.val & 255;
 }
 
-function writeStringAscii(val, buf, pos) {
+function writeStringAscii(buf, pos) {
+    var val = this.val;
     for (var i = 0; i < val.length;)
         buf[pos++] = val.charCodeAt(i++);
 }
 
-function writeVarint32(val, buf, pos) {
+function writeStringUtf8Short(buf, pos) {
+    var val = this.val,
+        c1,
+        c2;
+    for (var i = 0; i < val.length; ++i) {
+        c1 = val.charCodeAt(i);
+        if (c1 < 128) {
+            buf[pos++] = c1;
+        } else if (c1 < 2048) {
+            buf[pos++] = c1 >> 6 | 192;
+            buf[pos++] = c1 & 63 | 128;
+        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
+            ++i;
+            buf[pos++] = c1 >> 18 | 240;
+            buf[pos++] = c1 >> 12 & 63 | 128;
+            buf[pos++] = c1 >> 6 & 63 | 128;
+            buf[pos++] = c1 & 63 | 128;
+        } else if ((c1 & 0xF800) === 0xD800) {
+            buf[pos++] = 0xEF;
+            buf[pos++] = 0xBF;
+            buf[pos++] = 0xBD;
+        } else {
+            buf[pos++] = c1 >> 12 | 224;
+            buf[pos++] = c1 >> 6 & 63 | 128;
+            buf[pos++] = c1 & 63 | 128;
+        }
+    }
+}
+
+function writeVarint32(buf, pos) {
+    var val = this.val;
     while (val > 127) {
         buf[pos++] = val & 127 | 128;
         val >>>= 7;
     }
     buf[pos] = val;
 }
-
-/**
- * Constructs a new varint writer operation instance.
- * @classdesc Scheduled varint writer operation.
- * @extends Op
- * @constructor
- * @param {number} len Value byte length
- * @param {number} val Value to write
- * @ignore
- */
-function VarintOp(len, val) {
-    this.len = len;
-    this.next = undefined;
-    this.val = val;
-}
-
-VarintOp.prototype = Object.create(Op.prototype);
-VarintOp.prototype.fn = writeVarint32;
 
 /**
  * Writes an unsigned 32 bit value as a varint.
@@ -212,7 +227,7 @@ VarintOp.prototype.fn = writeVarint32;
 Writer.prototype.uint32 = function write_uint32(value) {
     // here, the call to this.push has been inlined and a varint specific Op subclass is used.
     // uint32 is by far the most frequently used operation and benefits significantly from this.
-    this.len += (this.tail = this.tail.next = new VarintOp(
+    this.len += (this.tail = this.tail.next = new Op(writeVarint32,
         (value = value >>> 0)
                 < 128       ? 1
         : value < 16384     ? 2
@@ -230,9 +245,11 @@ Writer.prototype.uint32 = function write_uint32(value) {
  * @returns {Writer} `this`
  */
 Writer.prototype.int32 = function write_int32(value) {
-    return value < 0
-        ? this._push(writeVarint64, 10, LongBits.fromNumber(value)) // 10 bytes per spec
-        : this.uint32(value);
+    if (value < 0) {
+        this.len += (this.tail = this.tail.next = new Op(writeVarint64, 10, value >>> 0, 0xffffffff)).len; // 10 bytes per spec
+        return this;
+    }
+    return this.uint32(value);
 };
 
 /**
@@ -244,48 +261,106 @@ Writer.prototype.sint32 = function write_sint32(value) {
     return this.uint32((value << 1 ^ value >> 31) >>> 0);
 };
 
-function writeVarint64(val, buf, pos) {
-    while (val.hi) {
-        buf[pos++] = val.lo & 127 | 128;
-        val.lo = (val.lo >>> 7 | val.hi << 25) >>> 0;
-        val.hi >>>= 7;
+function writeVarint64(buf, pos) {
+    var lo = this.val,
+        hi = this.val2;
+    while (hi) {
+        buf[pos++] = lo & 127 | 128;
+        lo = (lo >>> 7 | hi << 25) >>> 0;
+        hi >>>= 7;
     }
-    while (val.lo > 127) {
-        buf[pos++] = val.lo & 127 | 128;
-        val.lo = val.lo >>> 7;
+    while (lo > 127) {
+        buf[pos++] = lo & 127 | 128;
+        lo = lo >>> 7;
     }
-    buf[pos++] = val.lo;
+    buf[pos++] = lo;
+}
+
+function lengthVarint64(lo, hi) {
+    var part0 = lo,
+        part1 = (lo >>> 28 | hi << 4) >>> 0,
+        part2 = hi >>> 24;
+    return part2 === 0
+         ? part1 === 0
+           ? part0 < 16384
+             ? part0 < 128 ? 1 : 2
+             : part0 < 2097152 ? 3 : 4
+           : part1 < 16384
+             ? part1 < 128 ? 5 : 6
+             : part1 < 2097152 ? 7 : 8
+         : part2 < 128 ? 9 : 10;
+}
+
+var bitsLo = 0,
+    bitsHi = 0,
+    view64 = new DataView(new ArrayBuffer(8));
+
+function setBits_bigint(value) {
+    view64.setBigUint64(0, value, true);
+    bitsLo = view64.getUint32(0, true);
+    bitsHi = view64.getUint32(4, true);
+}
+
+function setBits_number(value) {
+    var sign = value < 0;
+    if (sign)
+        value = -value;
+
+    bitsLo = value >>> 0;
+    bitsHi = (value - bitsLo) / 4294967296 >>> 0;
+
+    if (sign) {
+        bitsHi = ~bitsHi >>> 0;
+        bitsLo = ~bitsLo >>> 0;
+        if (++bitsLo > 4294967295) {
+            bitsLo = 0;
+            if (++bitsHi > 4294967295)
+                bitsHi = 0;
+        }
+    }
 }
 
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {Long|number|string} value Value to write
+ * @param {number|bigint} value Value to write
  * @returns {Writer} `this`
- * @throws {TypeError} If `value` is a string and no long library is present.
  */
 Writer.prototype.uint64 = function write_uint64(value) {
-    var bits = LongBits.from(value);
-    return this._push(writeVarint64, bits.length(), bits);
+    if (typeof value === "bigint")
+        setBits_bigint(value);
+    else if (typeof value === "number")
+        setBits_number(value);
+    else
+        throw TypeError("value must be a number or bigint");
+    this.len += (this.tail = this.tail.next = new Op(writeVarint64, lengthVarint64(bitsLo, bitsHi), bitsLo, bitsHi)).len;
+    return this;
 };
 
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {Long|number|string} value Value to write
+ * @param {number|bigint} value Value to write
  * @returns {Writer} `this`
- * @throws {TypeError} If `value` is a string and no long library is present.
  */
 Writer.prototype.int64 = Writer.prototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {Long|number|string} value Value to write
+ * @param {number|bigint} value Value to write
  * @returns {Writer} `this`
- * @throws {TypeError} If `value` is a string and no long library is present.
  */
 Writer.prototype.sint64 = function write_sint64(value) {
-    var bits = LongBits.from(value).zzEncode();
-    return this._push(writeVarint64, bits.length(), bits);
+    if (typeof value === "bigint")
+        setBits_bigint(value);
+    else if (typeof value === "number")
+        setBits_number(value);
+    else
+        throw TypeError("value must be a number or bigint");
+    var mask = bitsHi >> 31,
+        lo = (bitsLo << 1 ^ mask) >>> 0,
+        hi = ((bitsHi << 1 | bitsLo >>> 31) ^ mask) >>> 0;
+    this.len += (this.tail = this.tail.next = new Op(writeVarint64, lengthVarint64(lo, hi), lo, hi)).len;
+    return this;
 };
 
 /**
@@ -294,10 +369,13 @@ Writer.prototype.sint64 = function write_sint64(value) {
  * @returns {Writer} `this`
  */
 Writer.prototype.bool = function write_bool(value) {
-    return this._push(writeByte, 1, value ? 1 : 0);
+    this.tail = this.tail.next = new Op(writeByte, 1, value ? 1 : 0);
+    this.len += 1;
+    return this;
 };
 
-function writeFixed32(val, buf, pos) {
+function writeFixed32(buf, pos) {
+    var val = this.val;
     buf[pos    ] =  val         & 255;
     buf[pos + 1] =  val >>> 8   & 255;
     buf[pos + 2] =  val >>> 16  & 255;
@@ -310,7 +388,9 @@ function writeFixed32(val, buf, pos) {
  * @returns {Writer} `this`
  */
 Writer.prototype.fixed32 = function write_fixed32(value) {
-    return this._push(writeFixed32, 4, value >>> 0);
+    this.tail = this.tail.next = new Op(writeFixed32, 4, value >>> 0);
+    this.len += 4;
+    return this;
 };
 
 /**
@@ -323,21 +403,27 @@ Writer.prototype.sfixed32 = Writer.prototype.fixed32;
 
 /**
  * Writes an unsigned 64 bit value as fixed 64 bits.
- * @param {Long|number|string} value Value to write
+ * @param {number|bigint} value Value to write
  * @returns {Writer} `this`
- * @throws {TypeError} If `value` is a string and no long library is present.
  */
 Writer.prototype.fixed64 = function write_fixed64(value) {
-    var bits = LongBits.from(value);
-    return this._push(writeFixed32, 4, bits.lo)._push(writeFixed32, 4, bits.hi);
+    if (typeof value === "bigint")
+        setBits_bigint(value);
+    else if (typeof value === "number")
+        setBits_number(value);
+    else
+        throw TypeError("value must be a number or bigint");
+    this.tail = this.tail.next = new Op(writeFixed32, 4, bitsLo);
+    this.tail = this.tail.next = new Op(writeFixed32, 4, bitsHi);
+    this.len += 8;
+    return this;
 };
 
 /**
  * Writes a signed 64 bit value as fixed 64 bits.
  * @function
- * @param {Long|number|string} value Value to write
+ * @param {number|bigint} value Value to write
  * @returns {Writer} `this`
- * @throws {TypeError} If `value` is a string and no long library is present.
  */
 Writer.prototype.sfixed64 = Writer.prototype.fixed64;
 
@@ -348,7 +434,8 @@ Writer.prototype.sfixed64 = Writer.prototype.fixed64;
  * @returns {Writer} `this`
  */
 Writer.prototype.float = function write_float(value) {
-    return this._push(util.float.writeFloatLE, 4, value);
+    this.len += (this.tail = this.tail.next = new Op(writeFloat, 4, value)).len;
+    return this;
 };
 
 /**
@@ -358,18 +445,25 @@ Writer.prototype.float = function write_float(value) {
  * @returns {Writer} `this`
  */
 Writer.prototype.double = function write_double(value) {
-    return this._push(util.float.writeDoubleLE, 8, value);
+    this.len += (this.tail = this.tail.next = new Op(writeDouble, 8, value)).len;
+    return this;
 };
 
-var writeBytes = util.Array.prototype.set
-    ? function writeBytes_set(val, buf, pos) {
-        buf.set(val, pos); // also works for plain array values
-    }
-    /* istanbul ignore next */
-    : function writeBytes_for(val, buf, pos) {
-        for (var i = 0; i < val.length; ++i)
-            buf[pos + i] = val[i];
-    };
+function writeFloat(buf, pos) {
+    util.float.writeFloatLE(this.val, buf, pos);
+}
+
+function writeDouble(buf, pos) {
+    util.float.writeDoubleLE(this.val, buf, pos);
+}
+
+function writeBytes(buf, pos) {
+    buf.set(this.val, pos); // also works for plain array values
+}
+
+function writeStringUtf8(buf, pos) {
+    writeUtf8(this.val, buf, pos);
+}
 
 /**
  * Writes a sequence of bytes.
@@ -378,14 +472,17 @@ var writeBytes = util.Array.prototype.set
  */
 Writer.prototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
-    if (!len)
-        return this._push(writeByte, 1, 0);
+    if (!len) {
+        this.len += (this.tail = this.tail.next = new Op(writeByte, 1, 0)).len;
+        return this;
+    }
     if (util.isString(value)) {
         var buf = Writer.alloc(len = base64.length(value));
         base64.decode(value, buf, 0);
         value = buf;
     }
-    return this.uint32(len)._push(writeBytes, len, value);
+    this.uint32(len).len += (this.tail = this.tail.next = new Op(writeBytes, len, value)).len;
+    return this;
 };
 
 /**
@@ -395,7 +492,9 @@ Writer.prototype.bytes = function write_bytes(value) {
  */
 Writer.prototype.raw = function write_raw(value) {
     var len = value.length >>> 0;
-    return len ? this._push(writeBytes, len, value) : this;
+    if (len)
+        this.len += (this.tail = this.tail.next = new Op(writeBytes, len, value)).len;
+    return this;
 };
 
 /**
@@ -404,10 +503,13 @@ Writer.prototype.raw = function write_raw(value) {
  * @returns {Writer} `this`
  */
 Writer.prototype.string = function write_string(value) {
-    var len = utf8.length(value);
-    return len
-        ? this.uint32(len)._push(len === value.length ? writeStringAscii : utf8.write, len, value)
-        : this._push(writeByte, 1, 0);
+    var len = utf8Length(value);
+    if (len) {
+        this.uint32(len).len += (this.tail = this.tail.next = new Op(len === value.length ? writeStringAscii : len < 40 ? writeStringUtf8Short : writeStringUtf8, len, value)).len;
+    } else {
+        this.len += (this.tail = this.tail.next = new Op(writeByte, 1, 0)).len;
+    }
+    return this;
 };
 
 /**
@@ -479,7 +581,7 @@ Writer.prototype.finishInto = function finishInto(buf, offset) {
     var head = this.head.next,
         pos  = offset;
     while (head) {
-        head.fn(head.val, buf, pos);
+        head.apply(buf, pos);
         pos += head.len;
         head = head.next;
     }
@@ -491,3 +593,5 @@ Writer._configure = function(BufferWriter_) {
     Writer.create = create();
     BufferWriter._configure();
 };
+
+export { Op, Writer, writeByte, writeStringAscii, writeStringUtf8Short };

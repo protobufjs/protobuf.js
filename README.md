@@ -13,6 +13,9 @@
 
 ## Getting started
 
+> [!NOTE]
+> protobuf.js v9.x has switched to ESM.
+
 ### Install
 
 ```sh
@@ -42,15 +45,14 @@ The full build includes the light build, and the light build includes the minima
 Pick the distribution matching your runtime variant and pin an exact version:
 
 ```html
-<!-- Full -->
-<script src="https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/protobuf.min.js"></script>
-<!-- Light -->
-<script src="https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/light/protobuf.min.js"></script>
-<!-- Minimal -->
-<script src="https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/minimal/protobuf.min.js"></script>
+<script type="module">
+  import * as protobuf from "https://cdn.jsdelivr.net/npm/protobufjs@9.X.X/dist/index.js";
+  import * as light from "https://cdn.jsdelivr.net/npm/protobufjs@9.X.X/dist/light.js";
+  import * as minimal from "https://cdn.jsdelivr.net/npm/protobufjs@9.X.X/dist/minimal.js";
+</script>
 ```
 
-Browser builds support CommonJS and AMD loaders and export globally as `window.protobuf`.
+Browser builds are ESM bundles and do not install a global `protobuf` object.
 
 ## Usage
 
@@ -71,13 +73,13 @@ protobuf.js converts `.proto` field names to camelCase by default, so `awesome_f
 ### Load a schema
 
 ```ts
-const protobuf = require("protobufjs");
+import * as protobuf from "protobufjs";
 
-const root = protobuf.loadSync("awesome.proto");
+const root = await protobuf.load("awesome.proto");
 const AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");
 ```
 
-Use `protobuf.load()` for the asynchronous variant.
+Or use named imports to benefit from tree-shaking.
 
 ### Encode and decode
 
@@ -97,9 +99,7 @@ const decoded = AwesomeMessage.decode(encoded);
 
 `encode` expects a message instance or equivalent plain object and does not verify input implicitly. Use `verify` for plain objects whose shape is not guaranteed, `create` to create a message instance from already valid data when useful, and `fromObject` when conversion from broader JavaScript input is needed.
 
-Plain objects can be encoded directly when they already use protobuf.js runtime types: numbers for 32-bit numeric fields, booleans for `bool`, strings for `string`, `Uint8Array` or `Buffer` for `bytes`, arrays for repeated fields, and plain objects for maps. Map keys are the string representation of the respective value or an 8-character hash string for 64-bit/`Long` keys. Use `fromObject` when input may use broader JSON-style forms such as enum names, base64 strings for bytes, or decimal strings for 64-bit values.
-
-Install [`long`](https://github.com/dcodeIO/long.js) with protobuf.js when exact 64-bit integer support is required.
+Plain objects can be encoded directly when they already use protobuf.js runtime types: numbers for 32-bit numeric fields, `number` or `bigint` for 64-bit numeric fields, booleans for `bool`, strings for `string`, `Uint8Array` or `Buffer` for `bytes`, arrays for repeated fields, and plain objects for maps. Map keys are the string representation of the respective value. Use `fromObject` when input may use broader JSON-style forms such as enum names, base64 strings for bytes, or decimal strings for 64-bit values.
 
 ### Convert plain objects
 
@@ -198,7 +198,7 @@ npx pbjs -t json -o awesome.json awesome1.proto awesome2.proto ...
 ```
 
 ```ts
-const bundle = require("./awesome.json");
+import bundle from "./awesome.json";
 
 const root = protobuf.Root.fromJSON(bundle);
 const AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");
@@ -386,7 +386,7 @@ npm run bench
 
 ## Compatibility
 
-Supported runtimes are browsers, Node.js v12+, Deno and Bun. When using the CLI with Bun, Node.js must also be installed.
+Supported runtimes are browsers, Node.js v22+, Deno and Bun. When using the CLI with Bun, Node.js must also be installed.
 
 ## Security
 
@@ -398,6 +398,7 @@ protobuf.js favors transparent disclosure. Security-impacting reports are handle
 git clone https://github.com/protobufjs/protobuf.js
 cd protobuf.js
 npm install
+npm --prefix cli install
 ```
 
 Running the tests:

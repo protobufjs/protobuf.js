@@ -5,7 +5,7 @@
             "node"
         ],
         "lib": [
-            "es2019"
+            "es2022"
         ],
         "noEmit": true,
         "strictNullChecks": true

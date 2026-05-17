@@ -1,12 +1,7 @@
-"use strict";
-module.exports = Reader;
-
-var util      = require("./util/minimal");
+import { util } from "./util/minimal.js";
+import { read as readUtf8, readStrict as readUtf8Strict } from "./util/utf8.js";
 
 var BufferReader; // cyclic
-
-var LongBits  = util.LongBits,
-    utf8      = util.utf8;
 
 /* istanbul ignore next */
 function indexOutOfRange(reader, writeLength) {
@@ -15,7 +10,7 @@ function indexOutOfRange(reader, writeLength) {
 
 /**
  * Constructs a new reader instance using the specified buffer.
- * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
+ * @classdesc Wire format reader using `Uint8Array`.
  * @constructor
  * @param {Uint8Array} buffer Buffer to read from
  */
@@ -40,18 +35,11 @@ function Reader(buffer) {
     this.len = buffer.length;
 }
 
-var create_array = typeof Uint8Array !== "undefined"
-    ? function create_typed_array(buffer) {
-        if (buffer instanceof Uint8Array || Array.isArray(buffer))
-            return new Reader(buffer);
-        throw Error("illegal buffer");
-    }
-    /* istanbul ignore next */
-    : function create_array(buffer) {
-        if (Array.isArray(buffer))
-            return new Reader(buffer);
-        throw Error("illegal buffer");
-    };
+function create_array(buffer) {
+    if (buffer instanceof Uint8Array)
+        return new Reader(buffer);
+    throw Error("illegal buffer");
+}
 
 var create = function create() {
     return util.Buffer
@@ -70,13 +58,13 @@ var create = function create() {
 /**
  * Creates a new reader using the specified buffer.
  * @function
- * @param {Uint8Array|Buffer} buffer Buffer to read from
+ * @param {Uint8Array|util.Buffer} buffer Buffer to read from
  * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
  * @throws {Error} If `buffer` is not a valid buffer
  */
 Reader.create = create();
 
-Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
+Reader.prototype._slice = Uint8Array.prototype.subarray;
 
 /**
  * Returns raw bytes from the backing buffer without advancing the reader.
@@ -85,9 +73,6 @@ Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore ne
  * @returns {Uint8Array} Raw bytes
  */
 Reader.prototype.raw = function read_raw(start, end) {
-    if (Array.isArray(this.buf)) // plain array
-        return this.buf.slice(start, end);
-
     if (start === end) // fix for IE 10/Win8 and others' subarray returning array of size 1
         return new this.buf.constructor(0);
     return this._slice.call(this.buf, start, end);
@@ -198,83 +183,149 @@ Reader.prototype.sint32 = function read_sint32() {
     return value >>> 1 ^ -(value & 1) | 0;
 };
 
-/* eslint-disable no-invalid-this */
+var bitsLo = 0 | 0,
+    bitsHi = 0 | 0,
+    view64 = new DataView(new ArrayBuffer(8));
 
-function readLongVarint() {
-    // tends to deopt with local vars for octet etc.
-    var bits = new LongBits(0, 0);
-    var i = 0;
-    if (this.len - this.pos > 4) { // fast route (lo)
-        for (; i < 4; ++i) {
-            // 1st..4th
-            bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
-            if (this.buf[this.pos++] < 128)
-                return bits;
-        }
-        // 5th
-        bits.lo = (bits.lo | (this.buf[this.pos] & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (this.buf[this.pos] & 127) >>  4) >>> 0;
-        if (this.buf[this.pos++] < 128)
-            return bits;
-        i = 0;
-    } else {
-        for (; i < 3; ++i) {
-            /* istanbul ignore if */
-            if (this.pos >= this.len)
-                throw indexOutOfRange(this);
-            // 1st..3th
-            bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
-            if (this.buf[this.pos++] < 128)
-                return bits;
-        }
-        // 4th
-        bits.lo = (bits.lo | (this.buf[this.pos++] & 127) << i * 7) >>> 0;
-        return bits;
+function readVarint64LoFast(buf, pos) {
+    // 1st..4th
+    var lo = buf[pos] & 127;
+    if (buf[pos++] < 128) {
+        bitsLo = lo;
+        bitsHi = 0;
+        return pos;
     }
-    if (this.len - this.pos > 4) { // fast route (hi)
-        for (; i < 5; ++i) {
-            // 6th..10th
-            bits.hi = (bits.hi | (this.buf[this.pos] & 127) << i * 7 + 3) >>> 0;
-            if (this.buf[this.pos++] < 128)
-                return bits;
-        }
-    } else {
-        for (; i < 5; ++i) {
-            /* istanbul ignore if */
-            if (this.pos >= this.len)
-                throw indexOutOfRange(this);
-            // 6th..10th
-            bits.hi = (bits.hi | (this.buf[this.pos] & 127) << i * 7 + 3) >>> 0;
-            if (this.buf[this.pos++] < 128)
-                return bits;
+    lo |= (buf[pos] & 127) << 7;
+    if (buf[pos++] < 128) {
+        bitsLo = lo;
+        bitsHi = 0;
+        return pos;
+    }
+    lo |= (buf[pos] & 127) << 14;
+    if (buf[pos++] < 128) {
+        bitsLo = lo;
+        bitsHi = 0;
+        return pos;
+    }
+    lo |= (buf[pos] & 127) << 21;
+    if (buf[pos++] < 128) {
+        bitsLo = lo;
+        bitsHi = 0;
+        return pos;
+    }
+    // 5th
+    lo |= (buf[pos] & 127) << 28;
+    var hi = (buf[pos] & 127) >> 4;
+    if (buf[pos++] < 128) {
+        bitsLo = lo;
+        bitsHi = hi;
+        return pos;
+    }
+    bitsLo = lo;
+    bitsHi = hi;
+    return ~pos;
+}
+
+function readVarint64LoSlow(buf, pos, len) {
+    var i = 0,
+        lo = 0 | 0,
+        hi = 0 | 0;
+
+    for (; i < 3; ++i) {
+        /* istanbul ignore if */
+        if (pos >= len)
+            throw indexOutOfRange({ pos: pos, len: len });
+        // 1st..3th
+        lo |= (buf[pos] & 127) << i * 7;
+        if (buf[pos++] < 128) { bitsLo = lo; bitsHi = hi; return pos; }
+    }
+    // 4th
+    lo |= (buf[pos++] & 127) << i * 7;
+    bitsLo = lo;
+    bitsHi = hi;
+    return pos;
+}
+
+function readVarint64HiFast(buf, pos) {
+    var hi = bitsHi;
+
+    for (var i = 0; i < 5; ++i) {
+        // 6th..10th
+        hi |= (buf[pos] & 127) << i * 7 + 3;
+        if (buf[pos++] < 128) {
+            bitsHi = hi;
+            return pos;
         }
     }
     /* istanbul ignore next */
     throw Error("invalid varint encoding");
 }
 
-/* eslint-enable no-invalid-this */
+function readVarint64HiSlow(buf, pos, len) {
+    var hi = bitsHi;
+
+    for (var i = 0; i < 5; ++i) {
+        /* istanbul ignore if */
+        if (pos >= len)
+            throw indexOutOfRange({ pos: pos, len: len });
+        // 6th..10th
+        hi |= (buf[pos] & 127) << i * 7 + 3;
+        if (buf[pos++] < 128) {
+            bitsHi = hi;
+            return pos;
+        }
+    }
+    /* istanbul ignore next */
+    throw Error("invalid varint encoding");
+}
+
+function readVarint64(buf, pos, len) {
+    pos = len - pos > 4
+        ? readVarint64LoFast(buf, pos)
+        : readVarint64LoSlow(buf, pos, len);
+    if (pos >= 0)
+        return pos;
+    pos = ~pos;
+    return len - pos > 4
+        ? readVarint64HiFast(buf, pos)
+        : readVarint64HiSlow(buf, pos, len);
+}
 
 /**
  * Reads a varint as a signed 64 bit value.
- * @name Reader#int64
- * @function
- * @returns {Long} Value read
+ * @returns {bigint} Value read
  */
+Reader.prototype.int64 = function read_int64() {
+    this.pos = readVarint64(this.buf, this.pos, this.len);
+    if (bitsHi === 0)
+        return BigInt(bitsLo >>> 0);
+    return BigInt(bitsHi) * 4294967296n + BigInt(bitsLo >>> 0);
+};
 
 /**
  * Reads a varint as an unsigned 64 bit value.
- * @name Reader#uint64
- * @function
- * @returns {Long} Value read
+ * @returns {bigint} Value read
  */
+Reader.prototype.uint64 = function read_uint64() {
+    this.pos = readVarint64(this.buf, this.pos, this.len);
+    if (bitsHi === 0)
+        return BigInt(bitsLo >>> 0);
+    if (bitsHi > 0)
+        return BigInt(bitsHi) * 4294967296n + BigInt(bitsLo >>> 0);
+    view64.setUint32(0, bitsLo, true);
+    view64.setUint32(4, bitsHi, true);
+    return view64.getBigUint64(0, true);
+};
 
 /**
  * Reads a zig-zag encoded varint as a signed 64 bit value.
- * @name Reader#sint64
- * @function
- * @returns {Long} Value read
+ * @returns {bigint} Value read
  */
+Reader.prototype.sint64 = function read_sint64() {
+    this.pos = readVarint64(this.buf, this.pos, this.len);
+    var mask = -(bitsLo & 1);
+    return BigInt(bitsHi >>> 1 ^ mask) * 4294967296n + BigInt(((bitsLo >>> 1 | bitsHi << 31) ^ mask) >>> 0);
+};
 
 /**
  * Reads a varint as a boolean.
@@ -285,13 +336,10 @@ Reader.prototype.bool = function read_bool() {
         b;
     for (var i = 0; i < 10; ++i) {
         /* istanbul ignore if */
-        if (this.pos >= this.len)
-            throw indexOutOfRange(this);
+        if (this.pos >= this.len) throw indexOutOfRange(this);
         b = this.buf[this.pos++];
-        if (b & 127)
-            value = true;
-        if (b < 128)
-            return value;
+        if (b & 127) value = true;
+        if (b < 128) return value;
     }
     /* istanbul ignore next */
     throw Error("invalid varint encoding");
@@ -330,32 +378,33 @@ Reader.prototype.sfixed32 = function read_sfixed32() {
     return readFixed32_end(this.buf, this.pos += 4) | 0;
 };
 
-/* eslint-disable no-invalid-this */
-
-function readFixed64(/* this: Reader */) {
-
+/**
+ * Reads fixed 64 bits.
+ * @returns {bigint} Value read
+ */
+Reader.prototype.fixed64 = function read_fixed64() {
     /* istanbul ignore if */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
 
-    return new LongBits(readFixed32_end(this.buf, this.pos += 4), readFixed32_end(this.buf, this.pos += 4));
-}
-
-/* eslint-enable no-invalid-this */
-
-/**
- * Reads fixed 64 bits.
- * @name Reader#fixed64
- * @function
- * @returns {Long} Value read
- */
+    var lo = readFixed32_end(this.buf, this.pos += 4),
+        hi = readFixed32_end(this.buf, this.pos += 4);
+    return BigInt(hi) * 4294967296n + BigInt(lo);
+};
 
 /**
  * Reads zig-zag encoded fixed 64 bits.
- * @name Reader#sfixed64
- * @function
- * @returns {Long} Value read
+ * @returns {bigint} Value read
  */
+Reader.prototype.sfixed64 = function read_sfixed64() {
+    /* istanbul ignore if */
+    if (this.pos + 8 > this.len)
+        throw indexOutOfRange(this, 8);
+
+    var lo = readFixed32_end(this.buf, this.pos += 4),
+        hi = readFixed32_end(this.buf, this.pos += 4) | 0;
+    return BigInt(hi) * 4294967296n + BigInt(lo);
+};
 
 /**
  * Reads a float (32 bit) as a number.
@@ -420,7 +469,24 @@ Reader.prototype.string = function read_string() {
         throw indexOutOfRange(this, length);
 
     this.pos = end;
-    return utf8.read(this.buf, start, end);
+    return readUtf8(this.buf, start, end);
+};
+
+/**
+ * Reads a string preceeded by its byte length as a varint, rejecting invalid UTF8.
+ * @returns {string} Value read
+ */
+Reader.prototype.stringVerify = function read_string_verify() {
+    var length = this.uint32(),
+        start  = this.pos,
+        end    = this.pos + length;
+
+    /* istanbul ignore if */
+    if (end > this.len)
+        throw indexOutOfRange(this, length);
+
+    this.pos = end;
+    return readUtf8Strict(this.buf, start, end);
 };
 
 /**
@@ -503,29 +569,6 @@ Reader._configure = function(BufferReader_) {
     BufferReader = BufferReader_;
     Reader.create = create();
     BufferReader._configure();
-
-    var fn = util.Long ? "toLong" : /* istanbul ignore next */ "toNumber";
-    util.merge(Reader.prototype, {
-
-        int64: function read_int64() {
-            return readLongVarint.call(this)[fn](false);
-        },
-
-        uint64: function read_uint64() {
-            return readLongVarint.call(this)[fn](true);
-        },
-
-        sint64: function read_sint64() {
-            return readLongVarint.call(this).zzDecode()[fn](false);
-        },
-
-        fixed64: function read_fixed64() {
-            return readFixed64.call(this)[fn](true);
-        },
-
-        sfixed64: function read_sfixed64() {
-            return readFixed64.call(this)[fn](false);
-        }
-
-    });
 };
+
+export { Reader };

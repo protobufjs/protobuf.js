@@ -1,12 +1,12 @@
-"use strict";
-var protobuf = module.exports = require("./index-light");
+import { Root, Type } from "./index-light.js";
+import { parse } from "./parse.js";
+import { common } from "./common.js";
 
-protobuf.build = "full";
+var build = "full";
 
-// Parser
-protobuf.tokenize         = require("./tokenize");
-protobuf.parse            = require("./parse");
-protobuf.common           = require("./common");
+Root._configure(Type, parse, common);
 
-// Configure parser
-protobuf.Root._configure(protobuf.Type, protobuf.parse, protobuf.common);
+export * from "./index-light.js";
+export { build };
+export { tokenize } from "./tokenize.js";
+export { parse, common };

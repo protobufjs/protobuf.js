@@ -1,6 +1,3 @@
-"use strict";
-module.exports = tokenize;
-
 var delimRe        = /[\s{}=;:[\],'"()<>]/g,
     stringDoubleRe = /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
     stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
@@ -419,3 +416,5 @@ function tokenize(source, alternateCommentMode) {
     });
     /* eslint-enable callback-return */
 }
+
+export { tokenize };

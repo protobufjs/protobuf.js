@@ -1,7 +1,4 @@
-"use strict";
-module.exports = Message;
-
-var util = require("./util/minimal");
+import { util } from "./util/minimal.js";
 
 /**
  * Constructs a new message instance.
@@ -135,3 +132,5 @@ Message.toObject = function toObject(message, options) {
 Message.prototype.toJSON = function toJSON() {
     return this.$type.toObject(this, util.toJSONOptions);
 };
+
+export { Message };

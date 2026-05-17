@@ -34,86 +34,61 @@ tape.test("reflected roots", function(test) {
         });
     });
 
-    test.test(test.name + " - json", function(test) {
+    test.test(test.name + " - json", async function(test) {
         var root = new Root();
         test.plan(3);
-        root.load("tests/data/common.json", function(err) {
-            if (err)
-                return test.fail("should not return an error when loading JSON files: " + err.message);
-            test.ok(root.lookupType("google.protobuf.Any"), "should load JSON files");
-            root.load("tests/data/common.json", function(err) {
-                test.same(root.files, [ "tests/data/common.json" ], "should not attempt to load the same file twice");
-                test.notOk(err, "should not return an error when loading files twice");
-                test.end();
-            });
-        });
+        await root.load("tests/data/common.json");
+        test.ok(root.lookupType("google.protobuf.Any"), "should load JSON files");
+        await root.load("tests/data/common.json");
+        test.same(root.files, [ "tests/data/common.json" ], "should not attempt to load the same file twice");
+        test.pass("should not return an error when loading files twice");
     });
 
-    test.test(test.name + " - weak", function(test) {
+    test.test(test.name + " - weak", async function(test) {
         var root = new Root();
-        test.plan(1);        
-        root.load(["tests/data/weak.proto"], function (err) {
-            test.notOk(err, "should ignore missing weak imports");
-            test.end();
-        });
+        await root.load(["tests/data/weak.proto"]);
+        test.pass("should ignore missing weak imports");
     });
 
-    test.test(test.name + " - missing", function(test) {
+    test.test(test.name + " - missing", async function(test) {
         var root = new Root();
-        test.plan(1);
-        root.load("tests/data/NOTFOUND", function(err) {
-            test.ok(err, "should return an error when trying to load missing protos");
-            test.end();
-        });
-    });
-
-    test.test(test.name + " - missing import", function(test) {
-        var root = new Root();
-        test.plan(2);
-        root.load("tests/data/badimport.proto", function(err) {
-            test.ok(err, "should return an error when an imported file does not exist");
-            test.match(err.toString(), /nonexistent\.proto/, "should mention the file name which was not found");
-            test.end();
-        });
-    });
-
-    test.test(test.name + " - missing import, sync load", function(test) {
-        var root = new Root();
-        test.plan(2);
         try {
-            root.loadSync("tests/data/badimport.proto");
-            root.resolveAll();
+            await root.load("tests/data/NOTFOUND");
+            test.fail("should return an error when trying to load missing protos");
+        } catch (err) {
+            test.ok(err, "should return an error when trying to load missing protos");
+        }
+    });
+
+    test.test(test.name + " - missing import", async function(test) {
+        var root = new Root();
+        try {
+            await root.load("tests/data/badimport.proto");
+            test.fail("should return an error when an imported file does not exist");
         } catch (err) {
             test.ok(err, "should return an error when an imported file does not exist");
             test.match(err.toString(), /nonexistent\.proto/, "should mention the file name which was not found");
         }
-        test.end();
     });
 
-    test.test(test.name + " - skipped", function(test) {
+    test.test(test.name + " - skipped", async function(test) {
         var root = new Root();
         root.resolvePath = function() {
             return null;
         };
-        test.plan(1);
-        root.load("tests/data/NOTFOUND2", function(err) {
-            test.notOk(err, "should skip files without error when resolvePath returns null");
-            test.end();
-        });
+        await root.load("tests/data/NOTFOUND2");
+        test.pass("should skip files without error when resolvePath returns null");
     });
 
-    test.test(test.name + " - skipped import", function(test) {
+    test.test(test.name + " - skipped import", async function(test) {
         var root = new Root();
         root.resolvePath = function(origin, target) {
             if (/weak\.proto$/.test(target))
                 return protobuf.util.path.resolve(origin, target);
             return null;
         };
-        test.plan(1);
-        root.load("tests/data/weak.proto", function(err) {
-            test.notOk(err, "should skip files without error when resolvePath returns null");
-            test.end();
-        });
+        await root.load("tests/data/weak.proto");
+        test.pass("should skip files without error when resolvePath returns null");
     });
 });
 

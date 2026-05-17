@@ -1,5 +1,4 @@
 import * as $protobuf from "../../..";
-import Long = require("long");
 
 export namespace vector_tile {
 
@@ -46,9 +45,9 @@ export namespace vector_tile {
             stringValue: string;
             floatValue: number;
             doubleValue: number;
-            intValue: (number|Long);
-            uintValue: (number|Long);
-            sintValue: (number|Long);
+            intValue: (number|bigint);
+            uintValue: (number|bigint);
+            sintValue: (number|bigint);
             boolValue: boolean;
             static create(properties: vector_tile.Tile.Value.$Shape): vector_tile.Tile.Value & vector_tile.Tile.Value.$Shape;
             static create(properties?: vector_tile.Tile.Value.$Properties): vector_tile.Tile.Value;
@@ -68,9 +67,9 @@ export namespace vector_tile {
                 stringValue?: (string|null);
                 floatValue?: (number|null);
                 doubleValue?: (number|null);
-                intValue?: (number|Long|null);
-                uintValue?: (number|Long|null);
-                sintValue?: (number|Long|null);
+                intValue?: (number|bigint|null);
+                uintValue?: (number|bigint|null);
+                sintValue?: (number|bigint|null);
                 boolValue?: (boolean|null);
                 $unknowns?: Uint8Array[];
             }
@@ -83,7 +82,7 @@ export namespace vector_tile {
         class Feature {
             constructor(properties?: vector_tile.Tile.Feature.$Properties);
             $unknowns?: Uint8Array[];
-            id: (number|Long);
+            id: (number|bigint);
             tags: number[];
             type: vector_tile.Tile.GeomType;
             geometry: number[];
@@ -102,7 +101,7 @@ export namespace vector_tile {
 
         namespace Feature {
             interface $Properties {
-                id?: (number|Long|null);
+                id?: (number|bigint|null);
                 tags?: (number[]|null);
                 type?: (vector_tile.Tile.GeomType|null);
                 geometry?: (number[]|null);

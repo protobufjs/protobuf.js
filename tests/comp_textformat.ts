@@ -1,5 +1,5 @@
 import * as protobuf from "../index";
-import textformat = require("../ext/textformat");
+import textformat from "../ext/textformat";
 
 const root = protobuf.Root.fromJSON({
     nested: {

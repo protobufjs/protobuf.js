@@ -264,6 +264,104 @@ tape.test("decode known fields by wire type", function(test) {
     test.end();
 });
 
+tape.test("decode string fields by utf8_validation feature", function(test) {
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Verify: {
+                fields: {
+                    singular: { type: "string", id: 1 },
+                    repeated: { rule: "repeated", type: "string", id: 2 },
+                    map: { keyType: "string", type: "string", id: 3 },
+                    choice: { type: "string", id: 4 }
+                },
+                oneofs: {
+                    kind: { oneof: [ "choice" ] }
+                }
+            },
+            Proto2: {
+                edition: "proto2",
+                fields: {
+                    value: { type: "string", id: 1 }
+                }
+            },
+            EditionNone: {
+                edition: "2023",
+                options: { features: { utf8_validation: "NONE" } },
+                fields: {
+                    value: { type: "string", id: 1 }
+                }
+            }
+        }
+    });
+    var Verify = root.lookupType("Verify");
+    var Proto2 = root.lookupType("Proto2");
+    var EditionNone = root.lookupType("EditionNone");
+    var invalid = [ 0xA0, 0xB0, 0xC0, 0xD0 ];
+    var surrogate = [ 0xED, 0xA0, 0x80 ];
+    var valid = [ 0x66, 0x6F, 0x6F ];
+    var invalidReplacement = new Buffer(invalid).toString("utf8");
+    var surrogateReplacement = new Buffer(surrogate).toString("utf8");
+
+    function stringField(id, value) {
+        return [ id << 3 | 2, value.length ].concat(value);
+    }
+
+    function mapField(key, value) {
+        var entry = stringField(1, key).concat(stringField(2, value));
+        return [ 3 << 3 | 2, entry.length ].concat(entry);
+    }
+
+    test.throws(function() {
+        Verify.decode(protobuf.util.newBuffer(stringField(1, invalid)));
+    }, /utf-?8|encoded data/i, "should reject invalid singular strings when verification is enabled");
+
+    test.throws(function() {
+        Verify.decode(protobuf.util.newBuffer(stringField(2, invalid)));
+    }, /utf-?8|encoded data/i, "should reject invalid repeated strings when verification is enabled");
+
+    test.throws(function() {
+        Verify.decode(protobuf.util.newBuffer(stringField(4, invalid)));
+    }, /utf-?8|encoded data/i, "should reject invalid oneof strings when verification is enabled");
+
+    test.throws(function() {
+        Verify.decode(protobuf.util.newBuffer(mapField(invalid, valid)));
+    }, /utf-?8|encoded data/i, "should reject invalid map string keys when verification is enabled");
+
+    test.throws(function() {
+        Verify.decode(protobuf.util.newBuffer(mapField(valid, invalid)));
+    }, /utf-?8|encoded data/i, "should reject invalid map string values when verification is enabled");
+
+    test.throws(function() {
+        Verify.decode(protobuf.util.newBuffer(stringField(1, surrogate)));
+    }, /utf-?8|encoded data/i, "should reject UTF8-encoded lone surrogates when verification is enabled");
+
+    test.equal(
+        Proto2.decode(protobuf.util.newBuffer(stringField(1, invalid))).value,
+        invalidReplacement,
+        "should replace malformed strings when verification is disabled by proto2 defaults"
+    );
+
+    test.equal(
+        EditionNone.decode(protobuf.util.newBuffer(stringField(1, invalid))).value,
+        invalidReplacement,
+        "should replace malformed strings when verification is disabled by editions features"
+    );
+
+    test.equal(
+        Proto2.decode(protobuf.util.newBuffer(stringField(1, surrogate))).value,
+        surrogateReplacement,
+        "should replace UTF8-encoded lone surrogates when verification is disabled by proto2 defaults"
+    );
+
+    test.equal(
+        EditionNone.decode(protobuf.util.newBuffer(stringField(1, surrogate))).value,
+        surrogateReplacement,
+        "should replace UTF8-encoded lone surrogates when verification is disabled by editions features"
+    );
+
+    test.end();
+});
+
 // TODO: Protoc rejects open enums whose first value is not zero.
 // We should do the same, but for v8 this would be a regression.
 // Remove this test once we enforce this restriction.

@@ -1,7 +1,7 @@
 var tape = require("tape");
 
 var protobuf = require("..");
-require("../ext/textformat");
+var textformat = require("../ext/textformat").default;
 
 var proto = "syntax = \"proto3\";\
 message Child { string name = 1; }\
@@ -54,7 +54,9 @@ tape.test("textformat - parses scalar, repeated, map and nested fields", functio
 
     test.equal(msg.int32Field, -42, "parses signed octal int32");
     test.equal(msg.uint32Field, 42, "parses unsigned hex uint32");
+    test.equal(typeof msg.int64Field, "bigint", "parses int64 as bigint");
     test.equal(msg.int64Field.toString(), "-9007199254740991", "parses int64");
+    test.equal(typeof msg.uint64Field, "bigint", "parses uint64 as bigint");
     test.equal(msg.uint64Field.toString(), "18446744073709551615", "parses uint64");
     test.equal(msg.doubleField, -Infinity, "parses signed infinity");
     test.ok(isNaN(msg.floatField), "parses nan");
@@ -67,6 +69,7 @@ tape.test("textformat - parses scalar, repeated, map and nested fields", functio
     test.same(msg.stringMap, { a: 1, b: 2 }, "parses map entries");
     test.equal(msg.kind, Kind.values.ONE, "parses enum names");
     test.equal(msg.first, "choice", "parses oneof member");
+    test.ok(Msg.encode(msg).finish().length, "encodes parsed int64 values");
     test.end();
 });
 
@@ -232,13 +235,13 @@ tape.test("textformat - optionally formats unknown fields", function(test) {
         "}"
     ].join("\n"), "formats unknown fields with numeric text format syntax");
 
-    var unknownLimit = protobuf.textformat.unknownRecursionLimit,
+    var unknownLimit = textformat.unknownRecursionLimit,
         nestedOnly = M.decode(protobuf.Writer.create().uint32(1002 << 3 | 2).bytes(nested).finish());
-    protobuf.textformat.unknownRecursionLimit = 0;
+    textformat.unknownRecursionLimit = 0;
     try {
         test.equal(M.toText(nestedOnly, { unknowns: true }), "1002: \"\\010o\"", "unknown recursion limit disables nested heuristic");
     } finally {
-        protobuf.textformat.unknownRecursionLimit = unknownLimit;
+        textformat.unknownRecursionLimit = unknownLimit;
     }
     test.end();
 });

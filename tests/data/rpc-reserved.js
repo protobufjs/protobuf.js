@@ -202,7 +202,7 @@ $root.MyRequest = (function() {
             case 1: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.path = value;
                     else
                         delete message.path;

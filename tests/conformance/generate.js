@@ -1,10 +1,10 @@
-"use strict";
+import child_process from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-var child_process = require("child_process"),
-    fs = require("fs"),
-    path = require("path");
-
-var rootDir = path.resolve(__dirname, "../.."),
+var __dirname = path.dirname(fileURLToPath(import.meta.url)),
+    rootDir = path.resolve(__dirname, "../.."),
     upstreamDir = process.env.PROTOBUF_UPSTREAM || path.join(__dirname, "upstream"),
     outputDir = path.join(__dirname, "generated"),
     outputFile = path.join(outputDir, "messages.js"),
@@ -49,8 +49,8 @@ if (fs.existsSync(fromUpstream(upstreamUnstableSchemaFile))) {
 
 runPbjs({
     target: "static-module",
-    wrap: "commonjs",
-    dependency: "../../../minimal",
+    wrap: "esm",
+    dependency: "../../../minimal.js",
     out: outputFile
 }, importRoots.map(fromUpstream), schemaFiles.map(fromSchemaFile));
 

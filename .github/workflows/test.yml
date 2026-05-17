@@ -6,7 +6,7 @@ on:
   pull_request:
     types: [assigned, opened, synchronize, reopened, labeled]
 env:
-  MIN_NODE_VERSION: &min_node_version "12"
+  MIN_NODE_VERSION: &min_node_version "22.13"
   NPM_CONFIG_AUDIT: "false"
 jobs:
   lint:
@@ -17,7 +17,7 @@ jobs:
       with:
         node-version: "lts/*"
     - name: "Install dependencies"
-      run: npm install
+      run: npm install --ignore-scripts
     - name: "Lint sources"
       run: npm run lint:sources -- --max-warnings 0
     - name: "Lint types"
@@ -32,13 +32,16 @@ jobs:
     - uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node_version }}
-    - name: "Use npm 8 on Node 12"
-      if: ${{ matrix.node_version == '12' }}
-      run: npm install -g npm@8
     - name: "Install dependencies"
-      run: npm install
+      run: npm install --ignore-scripts
+    - name: "Install CLI dependencies"
+      run: npm --prefix cli install --ignore-scripts
+    - name: "Build bundles"
+      run: npm run build:bundle
     - name: "Test sources"
       run: npm run test:sources
+    - name: "Test bundles"
+      run: npm run test:bundles
     - name: "Test types"
       run: npm run test:types
   benchmark:
@@ -49,9 +52,9 @@ jobs:
       with:
         node-version: "lts/*"
     - name: "Install dependencies"
-      run: npm install
+      run: npm install --ignore-scripts
     - name: "Install benchmark dependencies"
-      run: npm --prefix bench install --omit=dev
+      run: npm --prefix bench install --omit=dev --ignore-scripts
     - name: "Run benchmark"
       run: |
         set -o pipefail

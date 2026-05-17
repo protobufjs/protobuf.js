@@ -58,7 +58,7 @@ $root.Test = (function() {
             case 1: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.string = value;
                     else
                         delete message.string;
@@ -183,7 +183,7 @@ $root.Test = (function() {
                             this[keys[i]] = properties[keys[i]];
             }
 
-            InnerInner.prototype.long = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+            InnerInner.prototype.long = 0n;
             InnerInner.prototype["enum"] = 0;
             InnerInner.prototype.sint32 = 0;
 
@@ -222,7 +222,7 @@ $root.Test = (function() {
                     case 1: {
                             if (wireType !== 0)
                                 break;
-                            if (typeof (value = reader.int64()) === "object" ? value.low || value.high : value !== 0)
+                            if ((value = reader.int64()) !== 0n)
                                 message.long = value;
                             else
                                 delete message.long;

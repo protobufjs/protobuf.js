@@ -1,5 +1,4 @@
 import * as $protobuf from "../..";
-import Long = require("long");
 
 export interface ITest1 extends Test1.$Properties {
 }

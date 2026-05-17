@@ -1,8 +1,6 @@
-"use strict";
-
-var fs = require("fs"),
-    path = require("path"),
-    summary = require("./summary");
+import fs from "node:fs";
+import path from "node:path";
+import * as summary from "./summary.js";
 
 var args = process.argv.slice(2),
     jsonFile = null,

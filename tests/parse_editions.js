@@ -138,7 +138,7 @@ tape.test("edition 2024 visibility", function(test) {
 });
 
 
-tape.test("edition 2024 import option", function(test) {
+tape.test("edition 2024 import option", async function(test) {
     test.same(protobuf.parse(`edition = "2024"; import "foo.proto";`).imports, ["foo.proto"], "regular options should fetch");
     test.equals(protobuf.parse(`edition = "2024"; import option "foo.proto";`).imports, undefined, "import option should not fetch");
     test.same(protobuf.parse(`edition = "2024";
@@ -151,9 +151,7 @@ tape.test("edition 2024 import option", function(test) {
         protobuf.parse(`edition = "2023"; import option "foo.proto";`);
     }, /Error: illegal token 'option'/, "import option should be banned before edition 2024");
 
-    var root = new protobuf.Root();
-    root.loadSync("tests/data/import-option-bad.proto");
-    root.resolveAll();
+    await new protobuf.Root().load("tests/data/import-option-bad.proto");
 
     test.end();
 });

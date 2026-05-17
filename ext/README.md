@@ -5,7 +5,7 @@
 Optional `google/protobuf/descriptor.proto` interoperability layer for reflected roots and objects.
 
 ```js
-import protobuf from "protobufjs";
+import * as protobuf from "protobufjs";
 import descriptor from "protobufjs/ext/descriptor.js";
 
 // Convert an existing root to a FileDescriptorSet message.
@@ -60,14 +60,14 @@ Importing the extension adds `.fromDescriptor(descriptor[, syntaxOrEdition])` an
 
 Not all `descriptor.proto` features translate perfectly to a protobuf.js root. A root has only limited knowledge of packages and individual files, for example, which is compensated by guessing and generating file names.
 
-The exported TypeScript interfaces can be used to reference specific descriptor message instances, for example `protobuf.Message<IDescriptorProto>`.
+The exported TypeScript interfaces can be used to reference specific descriptor message instances, for example `protobuf.Message<DescriptorProto.$Properties>`.
 
 ## textformat
 
 Optional text format support for reflected message types.
 
 ```js
-import protobuf from "protobufjs";
+import * as protobuf from "protobufjs";
 import "protobufjs/ext/textformat.js";
 
 const root = protobuf.Root.fromJSON(bundle);

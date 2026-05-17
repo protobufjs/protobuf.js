@@ -3,7 +3,7 @@ module.exports = newSuite;
 
 var benchmark = require("benchmark");
 
-var padSize = 23;
+var padSize = 25;
 var colors = process.stdout.isTTY;
 
 function newSuite(name) {

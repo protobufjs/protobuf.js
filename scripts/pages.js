@@ -1,9 +1,10 @@
 /*eslint-disable no-console, no-process-env*/
-"use strict";
 
-var ghpages = require("gh-pages"),
-    path    = require("path"),
-    pkg     = require("../package.json");
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import ghpages from "gh-pages";
+
+var pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
 
 var options = {
     message: "docs: update API documentation for v" + pkg.version,
@@ -21,7 +22,7 @@ if (process.env.GITHUB_TOKEN && process.env.GITHUB_REPOSITORY) {
     };
 }
 
-ghpages.publish(path.join(__dirname, "..", "docs"), options, function(err) {
+ghpages.publish(fileURLToPath(new URL("../docs", import.meta.url)), options, function(err) {
     if (err) {
         console.error(err.message || err);
         process.exitCode = 1;

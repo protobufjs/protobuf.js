@@ -2,11 +2,9 @@ var tape = require("tape");
 
 var protobuf  = require("..");
 
-tape.test("converters", function(test) {
+tape.test("converters", async function(test) {
 
-    protobuf.load("tests/data/convert.proto", function(err, root) {
-        if (err)
-            return test.fail(err.message);
+    var root = await protobuf.load("tests/data/convert.proto");
 
         var Message = root.lookup("Message");
 
@@ -20,7 +18,7 @@ tape.test("converters", function(test) {
                 test.equal(obj.stringVal, "", "should set stringVal");
                 test.same(obj.stringRepeated, [], "should set stringRepeated");
 
-                test.same(obj.uint64Val, { low: 0, high: 0, unsigned: true }, "should set uint64Val");
+                test.equal(obj.uint64Val, 0n, "should set uint64Val");
                 test.same(obj.uint64Repeated, [], "should set uint64Repeated");
 
                 test.same(obj.bytesVal, protobuf.util.newBuffer(0), "should set bytesVal");
@@ -98,15 +96,15 @@ tape.test("converters", function(test) {
                 var buf = protobuf.util.newBuffer(3);
                 buf[0] = buf[1] = buf[2] = 49; // "111"
                 var msg = Message.create({
-                    uint64Val: protobuf.util.Long.fromNumber(1),
+                    uint64Val: 1n,
                     uint64Repeated: [2, 3],
                     bytesVal: buf,
                     bytesRepeated: [buf, buf],
                     enumVal: 2,
                     enumRepeated: [1, 100, 2],
                     int64Map: {
-                        a: protobuf.util.Long.fromNumber(2),
-                        b: protobuf.util.Long.fromNumber(3)
+                        a: 2n,
+                        b: 3n
                     }
                 });
 
@@ -196,13 +194,18 @@ tape.test("converters", function(test) {
             var buf = protobuf.util.newBuffer(3);
             buf[0] = buf[1] = buf[2] = 49; // "111"
 
-            test.same(msg.uint64Val, { low: 1, high: 0, unsigned: true }, "should set uint64Val from a number");
-            test.same(msg.uint64Repeated, [ { low: 1, high: 0, unsigned: true}, { low: 2, high: 0, unsigned: true } ], "should set uint64Repeated from a number and a string");
+            test.equal(msg.uint64Val, 1n, "should set uint64Val from a number");
+            test.same(msg.uint64Repeated, [ 1n, 2n ], "should set uint64Repeated from a number and a string");
             test.same(msg.bytesVal, buf, "should set bytesVal from a base64 string");
             test.same(msg.bytesRepeated, [ buf, buf ], "should set bytesRepeated from a base64 string and a plain array");
             test.equal(msg.enumVal, 1, "should set enumVal from a string");
             test.same(msg.enumRepeated, [ 2, 2, 100 ], "should set enumRepeated from a number and a string and preserve unknown value");
-            test.same(msg.int64Map, { a: { low: 2, high: 0, unsigned: false }, b: { low: 3, high: 0, unsigned: false } }, "should set int64Map from a number and a string");
+            test.same(msg.int64Map, { a: 2n, b: 3n }, "should set int64Map from a number and a string");
+            test.same(Message.ctor.toObject(msg, { longs: String }), Message.toObject(msg, { longs: String }), "should convert BigInt longs the same using the static and the instance method");
+            test.same(Message.toObject(msg, { longs: String }).uint64Repeated, [ "1", "2" ], "should convert BigInt repeated longs to strings");
+            test.same(Message.toObject(msg, { longs: Number }).int64Map, { a: 2, b: 3 }, "should convert BigInt long map values to numbers");
+            test.ok(Message.encode(msg).finish().length, "should encode converted long values");
+            test.ok(Message.ctor.encode(Message.ctor.fromObject(obj)).finish().length, "should encode converted static long values");
 
             test.end();
         });
@@ -217,8 +220,5 @@ tape.test("converters", function(test) {
             };
             msg.toJSON();
         });
-
-        test.end();
-    });
 
 });
