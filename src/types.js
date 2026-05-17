@@ -32,7 +32,7 @@ function bake(values, offset) {
 }
 
 /**
- * Basic type wire types.
+ * Basic field types with their associated wire type.
  * @type {Object.<string,number>}
  * @const
  * @property {number} double=1 Fixed64 wire type
@@ -110,7 +110,7 @@ types.defaults = bake([
 ]);
 
 /**
- * Basic long type wire types.
+ * 64-bit integer field types with their associated wire type.
  * @type {Object.<string,number>}
  * @const
  * @property {number} int64=0 Varint wire type

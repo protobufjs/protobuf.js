@@ -184,46 +184,46 @@ Reader.prototype.sint32 = function read_sint32() {
     return value >>> 1 ^ -(value & 1) | 0;
 };
 
-var longLo = 0 | 0,
-    longHi = 0 | 0,
-    longDv = new DataView(new ArrayBuffer(8));
+var bitsLo = 0 | 0,
+    bitsHi = 0 | 0,
+    view64 = new DataView(new ArrayBuffer(8));
 
 function readVarint64LoFast(buf, pos) {
     // 1st..4th
     var lo = buf[pos] & 127;
     if (buf[pos++] < 128) {
-        longLo = lo;
-        longHi = 0;
+        bitsLo = lo;
+        bitsHi = 0;
         return pos;
     }
     lo |= (buf[pos] & 127) << 7;
     if (buf[pos++] < 128) {
-        longLo = lo;
-        longHi = 0;
+        bitsLo = lo;
+        bitsHi = 0;
         return pos;
     }
     lo |= (buf[pos] & 127) << 14;
     if (buf[pos++] < 128) {
-        longLo = lo;
-        longHi = 0;
+        bitsLo = lo;
+        bitsHi = 0;
         return pos;
     }
     lo |= (buf[pos] & 127) << 21;
     if (buf[pos++] < 128) {
-        longLo = lo;
-        longHi = 0;
+        bitsLo = lo;
+        bitsHi = 0;
         return pos;
     }
     // 5th
     lo |= (buf[pos] & 127) << 28;
     var hi = (buf[pos] & 127) >> 4;
     if (buf[pos++] < 128) {
-        longLo = lo;
-        longHi = hi;
+        bitsLo = lo;
+        bitsHi = hi;
         return pos;
     }
-    longLo = lo;
-    longHi = hi;
+    bitsLo = lo;
+    bitsHi = hi;
     return ~pos;
 }
 
@@ -238,23 +238,23 @@ function readVarint64LoSlow(buf, pos, len) {
             throw indexOutOfRange({ pos: pos, len: len });
         // 1st..3th
         lo |= (buf[pos] & 127) << i * 7;
-        if (buf[pos++] < 128) { longLo = lo; longHi = hi; return pos; }
+        if (buf[pos++] < 128) { bitsLo = lo; bitsHi = hi; return pos; }
     }
     // 4th
     lo |= (buf[pos++] & 127) << i * 7;
-    longLo = lo;
-    longHi = hi;
+    bitsLo = lo;
+    bitsHi = hi;
     return pos;
 }
 
 function readVarint64HiFast(buf, pos) {
-    var hi = longHi;
+    var hi = bitsHi;
 
     for (var i = 0; i < 5; ++i) {
         // 6th..10th
         hi |= (buf[pos] & 127) << i * 7 + 3;
         if (buf[pos++] < 128) {
-            longHi = hi;
+            bitsHi = hi;
             return pos;
         }
     }
@@ -263,7 +263,7 @@ function readVarint64HiFast(buf, pos) {
 }
 
 function readVarint64HiSlow(buf, pos, len) {
-    var hi = longHi;
+    var hi = bitsHi;
 
     for (var i = 0; i < 5; ++i) {
         /* istanbul ignore if */
@@ -272,7 +272,7 @@ function readVarint64HiSlow(buf, pos, len) {
         // 6th..10th
         hi |= (buf[pos] & 127) << i * 7 + 3;
         if (buf[pos++] < 128) {
-            longHi = hi;
+            bitsHi = hi;
             return pos;
         }
     }
@@ -298,9 +298,9 @@ function readVarint64(buf, pos, len) {
  */
 Reader.prototype.int64 = function read_int64() {
     this.pos = readVarint64(this.buf, this.pos, this.len);
-    if (longHi === 0)
-        return BigInt(longLo >>> 0);
-    return BigInt(longHi) * 4294967296n + BigInt(longLo >>> 0);
+    if (bitsHi === 0)
+        return BigInt(bitsLo >>> 0);
+    return BigInt(bitsHi) * 4294967296n + BigInt(bitsLo >>> 0);
 };
 
 /**
@@ -309,13 +309,13 @@ Reader.prototype.int64 = function read_int64() {
  */
 Reader.prototype.uint64 = function read_uint64() {
     this.pos = readVarint64(this.buf, this.pos, this.len);
-    if (longHi === 0)
-        return BigInt(longLo >>> 0);
-    if (longHi > 0)
-        return BigInt(longHi) * 4294967296n + BigInt(longLo >>> 0);
-    longDv.setUint32(0, longLo, true);
-    longDv.setUint32(4, longHi, true);
-    return longDv.getBigUint64(0, true);
+    if (bitsHi === 0)
+        return BigInt(bitsLo >>> 0);
+    if (bitsHi > 0)
+        return BigInt(bitsHi) * 4294967296n + BigInt(bitsLo >>> 0);
+    view64.setUint32(0, bitsLo, true);
+    view64.setUint32(4, bitsHi, true);
+    return view64.getBigUint64(0, true);
 };
 
 /**
@@ -324,8 +324,8 @@ Reader.prototype.uint64 = function read_uint64() {
  */
 Reader.prototype.sint64 = function read_sint64() {
     this.pos = readVarint64(this.buf, this.pos, this.len);
-    var mask = -(longLo & 1);
-    return BigInt(longHi >>> 1 ^ mask) * 4294967296n + BigInt(((longLo >>> 1 | longHi << 31) ^ mask) >>> 0);
+    var mask = -(bitsLo & 1);
+    return BigInt(bitsHi >>> 1 ^ mask) * 4294967296n + BigInt(((bitsLo >>> 1 | bitsHi << 31) ^ mask) >>> 0);
 };
 
 /**

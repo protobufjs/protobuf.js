@@ -261,31 +261,31 @@ function lengthVarint64(lo, hi) {
          : part2 < 128 ? 9 : 10;
 }
 
-var longLo = 0,
-    longHi = 0,
-    longDv = new DataView(new ArrayBuffer(8));
+var bitsLo = 0,
+    bitsHi = 0,
+    view64 = new DataView(new ArrayBuffer(8));
 
-function setLong_bigint(value) {
-    longDv.setBigUint64(0, value, true);
-    longLo = longDv.getUint32(0, true);
-    longHi = longDv.getUint32(4, true);
+function setBits_bigint(value) {
+    view64.setBigUint64(0, value, true);
+    bitsLo = view64.getUint32(0, true);
+    bitsHi = view64.getUint32(4, true);
 }
 
-function setLong_number(value) {
+function setBits_number(value) {
     var sign = value < 0;
     if (sign)
         value = -value;
 
-    longLo = value >>> 0;
-    longHi = (value - longLo) / 4294967296 >>> 0;
+    bitsLo = value >>> 0;
+    bitsHi = (value - bitsLo) / 4294967296 >>> 0;
 
     if (sign) {
-        longHi = ~longHi >>> 0;
-        longLo = ~longLo >>> 0;
-        if (++longLo > 4294967295) {
-            longLo = 0;
-            if (++longHi > 4294967295)
-                longHi = 0;
+        bitsHi = ~bitsHi >>> 0;
+        bitsLo = ~bitsLo >>> 0;
+        if (++bitsLo > 4294967295) {
+            bitsLo = 0;
+            if (++bitsHi > 4294967295)
+                bitsHi = 0;
         }
     }
 }
@@ -297,12 +297,12 @@ function setLong_number(value) {
  */
 Writer.prototype.uint64 = function write_uint64(value) {
     if (typeof value === "bigint")
-        setLong_bigint(value);
+        setBits_bigint(value);
     else if (typeof value === "number")
-        setLong_number(value);
+        setBits_number(value);
     else
         throw TypeError("value must be a number or bigint");
-    this.len += (this.tail = this.tail.next = new Op(writeVarint64, lengthVarint64(longLo, longHi), longLo, longHi)).len;
+    this.len += (this.tail = this.tail.next = new Op(writeVarint64, lengthVarint64(bitsLo, bitsHi), bitsLo, bitsHi)).len;
     return this;
 };
 
@@ -321,14 +321,14 @@ Writer.prototype.int64 = Writer.prototype.uint64;
  */
 Writer.prototype.sint64 = function write_sint64(value) {
     if (typeof value === "bigint")
-        setLong_bigint(value);
+        setBits_bigint(value);
     else if (typeof value === "number")
-        setLong_number(value);
+        setBits_number(value);
     else
         throw TypeError("value must be a number or bigint");
-    var mask = longHi >> 31,
-        lo = (longLo << 1 ^ mask) >>> 0,
-        hi = ((longHi << 1 | longLo >>> 31) ^ mask) >>> 0;
+    var mask = bitsHi >> 31,
+        lo = (bitsLo << 1 ^ mask) >>> 0,
+        hi = ((bitsHi << 1 | bitsLo >>> 31) ^ mask) >>> 0;
     this.len += (this.tail = this.tail.next = new Op(writeVarint64, lengthVarint64(lo, hi), lo, hi)).len;
     return this;
 };
@@ -378,13 +378,13 @@ Writer.prototype.sfixed32 = Writer.prototype.fixed32;
  */
 Writer.prototype.fixed64 = function write_fixed64(value) {
     if (typeof value === "bigint")
-        setLong_bigint(value);
+        setBits_bigint(value);
     else if (typeof value === "number")
-        setLong_number(value);
+        setBits_number(value);
     else
         throw TypeError("value must be a number or bigint");
-    this.tail = this.tail.next = new Op(writeFixed32, 4, longLo);
-    this.tail = this.tail.next = new Op(writeFixed32, 4, longHi);
+    this.tail = this.tail.next = new Op(writeFixed32, 4, bitsLo);
+    this.tail = this.tail.next = new Op(writeFixed32, 4, bitsHi);
     this.len += 8;
     return this;
 };

@@ -74,11 +74,11 @@ tape.test("writer & reader", function(test) {
     ]);
 
     values.forEach(function(val) {
-        var longVal = BigInt(val[0]);
+        var value64 = BigInt(val[0]);
         
-        test.ok(expect("uint64", longVal, val[1]), "should write " + longVal + " as an unsigned varint of length " + val[1].length + " and read it back equally");
-        test.ok(expect("int64", longVal, val[1]), "should write " + longVal + " as a signed varint of length " + val[1].length + " and read it back equally");
-        var zzBaseVal = longVal >> 1n ^ -(longVal & 1n);
+        test.ok(expect("uint64", value64, val[1]), "should write " + value64 + " as an unsigned varint of length " + val[1].length + " and read it back equally");
+        test.ok(expect("int64", value64, val[1]), "should write " + value64 + " as a signed varint of length " + val[1].length + " and read it back equally");
+        var zzBaseVal = value64 >> 1n ^ -(value64 & 1n);
         test.ok(expect("sint64", zzBaseVal, val[1]), "should write " + zzBaseVal + " as a signed zig-zag encoded varint of length " + val[1].length + " and read it back equally");
     });
 
@@ -202,10 +202,10 @@ function expect(type, value, expected, WriterToTest) {
             console.error("actual", Array.prototype.slice.call(actual), "!= expected", expected);
             return false;
         }
-    var longActual = protobuf.util.newBuffer(20);
+    var bufferActual = protobuf.util.newBuffer(20);
     for (var l = 0; l < actual.length; ++l)
-        longActual[l] = actual[l];
-    [ actual, longActual ] // also test readLongVarint fast route
+        bufferActual[l] = actual[l];
+    [ actual, bufferActual ] // also test readVarint64 fast route
     .forEach(function(actual) {
         var reader = Reader.create(actual);
         var actualValue = reader[type]();

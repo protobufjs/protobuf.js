@@ -237,7 +237,7 @@ tape.test("maps", function(test) {
         var sintBuf = MapMessage.encode(MapMessage.fromObject({ sints: { "-1": "a" } })).finish();
         var fixedBuf = MapMessage.encode(MapMessage.fromObject({ fixeds: fixedMap })).finish();
         var sfixedBuf = MapMessage.encode(MapMessage.fromObject({ sfixeds: { "-1": "a" } })).finish();
-        var longCases = [
+        var int64Cases = [
             [ "int64", intBuf, { ints: { "-1": "-1" } } ],
             [ "uint64", uintBuf, { uints: uintMap } ],
             [ "sint64", sintBuf, { sints: { "-1": "a" } } ],
@@ -260,7 +260,7 @@ tape.test("maps", function(test) {
         );
         assertReencode(boolBuf, "should re-encode false boolean keys");
 
-        longCases.forEach(function(testCase) {
+        int64Cases.forEach(function(testCase) {
             var fieldName = Object.keys(testCase[2])[0],
                 expectedMap = testCase[2][fieldName],
                 decodedMap = MapMessage.decode(testCase[1])[fieldName];

@@ -143,7 +143,7 @@ function Field(name, id, type, rule, extend, options, comment) {
     this.defaultValue = null;
 
     /**
-     * Whether this field's value should be treated as a long.
+     * Whether this field's value is a 64-bit integer.
      * @type {boolean}
      */
     this.long = types.long[type] !== undefined;
