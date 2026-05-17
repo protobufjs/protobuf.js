@@ -27,6 +27,9 @@
   ],
   "main": "index.js",
   "types": "index.d.ts",
+  "browser": {
+    "fs": false
+  },
   "publishConfig": {
     "tag": "latest-7"
   },
