@@ -4426,9 +4426,9 @@ $root.jspb = (function() {
                     object.boolField = true;
                     if ($util.Long) {
                         var long = new $util.Long(11, 0, false);
-                        object.intField = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                        object.intField = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
                     } else
-                        object.intField = options.longs === String ? "11" : 11;
+                        object.intField = options.longs === String ? "11" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("11") : 11;
                     object.enumField = options.enums === String ? "E1" : 13;
                     object.emptyField = "";
                     if (options.bytes === String)
@@ -4448,7 +4448,9 @@ $root.jspb = (function() {
                 if (message.boolField != null && message.hasOwnProperty("boolField"))
                     object.boolField = message.boolField;
                 if (message.intField != null && message.hasOwnProperty("intField"))
-                    if (typeof message.intField === "number")
+                    if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                        object.intField = typeof message.intField === "number" ? BigInt(message.intField) : $util.Long.fromBits(message.intField.low >>> 0, message.intField.high >>> 0, false).toBigInt();
+                    else if (typeof message.intField === "number")
                         object.intField = options.longs === String ? String(message.intField) : message.intField;
                     else
                         object.intField = options.longs === String ? $util.Long.prototype.toString.call(message.intField) : options.longs === Number ? new $util.LongBits(message.intField.low >>> 0, message.intField.high >>> 0).toNumber() : message.intField;
@@ -10235,7 +10237,9 @@ $root.jspb = (function() {
                     for (var j = 0; j < keys2.length; ++j) {
                         if (keys2[j] === "__proto__")
                             $util.makeProp(object.mapStringInt64, keys2[j]);
-                        if (typeof message.mapStringInt64[keys2[j]] === "number")
+                        if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                            object.mapStringInt64[keys2[j]] = typeof message.mapStringInt64[keys2[j]] === "number" ? BigInt(message.mapStringInt64[keys2[j]]) : $util.Long.fromBits(message.mapStringInt64[keys2[j]].low >>> 0, message.mapStringInt64[keys2[j]].high >>> 0, false).toBigInt();
+                        else if (typeof message.mapStringInt64[keys2[j]] === "number")
                             object.mapStringInt64[keys2[j]] = options.longs === String ? String(message.mapStringInt64[keys2[j]]) : message.mapStringInt64[keys2[j]];
                         else
                             object.mapStringInt64[keys2[j]] = options.longs === String ? $util.Long.prototype.toString.call(message.mapStringInt64[keys2[j]]) : options.longs === Number ? new $util.LongBits(message.mapStringInt64[keys2[j]].low >>> 0, message.mapStringInt64[keys2[j]].high >>> 0).toNumber() : message.mapStringInt64[keys2[j]];
@@ -22208,14 +22212,14 @@ $root.google = (function() {
                     object.identifierValue = "";
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, true);
-                        object.positiveIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                        object.positiveIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
                     } else
-                        object.positiveIntValue = options.longs === String ? "0" : 0;
+                        object.positiveIntValue = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, false);
-                        object.negativeIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                        object.negativeIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
                     } else
-                        object.negativeIntValue = options.longs === String ? "0" : 0;
+                        object.negativeIntValue = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
                     object.doubleValue = 0;
                     if (options.bytes === String)
                         object.stringValue = "";
@@ -22234,12 +22238,16 @@ $root.google = (function() {
                 if (message.identifierValue != null && message.hasOwnProperty("identifierValue"))
                     object.identifierValue = message.identifierValue;
                 if (message.positiveIntValue != null && message.hasOwnProperty("positiveIntValue"))
-                    if (typeof message.positiveIntValue === "number")
+                    if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                        object.positiveIntValue = typeof message.positiveIntValue === "number" ? BigInt(message.positiveIntValue) : $util.Long.fromBits(message.positiveIntValue.low >>> 0, message.positiveIntValue.high >>> 0, true).toBigInt();
+                    else if (typeof message.positiveIntValue === "number")
                         object.positiveIntValue = options.longs === String ? String(message.positiveIntValue) : message.positiveIntValue;
                     else
                         object.positiveIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.positiveIntValue) : options.longs === Number ? new $util.LongBits(message.positiveIntValue.low >>> 0, message.positiveIntValue.high >>> 0).toNumber(true) : message.positiveIntValue;
                 if (message.negativeIntValue != null && message.hasOwnProperty("negativeIntValue"))
-                    if (typeof message.negativeIntValue === "number")
+                    if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                        object.negativeIntValue = typeof message.negativeIntValue === "number" ? BigInt(message.negativeIntValue) : $util.Long.fromBits(message.negativeIntValue.low >>> 0, message.negativeIntValue.high >>> 0, false).toBigInt();
+                    else if (typeof message.negativeIntValue === "number")
                         object.negativeIntValue = options.longs === String ? String(message.negativeIntValue) : message.negativeIntValue;
                     else
                         object.negativeIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.negativeIntValue) : options.longs === Number ? new $util.LongBits(message.negativeIntValue.low >>> 0, message.negativeIntValue.high >>> 0).toNumber() : message.negativeIntValue;

@@ -209,7 +209,9 @@ function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-            ("if(typeof m%s===\"number\")", srcProp)
+            ("if(typeof BigInt!==\"undefined\"&&o.longs===BigInt)")
+                ("d%s=typeof m%s===\"number\"?BigInt(m%s):util.Long.fromBits(m%s.low>>>0,m%s.high>>>0,%j).toBigInt()", dstProp, srcProp, srcProp, srcProp, srcProp, isUnsigned)
+            ("else if(typeof m%s===\"number\")", srcProp)
                 ("d%s=o.longs===String?String(m%s):m%s", dstProp, srcProp, srcProp)
             ("else") // Long-like
                 ("d%s=o.longs===String?util.Long.prototype.toString.call(m%s):o.longs===Number?new util.LongBits(m%s.low>>>0,m%s.high>>>0).toNumber(%s):m%s", dstProp, srcProp, srcProp, srcProp, isUnsigned ? "true": "", srcProp);
@@ -277,9 +279,9 @@ converter.toObject = function toObject(mtype) {
             else if (field.long) gen
         ("if(util.Long){")
             ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
-            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
+            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():typeof BigInt!==\"undefined\"&&o.longs===BigInt?n.toBigInt():n", prop)
         ("}else")
-            ("d%s=o.longs===String?%j:%i", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
+            ("d%s=o.longs===String?%j:typeof BigInt!==\"undefined\"&&o.longs===BigInt?BigInt(%j):%i", prop, field.typeDefault.toString(), field.typeDefault.toString(), field.typeDefault.toNumber());
             else if (field.bytes) {
                 var arrayDefault = Array.prototype.slice.call(field.typeDefault);
                 gen

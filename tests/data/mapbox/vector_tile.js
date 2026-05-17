@@ -666,19 +666,19 @@ $root.vector_tile = (function() {
                     object.doubleValue = 0;
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, false);
-                        object.intValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                        object.intValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
                     } else
-                        object.intValue = options.longs === String ? "0" : 0;
+                        object.intValue = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, true);
-                        object.uintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                        object.uintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
                     } else
-                        object.uintValue = options.longs === String ? "0" : 0;
+                        object.uintValue = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, false);
-                        object.sintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                        object.sintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
                     } else
-                        object.sintValue = options.longs === String ? "0" : 0;
+                        object.sintValue = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
                     object.boolValue = false;
                 }
                 if (message.stringValue != null && message.hasOwnProperty("stringValue"))
@@ -688,17 +688,23 @@ $root.vector_tile = (function() {
                 if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     object.doubleValue = options.json && !isFinite(message.doubleValue) ? String(message.doubleValue) : message.doubleValue;
                 if (message.intValue != null && message.hasOwnProperty("intValue"))
-                    if (typeof message.intValue === "number")
+                    if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                        object.intValue = typeof message.intValue === "number" ? BigInt(message.intValue) : $util.Long.fromBits(message.intValue.low >>> 0, message.intValue.high >>> 0, false).toBigInt();
+                    else if (typeof message.intValue === "number")
                         object.intValue = options.longs === String ? String(message.intValue) : message.intValue;
                     else
                         object.intValue = options.longs === String ? $util.Long.prototype.toString.call(message.intValue) : options.longs === Number ? new $util.LongBits(message.intValue.low >>> 0, message.intValue.high >>> 0).toNumber() : message.intValue;
                 if (message.uintValue != null && message.hasOwnProperty("uintValue"))
-                    if (typeof message.uintValue === "number")
+                    if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                        object.uintValue = typeof message.uintValue === "number" ? BigInt(message.uintValue) : $util.Long.fromBits(message.uintValue.low >>> 0, message.uintValue.high >>> 0, true).toBigInt();
+                    else if (typeof message.uintValue === "number")
                         object.uintValue = options.longs === String ? String(message.uintValue) : message.uintValue;
                     else
                         object.uintValue = options.longs === String ? $util.Long.prototype.toString.call(message.uintValue) : options.longs === Number ? new $util.LongBits(message.uintValue.low >>> 0, message.uintValue.high >>> 0).toNumber(true) : message.uintValue;
                 if (message.sintValue != null && message.hasOwnProperty("sintValue"))
-                    if (typeof message.sintValue === "number")
+                    if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                        object.sintValue = typeof message.sintValue === "number" ? BigInt(message.sintValue) : $util.Long.fromBits(message.sintValue.low >>> 0, message.sintValue.high >>> 0, false).toBigInt();
+                    else if (typeof message.sintValue === "number")
                         object.sintValue = options.longs === String ? String(message.sintValue) : message.sintValue;
                     else
                         object.sintValue = options.longs === String ? $util.Long.prototype.toString.call(message.sintValue) : options.longs === Number ? new $util.LongBits(message.sintValue.low >>> 0, message.sintValue.high >>> 0).toNumber() : message.sintValue;
@@ -1101,13 +1107,15 @@ $root.vector_tile = (function() {
                 if (options.defaults) {
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, true);
-                        object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                        object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
                     } else
-                        object.id = options.longs === String ? "0" : 0;
+                        object.id = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
                     object.type = options.enums === String ? "UNKNOWN" : 0;
                 }
                 if (message.id != null && message.hasOwnProperty("id"))
-                    if (typeof message.id === "number")
+                    if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                        object.id = typeof message.id === "number" ? BigInt(message.id) : $util.Long.fromBits(message.id.low >>> 0, message.id.high >>> 0, true).toBigInt();
+                    else if (typeof message.id === "number")
                         object.id = options.longs === String ? String(message.id) : message.id;
                     else
                         object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber(true) : message.id;
