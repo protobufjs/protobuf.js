@@ -1,8 +1,6 @@
-"use strict";
+import fs from "node:fs";
 
-var fs = require("fs");
-
-exports.read = function(logFile, testListLogFile) {
+export function read(logFile, testListLogFile) {
     var tests = readTests(testListLogFile),
         failures = readFailures(logFile),
         skips = readSkips(logFile);
@@ -11,9 +9,7 @@ exports.read = function(logFile, testListLogFile) {
         summary: readRunnerSummary(logFile),
         totals: summarize(tests, failures, skips)
     };
-};
-
-exports.readText = readText;
+}
 
 function readTests(file) {
     var log,
@@ -227,7 +223,7 @@ function percent(value, total) {
     return total ? value / total : 0;
 }
 
-function readText(file) {
+export function readText(file) {
     var buffer = fs.readFileSync(file);
     return buffer[0] === 0xff && buffer[1] === 0xfe
         ? buffer.toString("utf16le")
