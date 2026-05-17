@@ -1,5 +1,4 @@
 import isString from "./is-string.js";
-import { getLong } from "./long.js";
 
 /**
  * Constructs new long bits.
@@ -35,8 +34,6 @@ function LongBits(lo, hi) {
 var zero = LongBits.zero = new LongBits(0, 0);
 
 zero.toNumber = function() { return 0; };
-zero.zzEncode = zero.zzDecode = function() { return this; };
-zero.length = function() { return 1; };
 
 /**
  * Zero hash.
@@ -71,21 +68,21 @@ LongBits.fromNumber = function fromNumber(value) {
 };
 
 /**
- * Constructs new long bits from a number, long or string.
- * @param {Long|number|string} value Value
+ * Constructs new long bits from a number, bigint, long or string.
+ * @param {number|bigint|Long|string} value Value
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
     if (typeof value === "number")
         return LongBits.fromNumber(value);
-    if (isString(value)) {
-        var Long = getLong();
-        /* istanbul ignore else */
-        if (Long)
-            value = Long.fromString(value);
-        else
-            return LongBits.fromNumber(parseInt(value, 10));
+    if (typeof value === "bigint") {
+        if (value === 0n)
+            return zero;
+        value = BigInt.asUintN(64, value);
+        return new LongBits(Number(value & 0xffffffffn), Number(value >> 32n));
     }
+    if (isString(value))
+        return LongBits.from(BigInt(value));
     return value.low || value.high ? new LongBits(value.low >>> 0, value.high >>> 0) : zero;
 };
 
@@ -103,19 +100,6 @@ LongBits.prototype.toNumber = function toNumber(unsigned) {
         return -(lo + hi * 4294967296);
     }
     return this.lo + this.hi * 4294967296;
-};
-
-/**
- * Converts this long bits to a long.
- * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {Long} Long
- */
-LongBits.prototype.toLong = function toLong(unsigned) {
-    var Long = getLong();
-    return Long
-        ? new Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
-        /* istanbul ignore next */
-        : { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
 };
 
 var charCodeAt = String.prototype.charCodeAt;
@@ -156,47 +140,6 @@ LongBits.prototype.toHash = function toHash() {
         this.hi >>> 16 & 255,
         this.hi >>> 24
     );
-};
-
-/**
- * Zig-zag encodes this long bits.
- * @returns {util.LongBits} `this`
- */
-LongBits.prototype.zzEncode = function zzEncode() {
-    var mask =   this.hi >> 31;
-    this.hi  = ((this.hi << 1 | this.lo >>> 31) ^ mask) >>> 0;
-    this.lo  = ( this.lo << 1                   ^ mask) >>> 0;
-    return this;
-};
-
-/**
- * Zig-zag decodes this long bits.
- * @returns {util.LongBits} `this`
- */
-LongBits.prototype.zzDecode = function zzDecode() {
-    var mask = -(this.lo & 1);
-    this.lo  = ((this.lo >>> 1 | this.hi << 31) ^ mask) >>> 0;
-    this.hi  = ( this.hi >>> 1                  ^ mask) >>> 0;
-    return this;
-};
-
-/**
- * Calculates the length of this longbits when encoded as a varint.
- * @returns {number} Length
- */
-LongBits.prototype.length = function length() {
-    var part0 =  this.lo,
-        part1 = (this.lo >>> 28 | this.hi << 4) >>> 0,
-        part2 =  this.hi >>> 24;
-    return part2 === 0
-         ? part1 === 0
-           ? part0 < 16384
-             ? part0 < 128 ? 1 : 2
-             : part0 < 2097152 ? 3 : 4
-           : part1 < 16384
-             ? part1 < 128 ? 5 : 6
-             : part1 < 2097152 ? 7 : 8
-         : part2 < 128 ? 9 : 10;
 };
 
 export default LongBits;

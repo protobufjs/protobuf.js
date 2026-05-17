@@ -9,13 +9,13 @@ export class Message {
     $unknowns?: Uint8Array[];
     stringVal: string;
     stringRepeated: string[];
-    uint64Val: (number|Long);
-    uint64Repeated: (number|Long)[];
+    uint64Val: (number|bigint);
+    uint64Repeated: (number|bigint)[];
     bytesVal: Uint8Array;
     bytesRepeated: Uint8Array[];
     enumVal: Message.SomeEnum;
     enumRepeated: Message.SomeEnum[];
-    int64Map: { [k: string]: (number|Long) };
+    int64Map: { [k: string]: (number|bigint) };
     static create(properties: Message.$Shape): Message & Message.$Shape;
     static create(properties?: Message.$Properties): Message;
     static encode(message: Message.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -33,13 +33,13 @@ export namespace Message {
     interface $Properties {
         stringVal?: (string|null);
         stringRepeated?: (string[]|null);
-        uint64Val?: (number|Long|null);
-        uint64Repeated?: ((number|Long)[]|null);
+        uint64Val?: (number|bigint|null);
+        uint64Repeated?: ((number|bigint)[]|null);
         bytesVal?: (Uint8Array|null);
         bytesRepeated?: (Uint8Array[]|null);
         enumVal?: (Message.SomeEnum|null);
         enumRepeated?: (Message.SomeEnum[]|null);
-        int64Map?: ({ [k: string]: (number|Long) }|null);
+        int64Map?: ({ [k: string]: (number|bigint) }|null);
         $unknowns?: Uint8Array[];
     }
     type $Shape = Message.$Properties;

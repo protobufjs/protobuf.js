@@ -581,9 +581,9 @@ Type.prototype.fromObject = function fromObject(object) { // eslint-disable-line
 /**
  * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
  * @interface IConversionOptions
- * @property {Function} [longs] Long conversion type.
+ * @property {Function} [longs] 64-bit integer conversion type.
  * Valid values are `String` and `Number` (the global types).
- * Defaults to copy the present value, which is a possibly unsafe number without and a {@link util.Long} with a long library.
+ * Defaults to copy the present value, which is usually a bigint.
  * @property {Function} [enums] Enum value conversion type.
  * Only valid value is `String` (the global type).
  * Defaults to copy the present value, which is the numeric id.

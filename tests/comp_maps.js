@@ -232,11 +232,11 @@ tape.test("maps", function(test) {
         uintMap[uint64Max] = "1";
         fixedMap[uint64Max] = "a";
         var boolBuf = Uint8Array.of(0x0a, 0x04, 0x08, 0x00, 0x10, 0x00);
-        var intBuf = MapMessage.encode({ ints: { "-1": "-1" } }).finish();
-        var uintBuf = MapMessage.encode({ uints: uintMap }).finish();
-        var sintBuf = MapMessage.encode({ sints: { "-1": "a" } }).finish();
-        var fixedBuf = MapMessage.encode({ fixeds: fixedMap }).finish();
-        var sfixedBuf = MapMessage.encode({ sfixeds: { "-1": "a" } }).finish();
+        var intBuf = MapMessage.encode(MapMessage.fromObject({ ints: { "-1": "-1" } })).finish();
+        var uintBuf = MapMessage.encode(MapMessage.fromObject({ uints: uintMap })).finish();
+        var sintBuf = MapMessage.encode(MapMessage.fromObject({ sints: { "-1": "a" } })).finish();
+        var fixedBuf = MapMessage.encode(MapMessage.fromObject({ fixeds: fixedMap })).finish();
+        var sfixedBuf = MapMessage.encode(MapMessage.fromObject({ sfixeds: { "-1": "a" } })).finish();
         var longCases = [
             [ "int64", intBuf, { ints: { "-1": "-1" } } ],
             [ "uint64", uintBuf, { uints: uintMap } ],

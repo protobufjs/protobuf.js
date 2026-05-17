@@ -54,7 +54,9 @@ tape.test("textformat - parses scalar, repeated, map and nested fields", functio
 
     test.equal(msg.int32Field, -42, "parses signed octal int32");
     test.equal(msg.uint32Field, 42, "parses unsigned hex uint32");
+    test.equal(typeof msg.int64Field, "bigint", "parses int64 as bigint");
     test.equal(msg.int64Field.toString(), "-9007199254740991", "parses int64");
+    test.equal(typeof msg.uint64Field, "bigint", "parses uint64 as bigint");
     test.equal(msg.uint64Field.toString(), "18446744073709551615", "parses uint64");
     test.equal(msg.doubleField, -Infinity, "parses signed infinity");
     test.ok(isNaN(msg.floatField), "parses nan");
@@ -67,6 +69,7 @@ tape.test("textformat - parses scalar, repeated, map and nested fields", functio
     test.same(msg.stringMap, { a: 1, b: 2 }, "parses map entries");
     test.equal(msg.kind, Kind.values.ONE, "parses enum names");
     test.equal(msg.first, "choice", "parses oneof member");
+    test.ok(Msg.encode(msg).finish().length, "encodes parsed int64 values");
     test.end();
 });
 

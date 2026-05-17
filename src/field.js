@@ -146,7 +146,7 @@ function Field(name, id, type, rule, extend, options, comment) {
      * Whether this field's value should be treated as a long.
      * @type {boolean}
      */
-    this.long = util.Long ? types.long[type] !== undefined : /* istanbul ignore next */ false;
+    this.long = types.long[type] !== undefined;
 
     /**
      * Whether this field's value is a buffer.
@@ -326,13 +326,13 @@ Field.prototype.resolve = function resolve() {
     }
 
     // convert to internal data type if necesssary
-    if (this.long) {
-        this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type.charAt(0) === "u");
-
-        /* istanbul ignore else */
-        if (Object.freeze)
-            Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
-
+    if (this.long && this.typeDefault !== null) {
+        if (typeof this.typeDefault === "object")
+            this.typeDefault = BigInt(this.typeDefault.high >>> 0) << 32n | BigInt(this.typeDefault.low >>> 0);
+        else
+            this.typeDefault = BigInt(this.typeDefault);
+        if (this.type.charAt(0) !== "u")
+            this.typeDefault = BigInt.asIntN(64, this.typeDefault);
     } else if (this.bytes && typeof this.typeDefault === "string") {
         var buf;
         if (util.base64.test(this.typeDefault))
@@ -416,7 +416,7 @@ Field.prototype._resolveFeatures = function _resolveFeatures(edition) {
  * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
  * @param {T} [defaultValue] Default value
  * @returns {FieldDecorator} Decorator function
- * @template T extends number | number[] | util.Long | util.Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | util.Buffer | util.Buffer[]
+ * @template T extends number | number[] | bigint | bigint[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | util.Buffer | util.Buffer[]
  * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {

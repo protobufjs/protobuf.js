@@ -818,10 +818,7 @@ function parseInteger(token, sign, unsigned, bits) {
     if (typeof util.global.BigInt === "function")
         return parseIntegerBigInt(digits, radix, sign, unsigned, bits);
 
-    var value = parseInt(digits, radix) * sign;
-    if (bits === 64 && util.Long)
-        return util.Long.fromString(String(value), unsigned);
-    return value;
+    return parseInt(digits, radix) * sign;
 }
 
 function parseIntegerBigInt(digits, radix, sign, unsigned, bits) {
@@ -847,9 +844,7 @@ function parseIntegerBigInt(digits, radix, sign, unsigned, bits) {
     }
     if (value < min || value > max)
         throw Error((unsigned ? "unsigned " : "") + "integer value out of range");
-    if (bits === 64 && util.Long)
-        return util.Long.fromString(value.toString(), unsigned, 10);
-    return Number(value);
+    return bits === 64 ? value : Number(value);
 }
 
 function writeMessage(type, message, lines, indent, options, depth) {

@@ -448,7 +448,7 @@ export namespace jspb {
             $unknowns?: Uint8Array[];
             stringField: string;
             boolField: boolean;
-            intField: (number|Long);
+            intField: (number|bigint);
             enumField: jspb.test.DefaultValues.Enum;
             emptyField: string;
             bytesField: Uint8Array;
@@ -469,7 +469,7 @@ export namespace jspb {
             interface $Properties {
                 stringField?: (string|null);
                 boolField?: (boolean|null);
-                intField?: (number|Long|null);
+                intField?: (number|bigint|null);
                 enumField?: (jspb.test.DefaultValues.Enum|null);
                 emptyField?: (string|null);
                 bytesField?: (Uint8Array|null);
@@ -1004,7 +1004,7 @@ export namespace jspb {
             $unknowns?: Uint8Array[];
             mapStringString: { [k: string]: string };
             mapStringInt32: { [k: string]: number };
-            mapStringInt64: { [k: string]: (number|Long) };
+            mapStringInt64: { [k: string]: (number|bigint) };
             mapStringBool: { [k: string]: boolean };
             mapStringDouble: { [k: string]: number };
             mapStringEnum: { [k: string]: jspb.test.MapValueEnumNoBinary };
@@ -1031,7 +1031,7 @@ export namespace jspb {
             interface $Properties {
                 mapStringString?: ({ [k: string]: string }|null);
                 mapStringInt32?: ({ [k: string]: number }|null);
-                mapStringInt64?: ({ [k: string]: (number|Long) }|null);
+                mapStringInt64?: ({ [k: string]: (number|bigint) }|null);
                 mapStringBool?: ({ [k: string]: boolean }|null);
                 mapStringDouble?: ({ [k: string]: number }|null);
                 mapStringEnum?: ({ [k: string]: jspb.test.MapValueEnumNoBinary }|null);
@@ -2170,8 +2170,8 @@ export namespace google {
             $unknowns?: Uint8Array[];
             name: google.protobuf.UninterpretedOption.NamePart.$Properties[];
             identifierValue: string;
-            positiveIntValue: (number|Long);
-            negativeIntValue: (number|Long);
+            positiveIntValue: (number|bigint);
+            negativeIntValue: (number|bigint);
             doubleValue: number;
             stringValue: Uint8Array;
             aggregateValue: string;
@@ -2192,8 +2192,8 @@ export namespace google {
             interface $Properties {
                 name?: (google.protobuf.UninterpretedOption.NamePart.$Properties[]|null);
                 identifierValue?: (string|null);
-                positiveIntValue?: (number|Long|null);
-                negativeIntValue?: (number|Long|null);
+                positiveIntValue?: (number|bigint|null);
+                negativeIntValue?: (number|bigint|null);
                 doubleValue?: (number|null);
                 stringValue?: (Uint8Array|null);
                 aggregateValue?: (string|null);

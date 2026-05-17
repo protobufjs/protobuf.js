@@ -201,8 +201,8 @@ util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
 util.key64Re = /^(?:[\x00-\xff]{8}|-?(?:0|[1-9][0-9]*))$/; // eslint-disable-line no-control-regex
 
 /**
- * Converts a number or long to an 8 characters long hash string.
- * @param {Long|number} value Value to convert
+ * Converts a number, bigint or long to an 8 characters long hash string.
+ * @param {number|bigint|Long} value Value to convert
  * @returns {string} Hash
  */
 util.longToHash = function longToHash(value) {
@@ -212,23 +212,22 @@ util.longToHash = function longToHash(value) {
 };
 
 /**
- * Converts an 8 characters long hash string to a long or number.
+ * Converts an 8 characters long hash string to a bigint.
  * @param {string} hash Hash
  * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {Long|number} Original value
+ * @returns {bigint} Original value
  */
 util.longFromHash = function longFromHash(hash, unsigned) {
     var bits = util.LongBits.fromHash(hash);
-    if (util.Long)
-        return util.Long.fromBits(bits.lo, bits.hi, unsigned);
-    return bits.toNumber(Boolean(unsigned));
+    var value = BigInt(bits.hi) << 32n | BigInt(bits.lo); // TODO: this is slow
+    return unsigned ? value : BigInt.asIntN(64, value);
 };
 
 /**
- * Converts a 64 bit key to a long or number if it is an 8 characters long hash string.
+ * Converts a 64 bit key to a bigint if it is an 8 characters long hash string.
  * @param {string} key Map key
  * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {Long|number|string} Original value
+ * @returns {bigint|string} Original value
  */
 util.longFromKey = function longFromKey(key, unsigned) {
     return util.key64Re.test(key) && !util.key32Re.test(key)

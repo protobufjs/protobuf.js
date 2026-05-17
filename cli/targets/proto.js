@@ -12,8 +12,7 @@ var Namespace  = protobuf.Namespace,
     OneOf      = protobuf.OneOf,
     Service    = protobuf.Service,
     Method     = protobuf.Method,
-    types      = protobuf.types,
-    util       = protobuf.util;
+    types      = protobuf.types;
 
 function underScore(str) {
     return str.substring(0,1)
@@ -243,7 +242,7 @@ function buildFieldOptions(field) {
                 if (syntax === 3)
                     return;
                 // skip default (resolved) default values
-                if (field.long && !util.longNeq(field.defaultValue, types.defaults[field.type]) || !field.long && field.defaultValue === types.defaults[field.type])
+                if (field.long ? field.defaultValue === BigInt(types.defaults[field.type]) : field.defaultValue === types.defaults[field.type])
                     return;
                 // enum defaults specified as strings are type references and not enclosed in quotes
                 if (field.resolvedType instanceof Enum)

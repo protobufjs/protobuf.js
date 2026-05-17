@@ -67,14 +67,17 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-                ("if(util.Long)")
-                    ("(m%s=util.Long.fromValue(d%s)).unsigned=%j", prop, prop, isUnsigned)
-                ("else if(typeof d%s===\"string\")", prop)
-                    ("m%s=parseInt(d%s,10)", prop, prop)
-                ("else if(typeof d%s===\"number\")", prop)
-                    ("m%s=d%s", prop, prop)
-                ("else if(typeof d%s===\"object\")", prop)
-                    ("m%s=new util.LongBits(d%s.low>>>0,d%s.high>>>0).toNumber(%s)", prop, prop, prop, isUnsigned ? "true" : "");
+                ("if(typeof d%s===\"object\")", prop);
+                    if (isUnsigned) gen
+                    ("m%s=BigInt(d%s.high>>>0)<<32n|BigInt(d%s.low>>>0)", prop, prop, prop);
+                    else gen
+                    ("m%s=BigInt.asIntN(64,BigInt(d%s.high>>>0)<<32n|BigInt(d%s.low>>>0))", prop, prop, prop);
+                gen
+                ("else");
+                    if (isUnsigned) gen
+                    ("m%s=BigInt.asUintN(64,BigInt(d%s))", prop, prop);
+                    else gen
+                    ("m%s=BigInt.asIntN(64,BigInt(d%s))", prop, prop);
                 break;
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", prop)
@@ -208,10 +211,18 @@ function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-            ("if(typeof m%s===\"number\")", srcProp)
+            ("if(typeof m%s===\"bigint\")", srcProp)
+                ("d%s=o.longs===String?String(m%s):o.longs===Number?Number(m%s):m%s", dstProp, srcProp, srcProp, srcProp)
+            ("else if(typeof m%s===\"number\")", srcProp)
                 ("d%s=o.longs===String?String(m%s):m%s", dstProp, srcProp, srcProp)
-            ("else") // Long-like
-                ("d%s=o.longs===String?util.Long.prototype.toString.call(m%s):o.longs===Number?new util.LongBits(m%s.low>>>0,m%s.high>>>0).toNumber(%s):m%s", dstProp, srcProp, srcProp, srcProp, isUnsigned ? "true": "", srcProp);
+            ("else{"); // Long-like
+                if (isUnsigned) gen
+                ("var n=BigInt(m%s.high>>>0)<<32n|BigInt(m%s.low>>>0)", srcProp, srcProp);
+                else gen
+                ("var n=BigInt.asIntN(64,BigInt(m%s.high>>>0)<<32n|BigInt(m%s.low>>>0))", srcProp, srcProp);
+                gen
+                ("d%s=o.longs===String?String(n):o.longs===Number?Number(n):n", dstProp)
+            ("}");
                 break;
             case "bytes": gen
             ("d%s=o.bytes===String?util.base64.encode(m%s,0,m%s.length):o.bytes===Array?Array.prototype.slice.call(m%s):m%s", dstProp, srcProp, srcProp, srcProp, srcProp);
@@ -274,11 +285,7 @@ converter.toObject = function toObject(mtype) {
             if (field.resolvedType instanceof Enum) gen
         ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
             else if (field.long) gen
-        ("if(util.Long){")
-            ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
-            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
-        ("}else")
-            ("d%s=o.longs===String?%j:%i", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
+        ("d%s=o.longs===String?%j:o.longs===Number?%i:%sn", prop, field.typeDefault.toString(), Number(field.typeDefault), field.typeDefault.toString());
             else if (field.bytes) {
                 var arrayDefault = Array.prototype.slice.call(field.typeDefault);
                 gen

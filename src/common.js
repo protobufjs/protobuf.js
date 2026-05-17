@@ -69,7 +69,7 @@ common("duration", {
      * Properties of a google.protobuf.Duration message.
      * @interface IDuration
      * @type {Object}
-     * @property {number|util.Long} [seconds]
+     * @property {number|bigint} [seconds]
      * @property {number} [nanos]
      * @memberof common
      */
@@ -93,7 +93,7 @@ common("timestamp", {
      * Properties of a google.protobuf.Timestamp message.
      * @interface ITimestamp
      * @type {Object}
-     * @property {number|util.Long} [seconds]
+     * @property {number|bigint} [seconds]
      * @property {number} [nanos]
      * @memberof common
      */
@@ -247,7 +247,7 @@ common("wrappers", {
      * Properties of a google.protobuf.Int64Value message.
      * @interface IInt64Value
      * @type {Object}
-     * @property {number|util.Long} [value]
+     * @property {number|bigint} [value]
      * @memberof common
      */
     Int64Value: {
@@ -263,7 +263,7 @@ common("wrappers", {
      * Properties of a google.protobuf.UInt64Value message.
      * @interface IUInt64Value
      * @type {Object}
-     * @property {number|util.Long} [value]
+     * @property {number|bigint} [value]
      * @memberof common
      */
     UInt64Value: {

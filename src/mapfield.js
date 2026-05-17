@@ -104,7 +104,7 @@ MapField.prototype.resolve = function resolve() {
  * @param {"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"} fieldKeyType Field key type
  * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|Object|Constructor<{}>} fieldValueType Field value type
  * @returns {FieldDecorator} Decorator function
- * @template T extends { [key: string]: number | util.Long | string | boolean | Uint8Array | util.Buffer | number[] | Message<{}> }
+ * @template T extends { [key: string]: number | bigint | string | boolean | Uint8Array | util.Buffer | number[] | Message<{}> }
  * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 MapField.d = function decorateMapField(fieldId, fieldKeyType, fieldValueType) {

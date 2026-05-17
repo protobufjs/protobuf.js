@@ -22,7 +22,7 @@
     "fs": false
   },
   "scripts": {
-    "bench": "node bench",
+    "bench": "node --min-semi-space-size=64 --max-semi-space-size=64 --max-old-space-size=4096 bench/index.js",
     "build": "npm run build:bundle && npm run build:types",
     "build:bundle": "node scripts/bundle.js",
     "build:types": "node cli/bin/pbts --main --global protobuf --out index.d.ts src/ && node cli/bin/pbts --main --import \"\\$protobuf=..\" --out ext/descriptor.generated.d.ts ext/descriptor.js && node cli/bin/pbts --main --out ext/textformat.generated.d.ts ext/textformat.js",

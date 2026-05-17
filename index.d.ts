@@ -20,13 +20,13 @@ export namespace common {
 
     /** Properties of a google.protobuf.Duration message. */
     interface IDuration {
-        seconds?: (number|util.Long);
+        seconds?: (number|bigint);
         nanos?: number;
     }
 
     /** Properties of a google.protobuf.Timestamp message. */
     interface ITimestamp {
-        seconds?: (number|util.Long);
+        seconds?: (number|bigint);
         nanos?: number;
     }
 
@@ -67,12 +67,12 @@ export namespace common {
 
     /** Properties of a google.protobuf.Int64Value message. */
     interface IInt64Value {
-        value?: (number|util.Long);
+        value?: (number|bigint);
     }
 
     /** Properties of a google.protobuf.UInt64Value message. */
     interface IUInt64Value {
-        value?: (number|util.Long);
+        value?: (number|bigint);
     }
 
     /** Properties of a google.protobuf.Int32Value message. */
@@ -322,7 +322,7 @@ export class Field extends FieldBase {
      * @returns Decorator function
      * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
      */
-    static d<T extends number | number[] | util.Long | util.Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | util.Buffer | util.Buffer[]>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
+    static d<T extends number | number[] | bigint | bigint[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | util.Buffer | util.Buffer[]>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
 }
 
 /** Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions. */
@@ -504,7 +504,7 @@ export class MapField extends FieldBase {
      * @returns Decorator function
      * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
      */
-    static d<T extends { [key: string]: number | util.Long | string | boolean | Uint8Array | util.Buffer | number[] | Message<{}> }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|Constructor<{}>)): FieldDecorator;
+    static d<T extends { [key: string]: number | bigint | string | boolean | Uint8Array | util.Buffer | number[] | Message<{}> }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|Constructor<{}>)): FieldDecorator;
 }
 
 /** Map field descriptor. */
@@ -1211,19 +1211,19 @@ export class Reader {
      * Reads a varint as a signed 64 bit value.
      * @returns Value read
      */
-    int64(): util.Long;
+    int64(): bigint;
 
     /**
      * Reads a varint as an unsigned 64 bit value.
      * @returns Value read
      */
-    uint64(): util.Long;
+    uint64(): bigint;
 
     /**
      * Reads a zig-zag encoded varint as a signed 64 bit value.
      * @returns Value read
      */
-    sint64(): util.Long;
+    sint64(): bigint;
 
     /**
      * Reads a varint as a boolean.
@@ -1247,13 +1247,13 @@ export class Reader {
      * Reads fixed 64 bits.
      * @returns Value read
      */
-    fixed64(): util.Long;
+    fixed64(): bigint;
 
     /**
      * Reads zig-zag encoded fixed 64 bits.
      * @returns Value read
      */
-    sfixed64(): util.Long;
+    sfixed64(): bigint;
 
     /**
      * Reads a float (32 bit) as a number.
@@ -1793,9 +1793,9 @@ export interface IType extends INamespace {
 export interface IConversionOptions {
 
     /**
-     * Long conversion type.
+     * 64-bit integer conversion type.
      * Valid values are `String` and `Number` (the global types).
-     * Defaults to copy the present value, which is a possibly unsafe number without and a {@link util.Long} with a long library.
+     * Defaults to copy the present value, which is usually a bigint.
      */
     longs?: Function;
 
@@ -2140,11 +2140,11 @@ export namespace util {
         static fromNumber(value: number): util.LongBits;
 
         /**
-         * Constructs new long bits from a number, long or string.
+         * Constructs new long bits from a number, bigint, long or string.
          * @param value Value
          * @returns Instance
          */
-        static from(value: (Long|number|string)): util.LongBits;
+        static from(value: (number|bigint|Long|string)): util.LongBits;
 
         /**
          * Converts this long bits to a possibly unsafe JavaScript number.
@@ -2152,13 +2152,6 @@ export namespace util {
          * @returns Possibly unsafe number
          */
         toNumber(unsigned?: boolean): number;
-
-        /**
-         * Converts this long bits to a long.
-         * @param [unsigned=false] Whether unsigned or not
-         * @returns Long
-         */
-        toLong(unsigned?: boolean): Long;
 
         /**
          * Constructs new long bits from the specified 8 characters long hash.
@@ -2172,24 +2165,6 @@ export namespace util {
          * @returns Hash
          */
         toHash(): string;
-
-        /**
-         * Zig-zag encodes this long bits.
-         * @returns `this`
-         */
-        zzEncode(): util.LongBits;
-
-        /**
-         * Zig-zag decodes this long bits.
-         * @returns `this`
-         */
-        zzDecode(): util.LongBits;
-
-        /**
-         * Calculates the length of this longbits when encoded as a varint.
-         * @returns Length
-         */
-        length(): number;
     }
 
     /** Whether running within node or not. */
@@ -2275,27 +2250,27 @@ export namespace util {
     const key64Re: RegExp;
 
     /**
-     * Converts a number or long to an 8 characters long hash string.
+     * Converts a number, bigint or long to an 8 characters long hash string.
      * @param value Value to convert
      * @returns Hash
      */
-    function longToHash(value: (Long|number)): string;
+    function longToHash(value: (number|bigint|Long)): string;
 
     /**
-     * Converts an 8 characters long hash string to a long or number.
+     * Converts an 8 characters long hash string to a bigint.
      * @param hash Hash
      * @param [unsigned=false] Whether unsigned or not
      * @returns Original value
      */
-    function longFromHash(hash: string, unsigned?: boolean): (Long|number);
+    function longFromHash(hash: string, unsigned?: boolean): bigint;
 
     /**
-     * Converts a 64 bit key to a long or number if it is an 8 characters long hash string.
+     * Converts a 64 bit key to a bigint if it is an 8 characters long hash string.
      * @param key Map key
      * @param [unsigned=false] Whether unsigned or not
      * @returns Original value
      */
-    function longFromKey(key: string, unsigned?: boolean): (Long|number|string);
+    function longFromKey(key: string, unsigned?: boolean): (bigint|string);
 
     /**
      * Converts a boolean key to a boolean value.
@@ -2606,15 +2581,6 @@ export class Writer {
     /** Current length. */
     len: number;
 
-    /** Operations head. */
-    head: object;
-
-    /** Operations tail */
-    tail: object;
-
-    /** Linked forked states. */
-    states: (object|null);
-
     /**
      * Creates a new writer.
      * @returns A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
@@ -2653,25 +2619,22 @@ export class Writer {
      * Writes an unsigned 64 bit value as a varint.
      * @param value Value to write
      * @returns `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    uint64(value: (util.Long|number|string)): Writer;
+    uint64(value: (number|bigint)): Writer;
 
     /**
      * Writes a signed 64 bit value as a varint.
      * @param value Value to write
      * @returns `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    int64(value: (util.Long|number|string)): Writer;
+    int64(value: (number|bigint)): Writer;
 
     /**
      * Writes a signed 64 bit value as a varint, zig-zag encoded.
      * @param value Value to write
      * @returns `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    sint64(value: (util.Long|number|string)): Writer;
+    sint64(value: (number|bigint)): Writer;
 
     /**
      * Writes a boolish value as a varint.
@@ -2698,17 +2661,15 @@ export class Writer {
      * Writes an unsigned 64 bit value as fixed 64 bits.
      * @param value Value to write
      * @returns `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    fixed64(value: (util.Long|number|string)): Writer;
+    fixed64(value: (number|bigint)): Writer;
 
     /**
      * Writes a signed 64 bit value as fixed 64 bits.
      * @param value Value to write
      * @returns `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    sfixed64(value: (util.Long|number|string)): Writer;
+    sfixed64(value: (number|bigint)): Writer;
 
     /**
      * Writes a float (32 bit).

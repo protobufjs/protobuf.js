@@ -23,9 +23,9 @@ tape.test("fixed64 (grpc)", function(test) {
 
     var Test = root.lookup("test.Test");
 
-    var buffer = Test.encode({
+    var buffer = Test.encode(Test.fromObject({
         int_64: '314159265358979'
-    }).finish();
+    })).finish();
 
     test.equal(buffer.length, 9, "should encode a total of 9 bytes");
     test.equal(buffer[0], 9, "should encode id 1, wireType 1");
