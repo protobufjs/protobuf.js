@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.6.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.9...protobufjs-v7.6.0) (2026-05-18)
+
+
+### Features
+
+* Support BigInt conversions (7.x) ([#2258](https://github.com/protobufjs/protobuf.js/issues/2258)) ([f769242](https://github.com/protobufjs/protobuf.js/commit/f76924244504b159efe1bb13b154fd17be3c13e7))
+
 ## [7.5.9](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.8...protobufjs-v7.5.9) (2026-05-17)
 
 

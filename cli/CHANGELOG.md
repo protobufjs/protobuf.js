@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.2.2...protobufjs-cli-v1.3.0) (2026-05-18)
+
+
+### Features
+
+* Support BigInt conversions (7.x) ([#2258](https://github.com/protobufjs/protobuf.js/issues/2258)) ([f769242](https://github.com/protobufjs/protobuf.js/commit/f76924244504b159efe1bb13b154fd17be3c13e7))
+
 ## [1.2.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.2.1...protobufjs-cli-v1.2.2) (2026-04-28)
 
 
