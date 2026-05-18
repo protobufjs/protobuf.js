@@ -116,6 +116,7 @@ Common `ConversionOptions` are:
 
 | Option | Effect |
 |--------|--------|
+| `longs: BigInt` | Converts 64-bit values to bigint values |
 | `longs: String` | Converts 64-bit values to decimal strings |
 | `longs: Number` | Converts 64-bit values to JS numbers (may lose precision) |
 | `enums: String` | Converts enum values to names |

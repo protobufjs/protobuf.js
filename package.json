@@ -46,7 +46,7 @@
     "make": "npm run lint:sources && npm run build && npm run lint:types && node ./scripts/gentests.js && npm test"
   },
   "dependencies": {
-    "long": "^5.0.0"
+    "long": "^5.3.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
