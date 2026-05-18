@@ -25,6 +25,10 @@ tape.test("reflected fields", function(test) {
     }, TypeError, "should throw if rule is specified but not a rule string");
 
     test.throws(function() {
+        new protobuf.Field("a", 1, "uint32", "proto3_optional");
+    }, TypeError, "should reject parser-internal proto3_optional rule");
+
+    test.throws(function() {
         new protobuf.Field("a", 1, "uint32", "optional", 1);
     }, TypeError, "should throw if extend is specified but not a string");
 
