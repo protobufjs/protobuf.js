@@ -2294,7 +2294,12 @@
         
 
     
-    <pre class="prettyprint"><code>try {    MyMessage.decode(someBuffer); // throws if required fields are missing} catch (e) {    if (e instanceof ProtocolError && e.instance)        console.log("decoded so far: " + JSON.stringify(e.instance));}</code></pre>
+    <pre class="prettyprint"><code>try {
+    MyMessage.decode(someBuffer); // throws if required fields are missing
+} catch (e) {
+    if (e instanceof ProtocolError && e.instance)
+        console.log("decoded so far: " + JSON.stringify(e.instance));
+}</code></pre>
     
 
 

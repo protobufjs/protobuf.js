@@ -2299,7 +2299,13 @@ Can also be used manually to make roots available across modules.</p>
         
 
     
-    <pre class="prettyprint"><code>// pbjs -r myroot -o compiled.js ...// in another module:require("./compiled.js");// in any subsequent module:var root = protobuf.roots["myroot"];</code></pre>
+    <pre class="prettyprint"><code>// pbjs -r myroot -o compiled.js ...
+
+// in another module:
+require("./compiled.js");
+
+// in any subsequent module:
+var root = protobuf.roots["myroot"];</code></pre>
     
 
 
@@ -2692,7 +2698,11 @@ Can also be used to provide additional google types or your own custom types.</p
         
 
     
-    <pre class="prettyprint"><code>// manually provides descriptor.proto (assumes google/protobuf/ namespace and .proto extension)protobuf.common("descriptor", descriptorJson);// manually provides a custom definition (uses my.foo namespace)protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
+    <pre class="prettyprint"><code>// manually provides descriptor.proto (assumes google/protobuf/ namespace and .proto extension)
+protobuf.common("descriptor", descriptorJson);
+
+// manually provides a custom definition (uses my.foo namespace)
+protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     
 
 
@@ -6364,7 +6374,13 @@ Can also be used to provide additional google types or your own custom types.</p
         
 
     
-    <pre class="prettyprint"><code>function rpcImpl(method, requestData, callback) {    if (protobuf.util.lcFirst(method.name) !== "myMethod") // compatible with static code        throw Error("no such method");    asynchronouslyObtainAResponse(requestData, function(err, responseData) {        callback(err, responseData);    });}</code></pre>
+    <pre class="prettyprint"><code>function rpcImpl(method, requestData, callback) {
+    if (protobuf.util.lcFirst(method.name) !== "myMethod") // compatible with static code
+        throw Error("no such method");
+    asynchronouslyObtainAResponse(requestData, function(err, responseData) {
+        callback(err, responseData);
+    });
+}</code></pre>
     
 
 
