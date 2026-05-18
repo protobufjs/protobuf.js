@@ -184,7 +184,7 @@ With that in mind and again for performance reasons, each message class provides
   ```js
   var object = AwesomeMessage.toObject(message, {
     enums: String,  // enums as string names
-    longs: String,  // longs as strings (requires long.js)
+    longs: String,  // longs as strings (or BigInt for bigint values)
     bytes: String,  // bytes as base64 encoded strings
     defaults: true, // includes default values
     arrays: true,   // populates empty arrays (repeated fields) even if defaults=false
