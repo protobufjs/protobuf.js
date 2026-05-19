@@ -11,7 +11,7 @@ var Enum  = require("./enum"),
 
 var Type; // cyclic
 
-var ruleRe = /^(required|optional|repeated)$/;
+var ruleRe = /^(?:required|optional|repeated)$/;
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
