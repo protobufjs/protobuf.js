@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.6.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.6.0...protobufjs-v7.6.1) (2026-05-19)
+
+
+### Bug Fixes
+
+* Treat fixed64 as unsigned in converters ([#2266](https://github.com/protobufjs/protobuf.js/issues/2266)) ([479dfdc](https://github.com/protobufjs/protobuf.js/commit/479dfdcc690feb9f71986049d3d38c7a0f979abb))
+
 ## [7.6.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.9...protobufjs-v7.6.0) (2026-05-18)
 
 
