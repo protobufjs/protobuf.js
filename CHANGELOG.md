@@ -1,5 +1,15 @@
 # Changelog
 
+## [8.4.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.4.0...protobufjs-v8.4.1) (2026-05-19)
+
+
+### Bug Fixes
+
+* Decode omitted long map values as Long ([#2264](https://github.com/protobufjs/protobuf.js/issues/2264)) ([a71254b](https://github.com/protobufjs/protobuf.js/commit/a71254b23846f35048f773b132aa177511a960bc))
+* Expose Field rule declaration ([#2261](https://github.com/protobufjs/protobuf.js/issues/2261)) ([1664cbf](https://github.com/protobufjs/protobuf.js/commit/1664cbf24afe7751563ddb80a030395ad2ec989d))
+* Register empty common in light build ([#2262](https://github.com/protobufjs/protobuf.js/issues/2262)) ([6cc4bc2](https://github.com/protobufjs/protobuf.js/commit/6cc4bc2c5a0676cc78039b806e28818fdc26bb99))
+* Treat fixed64 as unsigned in converters ([#2265](https://github.com/protobufjs/protobuf.js/issues/2265)) ([d8a6983](https://github.com/protobufjs/protobuf.js/commit/d8a6983747150db0b0da11f85db78ffeed69c35a))
+
 ## [8.4.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.3.0...protobufjs-v8.4.0) (2026-05-18)
 
 
