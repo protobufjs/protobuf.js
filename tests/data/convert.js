@@ -413,7 +413,7 @@ $root.Message = (function() {
         }
         if (object.uint64Val != null)
             if ($util.Long)
-                (message.uint64Val = $util.Long.fromValue(object.uint64Val)).unsigned = true;
+                message.uint64Val = $util.Long.fromValue(object.uint64Val, true);
             else if (typeof object.uint64Val === "string")
                 message.uint64Val = parseInt(object.uint64Val, 10);
             else if (typeof object.uint64Val === "number")
@@ -426,7 +426,7 @@ $root.Message = (function() {
             message.uint64Repeated = [];
             for (var i = 0; i < object.uint64Repeated.length; ++i)
                 if ($util.Long)
-                    (message.uint64Repeated[i] = $util.Long.fromValue(object.uint64Repeated[i])).unsigned = true;
+                    message.uint64Repeated[i] = $util.Long.fromValue(object.uint64Repeated[i], true);
                 else if (typeof object.uint64Repeated[i] === "string")
                     message.uint64Repeated[i] = parseInt(object.uint64Repeated[i], 10);
                 else if (typeof object.uint64Repeated[i] === "number")
@@ -494,7 +494,7 @@ $root.Message = (function() {
                 if (keys[i] === "__proto__")
                     $util.makeProp(message.int64Map, keys[i]);
                 if ($util.Long)
-                    (message.int64Map[keys[i]] = $util.Long.fromValue(object.int64Map[keys[i]])).unsigned = false;
+                    message.int64Map[keys[i]] = $util.Long.fromValue(object.int64Map[keys[i]], false);
                 else if (typeof object.int64Map[keys[i]] === "string")
                     message.int64Map[keys[i]] = parseInt(object.int64Map[keys[i]], 10);
                 else if (typeof object.int64Map[keys[i]] === "number")
