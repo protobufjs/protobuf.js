@@ -4375,7 +4375,7 @@ $root.jspb = (function() {
                     message.boolField = Boolean(object.boolField);
                 if (object.intField != null)
                     if ($util.Long)
-                        (message.intField = $util.Long.fromValue(object.intField)).unsigned = false;
+                        message.intField = $util.Long.fromValue(object.intField, false);
                     else if (typeof object.intField === "string")
                         message.intField = parseInt(object.intField, 10);
                     else if (typeof object.intField === "number")
@@ -10067,7 +10067,7 @@ $root.jspb = (function() {
                         if (keys[i] === "__proto__")
                             $util.makeProp(message.mapStringInt64, keys[i]);
                         if ($util.Long)
-                            (message.mapStringInt64[keys[i]] = $util.Long.fromValue(object.mapStringInt64[keys[i]])).unsigned = false;
+                            message.mapStringInt64[keys[i]] = $util.Long.fromValue(object.mapStringInt64[keys[i]], false);
                         else if (typeof object.mapStringInt64[keys[i]] === "string")
                             message.mapStringInt64[keys[i]] = parseInt(object.mapStringInt64[keys[i]], 10);
                         else if (typeof object.mapStringInt64[keys[i]] === "number")
@@ -22165,7 +22165,7 @@ $root.google = (function() {
                     message.identifierValue = String(object.identifierValue);
                 if (object.positiveIntValue != null)
                     if ($util.Long)
-                        (message.positiveIntValue = $util.Long.fromValue(object.positiveIntValue)).unsigned = true;
+                        message.positiveIntValue = $util.Long.fromValue(object.positiveIntValue, true);
                     else if (typeof object.positiveIntValue === "string")
                         message.positiveIntValue = parseInt(object.positiveIntValue, 10);
                     else if (typeof object.positiveIntValue === "number")
@@ -22174,7 +22174,7 @@ $root.google = (function() {
                         message.positiveIntValue = new $util.LongBits(object.positiveIntValue.low >>> 0, object.positiveIntValue.high >>> 0).toNumber(true);
                 if (object.negativeIntValue != null)
                     if ($util.Long)
-                        (message.negativeIntValue = $util.Long.fromValue(object.negativeIntValue)).unsigned = false;
+                        message.negativeIntValue = $util.Long.fromValue(object.negativeIntValue, false);
                     else if (typeof object.negativeIntValue === "string")
                         message.negativeIntValue = parseInt(object.negativeIntValue, 10);
                     else if (typeof object.negativeIntValue === "number")

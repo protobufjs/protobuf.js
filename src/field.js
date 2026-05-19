@@ -327,7 +327,7 @@ Field.prototype.resolve = function resolve() {
 
     // convert to internal data type if necesssary
     if (this.long) {
-        this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type.charAt(0) === "u");
+        this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type === "uint64" || this.type === "fixed64");
 
         /* istanbul ignore else */
         if (Object.freeze)
