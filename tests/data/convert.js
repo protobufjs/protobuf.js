@@ -23,8 +23,6 @@ $root.Message = (function() {
      * @property {Message.SomeEnum|null} [enumVal] Message enumVal
      * @property {Array.<Message.SomeEnum>|null} [enumRepeated] Message enumRepeated
      * @property {Object.<string,number|Long>|null} [int64Map] Message int64Map
-     * @property {number|Long|null} [fixed64Val] Message fixed64Val
-     * @property {number|Long|null} [sfixed64Val] Message sfixed64Val
      * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
@@ -134,22 +132,6 @@ $root.Message = (function() {
     Message.prototype.int64Map = $util.emptyObject;
 
     /**
-     * Message fixed64Val.
-     * @member {number|Long} fixed64Val
-     * @memberof Message
-     * @instance
-     */
-    Message.prototype.fixed64Val = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
-
-    /**
-     * Message sfixed64Val.
-     * @member {number|Long} sfixed64Val
-     * @memberof Message
-     * @instance
-     */
-    Message.prototype.sfixed64Val = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-    /**
      * Creates a new Message instance using the specified properties.
      * @function create
      * @memberof Message
@@ -206,10 +188,6 @@ $root.Message = (function() {
         if (message.int64Map != null && Object.hasOwnProperty.call(message, "int64Map"))
             for (var keys = Object.keys(message.int64Map), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).int64(message.int64Map[keys[i]]).ldelim();
-        if (message.fixed64Val != null && Object.hasOwnProperty.call(message, "fixed64Val"))
-            writer.uint32(/* id 10, wireType 1 =*/81).fixed64(message.fixed64Val);
-        if (message.sfixed64Val != null && Object.hasOwnProperty.call(message, "sfixed64Val"))
-            writer.uint32(/* id 11, wireType 1 =*/89).sfixed64(message.sfixed64Val);
         if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)
                 writer.raw(message.$unknowns[i]);
@@ -371,24 +349,6 @@ $root.Message = (function() {
                     message.int64Map[key] = value;
                     continue;
                 }
-            case 10: {
-                    if (wireType !== 1)
-                        break;
-                    if (typeof (value = reader.fixed64()) === "object" ? value.low || value.high : value !== 0)
-                        message.fixed64Val = value;
-                    else
-                        delete message.fixed64Val;
-                    continue;
-                }
-            case 11: {
-                    if (wireType !== 1)
-                        break;
-                    if (typeof (value = reader.sfixed64()) === "object" ? value.low || value.high : value !== 0)
-                        message.sfixed64Val = value;
-                    else
-                        delete message.sfixed64Val;
-                    continue;
-                }
             }
             reader.skipType(wireType, _depth, tag);
             $util.makeProp(message, "$unknowns", false);
@@ -488,12 +448,6 @@ $root.Message = (function() {
                 if (!$util.isInteger(message.int64Map[key[i]]) && !(message.int64Map[key[i]] && $util.isInteger(message.int64Map[key[i]].low) && $util.isInteger(message.int64Map[key[i]].high)))
                     return "int64Map: integer|Long{k:string} expected";
         }
-        if (message.fixed64Val != null && message.hasOwnProperty("fixed64Val"))
-            if (!$util.isInteger(message.fixed64Val) && !(message.fixed64Val && $util.isInteger(message.fixed64Val.low) && $util.isInteger(message.fixed64Val.high)))
-                return "fixed64Val: integer|Long expected";
-        if (message.sfixed64Val != null && message.hasOwnProperty("sfixed64Val"))
-            if (!$util.isInteger(message.sfixed64Val) && !(message.sfixed64Val && $util.isInteger(message.sfixed64Val.low) && $util.isInteger(message.sfixed64Val.high)))
-                return "sfixed64Val: integer|Long expected";
         return null;
     };
 
@@ -618,26 +572,6 @@ $root.Message = (function() {
                     message.int64Map[keys[i]] = new $util.LongBits(object.int64Map[keys[i]].low >>> 0, object.int64Map[keys[i]].high >>> 0).toNumber();
             }
         }
-        if (object.fixed64Val != null)
-            if (typeof object.fixed64Val === "object" ? object.fixed64Val.low || object.fixed64Val.high : Number(object.fixed64Val) !== 0)
-                if ($util.Long)
-                    (message.fixed64Val = $util.Long.fromValue(object.fixed64Val)).unsigned = true;
-                else if (typeof object.fixed64Val === "string")
-                    message.fixed64Val = parseInt(object.fixed64Val, 10);
-                else if (typeof object.fixed64Val === "number")
-                    message.fixed64Val = object.fixed64Val;
-                else if (typeof object.fixed64Val === "object")
-                    message.fixed64Val = new $util.LongBits(object.fixed64Val.low >>> 0, object.fixed64Val.high >>> 0).toNumber(true);
-        if (object.sfixed64Val != null)
-            if (typeof object.sfixed64Val === "object" ? object.sfixed64Val.low || object.sfixed64Val.high : Number(object.sfixed64Val) !== 0)
-                if ($util.Long)
-                    (message.sfixed64Val = $util.Long.fromValue(object.sfixed64Val)).unsigned = false;
-                else if (typeof object.sfixed64Val === "string")
-                    message.sfixed64Val = parseInt(object.sfixed64Val, 10);
-                else if (typeof object.sfixed64Val === "number")
-                    message.sfixed64Val = object.sfixed64Val;
-                else if (typeof object.sfixed64Val === "object")
-                    message.sfixed64Val = new $util.LongBits(object.sfixed64Val.low >>> 0, object.sfixed64Val.high >>> 0).toNumber();
         return message;
     };
 
@@ -677,16 +611,6 @@ $root.Message = (function() {
                     object.bytesVal = $util.newBuffer(object.bytesVal);
             }
             object.enumVal = options.enums === String ? "ONE" : 1;
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, true);
-                object.fixed64Val = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
-            } else
-                object.fixed64Val = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, false);
-                object.sfixed64Val = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
-            } else
-                object.sfixed64Val = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
         }
         if (message.stringVal != null && message.hasOwnProperty("stringVal"))
             object.stringVal = message.stringVal;
@@ -740,20 +664,6 @@ $root.Message = (function() {
                     object.int64Map[keys2[j]] = options.longs === String ? $util.Long.prototype.toString.call(message.int64Map[keys2[j]]) : options.longs === Number ? new $util.LongBits(message.int64Map[keys2[j]].low >>> 0, message.int64Map[keys2[j]].high >>> 0).toNumber() : message.int64Map[keys2[j]];
             }
         }
-        if (message.fixed64Val != null && message.hasOwnProperty("fixed64Val"))
-            if (typeof BigInt !== "undefined" && options.longs === BigInt)
-                object.fixed64Val = typeof message.fixed64Val === "number" ? BigInt(message.fixed64Val) : $util.Long.fromBits(message.fixed64Val.low >>> 0, message.fixed64Val.high >>> 0, true).toBigInt();
-            else if (typeof message.fixed64Val === "number")
-                object.fixed64Val = options.longs === String ? String(message.fixed64Val) : message.fixed64Val;
-            else
-                object.fixed64Val = options.longs === String ? $util.Long.prototype.toString.call(message.fixed64Val) : options.longs === Number ? new $util.LongBits(message.fixed64Val.low >>> 0, message.fixed64Val.high >>> 0).toNumber(true) : message.fixed64Val;
-        if (message.sfixed64Val != null && message.hasOwnProperty("sfixed64Val"))
-            if (typeof BigInt !== "undefined" && options.longs === BigInt)
-                object.sfixed64Val = typeof message.sfixed64Val === "number" ? BigInt(message.sfixed64Val) : $util.Long.fromBits(message.sfixed64Val.low >>> 0, message.sfixed64Val.high >>> 0, false).toBigInt();
-            else if (typeof message.sfixed64Val === "number")
-                object.sfixed64Val = options.longs === String ? String(message.sfixed64Val) : message.sfixed64Val;
-            else
-                object.sfixed64Val = options.longs === String ? $util.Long.prototype.toString.call(message.sfixed64Val) : options.longs === Number ? new $util.LongBits(message.sfixed64Val.low >>> 0, message.sfixed64Val.high >>> 0).toNumber() : message.sfixed64Val;
         return object;
     };
 

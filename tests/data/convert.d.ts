@@ -16,8 +16,6 @@ export class Message {
     enumVal: Message.SomeEnum;
     enumRepeated: Message.SomeEnum[];
     int64Map: { [k: string]: (number|Long) };
-    fixed64Val: (number|Long);
-    sfixed64Val: (number|Long);
     static create(properties: Message.$Shape): Message & Message.$Shape;
     static create(properties?: Message.$Properties): Message;
     static encode(message: Message.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -42,8 +40,6 @@ export namespace Message {
         enumVal?: (Message.SomeEnum|null);
         enumRepeated?: (Message.SomeEnum[]|null);
         int64Map?: ({ [k: string]: (number|Long) }|null);
-        fixed64Val?: (number|Long|null);
-        sfixed64Val?: (number|Long|null);
         $unknowns?: Uint8Array[];
     }
     type $Shape = Message.$Properties;

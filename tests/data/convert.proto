@@ -20,7 +20,4 @@ message Message {
     }
 
     map<string,int64> int64_map = 9;
-
-    fixed64 fixed64_val = 10;
-    sfixed64 sfixed64_val = 11;
 }
