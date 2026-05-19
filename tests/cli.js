@@ -95,6 +95,49 @@ tape.test("pbjs generates static code", function(test) {
     });
 });
 
+tape.test("pbjs generates unsigned fixed64 defaults", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.Root.fromJSON({
+            nested: {
+                M: {
+                    fields: {
+                        v: {
+                            type: "fixed64",
+                            id: 1,
+                            options: {
+                                default: "11000000000000000001"
+                            }
+                        },
+                        s: {
+                            type: "sfixed64",
+                            id: 2,
+                            options: {
+                                default: "-9000000000000000001"
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {}, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+            test.ok(
+                /M\.prototype\.v = \$util\.Long \? \$util\.Long\.fromBits\([^)]*,true\) : 11000000000000000000;/.test(jsCode),
+                "fixed64 default is emitted as unsigned"
+            );
+            test.ok(
+                /M\.prototype\.s = \$util\.Long \? \$util\.Long\.fromBits\([^)]*,false\) : -9000000000000000000;/.test(jsCode),
+                "sfixed64 default is emitted as signed"
+            );
+            test.end();
+        });
+    });
+});
+
 tape.test("pbts passes jsdoc arguments without a shell", function(test) {
     var pbts = require("../cli/pbts");
     var originalSpawn = child_process.spawn;
