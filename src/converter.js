@@ -61,14 +61,14 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                 ("m%s=d%s|0", prop, prop);
                 break;
             case "uint64":
+            case "fixed64":
                 isUnsigned = true;
                 // eslint-disable-next-line no-fallthrough
             case "int64":
             case "sint64":
-            case "fixed64":
             case "sfixed64": gen
                 ("if(util.Long)")
-                    ("(m%s=util.Long.fromValue(d%s)).unsigned=%j", prop, prop, isUnsigned)
+                    ("m%s=util.Long.fromValue(d%s,%j)", prop, prop, isUnsigned)
                 ("else if(typeof d%s===\"string\")", prop)
                     ("m%s=parseInt(d%s,10)", prop, prop)
                 ("else if(typeof d%s===\"number\")", prop)
@@ -181,11 +181,11 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
             ("d%s=o.json&&!isFinite(m%s)?String(m%s):m%s", prop, prop, prop, prop);
                 break;
             case "uint64":
+            case "fixed64":
                 isUnsigned = true;
                 // eslint-disable-next-line no-fallthrough
             case "int64":
             case "sint64":
-            case "fixed64":
             case "sfixed64": gen
             ("if(typeof BigInt!==\"undefined\"&&o.longs===BigInt)")
                 ("d%s=typeof m%s===\"number\"?BigInt(m%s):util.Long.fromBits(m%s.low>>>0,m%s.high>>>0,%j).toBigInt()", prop, prop, prop, prop, prop, isUnsigned)

@@ -241,6 +241,55 @@ tape.test("converters", function(test) {
             test.end();
         });
 
+        test.test(test.name + " - fixed64 signedness", function(test) {
+            var root = protobuf.Root.fromJSON({
+                nested: {
+                    Fixed: {
+                        fields: {
+                            fixed64Val: {
+                                type: "fixed64",
+                                id: 1
+                            },
+                            sfixed64Val: {
+                                type: "sfixed64",
+                                id: 2
+                            }
+                        }
+                    }
+                }
+            });
+            var Fixed = root.lookupType("Fixed");
+            var msg = Fixed.fromObject({
+                fixed64Val: "11000000000000000001",
+                sfixed64Val: "-9000000000000000001"
+            });
+            var msgFromNumber = Fixed.fromObject({
+                fixed64Val: 11000000000000000000,
+                sfixed64Val: -9000000000000000000
+            });
+            var msgFromLongZero = Fixed.fromObject({
+                fixed64Val: protobuf.util.Long.ZERO,
+                sfixed64Val: protobuf.util.Long.UZERO
+            });
+            var obj = Fixed.toObject(msg, { longs: BigInt });
+            var defaults = Fixed.toObject(Fixed.create(), { defaults: true });
+
+            test.equal(msg.fixed64Val.unsigned, true, "should set fixed64 values as unsigned");
+            test.equal(msg.sfixed64Val.unsigned, false, "should set sfixed64 values as signed");
+            test.same(msgFromNumber.fixed64Val, protobuf.util.Long.fromString("11000000000000000000", true), "should set fixed64 values from numbers as unsigned");
+            test.same(msgFromNumber.sfixed64Val, protobuf.util.Long.fromString("-9000000000000000000"), "should set sfixed64 values from numbers as signed");
+            test.same(msgFromLongZero.fixed64Val, protobuf.util.Long.UZERO, "should set fixed64 values from Longs as unsigned");
+            test.same(msgFromLongZero.sfixed64Val, protobuf.util.Long.ZERO, "should set sfixed64 values from Longs as signed");
+            test.equal(protobuf.util.Long.ZERO.unsigned, false, "should not mutate Long.ZERO");
+            test.equal(protobuf.util.Long.UZERO.unsigned, true, "should not mutate Long.UZERO");
+            test.equal(obj.fixed64Val, 11000000000000000001n, "should output fixed64 as unsigned bigint");
+            test.equal(obj.sfixed64Val, -9000000000000000001n, "should output sfixed64 as signed bigint");
+            test.same(defaults.fixed64Val, { low: 0, high: 0, unsigned: true }, "should default fixed64 as unsigned");
+            test.same(defaults.sfixed64Val, { low: 0, high: 0, unsigned: false }, "should default sfixed64 as signed");
+
+            test.end();
+        });
+
         test.test(test.name + " - Message#toJSON", function(test) {
             var msg = Message.create();
             msg.$type = {
