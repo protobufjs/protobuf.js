@@ -57,7 +57,7 @@
     "escodegen": "^1.13.0",
     "eslint": "^10.0.0",
     "eslint-plugin-jsdoc": "^62.9.0",
-    "espree": "^9.0.0",
+    "espree": "^11.0.0",
     "estraverse": "^5.1.0",
     "gh-pages": "^6.0.0",
     "globals": "^17.0.0",
