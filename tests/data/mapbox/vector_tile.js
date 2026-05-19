@@ -617,7 +617,7 @@ $root.vector_tile = (function() {
                     message.doubleValue = Number(object.doubleValue);
                 if (object.intValue != null)
                     if ($util.Long)
-                        (message.intValue = $util.Long.fromValue(object.intValue)).unsigned = false;
+                        message.intValue = $util.Long.fromValue(object.intValue, false);
                     else if (typeof object.intValue === "string")
                         message.intValue = parseInt(object.intValue, 10);
                     else if (typeof object.intValue === "number")
@@ -626,7 +626,7 @@ $root.vector_tile = (function() {
                         message.intValue = new $util.LongBits(object.intValue.low >>> 0, object.intValue.high >>> 0).toNumber();
                 if (object.uintValue != null)
                     if ($util.Long)
-                        (message.uintValue = $util.Long.fromValue(object.uintValue)).unsigned = true;
+                        message.uintValue = $util.Long.fromValue(object.uintValue, true);
                     else if (typeof object.uintValue === "string")
                         message.uintValue = parseInt(object.uintValue, 10);
                     else if (typeof object.uintValue === "number")
@@ -635,7 +635,7 @@ $root.vector_tile = (function() {
                         message.uintValue = new $util.LongBits(object.uintValue.low >>> 0, object.uintValue.high >>> 0).toNumber(true);
                 if (object.sintValue != null)
                     if ($util.Long)
-                        (message.sintValue = $util.Long.fromValue(object.sintValue)).unsigned = false;
+                        message.sintValue = $util.Long.fromValue(object.sintValue, false);
                     else if (typeof object.sintValue === "string")
                         message.sintValue = parseInt(object.sintValue, 10);
                     else if (typeof object.sintValue === "number")
@@ -1039,7 +1039,7 @@ $root.vector_tile = (function() {
                 var message = new $root.vector_tile.Tile.Feature();
                 if (object.id != null)
                     if ($util.Long)
-                        (message.id = $util.Long.fromValue(object.id)).unsigned = true;
+                        message.id = $util.Long.fromValue(object.id, true);
                     else if (typeof object.id === "string")
                         message.id = parseInt(object.id, 10);
                     else if (typeof object.id === "number")
