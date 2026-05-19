@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.4.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.4.0...protobufjs-cli-v2.4.1) (2026-05-19)
+
+
+### Bug Fixes
+
+* Add no-mixed-operators eslint disable ([#2263](https://github.com/protobufjs/protobuf.js/issues/2263)) ([7d24d6a](https://github.com/protobufjs/protobuf.js/commit/7d24d6acb70d93d4cbc474132ee6b581e5162f8a))
+* Treat fixed64 as unsigned in converters ([#2265](https://github.com/protobufjs/protobuf.js/issues/2265)) ([d8a6983](https://github.com/protobufjs/protobuf.js/commit/d8a6983747150db0b0da11f85db78ffeed69c35a))
+
 ## [2.4.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.3.0...protobufjs-cli-v2.4.0) (2026-05-18)
 
 
