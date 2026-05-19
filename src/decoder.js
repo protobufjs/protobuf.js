@@ -63,7 +63,9 @@ function decoder(mtype) {
             else gen
                 ("k=null");
 
-            if (types.defaults[type] !== undefined) gen
+            if (types.long[type] !== undefined) gen
+                ("v=util.Long?util.Long.fromNumber(0,%j):0", type === "uint64" || type === "fixed64");
+            else if (types.defaults[type] !== undefined) gen
                 ("v=%j", types.defaults[type]);
             else gen
                 ("v=null");

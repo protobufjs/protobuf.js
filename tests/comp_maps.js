@@ -185,6 +185,42 @@ tape.test("maps", function(test) {
         test.end();
     });
 
+    test.test(test.name + " - omitted long values", function(test) {
+
+        var fields = {},
+            bytes = [],
+            cases = [
+                [ "ints", "int64", protobuf.util.Long.ZERO ],
+                [ "uints", "uint64", protobuf.util.Long.UZERO ],
+                [ "sints", "sint64", protobuf.util.Long.ZERO ],
+                [ "fixeds", "fixed64", protobuf.util.Long.UZERO ],
+                [ "sfixeds", "sfixed64", protobuf.util.Long.ZERO ]
+            ];
+
+        cases.forEach(function(testCase, index) {
+            var id = index + 1;
+            fields[testCase[0]] = {
+                keyType: "int32",
+                type: testCase[1],
+                id: id
+            };
+            bytes.push((id << 3) | 2, 2, 8, id);
+        });
+
+        var MapMessage = protobuf.Root.fromJSON({
+            nested: {
+                MapMessage: { fields: fields }
+            }
+        }).lookup("MapMessage");
+        var dec = MapMessage.decode(Uint8Array.from(bytes));
+
+        cases.forEach(function(testCase, index) {
+            test.ok(testCase[2].equals(dec[testCase[0]][index + 1]), "should decode omitted " + testCase[1] + " values as zero");
+        });
+
+        test.end();
+    });
+
     test.test(test.name + " - scalar key roundtrip", function(test) {
         var mapRoot = protobuf.Root.fromJSON({
             nested: {
