@@ -2027,6 +2027,13 @@ export interface IFetchOptions {
 }
 
 /**
+ * Tests if the specified key can affect object prototypes.
+ * @param key Key to test
+ * @returns `true` if the key is unsafe
+ */
+export function isUnsafeProperty(key: string): boolean;
+
+/**
  * Any compatible Buffer instance.
  * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
  */
@@ -2467,11 +2474,11 @@ export namespace util {
     /**
      * Merges the properties of the source object into the destination object.
      * @param dst Destination object
-     * @param src Source object
+     * @param src Source objects
      * @param [ifNotSet=false] Merges only if the key is not already set
      * @returns Destination object
      */
-    function merge(dst: { [k: string]: any }, src: { [k: string]: any }, ifNotSet?: boolean): { [k: string]: any };
+    function merge(dst: { [k: string]: any }, ...src: { [k: string]: any }[], ifNotSet?: boolean): { [k: string]: any };
 
     /** Schema declaration nesting limit. */
     let nestingLimit: number;

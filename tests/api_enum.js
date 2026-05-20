@@ -142,6 +142,56 @@ tape.test("feature resolution legacy proto3", function(test) {
     test.end();
 });
 
+tape.test("feature resolution skips unsafe feature keys", function(test) {
+    var enumFeatures = { enum_type: "CLOSED" };
+    Object.defineProperty(enumFeatures, "__proto__", {
+        value: { polluted: true },
+        enumerable: true
+    });
+    enumFeatures.prototype = { polluted: true };
+    enumFeatures.constructor = { polluted: true };
+
+    var valueFeatures = { field_presence: "EXPLICIT" };
+    Object.defineProperty(valueFeatures, "__proto__", {
+        value: { polluted: true },
+        enumerable: true
+    });
+    valueFeatures.prototype = { polluted: true };
+    valueFeatures.constructor = { polluted: true };
+
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Enum: {
+                edition: "2023",
+                options: { features: enumFeatures },
+                values: {
+                    a: 0
+                },
+                valuesOptions: {
+                    a: {
+                        features: valueFeatures
+                    }
+                }
+            }
+        }
+    }).resolveAll();
+    var Enum = root.lookupEnum("Enum");
+
+    test.equal(Enum._features.enum_type, "CLOSED", "should keep regular enum features");
+    test.equal(Object.getPrototypeOf(Enum._features).polluted, undefined, "should not alter enum feature prototype");
+    test.notOk(Object.prototype.hasOwnProperty.call(Enum._features, "__proto__"), "should skip unsafe enum feature key __proto__");
+    test.notOk(Object.prototype.hasOwnProperty.call(Enum._features, "prototype"), "should skip unsafe enum feature key prototype");
+    test.notOk(Object.prototype.hasOwnProperty.call(Enum._features, "constructor"), "should skip unsafe enum feature key constructor");
+
+    test.equal(Enum._valuesFeatures.a.field_presence, "EXPLICIT", "should keep regular enum value features");
+    test.equal(Object.getPrototypeOf(Enum._valuesFeatures.a).polluted, undefined, "should not alter enum value feature prototype");
+    test.notOk(Object.prototype.hasOwnProperty.call(Enum._valuesFeatures.a, "__proto__"), "should skip unsafe enum value feature key __proto__");
+    test.notOk(Object.prototype.hasOwnProperty.call(Enum._valuesFeatures.a, "prototype"), "should skip unsafe enum value feature key prototype");
+    test.notOk(Object.prototype.hasOwnProperty.call(Enum._valuesFeatures.a, "constructor"), "should skip unsafe enum value feature key constructor");
+
+    test.end();
+});
+
 tape.test("feature resolution proto2", function(test) {
     var json = {
         edition: "proto2",

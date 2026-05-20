@@ -16,8 +16,8 @@ var Enum     = require("./enum"),
  */
 function genTypePartial(gen, field, fieldIndex, ref) {
     return field.delimited
-        ? gen("types[%i].encode(%s,w.uint32(%i)).uint32(%i)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0)
-        : gen("types[%i].encode(%s,w.uint32(%i).fork()).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0);
+        ? gen("types[%i].encode(%s,w.uint32(%i),q+1).uint32(%i)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0)
+        : gen("types[%i].encode(%s,w.uint32(%i).fork(),q+1).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0);
 }
 
 /**
@@ -27,9 +27,12 @@ function genTypePartial(gen, field, fieldIndex, ref) {
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
-    var gen = util.codegen(["m", "w"], mtype.name + "$encode")
+    var gen = util.codegen(["m", "w", "q"], mtype.name + "$encode")
     ("if(!w)")
-        ("w=Writer.create()");
+        ("w=Writer.create()")
+    ("if(q===undefined)q=0")
+    ("if(q>util.recursionLimit)")
+        ("throw Error(\"max depth exceeded\")");
 
     var i, ref;
 
@@ -55,7 +58,7 @@ function encoder(mtype) {
             else gen
             ("w.uint32(%i).fork().uint32(%i).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             if (wireType === undefined) gen
-            ("types[%i].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index, ref); // can't be groups
+            ("types[%i].encode(%s[ks[i]],w.uint32(18).fork(),q+1).ldelim().ldelim()", index, ref); // can't be groups
             else gen
             (".uint32(%i).%s(%s[ks[i]]).ldelim()", 16 | wireType, type, ref);
             gen

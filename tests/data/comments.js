@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-mixed-operators, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -100,9 +100,13 @@ $root.Test1 = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Test1.encode = function encode(message, writer) {
+    Test1.encode = function encode(message, writer, _depth) {
         if (!writer)
             writer = $Writer.create();
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.field1 != null && Object.hasOwnProperty.call(message, "field1"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.field1);
         if (message.field2 != null && Object.hasOwnProperty.call(message, "field2"))
@@ -273,9 +277,13 @@ $root.Test1 = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Test1.toObject = function toObject(message, options) {
+    Test1.toObject = function toObject(message, options, _depth) {
         if (!options)
             options = {};
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         var object = {};
         if (options.defaults) {
             object.field1 = "";
@@ -380,9 +388,13 @@ $root.Test2 = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Test2.encode = function encode(message, writer) {
+    Test2.encode = function encode(message, writer, _depth) {
         if (!writer)
             writer = $Writer.create();
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)
                 writer.raw(message.$unknowns[i]);
