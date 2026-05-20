@@ -43,6 +43,26 @@ tape.test("proto3 optional", function(test) {
     test.end();
 });
 
+tape.test("proto3 optional does not emit synthetic oneof discriminator", function(test) {
+    var root = protobuf.parse(proto).root;
+    root.resolveAll();
+
+    var Message = root.lookupType("Message");
+
+    test.same(
+        Message.toObject(Message.create({ optionalInt32: 1 }), { oneofs: true }),
+        { optionalInt32: 1 },
+        "should not emit synthetic oneof discriminator"
+    );
+    test.same(
+        Message.toObject(Message.create({ oneofInt32: 1 }), { oneofs: true }),
+        { oneofInt32: 1, _oneofInt32: "oneofInt32" },
+        "should still emit real oneof discriminator"
+    );
+
+    test.end();
+});
+
 tape.test("proto3 implicit scalar defaults", function(test) {
     var root = protobuf.parse(proto).root;
     root.resolveAll();

@@ -326,7 +326,7 @@ converter.toObject = function toObject(mtype) {
         } else { gen
     ("if(m%s!=null&&m.hasOwnProperty(%j)){", prop, field.name); // !== undefined && !== null
         genValuePartial_toObject(gen, field, /* sorted */ index, prop);
-        if (field.partOf) gen
+        if (field.partOf && !field.partOf.isProto3Optional) gen
         ("if(o.oneofs)")
             ("d%s=%j", util.safeProp(field.partOf.name), field.name);
         }
