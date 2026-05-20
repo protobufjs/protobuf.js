@@ -2474,11 +2474,10 @@ export namespace util {
     /**
      * Merges the properties of the source object into the destination object.
      * @param dst Destination object
-     * @param src Source objects
-     * @param [ifNotSet=false] Merges only if the key is not already set
+     * @param src Source objects, optionally followed by an `ifNotSet` flag
      * @returns Destination object
      */
-    function merge(dst: { [k: string]: any }, ...src: { [k: string]: any }[], ifNotSet?: boolean): { [k: string]: any };
+    function merge(dst: { [k: string]: any }, ...src: any[]): { [k: string]: any };
 
     /** Schema declaration nesting limit. */
     let nestingLimit: number;

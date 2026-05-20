@@ -270,8 +270,7 @@ util.boolFromKey = function boolFromKey(key) {
  * Merges the properties of the source object into the destination object.
  * @memberof util
  * @param {Object.<string,*>} dst Destination object
- * @param {...Object.<string,*>} src Source objects
- * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
+ * @param {...(Object.<string,*>|boolean)} src Source objects, optionally followed by an `ifNotSet` flag
  * @returns {Object.<string,*>} Destination object
  */
 function merge(dst) { // used by converters
