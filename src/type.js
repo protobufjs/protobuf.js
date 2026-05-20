@@ -458,7 +458,7 @@ Type.prototype.isReservedName = function isReservedName(name) {
 /**
  * Creates a new message of this type using the specified properties.
  * @param {Object.<string,*>} [properties] Properties to set
- * @returns {Message<{}>} Message instance
+ * @returns {ReflectedMessage} Message instance
  */
 Type.prototype.create = function create(properties) {
     return new this.ctor(properties);
@@ -542,7 +542,7 @@ Type.prototype.encodeDelimited = function encodeDelimited(message, writer) {
  * Decodes a message of this type.
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
- * @returns {Message<{}>} Decoded message
+ * @returns {ReflectedMessage} Decoded message
  * @throws {Error} If the payload is not a reader or valid buffer
  * @throws {util.ProtocolError<{}>} If required fields are missing
  */
@@ -553,7 +553,7 @@ Type.prototype.decode = function decode_setup(reader, length) { // eslint-disabl
 /**
  * Decodes a message of this type preceeded by its byte length as a varint.
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
- * @returns {Message<{}>} Decoded message
+ * @returns {ReflectedMessage} Decoded message
  * @throws {Error} If the payload is not a reader or valid buffer
  * @throws {util.ProtocolError} If required fields are missing
  */
@@ -575,7 +575,7 @@ Type.prototype.verify = function verify_setup(message) { // eslint-disable-line 
 /**
  * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
  * @param {Object.<string,*>} object Plain object to convert
- * @returns {Message<{}>} Message instance
+ * @returns {ReflectedMessage} Message instance
  */
 Type.prototype.fromObject = function fromObject(object) { // eslint-disable-line no-unused-vars
     return this.setup().fromObject.apply(this, arguments);

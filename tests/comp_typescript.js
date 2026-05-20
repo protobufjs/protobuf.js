@@ -28,7 +28,10 @@ const root = __1.Root.fromJSON({
     }
 });
 const HelloReflected = root.lookupType("Hello");
-HelloReflected.create({ value: "hi" });
+const reflectedCreated = HelloReflected.create({ value: "hi" });
+const reflectedCreatedValue = reflectedCreated.value;
+const reflectedDecodedValue = HelloReflected.decode(HelloReflected.encode({ value: "hi" }).finish()).value;
+const reflectedConvertedValue = HelloReflected.fromObject({ value: "hi" }).value;
 const parsedOptionValue = (_a = HelloReflected.parsedOptions) === null || _a === void 0 ? void 0 : _a[0]["(custom_option)"];
 const reflectedMethod = new __1.Method("Call", undefined, "Hello", "Hello", false, false, undefined, undefined, [{ option: 1 }]);
 const parsedMethodOptionValue = (_b = reflectedMethod.parsedOptions) === null || _b === void 0 ? void 0 : _b[0].option;
@@ -54,7 +57,8 @@ class Hello extends __1.Message {
 }
 exports.Hello = Hello;
 root.lookupType("Hello").ctor = Hello;
-Hello.create({ value: "hi" });
+let helloCreated = Hello.create({ value: "hi" });
+helloCreated.foo();
 let helloMessage = new Hello({ value: "hi" });
 let helloBuffer = Hello.encode(helloMessage.foo()).finish();
 let helloDecoded = Hello.decode(helloBuffer);

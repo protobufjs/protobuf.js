@@ -581,7 +581,7 @@ export class Message<T extends object = object> {
      * @param [properties] Properties to set
      * @returns Message instance
      */
-    static create<T extends Message<T>>(this: Constructor<T>, properties?: { [k: string]: any }): Message<T>;
+    static create<T extends Message<T>>(this: Constructor<T>, properties?: { [k: string]: any }): T;
 
     /**
      * Encodes a message of this type.
@@ -1743,7 +1743,7 @@ export class Type extends NamespaceBase {
      * @param [properties] Properties to set
      * @returns Message instance
      */
-    create(properties?: { [k: string]: any }): Message<{}>;
+    create(properties?: { [k: string]: any }): ReflectedMessage;
 
     /**
      * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
@@ -1775,7 +1775,7 @@ export class Type extends NamespaceBase {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {util.ProtocolError<{}>} If required fields are missing
      */
-    decode(reader: (Reader|Uint8Array), length?: number): Message<{}>;
+    decode(reader: (Reader|Uint8Array), length?: number): ReflectedMessage;
 
     /**
      * Decodes a message of this type preceeded by its byte length as a varint.
@@ -1784,7 +1784,7 @@ export class Type extends NamespaceBase {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {util.ProtocolError} If required fields are missing
      */
-    decodeDelimited(reader: (Reader|Uint8Array)): Message<{}>;
+    decodeDelimited(reader: (Reader|Uint8Array)): ReflectedMessage;
 
     /**
      * Verifies that field values are valid and that required fields are present.
@@ -1798,7 +1798,7 @@ export class Type extends NamespaceBase {
      * @param object Plain object to convert
      * @returns Message instance
      */
-    fromObject(object: { [k: string]: any }): Message<{}>;
+    fromObject(object: { [k: string]: any }): ReflectedMessage;
 
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
@@ -1986,6 +1986,9 @@ export type Constructor<T> = Function & { new(...params: any[]): T; prototype: T
 
 /** Properties type. */
 export type Properties<T> = { [P in keyof T]?: T[P] };
+
+/** Dynamically reflected message type. */
+export type ReflectedMessage = Message<{}> & { [k: string]: any };
 
 /**
  * Callback as used by {@link util.asPromise}.
