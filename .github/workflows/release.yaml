@@ -17,8 +17,8 @@ jobs:
       - uses: googleapis/release-please-action@v5
         id: release
         with:
-          command: manifest
-          package-name: release-please-action
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
       - uses: actions/checkout@v6
         if: ${{ steps.release.outputs.releases_created == 'true' }}
