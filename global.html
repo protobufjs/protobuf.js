@@ -223,6 +223,8 @@
                 
                     <li data-name="util.isString"><a href="util.html#.isString">isString</a></li>
                 
+                    <li data-name="util.isUnsafeProperty"><a href="util.html#.isUnsafeProperty">isUnsafeProperty</a></li>
+                
                     <li data-name="util.isset"><a href="util.html#.isset">isset</a></li>
                 
                     <li data-name="util.lcFirst"><a href="util.html#.lcFirst">lcFirst</a></li>
@@ -722,6 +724,8 @@
                 
                     <li data-name="Field#root"><a href="Field.html#root">root</a></li>
                 
+                    <li data-name="Field#rule"><a href="Field.html#rule">rule</a></li>
+                
                     <li data-name="Field#type"><a href="Field.html#type">type</a></li>
                 
                     <li data-name="Field#typeDefault"><a href="Field.html#typeDefault">typeDefault</a></li>
@@ -820,6 +824,8 @@
                 
                     <li data-name="FieldBase#root"><a href="FieldBase.html#root">root</a></li>
                 
+                    <li data-name="FieldBase#rule"><a href="FieldBase.html#rule">rule</a></li>
+                
                     <li data-name="FieldBase#type"><a href="FieldBase.html#type">type</a></li>
                 
                     <li data-name="FieldBase#typeDefault"><a href="FieldBase.html#typeDefault">typeDefault</a></li>
@@ -917,6 +923,8 @@
                     <li data-name="MapField#resolvedType"><a href="MapField.html#resolvedType">resolvedType</a></li>
                 
                     <li data-name="MapField#root"><a href="MapField.html#root">root</a></li>
+                
+                    <li data-name="MapField#rule"><a href="MapField.html#rule">rule</a></li>
                 
                     <li data-name="MapField#type"><a href="MapField.html#type">type</a></li>
                 
@@ -5183,7 +5191,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L403">line 403</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L400">line 400</a>
         </div>
         
     </div>
@@ -5654,7 +5662,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/minimal.js#L400">line 400</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/minimal.js#L418">line 418</a>
         </div>
         
     </div>
@@ -5749,7 +5757,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/minimal.js#L429">line 429</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/minimal.js#L447">line 447</a>
         </div>
         
     </div>
@@ -6559,6 +6567,55 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
                 
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="ReflectedMessage">ReflectedMessage <span class="type-signature type">{ Message&lt;{}> &amp; { [k: string]: any } }</span></h4>
+
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/typescript.js">typescript.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/typescript.js#L21">line 21</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Dynamically reflected message type.</p>
+    </div>
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+</dd>
+
+            
+                
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="TokenizerHandleCmnt">
             
             TokenizerHandleCmnt<span class="signature">(<span class="optional">line</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ string | null }</span>
@@ -7345,7 +7402,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/wrappers.js">wrappers.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/wrappers.js#L12">line 12</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/wrappers.js">wrappers.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/wrappers.js#L13">line 13</a>
         </div>
         
     </div>
@@ -7474,7 +7531,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/wrappers.js">wrappers.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/wrappers.js#L21">line 21</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/wrappers.js">wrappers.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/wrappers.js#L22">line 22</a>
         </div>
         
     </div>
