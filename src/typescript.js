@@ -17,3 +17,9 @@ var Constructor;
  * @typedef {{ [P in keyof T]?: T[P] }} Properties
  */
 var Properties;
+
+/**
+ * Dynamically reflected message type.
+ * @typedef {Message<{}> & { [k: string]: any }} ReflectedMessage
+ */
+var ReflectedMessage;

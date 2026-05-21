@@ -1,6 +1,6 @@
 // test currently consists only of not throwing
 
-import { Root, Message, Method, Type, Field, MapField, OneOf, IEnum, IField, IMethod, IOneOf, IService, IType } from "..";
+import { Root, Message, Method, Type, Field, MapField, OneOf, IEnum, IField, IMethod, IOneOf, IService, IType, ReflectedMessage } from "..";
 
 // Reflection
 const root = Root.fromJSON({
@@ -18,7 +18,12 @@ const root = Root.fromJSON({
 });
 const HelloReflected = root.lookupType("Hello");
 
-HelloReflected.create({ value: "hi" });
+const reflectedCreated: ReflectedMessage = HelloReflected.create({ value: "hi" });
+type Assert<T extends true> = T;
+type ReflectedTypeIsType = Assert<typeof reflectedCreated.$type extends Type ? true : false>;
+const reflectedCreatedValue: string = reflectedCreated.value;
+const reflectedDecodedValue: string = HelloReflected.decode(HelloReflected.encode({ value: "hi" }).finish()).value;
+const reflectedConvertedValue: string = HelloReflected.fromObject({ value: "hi" }).value;
 
 const parsedOptionValue: number | undefined = HelloReflected.parsedOptions?.[0]["(custom_option)"];
 const reflectedMethod = new Method("Call", undefined, "Hello", "Hello", false, false, undefined, undefined, [{ option: 1 }]);
@@ -52,7 +57,8 @@ export class Hello extends Message<Hello> {
 
 root.lookupType("Hello").ctor = Hello;
 
-Hello.create({ value: "hi" });
+let helloCreated: Hello = Hello.create({ value: "hi" });
+helloCreated.foo();
 let helloMessage = new Hello({ value: "hi" });
 let helloBuffer  = Hello.encode(helloMessage.foo()).finish();
 let helloDecoded = Hello.decode(helloBuffer);
