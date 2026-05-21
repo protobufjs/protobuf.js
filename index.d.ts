@@ -2030,13 +2030,6 @@ export interface IFetchOptions {
 }
 
 /**
- * Tests if the specified key can affect object prototypes.
- * @param key Key to test
- * @returns `true` if the key is unsafe
- */
-export function isUnsafeProperty(key: string): boolean;
-
-/**
  * Any compatible Buffer instance.
  * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
  */
@@ -2368,6 +2361,13 @@ export namespace util {
          */
         length(): number;
     }
+
+    /**
+     * Tests if the specified key can affect object prototypes.
+     * @param key Key to test
+     * @returns `true` if the key is unsafe
+     */
+    function isUnsafeProperty(key: string): boolean;
 
     /** Whether running within node or not. */
     let isNode: boolean;
