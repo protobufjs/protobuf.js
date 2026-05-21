@@ -213,7 +213,7 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition)
         throw new Error("Unknown edition for " + this.fullName);
     }
 
-    var protoFeatures = Object.assign(this.options ? Object.assign({},  this.options.features) : {},
+    var protoFeatures = util.merge({}, this.options && this.options.features,
         this._inferLegacyProtoFeatures(edition));
 
     if (this._edition) {
@@ -228,7 +228,7 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition)
         } else {
             throw new Error("Unknown edition: " + edition);
         }
-        this._features = Object.assign(defaults, protoFeatures || {});
+        this._features = util.merge(defaults, protoFeatures);
         this._featuresResolved = true;
         return;
     }
@@ -237,13 +237,13 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition)
     // special-case it
     /* istanbul ignore else */
     if (this.partOf instanceof OneOf) {
-        var lexicalParentFeaturesCopy = Object.assign({}, this.partOf._features);
-        this._features = Object.assign(lexicalParentFeaturesCopy, protoFeatures || {});
+        var lexicalParentFeaturesCopy = util.merge({}, this.partOf._features);
+        this._features = util.merge(lexicalParentFeaturesCopy, protoFeatures);
     } else if (this.declaringField) {
         // Skip feature resolution of sister fields.
     } else if (this.parent) {
-        var parentFeaturesCopy = Object.assign({}, this.parent._features);
-        this._features = Object.assign(parentFeaturesCopy, protoFeatures || {});
+        var parentFeaturesCopy = util.merge({}, this.parent._features);
+        this._features = util.merge(parentFeaturesCopy, protoFeatures);
     } else {
         throw new Error("Unable to find a parent for " + this.fullName);
     }

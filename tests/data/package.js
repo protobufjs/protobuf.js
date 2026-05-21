@@ -212,9 +212,13 @@ $root.Package = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Package.encode = function encode(message, writer) {
+    Package.encode = function encode(message, writer, q) {
         if (!writer)
             writer = $Writer.create();
+        if (q === undefined)
+            q = 0;
+        if (q > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.name != null && Object.hasOwnProperty.call(message, "name"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
         if (message.version != null && Object.hasOwnProperty.call(message, "version"))
@@ -226,7 +230,7 @@ $root.Package = (function() {
         if (message.license != null && Object.hasOwnProperty.call(message, "license"))
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.license);
         if (message.repository != null && Object.hasOwnProperty.call(message, "repository"))
-            $root.Package.Repository.encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            $root.Package.Repository.encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork(), q + 1).ldelim();
         if (message.bugs != null && Object.hasOwnProperty.call(message, "bugs"))
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);
         if (message.homepage != null && Object.hasOwnProperty.call(message, "homepage"))
@@ -681,9 +685,13 @@ $root.Package = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Package.toObject = function toObject(message, options) {
+    Package.toObject = function toObject(message, options, q) {
         if (!options)
             options = {};
+        if (q === undefined)
+            q = 0;
+        if (q > $util.recursionLimit)
+            throw Error("max depth exceeded");
         var object = {};
         if (options.arrays || options.defaults) {
             object.keywords = [];
@@ -719,7 +727,7 @@ $root.Package = (function() {
         if (message.license != null && message.hasOwnProperty("license"))
             object.license = message.license;
         if (message.repository != null && message.hasOwnProperty("repository"))
-            object.repository = $root.Package.Repository.toObject(message.repository, options);
+            object.repository = $root.Package.Repository.toObject(message.repository, options, q + 1);
         if (message.bugs != null && message.hasOwnProperty("bugs"))
             object.bugs = message.bugs;
         if (message.homepage != null && message.hasOwnProperty("homepage"))
@@ -864,9 +872,13 @@ $root.Package = (function() {
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        Repository.encode = function encode(message, writer) {
+        Repository.encode = function encode(message, writer, q) {
             if (!writer)
                 writer = $Writer.create();
+            if (q === undefined)
+                q = 0;
+            if (q > $util.recursionLimit)
+                throw Error("max depth exceeded");
             if (message.type != null && Object.hasOwnProperty.call(message, "type"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
             if (message.url != null && Object.hasOwnProperty.call(message, "url"))
@@ -999,9 +1011,13 @@ $root.Package = (function() {
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        Repository.toObject = function toObject(message, options) {
+        Repository.toObject = function toObject(message, options, q) {
             if (!options)
                 options = {};
+            if (q === undefined)
+                q = 0;
+            if (q > $util.recursionLimit)
+                throw Error("max depth exceeded");
             var object = {};
             if (options.defaults) {
                 object.type = "";

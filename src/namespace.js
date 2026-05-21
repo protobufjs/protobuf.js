@@ -337,6 +337,8 @@ Namespace.prototype.define = function define(path, json) {
         throw TypeError("illegal path");
     if (path && path.length && path[0] === "")
         throw Error("path must be relative");
+    if (path.length > util.recursionLimit)
+        throw Error("max depth exceeded");
 
     var ptr = this;
     while (path.length > 0) {

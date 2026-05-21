@@ -172,7 +172,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
         if (field.resolvedType instanceof Enum) gen
             ("d%s=o.enums===String?(types[%i].values[m%s]===undefined?m%s:types[%i].values[m%s]):m%s", prop, fieldIndex, prop, prop, fieldIndex, prop, prop);
         else gen
-            ("d%s=types[%i].toObject(m%s,o)", prop, fieldIndex, prop);
+            ("d%s=types[%i].toObject(m%s,o,q+1)", prop, fieldIndex, prop);
     } else {
         var isUnsigned = false;
         switch (field.type) {
@@ -216,9 +216,12 @@ converter.toObject = function toObject(mtype) {
     var fields = mtype.fieldsArray.slice().sort(util.compareFieldsById);
     if (!fields.length)
         return util.codegen()("return {}");
-    var gen = util.codegen(["m", "o"], mtype.name + "$toObject")
+    var gen = util.codegen(["m", "o", "q"], mtype.name + "$toObject")
     ("if(!o)")
         ("o={}")
+    ("if(q===undefined)q=0")
+    ("if(q>util.recursionLimit)")
+        ("throw Error(\"max depth exceeded\")")
     ("var d={}");
 
     var repeatedFields = [],

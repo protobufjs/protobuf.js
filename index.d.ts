@@ -2033,6 +2033,13 @@ export namespace util {
         public length(): number;
     }
 
+    /**
+     * Tests if the specified key can affect object prototypes.
+     * @param key Key to test
+     * @returns `true` if the key is unsafe
+     */
+    function isUnsafeProperty(key: string): boolean;
+
     /** Whether running within node or not. */
     let isNode: boolean;
 
@@ -2126,11 +2133,13 @@ export namespace util {
     /**
      * Merges the properties of the source object into the destination object.
      * @param dst Destination object
-     * @param src Source object
-     * @param [ifNotSet=false] Merges only if the key is not already set
+     * @param src Source objects, optionally followed by an `ifNotSet` flag
      * @returns Destination object
      */
-    function merge(dst: { [k: string]: any }, src: { [k: string]: any }, ifNotSet?: boolean): { [k: string]: any };
+    function merge(dst: { [k: string]: any }, ...src: any[]): { [k: string]: any };
+
+    /** Schema declaration nesting limit. */
+    let nestingLimit: number;
 
     /** Recursion limit. */
     let recursionLimit: number;

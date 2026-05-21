@@ -237,7 +237,10 @@ function clearCache(type) {
  * @returns {Type} Created message type
  */
 Type.fromJSON = function fromJSON(name, json, depth) {
-    depth = util.checkDepth(depth);
+    if (depth === undefined)
+        depth = 0;
+    if (depth > util.nestingLimit)
+        throw Error("max depth exceeded");
     var type = new Type(name, json.options);
     type.extensions = json.extensions;
     type.reserved = json.reserved;
@@ -515,8 +518,8 @@ Type.prototype.setup = function setup() {
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
-Type.prototype.encode = function encode_setup(message, writer) {
-    return this.setup().encode(message, writer); // overrides this method
+Type.prototype.encode = function encode_setup(message, writer) { // eslint-disable-line no-unused-vars
+    return this.setup().encode.apply(this, arguments); // overrides this method
 };
 
 /**
@@ -601,8 +604,8 @@ Type.prototype.fromObject = function fromObject(object, depth) {
  * @param {IConversionOptions} [options] Conversion options
  * @returns {Object.<string,*>} Plain object
  */
-Type.prototype.toObject = function toObject(message, options) {
-    return this.setup().toObject(message, options);
+Type.prototype.toObject = function toObject(message, options) { // eslint-disable-line no-unused-vars
+    return this.setup().toObject.apply(this, arguments);
 };
 
 /**

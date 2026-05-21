@@ -16,10 +16,26 @@ tape.test("util", function(test) {
         test.same(o, { a: 2 }, "should merge existing keys");
         util.merge(o, { a: 3 }, true);
         test.same(o, { a: 2 }, "should not merge existing keys");
-        util.merge(o, JSON.parse("{\"__proto__\":{\"marker\":true}}"));
+        util.merge(o, { b: 1 }, { c: 2 });
+        test.same(o, { a: 2, b: 1, c: 2 }, "should merge multiple sources");
+        util.merge(o, { c: 3 }, { d: 4 }, true);
+        test.same(o, { a: 2, b: 1, c: 2, d: 4 }, "should merge multiple sources without overwriting existing keys");
+        util.merge(o, JSON.parse("{\"__proto__\":{\"marker\":true},\"prototype\":{\"marker\":true},\"constructor\":{\"marker\":true}}"));
         test.equal(Object.getPrototypeOf(o), Object.prototype, "should keep the target object shape");
-        test.notOk(Object.prototype.hasOwnProperty.call(o, "__proto__"), "should skip reserved keys");
+        test.notOk(Object.prototype.hasOwnProperty.call(o, "__proto__"), "should skip reserved key __proto__");
+        test.notOk(Object.prototype.hasOwnProperty.call(o, "prototype"), "should skip reserved key prototype");
+        test.notOk(Object.prototype.hasOwnProperty.call(o, "constructor"), "should skip reserved key constructor");
         test.equal(o.marker, undefined, "should not expose skipped values");
+        var guarded = {};
+        var accessed = false;
+        Object.defineProperty(guarded, "constructor", {
+            get: function() {
+                accessed = true;
+            }
+        });
+        util.merge(guarded, { constructor: 1, safe: 2 });
+        test.notOk(accessed, "should skip reserved keys before checking target values");
+        test.equal(guarded.safe, 2, "should still merge regular keys");
         test.end();
     });
 
@@ -99,7 +115,20 @@ tape.test("util", function(test) {
 
         util.setProperty(o, 'prop.subprop', { subsub2: 7});
         test.same(o, {prop1: [5, 6], prop: {subprop: [{subsub: [5,6]}, {subsub2: 7}]}}, "should convert nested properties to array");
-        
+
+        var recursionLimit = util.recursionLimit;
+        util.recursionLimit = 3;
+        try {
+            test.doesNotThrow(function() {
+                util.setProperty({}, 'a.b.c', 1);
+            }, "should set property paths up to the recursion limit");
+            test.throws(function() {
+                util.setProperty({}, 'a.b.c.d', 1);
+            }, /max depth exceeded/, "should reject excessively nested property paths");
+        } finally {
+            util.recursionLimit = recursionLimit;
+        }
+
         util.setProperty({}, "__proto__.test", "value");
         test.is({}.test, undefined);
 

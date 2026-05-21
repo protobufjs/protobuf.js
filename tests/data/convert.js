@@ -139,9 +139,13 @@ $root.Message = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Message.encode = function encode(message, writer) {
+    Message.encode = function encode(message, writer, q) {
         if (!writer)
             writer = $Writer.create();
+        if (q === undefined)
+            q = 0;
+        if (q > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.stringVal != null && Object.hasOwnProperty.call(message, "stringVal"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringVal);
         if (message.stringRepeated != null && message.stringRepeated.length)
@@ -515,9 +519,13 @@ $root.Message = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Message.toObject = function toObject(message, options) {
+    Message.toObject = function toObject(message, options, q) {
         if (!options)
             options = {};
+        if (q === undefined)
+            q = 0;
+        if (q > $util.recursionLimit)
+            throw Error("max depth exceeded");
         var object = {};
         if (options.arrays || options.defaults) {
             object.stringRepeated = [];
