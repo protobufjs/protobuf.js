@@ -105,6 +105,15 @@ tape.test("reflected enums", function(test) {
     }, Error, "should throw if id is a reserved number");
 
     test.throws(function() {
+        enm.add("d", 200);
+    }, Error, "should throw if id is a reserved range end");
+
+    enm.reserved = [[100,100], "BAD_NAME"];
+    test.throws(function() {
+        enm.add("d", 100);
+    }, Error, "should throw if id is a reserved singleton number");
+
+    test.throws(function() {
         enm.add("BAD_NAME", 5);
     }, Error, "should throw if id is a reserved name");
 

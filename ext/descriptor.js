@@ -268,13 +268,13 @@ Type.fromDescriptor = function fromDescriptor(descriptor, edition, nested, depth
     /* Extension ranges */ if (descriptor.extensionRange && descriptor.extensionRange.length) {
         type.extensions = [];
         for (i = 0; i < descriptor.extensionRange.length; ++i)
-            type.extensions.push([ descriptor.extensionRange[i].start, descriptor.extensionRange[i].end ]);
+            type.extensions.push([ descriptor.extensionRange[i].start, descriptor.extensionRange[i].end - 1 ]);
     }
     /* Reserved... */ if (descriptor.reservedRange && descriptor.reservedRange.length || descriptor.reservedName && descriptor.reservedName.length) {
         type.reserved = [];
         /* Ranges */ if (descriptor.reservedRange)
             for (i = 0; i < descriptor.reservedRange.length; ++i)
-                type.reserved.push([ descriptor.reservedRange[i].start, descriptor.reservedRange[i].end ]);
+                type.reserved.push([ descriptor.reservedRange[i].start, descriptor.reservedRange[i].end - 1 ]);
         /* Names */ if (descriptor.reservedName)
             for (i = 0; i < descriptor.reservedName.length; ++i)
                 type.reserved.push(descriptor.reservedName[i]);
@@ -324,13 +324,13 @@ Type.prototype.toDescriptor = function toDescriptor(edition) {
     }
     /* Extension ranges */ if (this.extensions)
         for (i = 0; i < this.extensions.length; ++i)
-            descriptor.extensionRange.push(exports.DescriptorProto.ExtensionRange.create({ start: this.extensions[i][0], end: this.extensions[i][1] }));
+            descriptor.extensionRange.push(exports.DescriptorProto.ExtensionRange.create({ start: this.extensions[i][0], end: this.extensions[i][1] + 1 }));
     /* Reserved... */ if (this.reserved)
         for (i = 0; i < this.reserved.length; ++i)
             /* Names */ if (typeof this.reserved[i] === "string")
                 descriptor.reservedName.push(this.reserved[i]);
             /* Ranges */ else
-                descriptor.reservedRange.push(exports.DescriptorProto.ReservedRange.create({ start: this.reserved[i][0], end: this.reserved[i][1] }));
+                descriptor.reservedRange.push(exports.DescriptorProto.ReservedRange.create({ start: this.reserved[i][0], end: this.reserved[i][1] + 1 }));
 
     descriptor.options = toDescriptorOptions(this.options, exports.MessageOptions);
 
@@ -657,9 +657,10 @@ Enum.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
 
     // Construct values object
     var values = {},
-        valuesOptions;
+        valuesOptions,
+        i;
     if (descriptor.value)
-        for (var i = 0; i < descriptor.value.length; ++i) {
+        for (i = 0; i < descriptor.value.length; ++i) {
             var name  = descriptor.value[i].name,
                 valueName = name && name.length ? name : "NAME" + (descriptor.value[i].number || 0),
                 value = descriptor.value[i].number || 0,
@@ -681,6 +682,16 @@ Enum.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
     if (!nested)
         enm._edition = edition;
 
+    /* Reserved... */ if (descriptor.reservedRange && descriptor.reservedRange.length || descriptor.reservedName && descriptor.reservedName.length) {
+        enm.reserved = [];
+        /* Ranges */ if (descriptor.reservedRange)
+            for (i = 0; i < descriptor.reservedRange.length; ++i)
+                enm.reserved.push([ descriptor.reservedRange[i].start, descriptor.reservedRange[i].end ]);
+        /* Names */ if (descriptor.reservedName)
+            for (i = 0; i < descriptor.reservedName.length; ++i)
+                enm.reserved.push(descriptor.reservedName[i]);
+    }
+
     return enm;
 };
 
@@ -691,19 +702,30 @@ Enum.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
 Enum.prototype.toDescriptor = function toDescriptor() {
 
     // Values
-    var values = [];
-    for (var i = 0, ks = Object.keys(this.values); i < ks.length; ++i)
+    var values = [],
+        i,
+        ks = Object.keys(this.values);
+    for (i = 0; i < ks.length; ++i)
         values.push(exports.EnumValueDescriptorProto.create({
             name: ks[i],
             number: this.values[ks[i]],
             options: this.valuesOptions && toDescriptorOptions(this.valuesOptions[ks[i]], exports.EnumValueOptions)
         }));
 
-    return exports.EnumDescriptorProto.create({
+    var descriptor = exports.EnumDescriptorProto.create({
         name: this.name,
         value: values,
         options: toDescriptorOptions(this.options, exports.EnumOptions)
     });
+
+    /* Reserved... */ if (this.reserved)
+        for (i = 0; i < this.reserved.length; ++i)
+            /* Names */ if (typeof this.reserved[i] === "string")
+                descriptor.reservedName.push(this.reserved[i]);
+            /* Ranges */ else
+                descriptor.reservedRange.push(exports.EnumDescriptorProto.EnumReservedRange.create({ start: this.reserved[i][0], end: this.reserved[i][1] }));
+
+    return descriptor;
 };
 
 // --- OneOf ---

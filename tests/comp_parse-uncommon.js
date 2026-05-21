@@ -26,6 +26,31 @@ tape.test("uncommon statements", function(test) {
     });
 });
 
+tape.test("negative enum reserved values", function(test) {
+    test.doesNotThrow(function() {
+        var Enum = protobuf.parse("syntax = \"proto3\"; enum Values { reserved -1; INVALID = 0; OK = 1; }").root.lookupEnum("Values");
+        test.same(Enum.reserved, [[-1, -1]], "should parse negative singleton enum reserved value");
+    }, "should parse negative enum reserved values");
+
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto3\"; enum Values { reserved -2 to -1; INVALID = 0; RESERVED = -1; }");
+    }, /id -1 is reserved/, "should reject negative reserved enum range end ids");
+
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto3\"; enum Values { reserved 1 to max; INVALID = 0; RESERVED = 2147483647; }");
+    }, /id 2147483647 is reserved/, "should use int32 max for enum reserved max");
+
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto3\"; enum Values { reserved -1; INVALID = 0; RESERVED = -1; }");
+    }, /id -1 is reserved/, "should reject negative reserved enum value ids");
+
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto3\"; message M { reserved -1; int32 value = 1; }");
+    }, /illegal id '-1'/, "should still reject negative message reserved field ids");
+
+    test.end();
+});
+
 function traverseTypes(current, fn) {
     if (current instanceof protobuf.Type) // and/or protobuf.Enum, protobuf.Service etc.
         fn(current);
