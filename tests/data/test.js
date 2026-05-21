@@ -111,7 +111,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Empty.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -351,7 +351,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             EnumContainer.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -645,7 +645,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Simple1.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -954,7 +954,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Simple2.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -1265,7 +1265,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             SpecialCases.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -1611,7 +1611,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             OptionalFields.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -1958,7 +1958,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -2270,7 +2270,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             HasExtensions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -2731,7 +2731,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Complex.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -3078,7 +3078,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -3323,7 +3323,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             OuterMessage.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -3546,7 +3546,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Complex.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -3801,7 +3801,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             IsExtension.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -4042,7 +4042,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             IndirectExtension.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -4323,7 +4323,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             DefaultValues.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -4787,7 +4787,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FloatingPointFields.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -5238,7 +5238,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestClone.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -5600,7 +5600,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             CloneExtension.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -5929,7 +5929,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -6343,7 +6343,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 RepeatedGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -6632,7 +6632,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 RequiredGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -6884,7 +6884,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 OptionalGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -7136,7 +7136,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 MessageInGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -7392,7 +7392,7 @@ $root.jspb = (function() {
                      * @returns {$protobuf.Writer} Writer
                      */
                     NestedMessage.encodeDelimited = function encodeDelimited(message, writer) {
-                        return this.encode(message, writer).ldelim();
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                     };
 
                     /**
@@ -7646,7 +7646,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 EnumInGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -7935,7 +7935,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestGroup1.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -8198,7 +8198,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestReservedNames.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -8454,7 +8454,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestReservedNamesExtension.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -8852,7 +8852,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestMessageWithOneof.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -9311,7 +9311,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestEndsWithBytes.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -9734,7 +9734,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestMapFieldsNoBinary.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -10686,7 +10686,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             MapValueMessageNoBinary.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -10927,7 +10927,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Deeply.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -11139,7 +11139,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -11362,7 +11362,7 @@ $root.jspb = (function() {
                      * @returns {$protobuf.Writer} Writer
                      */
                     Message.encodeDelimited = function encodeDelimited(message, writer) {
-                        return this.encode(message, writer).ldelim();
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                     };
 
                     /**
@@ -11646,7 +11646,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FileDescriptorSet.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -12110,7 +12110,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FileDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -12900,7 +12900,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             DescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -13490,7 +13490,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 ExtensionRange.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -13787,7 +13787,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 ReservedRange.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -14094,7 +14094,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             ExtensionRangeOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -14494,7 +14494,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Declaration.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -14930,7 +14930,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FieldDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -15524,7 +15524,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             OneofDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -15857,7 +15857,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             EnumDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -16271,7 +16271,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 EnumReservedRange.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -16563,7 +16563,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             EnumValueDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -16873,7 +16873,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             ServiceDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -17234,7 +17234,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             MethodDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -17784,7 +17784,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FileOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -18450,7 +18450,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             MessageOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -18961,7 +18961,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FieldOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -19685,7 +19685,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 EditionDefault.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -20054,7 +20054,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 FeatureSupport.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -20572,7 +20572,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             OneofOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -20915,7 +20915,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             EnumOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -21309,7 +21309,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             EnumValueOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -21672,7 +21672,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             ServiceOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -22013,7 +22013,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             MethodOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -22441,7 +22441,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             UninterpretedOption.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -22845,7 +22845,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 NamePart.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -23194,7 +23194,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FeatureSet.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -23852,7 +23852,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 VisibilityFeature.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -24125,7 +24125,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FeatureSetDefaults.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -24583,7 +24583,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 FeatureSetEditionDefault.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -24948,7 +24948,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             SourceCodeInfo.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -25272,7 +25272,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Location.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -25646,7 +25646,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             GeneratedCodeInfo.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -25963,7 +25963,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Annotation.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**

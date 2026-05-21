@@ -129,7 +129,7 @@ $root.Test1 = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Test1.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -411,7 +411,7 @@ $root.Test2 = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Test2.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**

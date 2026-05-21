@@ -292,7 +292,7 @@ $root.Package = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Package.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -1027,7 +1027,7 @@ $root.Package = (function() {
          * @returns {$protobuf.Writer} Writer
          */
         Repository.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
+            return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
         };
 
         /**

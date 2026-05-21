@@ -208,7 +208,7 @@ $root.Message = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Message.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
