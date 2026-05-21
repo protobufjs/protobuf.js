@@ -1,5 +1,20 @@
 # Changelog
 
+## [8.4.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.4.0...protobufjs-v8.4.1) (2026-05-21)
+
+
+### Bug Fixes
+
+* Correct util helper typing ([#2279](https://github.com/protobufjs/protobuf.js/issues/2279)) ([664a3d1](https://github.com/protobufjs/protobuf.js/commit/664a3d1e0c741e328d53ea6e6ab251277566279c))
+* Decode omitted long map values as Long ([#2264](https://github.com/protobufjs/protobuf.js/issues/2264)) ([a71254b](https://github.com/protobufjs/protobuf.js/commit/a71254b23846f35048f773b132aa177511a960bc))
+* Expose Field rule declaration ([#2261](https://github.com/protobufjs/protobuf.js/issues/2261)) ([1664cbf](https://github.com/protobufjs/protobuf.js/commit/1664cbf24afe7751563ddb80a030395ad2ec989d))
+* Improve message return typings ([#2274](https://github.com/protobufjs/protobuf.js/issues/2274)) ([0f54489](https://github.com/protobufjs/protobuf.js/commit/0f544899c1e35567b2dffa38e9204627c1759241))
+* Misc utility hardening ([#2272](https://github.com/protobufjs/protobuf.js/issues/2272)) ([3de631b](https://github.com/protobufjs/protobuf.js/commit/3de631b233da638852d5028d44d21800d801ca69))
+* Omit proto3 synthetic oneofs in toObject ([#2273](https://github.com/protobufjs/protobuf.js/issues/2273)) ([9a78a4a](https://github.com/protobufjs/protobuf.js/commit/9a78a4a195c0bd66f92fc73ec1cb87e21fdaa5fe))
+* Preserve writer state in static encodeDelimited ([#2275](https://github.com/protobufjs/protobuf.js/issues/2275)) ([d28ec57](https://github.com/protobufjs/protobuf.js/commit/d28ec57e9eae7e1a67985ba76676c70534c42cab))
+* Register empty common in light build ([#2262](https://github.com/protobufjs/protobuf.js/issues/2262)) ([6cc4bc2](https://github.com/protobufjs/protobuf.js/commit/6cc4bc2c5a0676cc78039b806e28818fdc26bb99))
+* Treat fixed64 as unsigned in converters ([#2265](https://github.com/protobufjs/protobuf.js/issues/2265)) ([d8a6983](https://github.com/protobufjs/protobuf.js/commit/d8a6983747150db0b0da11f85db78ffeed69c35a))
+
 ## [8.4.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.3.0...protobufjs-v8.4.0) (2026-05-18)
 
 
