@@ -12,8 +12,7 @@ util.codegen  = codegen;
 util.path     = path;
 util.patterns = patterns;
 
-var reservedRe = util.patterns.reservedRe,
-    unsafePropertyRe = util.patterns.unsafePropertyRe;
+var reservedRe = util.patterns.reservedRe;
 
 /**
  * Converts an object's values to an array.
@@ -170,7 +169,7 @@ util.decorateEnum = function decorateEnum(object) {
 util.setProperty = function setProperty(dst, path, value, ifNotSet) {
     function setProp(dst, path, value) {
         var part = path.shift();
-        if (unsafePropertyRe.test(part))
+        if (util.isUnsafeProperty(part))
             return dst;
         if (path.length > 0) {
             dst[part] = setProp(dst[part] || {}, path, value);

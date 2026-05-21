@@ -24,6 +24,18 @@ util.float = float;
 util.pool = pool;
 
 /**
+ * Tests if the specified key can affect object prototypes.
+ * @memberof util
+ * @param {string} key Key to test
+ * @returns {boolean} `true` if the key is unsafe
+ */
+function isUnsafeProperty(key) {
+    return key === "__proto__" || key === "prototype" || key === "constructor";
+}
+
+util.isUnsafeProperty = isUnsafeProperty;
+
+/**
  * Whether running within node or not.
  * @memberof util
  * @type {boolean}
@@ -182,15 +194,21 @@ util.boolFromKey = function boolFromKey(key) {
  * Merges the properties of the source object into the destination object.
  * @memberof util
  * @param {Object.<string,*>} dst Destination object
- * @param {Object.<string,*>} src Source object
- * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
+ * @param {...(Object.<string,*>|boolean)} src Source objects, optionally followed by an `ifNotSet` flag
  * @returns {Object.<string,*>} Destination object
  */
-function merge(dst, src, ifNotSet) { // used by converters
-    for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
-        if (dst[keys[i]] === undefined || !ifNotSet)
-            if (keys[i] !== "__proto__")
+function merge(dst) { // used by converters
+    var ifNotSet = typeof arguments[arguments.length - 1] === "boolean",
+        limit = ifNotSet ? arguments.length - 1 : arguments.length;
+    ifNotSet = ifNotSet && arguments[arguments.length - 1];
+    for (var a = 1; a < limit; ++a) {
+        var src = arguments[a];
+        if (!src)
+            continue;
+        for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
+            if (!isUnsafeProperty(keys[i]) && (dst[keys[i]] === undefined || !ifNotSet))
                 dst[keys[i]] = src[keys[i]];
+    }
     return dst;
 }
 

@@ -479,7 +479,7 @@ function parse(source, root, options) {
         name = applyCase(name);
         skip("=");
 
-        var field = new Field(name, parseId(next()), type, rule, extend);
+        var field = new Field(name, parseId(next()), type, rule === "proto3_optional" ? "optional" : rule, extend);
 
         ifBlock(field, function parseField_block(token) {
 

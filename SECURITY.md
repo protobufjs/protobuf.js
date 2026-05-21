@@ -14,8 +14,8 @@ release containing the fix.
 | Release line | Supported |
 | ------------ | --------- |
 | 8.x          | ✅        |
-| 7.5.x        | ✅        |
-| < 7.5        | ❌        |
+| 7.x          | ✅        |
+| < 7          | ❌        |
 
 ## Untrusted Schema Input
 

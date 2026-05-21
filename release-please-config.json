@@ -1,9 +1,22 @@
 {
   "bootstrap-sha": "6fc37d9ea3502cdc08ef988494c041aacd0f7e7f",
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "packages": {
-    "cli": {},
+    "cli": {
+      "release-type": "node",
+      "package-name": "protobufjs-cli"
+    },
     ".": {
+      "release-type": "node",
+      "package-name": "protobufjs",
       "exclude-paths": ["cli"]
     }
-  }
+  },
+  "plugins": [
+    {
+      "type": "node-workspace",
+      "updatePeerDependencies": true
+    }
+  ],
+  "always-link-local": false
 }

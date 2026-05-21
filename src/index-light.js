@@ -44,7 +44,7 @@ function load(filename, root) {
 // Set up possibly cyclic reflection dependencies
 ReflectionObject._configure(Root);
 Namespace._configure(Type, Service, Enum);
-Root._configure(Type);
+Root._configure(Type, undefined, {});
 Field._configure(Type);
 util._configure(Type, Enum, Root);
 

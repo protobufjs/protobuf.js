@@ -79,6 +79,43 @@ tape.test("pbjs generates static code", async function(test) {
     });
 });
 
+tape.test("pbjs generates unsigned fixed64 defaults", async function(test) {
+    await cliTest(test, async function() {
+        var root = protobuf.Root.fromJSON({
+            nested: {
+                M: {
+                    fields: {
+                        v: {
+                            type: "fixed64",
+                            id: 1,
+                            options: {
+                                default: "11000000000000000001"
+                            }
+                        },
+                        s: {
+                            type: "sfixed64",
+                            id: 2,
+                            options: {
+                                default: "-9000000000000000001"
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+
+        await generate(staticTarget, root, {}, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+            test.ok(jsCode.includes("M.prototype.v = 11000000000000000001n;"), "fixed64 default is emitted as unsigned");
+            test.ok(jsCode.includes("M.prototype.s = -9000000000000000001n;"), "sfixed64 default is emitted as signed");
+            test.end();
+        });
+    });
+});
+
 tape.test("pbjs generates correct ES module static-module imports", async function(test) {
     await cliTest(test, async function() {
         var root = await protobuf.load("tests/data/cli/test.proto");

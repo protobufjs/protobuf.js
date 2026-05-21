@@ -83,8 +83,8 @@ Enum.prototype._resolveFeatures = function _resolveFeatures(edition) {
     ReflectionObject.prototype._resolveFeatures.call(this, edition);
 
     Object.keys(this.values).forEach(key => {
-        var parentFeaturesCopy = Object.assign({}, this._features);
-        this._valuesFeatures[key] = Object.assign(parentFeaturesCopy, this.valuesOptions && this.valuesOptions[key] && this.valuesOptions[key].features);
+        var parentFeaturesCopy = util.merge({}, this._features);
+        this._valuesFeatures[key] = util.merge(parentFeaturesCopy, this.valuesOptions && this.valuesOptions[key] && this.valuesOptions[key].features || {});
     });
 
     return this;

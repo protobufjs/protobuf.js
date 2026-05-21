@@ -10,7 +10,7 @@ tape.test("converters", async function(test) {
 
         test.test(test.name + " - Message#toObject", function(test) {
 
-            test.plan(7);
+            test.plan(8);
 
             test.test(test.name + " - called with defaults = true", function(test) {
                 var obj = Message.toObject(Message.create(), { defaults: true });
@@ -28,6 +28,14 @@ tape.test("converters", async function(test) {
                 test.same(obj.enumRepeated, [], "should set enumRepeated");
 
                 test.same(obj.int64Map, {}, "should set int64Map");
+
+                test.end();
+            });
+
+            test.test(test.name + " - called with defaults = true and longs = BigInt", function(test) {
+                var obj = Message.toObject(Message.create(), { defaults: true, longs: BigInt });
+
+                test.equal(obj.uint64Val, 0n, "should set uint64Val");
 
                 test.end();
             });
@@ -96,28 +104,35 @@ tape.test("converters", async function(test) {
                 var buf = protobuf.util.newBuffer(3);
                 buf[0] = buf[1] = buf[2] = 49; // "111"
                 var msg = Message.create({
-                    uint64Val: 1n,
-                    uint64Repeated: [2, 3],
+                    // This number was chosen to be > 2^63 and < 2^64.
+                    uint64Val: 11000000000000000001n,
+                    uint64Repeated: [2n, 3n],
                     bytesVal: buf,
                     bytesRepeated: [buf, buf],
                     enumVal: 2,
                     enumRepeated: [1, 100, 2],
                     int64Map: {
-                        a: 2n,
-                        b: 3n
+                        // These numbers were chosen to be < Number.MIN_SAFE_INTEGER.
+                        a: -200000000000000001n,
+                        b: -300000000000000001n
                     }
                 });
 
                 var msgLongsToNumber = Message.toObject(msg, { longs: Number }),
-                    msgLongsToString = Message.toObject(msg, { longs: String });
+                    msgLongsToString = Message.toObject(msg, { longs: String }),
+                    msgLongsToBigInt = Message.toObject(msg, { longs: BigInt });
 
                 test.same(Message.ctor.toObject(msg, { longs: Number}), msgLongsToNumber, "should convert the same using the static and the instance method");
                 test.same(Message.ctor.toObject(msg, { longs: String}), msgLongsToString, "should convert the same using the static and the instance method");
+                test.same(Message.ctor.toObject(msg, { longs: BigInt}), msgLongsToBigInt, "should convert the same using the static and the instance method");
 
-                test.equal(msgLongsToNumber.uint64Val, 1, "longs to numbers");
-                test.equal(msgLongsToString.uint64Val, "1", "longs to strings");
-                test.same(msgLongsToNumber.int64Map, { a: 2, b: 3}, "long map values to numbers");
-                test.same(msgLongsToString.int64Map, { a: "2", b: "3"}, "long map values to strings");
+                test.equal(msgLongsToNumber.uint64Val, 11000000000000000000, "longs to numbers");
+                test.equal(msgLongsToString.uint64Val, "11000000000000000001", "longs to strings");
+                test.equal(msgLongsToBigInt.uint64Val, 11000000000000000001n, "longs to bigints");
+                test.same(msgLongsToBigInt.uint64Repeated, [2n, 3n], "long arrays to bigints");
+                test.same(msgLongsToNumber.int64Map, { a: -200000000000000000, b: -300000000000000000}, "long map values to numbers");
+                test.same(msgLongsToString.int64Map, { a: "-200000000000000001", b: "-300000000000000001"}, "long map values to strings");
+                test.same(msgLongsToBigInt.int64Map, { a: -200000000000000001n, b: -300000000000000001n}, "long map values to bigints");
 
                 test.equal(Object.prototype.toString.call(Message.toObject(msg, { bytes: Array }).bytesVal), "[object Array]", "bytes to arrays");
                 test.equal(Message.toObject(msg, { bytes: String }).bytesVal, "MTEx", "bytes to base64 strings");
@@ -206,6 +221,95 @@ tape.test("converters", async function(test) {
             test.same(Message.toObject(msg, { longs: Number }).int64Map, { a: 2, b: 3 }, "should convert BigInt long map values to numbers");
             test.ok(Message.encode(msg).finish().length, "should encode converted long values");
             test.ok(Message.ctor.encode(Message.ctor.fromObject(obj)).finish().length, "should encode converted static long values");
+
+            var bigMsg = Message.fromObject({
+                uint64Val: 11000000000000000001n,
+                uint64Repeated: [2n, 3n],
+                int64Map: {
+                    a: -200000000000000001n,
+                    b: -300000000000000001n
+                }
+            });
+
+            test.equal(bigMsg.uint64Val, 11000000000000000001n, "should set uint64Val from a bigint");
+            test.same(bigMsg.uint64Repeated, [2n, 3n], "should set uint64Repeated from bigints");
+            test.same(bigMsg.int64Map, {
+                a: -200000000000000001n,
+                b: -300000000000000001n
+            }, "should set int64Map from bigints");
+
+            test.end();
+        });
+
+        test.test(test.name + " - fixed64 signedness", function(test) {
+            var root = protobuf.Root.fromJSON({
+                nested: {
+                    Fixed: {
+                        fields: {
+                            fixed64Val: {
+                                type: "fixed64",
+                                id: 1
+                            },
+                            sfixed64Val: {
+                                type: "sfixed64",
+                                id: 2
+                            }
+                        }
+                    }
+                }
+            });
+            var Fixed = root.lookupType("Fixed");
+            var msg = Fixed.fromObject({
+                fixed64Val: "11000000000000000001",
+                sfixed64Val: "-9000000000000000001"
+            });
+            var msgFromNumber = Fixed.fromObject({
+                fixed64Val: 11000000000000000000,
+                sfixed64Val: -9000000000000000000
+            });
+            var obj = Fixed.toObject(msg, { longs: BigInt });
+            var defaults = Fixed.toObject(Fixed.create(), { defaults: true });
+
+            test.equal(msg.fixed64Val, 11000000000000000001n, "should set fixed64 values as unsigned");
+            test.equal(msg.sfixed64Val, -9000000000000000001n, "should set sfixed64 values as signed");
+            test.equal(msgFromNumber.fixed64Val, 11000000000000000000n, "should set fixed64 values from numbers as unsigned");
+            test.equal(msgFromNumber.sfixed64Val, -9000000000000000000n, "should set sfixed64 values from numbers as signed");
+            test.equal(obj.fixed64Val, 11000000000000000001n, "should output fixed64 as unsigned bigint");
+            test.equal(obj.sfixed64Val, -9000000000000000001n, "should output sfixed64 as signed bigint");
+            test.equal(defaults.fixed64Val, 0n, "should default fixed64 as bigint");
+            test.equal(defaults.sfixed64Val, 0n, "should default sfixed64 as bigint");
+
+            test.end();
+        });
+
+        test.test(test.name + " - Type.toObject recursion limit", function(test) {
+            var recursionLimit = protobuf.util.recursionLimit;
+            protobuf.util.recursionLimit = 3;
+            try {
+                var nestedRoot = protobuf.Root.fromJSON({
+                    nested: {
+                        Recursive: {
+                            fields: {
+                                next: {
+                                    type: "Recursive",
+                                    id: 1
+                                }
+                            }
+                        }
+                    }
+                });
+                var Recursive = nestedRoot.lookupType("Recursive");
+                var msg = Recursive.create();
+                var cursor = msg;
+                for (var i = 0; i < 5; ++i)
+                    cursor = cursor.next = Recursive.create();
+
+                test.throws(function() {
+                    Recursive.toObject(msg);
+                }, /max depth exceeded/, "should reject excessive object conversion depth");
+            } finally {
+                protobuf.util.recursionLimit = recursionLimit;
+            }
 
             test.end();
         });

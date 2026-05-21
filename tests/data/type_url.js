@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-mixed-operators, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -79,11 +79,15 @@ $root.TypeUrlTest = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    TypeUrlTest.encode = function encode(message, writer) {
+    TypeUrlTest.encode = function encode(message, writer, _depth) {
         if (!writer)
             writer = $Writer.create();
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.nested != null && Object.hasOwnProperty.call(message, "nested"))
-            $root.TypeUrlTest.Nested.encode(message.nested, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            $root.TypeUrlTest.Nested.encode(message.nested, writer.uint32(/* id 1, wireType 2 =*/10).fork(), _depth + 1).ldelim();
         if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)
                 writer.raw(message.$unknowns[i]);
@@ -100,7 +104,7 @@ $root.TypeUrlTest = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     TypeUrlTest.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -219,14 +223,18 @@ $root.TypeUrlTest = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    TypeUrlTest.toObject = function toObject(message, options) {
+    TypeUrlTest.toObject = function toObject(message, options, _depth) {
         if (!options)
             options = {};
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         var object = {};
         if (options.defaults)
             object.nested = null;
         if (message.nested != null && message.hasOwnProperty("nested"))
-            object.nested = $root.TypeUrlTest.Nested.toObject(message.nested, options);
+            object.nested = $root.TypeUrlTest.Nested.toObject(message.nested, options, _depth + 1);
         return object;
     };
 
@@ -325,9 +333,13 @@ $root.TypeUrlTest = (function() {
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        Nested.encode = function encode(message, writer) {
+        Nested.encode = function encode(message, writer, _depth) {
             if (!writer)
                 writer = $Writer.create();
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw Error("max depth exceeded");
             if (message.a != null && Object.hasOwnProperty.call(message, "a"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.a);
             if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
@@ -346,7 +358,7 @@ $root.TypeUrlTest = (function() {
          * @returns {$protobuf.Writer} Writer
          */
         Nested.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
+            return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
         };
 
         /**
@@ -464,9 +476,13 @@ $root.TypeUrlTest = (function() {
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        Nested.toObject = function toObject(message, options) {
+        Nested.toObject = function toObject(message, options, _depth) {
             if (!options)
                 options = {};
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw Error("max depth exceeded");
             var object = {};
             if (options.defaults)
                 object.a = "";

@@ -6,6 +6,7 @@
 var wrappers = {};
 
 import { Message } from "./message.js";
+import { util } from "./util/minimal.js";
 
 /**
  * From object converter part of an {@link IWrapper}.
@@ -52,10 +53,9 @@ wrappers[".google.protobuf.Any"] = {
                 if (type_url.indexOf("/") === -1) {
                     type_url = "/" + type_url;
                 }
-                var nextDepth = depth === undefined ? 1 : depth + 1;
                 return this.create({
                     type_url: type_url,
-                    value: type.encode(type.fromObject(object, nextDepth)).finish()
+                    value: type.encode(type.fromObject(object, depth === undefined ? 1 : depth + 1)).finish()
                 });
             }
         }
@@ -63,13 +63,16 @@ wrappers[".google.protobuf.Any"] = {
         return this.fromObject(object, depth);
     },
 
-    toObject: function(message, options) {
+    toObject: function(message, options, depth) {
+        if (depth === undefined)
+            depth = 0;
+        if (depth > util.recursionLimit)
+            throw Error("max depth exceeded");
 
         // Default prefix
         var googleApi = "type.googleapis.com/";
         var prefix = "";
         var name = "";
-
         // decode value if requested and unmapped
         if (options && options.json && message.type_url && message.value) {
             // Only use fully qualified type name after the last '/'
@@ -82,13 +85,13 @@ wrappers[".google.protobuf.Any"] = {
                 var value = message.value;
                 if (!(value instanceof Uint8Array))
                     value = new Uint8Array(value);
-                message = type.decode(value);
+                message = type.decode(value, undefined, undefined, depth + 1);
             }
         }
 
         // wrap value if unmapped
         if (!(message instanceof this.ctor) && message instanceof Message) {
-            var object = message.$type.toObject(message, options);
+            var object = message.$type.toObject(message, options, depth + 1);
             var messageName = message.$type.fullName[0] === "." ?
                 message.$type.fullName.slice(1) : message.$type.fullName;
             // Default to type.googleapis.com prefix if no prefix is used
@@ -100,7 +103,7 @@ wrappers[".google.protobuf.Any"] = {
             return object;
         }
 
-        return this.toObject(message, options);
+        return this.toObject(message, options, depth);
     }
 };
 

@@ -61,11 +61,11 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                 ("m%s=d%s|0", prop, prop);
                 break;
             case "uint64":
+            case "fixed64":
                 isUnsigned = true;
                 // eslint-disable-next-line no-fallthrough
             case "int64":
             case "sint64":
-            case "fixed64":
             case "sfixed64":
                 if (isUnsigned) gen
                 ("m%s=BigInt.asUintN(64,BigInt(d%s))", prop, prop);
@@ -189,7 +189,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
         if (field.resolvedType instanceof Enum) gen
             ("d%s=o.enums===String?(types[%i].values[m%s]===undefined?m%s:types[%i].values[m%s]):m%s", dstProp, fieldIndex, srcProp, srcProp, fieldIndex, srcProp, srcProp);
         else gen
-            ("d%s=types[%i].toObject(m%s,o)", dstProp, fieldIndex, srcProp);
+            ("d%s=types[%i].toObject(m%s,o,q+1)", dstProp, fieldIndex, srcProp);
     } else {
         switch (field.type) {
             case "double":
@@ -197,9 +197,9 @@ function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
             ("d%s=o.json&&!isFinite(m%s)?String(m%s):m%s", dstProp, srcProp, srcProp, srcProp);
                 break;
             case "uint64":
+            case "fixed64":
             case "int64":
             case "sint64":
-            case "fixed64":
             case "sfixed64": gen
             ("d%s=o.longs===String?String(m%s):o.longs===Number?Number(m%s):m%s", dstProp, srcProp, srcProp, srcProp);
                 break;
@@ -225,9 +225,12 @@ converter.toObject = function toObject(mtype) {
     var fields = mtype.fieldsArray.slice().sort(util.compareFieldsById);
     if (!fields.length)
         return util.codegen()("return {}");
-    var gen = util.codegen(["m", "o"], mtype.name + "$toObject")
+    var gen = util.codegen(["m", "o", "q"], mtype.name + "$toObject")
     ("if(!o)")
         ("o={}")
+    ("if(q===undefined)q=0")
+    ("if(q>util.recursionLimit)")
+        ("throw Error(\"max depth exceeded\")")
     ("var d={}");
 
     var repeatedFields = [],
@@ -303,7 +306,7 @@ converter.toObject = function toObject(mtype) {
         } else { gen
     ("if(m%s!=null&&m.hasOwnProperty(%j)){", prop, field.name); // !== undefined && !== null
         genValuePartial_toObject(gen, field, /* sorted */ index, prop);
-        if (field.partOf) gen
+        if (field.partOf && !field.partOf.isProto3Optional) gen
         ("if(o.oneofs)")
             ("d%s=%j", util.safeProp(field.partOf.name), field.name);
         }

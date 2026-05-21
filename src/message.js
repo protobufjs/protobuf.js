@@ -33,7 +33,7 @@ function Message(properties) {
 /**
  * Creates a new message of this type using the specified properties.
  * @param {Object.<string,*>} [properties] Properties to set
- * @returns {Message<T>} Message instance
+ * @returns {T} Message instance
  * @template T extends Message<T>
  * @this Constructor<T>
  */

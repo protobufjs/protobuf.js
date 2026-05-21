@@ -15,6 +15,7 @@ var lintDefault = "eslint-disable " + [
     "id-length",
     "no-control-regex",
     "no-magic-numbers",
+    "no-mixed-operators",
     "no-prototype-builtins",
     "no-redeclare",
     "no-shadow",

@@ -64,7 +64,9 @@ function decoder(mtype) {
             else gen
                 ("k=null");
 
-            if (types.defaults[type] !== undefined) gen
+            if (types.long[type] !== undefined) gen
+                ("v=0n");
+            else if (types.defaults[type] !== undefined) gen
                 ("v=%j", types.defaults[type]);
             else gen
                 ("v=null");

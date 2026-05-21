@@ -11,7 +11,7 @@ function EventEmitter() {
      * @type {Object.<string,*>}
      * @private
      */
-    this._listeners = {};
+    this._listeners = Object.create(null);
 }
 
 /**
@@ -46,12 +46,14 @@ EventEmitter.prototype.on = function on(evt, fn, ctx) {
  */
 EventEmitter.prototype.off = function off(evt, fn) {
     if (evt === undefined)
-        this._listeners = {};
+        this._listeners = Object.create(null);
     else {
         if (fn === undefined)
             this._listeners[evt] = [];
         else {
             var listeners = this._listeners[evt];
+            if (!listeners)
+                return this;
             for (var i = 0; i < listeners.length;)
                 if (listeners[i].fn === fn)
                     listeners.splice(i, 1);

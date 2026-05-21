@@ -133,11 +133,15 @@ Root.prototype.load = async function load(filename, options) {
     }
 
     // Processes a single file
-    async function process(filename, source) {
+    async function process(filename, source, depth) {
+        if (depth === undefined)
+            depth = 0;
+        if (depth > util.recursionLimit)
+            throw Error("max depth exceeded");
         if (util.isString(source) && source.charAt(0) === "{")
             source = JSON.parse(source);
         if (!util.isString(source)) {
-            self.setOptions(source.options).addJSON(source.nested);
+            self.setOptions(source.options).addJSON(source.nested, depth);
             return;
         }
 
@@ -152,18 +156,20 @@ Root.prototype.load = async function load(filename, options) {
         if (parsed.imports) {
             for (; i < parsed.imports.length; ++i)
                 if (resolved = getBundledFileName(parsed.imports[i]) || self.resolvePath(filename, parsed.imports[i]))
-                    imports.push(fetch(resolved));
+                    imports.push(fetch(resolved, false, depth + 1));
         }
         if (parsed.weakImports) {
             for (i = 0; i < parsed.weakImports.length; ++i)
                 if (resolved = getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i]))
-                    imports.push(fetch(resolved, true));
+                    imports.push(fetch(resolved, true, depth + 1));
         }
         await Promise.all(imports);
     }
 
     // Fetches a single file
-    async function fetch(filename, weak) {
+    async function fetch(filename, weak, depth) {
+        if (depth === undefined)
+            depth = 0;
         filename = getBundledFileName(filename) || filename;
 
         // Skip if already loaded / attempted
@@ -174,13 +180,13 @@ Root.prototype.load = async function load(filename, options) {
 
         // Shortcut bundled definitions
         if (common && Object.prototype.hasOwnProperty.call(common, filename)) {
-            await process(filename, common[filename]);
+            await process(filename, common[filename], depth);
             return;
         }
 
         // Otherwise fetch from disk or network
         try {
-            await process(filename, await self.fetch(filename));
+            await process(filename, await self.fetch(filename), depth);
         } catch (err) {
             if (!weak)
                 throw err;

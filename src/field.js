@@ -9,7 +9,7 @@ import { length as utf8Length, write as writeUtf8 } from "./util/utf8.js";
 
 var Type; // cyclic
 
-var ruleRe = /^required|optional|repeated$/;
+var ruleRe = /^(?:required|optional|repeated)$/;
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
@@ -84,9 +84,6 @@ function Field(name, id, type, rule, extend, options, comment) {
      * Field rule, if any.
      * @type {string|undefined}
      */
-    if (rule === "proto3_optional") {
-        rule = "optional";
-    }
     this.rule = rule && rule !== "optional" ? rule : undefined; // toJSON
 
     /**
@@ -329,7 +326,7 @@ Field.prototype.resolve = function resolve() {
     // convert to internal data type if necesssary
     if (this.long && this.typeDefault !== null) {
         this.typeDefault = BigInt(this.typeDefault);
-        if (this.type.charAt(0) !== "u")
+        if (this.type !== "uint64" && this.type !== "fixed64")
             this.typeDefault = BigInt.asIntN(64, this.typeDefault);
     } else if (this.bytes && typeof this.typeDefault === "string") {
         var buf;
