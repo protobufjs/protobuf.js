@@ -27,6 +27,7 @@ util.LongBits = require("./longbits");
 
 /**
  * Tests if the specified key can affect object prototypes.
+ * @memberof util
  * @param {string} key Key to test
  * @returns {boolean} `true` if the key is unsafe
  */
