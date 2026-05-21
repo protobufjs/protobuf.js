@@ -142,8 +142,12 @@ Root.prototype.load = function load(filename, options, callback) {
     }
 
     // Processes a single file
-    function process(filename, source) {
+    function process(filename, source, depth) {
+        if (depth === undefined)
+            depth = 0;
         try {
+            if (depth > util.recursionLimit)
+                throw Error("max depth exceeded");
             if (util.isString(source) && source.charAt(0) === "{")
                 source = JSON.parse(source);
             if (!util.isString(source))
@@ -156,11 +160,11 @@ Root.prototype.load = function load(filename, options, callback) {
                 if (parsed.imports)
                     for (; i < parsed.imports.length; ++i)
                         if (resolved = getBundledFileName(parsed.imports[i]) || self.resolvePath(filename, parsed.imports[i]))
-                            fetch(resolved);
+                            fetch(resolved, false, depth + 1);
                 if (parsed.weakImports)
                     for (i = 0; i < parsed.weakImports.length; ++i)
                         if (resolved = getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i]))
-                            fetch(resolved, true);
+                            fetch(resolved, true, depth + 1);
             }
         } catch (err) {
             finish(err);
@@ -171,7 +175,9 @@ Root.prototype.load = function load(filename, options, callback) {
     }
 
     // Fetches a single file
-    function fetch(filename, weak) {
+    function fetch(filename, weak, depth) {
+        if (depth === undefined)
+            depth = 0;
         filename = getBundledFileName(filename) || filename;
 
         // Skip if already loaded / attempted
@@ -183,12 +189,12 @@ Root.prototype.load = function load(filename, options, callback) {
         // Shortcut bundled definitions
         if (Object.prototype.hasOwnProperty.call(common, filename)) {
             if (sync) {
-                process(filename, common[filename]);
+                process(filename, common[filename], depth);
             } else {
                 ++queued;
                 setTimeout(function() {
                     --queued;
-                    process(filename, common[filename]);
+                    process(filename, common[filename], depth);
                 });
             }
             return;
@@ -204,7 +210,7 @@ Root.prototype.load = function load(filename, options, callback) {
                     finish(err);
                 return;
             }
-            process(filename, source);
+            process(filename, source, depth);
         } else {
             ++queued;
             self.fetch(filename, function(err, source) {
@@ -221,7 +227,7 @@ Root.prototype.load = function load(filename, options, callback) {
                         finish(null, self);
                     return;
                 }
-                process(filename, source);
+                process(filename, source, depth);
             });
         }
     }

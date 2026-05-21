@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-mixed-operators, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../../minimal");
@@ -89,12 +89,16 @@ $root.vector_tile = (function() {
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        Tile.encode = function encode(message, writer) {
+        Tile.encode = function encode(message, writer, _depth) {
             if (!writer)
                 writer = $Writer.create();
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw Error("max depth exceeded");
             if (message.layers != null && message.layers.length)
                 for (var i = 0; i < message.layers.length; ++i)
-                    $root.vector_tile.Tile.Layer.encode(message.layers[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+                    $root.vector_tile.Tile.Layer.encode(message.layers[i], writer.uint32(/* id 3, wireType 2 =*/26).fork(), _depth + 1).ldelim();
             if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
                 for (var i = 0; i < message.$unknowns.length; ++i)
                     writer.raw(message.$unknowns[i]);
@@ -241,16 +245,20 @@ $root.vector_tile = (function() {
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        Tile.toObject = function toObject(message, options) {
+        Tile.toObject = function toObject(message, options, _depth) {
             if (!options)
                 options = {};
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw Error("max depth exceeded");
             var object = {};
             if (options.arrays || options.defaults)
                 object.layers = [];
             if (message.layers && message.layers.length) {
                 object.layers = Array(message.layers.length);
                 for (var j = 0; j < message.layers.length; ++j)
-                    object.layers[j] = $root.vector_tile.Tile.Layer.toObject(message.layers[j], options);
+                    object.layers[j] = $root.vector_tile.Tile.Layer.toObject(message.layers[j], options, _depth + 1);
             }
             return object;
         };
@@ -422,9 +430,13 @@ $root.vector_tile = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Value.encode = function encode(message, writer) {
+            Value.encode = function encode(message, writer, _depth) {
                 if (!writer)
                     writer = $Writer.create();
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    throw Error("max depth exceeded");
                 if (message.stringValue != null && Object.hasOwnProperty.call(message, "stringValue"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringValue);
                 if (message.floatValue != null && Object.hasOwnProperty.call(message, "floatValue"))
@@ -656,9 +668,13 @@ $root.vector_tile = (function() {
              * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            Value.toObject = function toObject(message, options) {
+            Value.toObject = function toObject(message, options, _depth) {
                 if (!options)
                     options = {};
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    throw Error("max depth exceeded");
                 var object = {};
                 if (options.defaults) {
                     object.stringValue = "";
@@ -840,9 +856,13 @@ $root.vector_tile = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Feature.encode = function encode(message, writer) {
+            Feature.encode = function encode(message, writer, _depth) {
                 if (!writer)
                     writer = $Writer.create();
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    throw Error("max depth exceeded");
                 if (message.id != null && Object.hasOwnProperty.call(message, "id"))
                     writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.id);
                 if (message.tags != null && message.tags.length) {
@@ -1096,9 +1116,13 @@ $root.vector_tile = (function() {
              * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            Feature.toObject = function toObject(message, options) {
+            Feature.toObject = function toObject(message, options, _depth) {
                 if (!options)
                     options = {};
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    throw Error("max depth exceeded");
                 var object = {};
                 if (options.arrays || options.defaults) {
                     object.tags = [];
@@ -1280,19 +1304,23 @@ $root.vector_tile = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Layer.encode = function encode(message, writer) {
+            Layer.encode = function encode(message, writer, _depth) {
                 if (!writer)
                     writer = $Writer.create();
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    throw Error("max depth exceeded");
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
                 if (message.features != null && message.features.length)
                     for (var i = 0; i < message.features.length; ++i)
-                        $root.vector_tile.Tile.Feature.encode(message.features[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                        $root.vector_tile.Tile.Feature.encode(message.features[i], writer.uint32(/* id 2, wireType 2 =*/18).fork(), _depth + 1).ldelim();
                 if (message.keys != null && message.keys.length)
                     for (var i = 0; i < message.keys.length; ++i)
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.keys[i]);
                 if (message.values != null && message.values.length)
                     for (var i = 0; i < message.values.length; ++i)
-                        $root.vector_tile.Tile.Value.encode(message.values[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                        $root.vector_tile.Tile.Value.encode(message.values[i], writer.uint32(/* id 4, wireType 2 =*/34).fork(), _depth + 1).ldelim();
                 if (message.extent != null && Object.hasOwnProperty.call(message, "extent"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.extent);
                 writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.version);
@@ -1526,9 +1554,13 @@ $root.vector_tile = (function() {
              * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            Layer.toObject = function toObject(message, options) {
+            Layer.toObject = function toObject(message, options, _depth) {
                 if (!options)
                     options = {};
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    throw Error("max depth exceeded");
                 var object = {};
                 if (options.arrays || options.defaults) {
                     object.features = [];
@@ -1545,7 +1577,7 @@ $root.vector_tile = (function() {
                 if (message.features && message.features.length) {
                     object.features = Array(message.features.length);
                     for (var j = 0; j < message.features.length; ++j)
-                        object.features[j] = $root.vector_tile.Tile.Feature.toObject(message.features[j], options);
+                        object.features[j] = $root.vector_tile.Tile.Feature.toObject(message.features[j], options, _depth + 1);
                 }
                 if (message.keys && message.keys.length) {
                     object.keys = Array(message.keys.length);
@@ -1555,7 +1587,7 @@ $root.vector_tile = (function() {
                 if (message.values && message.values.length) {
                     object.values = Array(message.values.length);
                     for (var j = 0; j < message.values.length; ++j)
-                        object.values[j] = $root.vector_tile.Tile.Value.toObject(message.values[j], options);
+                        object.values[j] = $root.vector_tile.Tile.Value.toObject(message.values[j], options, _depth + 1);
                 }
                 if (message.extent != null && message.hasOwnProperty("extent"))
                     object.extent = message.extent;

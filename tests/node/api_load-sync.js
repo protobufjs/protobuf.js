@@ -36,6 +36,35 @@ tape.test("load sync", function(test) {
     test.end();
 });
 
+tape.test("load sync import recursion limit", function(test) {
+    var fs = protobuf.util.fs,
+        readFileSync = fs.readFileSync,
+        recursionLimit = protobuf.util.recursionLimit;
+
+    protobuf.util.recursionLimit = 3;
+    fs.readFileSync = function(filename) {
+        var match = /chain-(\d+)\.proto$/.exec(filename);
+        if (match)
+            return "syntax = \"proto3\";\nimport \"chain-" + (Number(match[1]) + 1) + ".proto\";\n";
+        return readFileSync.apply(this, arguments);
+    };
+
+    try {
+        var root = new protobuf.Root();
+        root.resolvePath = function(origin, target) {
+            return target;
+        };
+        test.throws(function() {
+            root.loadSync("chain-0.proto");
+        }, /max depth exceeded/, "should reject excessive import nesting");
+    } finally {
+        fs.readFileSync = readFileSync;
+        protobuf.util.recursionLimit = recursionLimit;
+    }
+
+    test.end();
+});
+
 tape.test("should load bundled definitions even if resolvePath method was overrided", function(test) {
     var protoFilePath = "tests/data/common.proto";
     var root = new protobuf.Root();

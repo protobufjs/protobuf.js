@@ -524,8 +524,8 @@ Type.prototype.setup = function setup() {
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
-Type.prototype.encode = function encode_setup(message, writer) {
-    return this.setup().encode(message, writer); // overrides this method
+Type.prototype.encode = function encode_setup(message, writer) { // eslint-disable-line no-unused-vars
+    return this.setup().encode.apply(this, arguments); // overrides this method
 };
 
 /**
@@ -606,8 +606,8 @@ Type.prototype.fromObject = function fromObject(object) { // eslint-disable-line
  * @param {IConversionOptions} [options] Conversion options
  * @returns {Object.<string,*>} Plain object
  */
-Type.prototype.toObject = function toObject(message, options) {
-    return this.setup().toObject(message, options);
+Type.prototype.toObject = function toObject(message, options) { // eslint-disable-line no-unused-vars
+    return this.setup().toObject.apply(this, arguments);
 };
 
 /**

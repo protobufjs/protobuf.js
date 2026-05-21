@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-mixed-operators, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -156,9 +156,13 @@ $root.Message = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Message.encode = function encode(message, writer) {
+    Message.encode = function encode(message, writer, _depth) {
         if (!writer)
             writer = $Writer.create();
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.stringVal != null && Object.hasOwnProperty.call(message, "stringVal"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringVal);
         if (message.stringRepeated != null && message.stringRepeated.length)
@@ -326,7 +330,7 @@ $root.Message = (function() {
                         message.int64Map = {};
                     var end2 = reader.uint32() + reader.pos;
                     key = "";
-                    value = 0;
+                    value = $util.Long ? $util.Long.fromNumber(0, false) : 0;
                     while (reader.pos < end2) {
                         var tag2 = reader.tag();
                         wireType = tag2 & 7;
@@ -584,9 +588,13 @@ $root.Message = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Message.toObject = function toObject(message, options) {
+    Message.toObject = function toObject(message, options, _depth) {
         if (!options)
             options = {};
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         var object = {};
         if (options.arrays || options.defaults) {
             object.stringRepeated = [];

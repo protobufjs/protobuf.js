@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-mixed-operators, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -147,9 +147,13 @@ $root.MyRequest = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    MyRequest.encode = function encode(message, writer) {
+    MyRequest.encode = function encode(message, writer, _depth) {
         if (!writer)
             writer = $Writer.create();
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.path != null && Object.hasOwnProperty.call(message, "path"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
         if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
@@ -286,9 +290,13 @@ $root.MyRequest = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    MyRequest.toObject = function toObject(message, options) {
+    MyRequest.toObject = function toObject(message, options, _depth) {
         if (!options)
             options = {};
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         var object = {};
         if (options.defaults)
             object.path = "";
@@ -395,9 +403,13 @@ $root.MyResponse = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    MyResponse.encode = function encode(message, writer) {
+    MyResponse.encode = function encode(message, writer, _depth) {
         if (!writer)
             writer = $Writer.create();
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.status != null && Object.hasOwnProperty.call(message, "status"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
         if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
@@ -534,9 +546,13 @@ $root.MyResponse = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    MyResponse.toObject = function toObject(message, options) {
+    MyResponse.toObject = function toObject(message, options, _depth) {
         if (!options)
             options = {};
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         var object = {};
         if (options.defaults)
             object.status = 0;
