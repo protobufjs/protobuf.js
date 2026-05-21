@@ -1,8 +1,8 @@
 var tape = require("tape");
 var protobuf = require("..");
 
-tape.test("Options", function (test) {
-    var root = protobuf.loadSync("tests/data/options_test.proto");
+tape.test("Options", async function (test) {
+    var root = await protobuf.load("tests/data/options_test.proto");
 
     test.test(test.name + " - field options (Int)", function (test) {
         var TestFieldOptionsInt = root.lookup("TestFieldOptionsInt");

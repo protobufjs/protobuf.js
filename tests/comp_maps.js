@@ -190,11 +190,11 @@ tape.test("maps", function(test) {
         var fields = {},
             bytes = [],
             cases = [
-                [ "ints", "int64", protobuf.util.Long.ZERO ],
-                [ "uints", "uint64", protobuf.util.Long.UZERO ],
-                [ "sints", "sint64", protobuf.util.Long.ZERO ],
-                [ "fixeds", "fixed64", protobuf.util.Long.UZERO ],
-                [ "sfixeds", "sfixed64", protobuf.util.Long.ZERO ]
+                [ "ints", "int64", 0n ],
+                [ "uints", "uint64", 0n ],
+                [ "sints", "sint64", 0n ],
+                [ "fixeds", "fixed64", 0n ],
+                [ "sfixeds", "sfixed64", 0n ]
             ];
 
         cases.forEach(function(testCase, index) {
@@ -215,7 +215,7 @@ tape.test("maps", function(test) {
         var dec = MapMessage.decode(Uint8Array.from(bytes));
 
         cases.forEach(function(testCase, index) {
-            test.ok(testCase[2].equals(dec[testCase[0]][index + 1]), "should decode omitted " + testCase[1] + " values as zero");
+            test.equal(dec[testCase[0]][index + 1], testCase[2], "should decode omitted " + testCase[1] + " values as zero");
         });
 
         test.end();
@@ -268,12 +268,12 @@ tape.test("maps", function(test) {
         uintMap[uint64Max] = "1";
         fixedMap[uint64Max] = "a";
         var boolBuf = Uint8Array.of(0x0a, 0x04, 0x08, 0x00, 0x10, 0x00);
-        var intBuf = MapMessage.encode({ ints: { "-1": "-1" } }).finish();
-        var uintBuf = MapMessage.encode({ uints: uintMap }).finish();
-        var sintBuf = MapMessage.encode({ sints: { "-1": "a" } }).finish();
-        var fixedBuf = MapMessage.encode({ fixeds: fixedMap }).finish();
-        var sfixedBuf = MapMessage.encode({ sfixeds: { "-1": "a" } }).finish();
-        var longCases = [
+        var intBuf = MapMessage.encode(MapMessage.fromObject({ ints: { "-1": "-1" } })).finish();
+        var uintBuf = MapMessage.encode(MapMessage.fromObject({ uints: uintMap })).finish();
+        var sintBuf = MapMessage.encode(MapMessage.fromObject({ sints: { "-1": "a" } })).finish();
+        var fixedBuf = MapMessage.encode(MapMessage.fromObject({ fixeds: fixedMap })).finish();
+        var sfixedBuf = MapMessage.encode(MapMessage.fromObject({ sfixeds: { "-1": "a" } })).finish();
+        var int64Cases = [
             [ "int64", intBuf, { ints: { "-1": "-1" } } ],
             [ "uint64", uintBuf, { uints: uintMap } ],
             [ "sint64", sintBuf, { sints: { "-1": "a" } } ],
@@ -296,7 +296,15 @@ tape.test("maps", function(test) {
         );
         assertReencode(boolBuf, "should re-encode false boolean keys");
 
-        longCases.forEach(function(testCase) {
+        int64Cases.forEach(function(testCase) {
+            var fieldName = Object.keys(testCase[2])[0],
+                expectedMap = testCase[2][fieldName],
+                decodedMap = MapMessage.decode(testCase[1])[fieldName];
+            test.deepEqual(
+                Object.keys(decodedMap),
+                Object.keys(expectedMap),
+                "should decode " + testCase[0] + " keys as decimal strings"
+            );
             assertReencode(testCase[1], "should re-encode " + testCase[0] + " keys");
             test.equal(
                 MapMessage.verify(MapMessage.decode(testCase[1])),

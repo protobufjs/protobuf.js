@@ -2,11 +2,9 @@ var tape = require("tape");
 
 var protobuf  = require("..");
 
-tape.test("converters", function(test) {
+tape.test("converters", async function(test) {
 
-    protobuf.load("tests/data/convert.proto", function(err, root) {
-        if (err)
-            return test.fail(err.message);
+    var root = await protobuf.load("tests/data/convert.proto");
 
         var Message = root.lookup("Message");
 
@@ -20,7 +18,7 @@ tape.test("converters", function(test) {
                 test.equal(obj.stringVal, "", "should set stringVal");
                 test.same(obj.stringRepeated, [], "should set stringRepeated");
 
-                test.same(obj.uint64Val, { low: 0, high: 0, unsigned: true }, "should set uint64Val");
+                test.equal(obj.uint64Val, 0n, "should set uint64Val");
                 test.same(obj.uint64Repeated, [], "should set uint64Repeated");
 
                 test.same(obj.bytesVal, protobuf.util.newBuffer(0), "should set bytesVal");
@@ -107,16 +105,16 @@ tape.test("converters", function(test) {
                 buf[0] = buf[1] = buf[2] = 49; // "111"
                 var msg = Message.create({
                     // This number was chosen to be > 2^63 and < 2^64.
-                    uint64Val: protobuf.util.Long.fromString("11000000000000000001", true),
-                    uint64Repeated: [2, 3],
+                    uint64Val: 11000000000000000001n,
+                    uint64Repeated: [2n, 3n],
                     bytesVal: buf,
                     bytesRepeated: [buf, buf],
                     enumVal: 2,
                     enumRepeated: [1, 100, 2],
                     int64Map: {
                         // These numbers were chosen to be < Number.MIN_SAFE_INTEGER.
-                        a: protobuf.util.Long.fromString("-200000000000000001"),
-                        b: protobuf.util.Long.fromString("-300000000000000001")
+                        a: -200000000000000001n,
+                        b: -300000000000000001n
                     }
                 });
 
@@ -211,13 +209,18 @@ tape.test("converters", function(test) {
             var buf = protobuf.util.newBuffer(3);
             buf[0] = buf[1] = buf[2] = 49; // "111"
 
-            test.same(msg.uint64Val, { low: 1, high: 0, unsigned: true }, "should set uint64Val from a number");
-            test.same(msg.uint64Repeated, [ { low: 1, high: 0, unsigned: true}, { low: 2, high: 0, unsigned: true } ], "should set uint64Repeated from a number and a string");
+            test.equal(msg.uint64Val, 1n, "should set uint64Val from a number");
+            test.same(msg.uint64Repeated, [ 1n, 2n ], "should set uint64Repeated from a number and a string");
             test.same(msg.bytesVal, buf, "should set bytesVal from a base64 string");
             test.same(msg.bytesRepeated, [ buf, buf ], "should set bytesRepeated from a base64 string and a plain array");
             test.equal(msg.enumVal, 1, "should set enumVal from a string");
             test.same(msg.enumRepeated, [ 2, 2, 100 ], "should set enumRepeated from a number and a string and preserve unknown value");
-            test.same(msg.int64Map, { a: { low: 2, high: 0, unsigned: false }, b: { low: 3, high: 0, unsigned: false } }, "should set int64Map from a number and a string");
+            test.same(msg.int64Map, { a: 2n, b: 3n }, "should set int64Map from a number and a string");
+            test.same(Message.ctor.toObject(msg, { longs: String }), Message.toObject(msg, { longs: String }), "should convert BigInt longs the same using the static and the instance method");
+            test.same(Message.toObject(msg, { longs: String }).uint64Repeated, [ "1", "2" ], "should convert BigInt repeated longs to strings");
+            test.same(Message.toObject(msg, { longs: Number }).int64Map, { a: 2, b: 3 }, "should convert BigInt long map values to numbers");
+            test.ok(Message.encode(msg).finish().length, "should encode converted long values");
+            test.ok(Message.ctor.encode(Message.ctor.fromObject(obj)).finish().length, "should encode converted static long values");
 
             var bigMsg = Message.fromObject({
                 uint64Val: 11000000000000000001n,
@@ -228,14 +231,11 @@ tape.test("converters", function(test) {
                 }
             });
 
-            test.same(bigMsg.uint64Val, protobuf.util.Long.fromString("11000000000000000001", true), "should set uint64Val from a bigint");
-            test.same(bigMsg.uint64Repeated, [
-                protobuf.util.Long.fromString("2", true),
-                protobuf.util.Long.fromString("3", true)
-            ], "should set uint64Repeated from bigints");
+            test.equal(bigMsg.uint64Val, 11000000000000000001n, "should set uint64Val from a bigint");
+            test.same(bigMsg.uint64Repeated, [2n, 3n], "should set uint64Repeated from bigints");
             test.same(bigMsg.int64Map, {
-                a: protobuf.util.Long.fromString("-200000000000000001"),
-                b: protobuf.util.Long.fromString("-300000000000000001")
+                a: -200000000000000001n,
+                b: -300000000000000001n
             }, "should set int64Map from bigints");
 
             test.end();
@@ -267,25 +267,17 @@ tape.test("converters", function(test) {
                 fixed64Val: 11000000000000000000,
                 sfixed64Val: -9000000000000000000
             });
-            var msgFromLongZero = Fixed.fromObject({
-                fixed64Val: protobuf.util.Long.ZERO,
-                sfixed64Val: protobuf.util.Long.UZERO
-            });
             var obj = Fixed.toObject(msg, { longs: BigInt });
             var defaults = Fixed.toObject(Fixed.create(), { defaults: true });
 
-            test.equal(msg.fixed64Val.unsigned, true, "should set fixed64 values as unsigned");
-            test.equal(msg.sfixed64Val.unsigned, false, "should set sfixed64 values as signed");
-            test.same(msgFromNumber.fixed64Val, protobuf.util.Long.fromString("11000000000000000000", true), "should set fixed64 values from numbers as unsigned");
-            test.same(msgFromNumber.sfixed64Val, protobuf.util.Long.fromString("-9000000000000000000"), "should set sfixed64 values from numbers as signed");
-            test.same(msgFromLongZero.fixed64Val, protobuf.util.Long.UZERO, "should set fixed64 values from Longs as unsigned");
-            test.same(msgFromLongZero.sfixed64Val, protobuf.util.Long.ZERO, "should set sfixed64 values from Longs as signed");
-            test.equal(protobuf.util.Long.ZERO.unsigned, false, "should not mutate Long.ZERO");
-            test.equal(protobuf.util.Long.UZERO.unsigned, true, "should not mutate Long.UZERO");
+            test.equal(msg.fixed64Val, 11000000000000000001n, "should set fixed64 values as unsigned");
+            test.equal(msg.sfixed64Val, -9000000000000000001n, "should set sfixed64 values as signed");
+            test.equal(msgFromNumber.fixed64Val, 11000000000000000000n, "should set fixed64 values from numbers as unsigned");
+            test.equal(msgFromNumber.sfixed64Val, -9000000000000000000n, "should set sfixed64 values from numbers as signed");
             test.equal(obj.fixed64Val, 11000000000000000001n, "should output fixed64 as unsigned bigint");
             test.equal(obj.sfixed64Val, -9000000000000000001n, "should output sfixed64 as signed bigint");
-            test.same(defaults.fixed64Val, { low: 0, high: 0, unsigned: true }, "should default fixed64 as unsigned");
-            test.same(defaults.sfixed64Val, { low: 0, high: 0, unsigned: false }, "should default sfixed64 as signed");
+            test.equal(defaults.fixed64Val, 0n, "should default fixed64 as bigint");
+            test.equal(defaults.sfixed64Val, 0n, "should default sfixed64 as bigint");
 
             test.end();
         });
@@ -332,8 +324,5 @@ tape.test("converters", function(test) {
             };
             msg.toJSON();
         });
-
-        test.end();
-    });
 
 });

@@ -1,4 +1,3 @@
-"use strict";
 /* eslint-disable no-unused-vars */
 
 // Global TypeScript helper typedefs. The unused vars anchor these typedefs so

@@ -70,6 +70,7 @@ tape.test("proto3 implicit scalar defaults", function(test) {
     var Message = root.lookupType("Message");
 
     function reencode(buf) {
+        buf = protobuf.util.newBuffer(buf);
         return Array.prototype.slice.call(Message.encode(Message.decode(buf)).finish());
     }
 
@@ -108,7 +109,7 @@ tape.test("proto3 implicit scalar conversion defaults", function(test) {
     test.same(encode(Message.fromObject({ regularInt32: "0" })), [], "should omit converted int32 defaults");
     test.same(encode(Message.fromObject({ regularString: "" })), [], "should omit converted string defaults");
     test.same(encode(Message.fromObject({ regularBytes: "" })), [], "should omit converted bytes defaults");
-    test.same(encode(Message.fromObject({ regularInt64: { low: 0, high: 0 } })), [], "should omit converted int64 defaults");
+    test.same(encode(Message.fromObject({ regularInt64: "0" })), [], "should omit converted int64 defaults");
     test.same(encode(Message.fromObject({ regularBool: false })), [], "should omit converted bool defaults");
     test.same(encode(Message.fromObject({ regularEnum: "ZERO" })), [], "should omit converted enum defaults");
 

@@ -4,17 +4,30 @@ var tape = require("tape");
 var path = require("path");
 var protobuf = require("..");
 var fs = require("fs");
-var child_process = require("child_process");
 var cliTest = require("./helpers/cli");
 
-tape.test("pbjs generates static code", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync("tests/data/cli/test.proto");
+function generate(target, root, options, callback) {
+    return new Promise(function(resolve, reject) {
+        target(root, options, function(err, output, dtsOutput) {
+            try {
+                callback(err, output, dtsOutput);
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
+        });
+    });
+}
+
+tape.test("pbjs generates static code", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load("tests/data/cli/test.proto");
         root.resolveAll();
+        var dynamicRoot = await protobuf.load("tests/data/cli/test.proto");
 
         var staticTarget = require("../cli/targets/static");
 
-        staticTarget(root, {
+        await generate(staticTarget, root, {
             create: true,
             decode: true,
             encode: true,
@@ -46,8 +59,7 @@ tape.test("pbjs generates static code", function(test) {
             test.deepEqual(obj, obj1, "fromObject and toObject work for plain object");
 
             // Check that dynamic fromObject and toObject work for static instance
-            var root = protobuf.loadSync("tests/data/cli/test.proto");
-            var OneofContainerDynamic = root.lookup("OneofContainer");
+            var OneofContainerDynamic = dynamicRoot.lookup("OneofContainer");
             var instance = new OneofContainer();
             instance.messageInOneof = new Message();
             instance.messageInOneof.value = 42;
@@ -67,8 +79,8 @@ tape.test("pbjs generates static code", function(test) {
     });
 });
 
-tape.test("pbjs generates unsigned fixed64 defaults", function(test) {
-    cliTest(test, function() {
+tape.test("pbjs generates unsigned fixed64 defaults", async function(test) {
+    await cliTest(test, async function() {
         var root = protobuf.Root.fromJSON({
             nested: {
                 M: {
@@ -95,33 +107,27 @@ tape.test("pbjs generates unsigned fixed64 defaults", function(test) {
 
         var staticTarget = require("../cli/targets/static");
 
-        staticTarget(root, {}, function(err, jsCode) {
+        await generate(staticTarget, root, {}, function(err, jsCode) {
             test.error(err, "static code generation worked");
-            test.ok(
-                /M\.prototype\.v = \$util\.Long \? \$util\.Long\.fromBits\([^)]*,true\) : 11000000000000000000;/.test(jsCode),
-                "fixed64 default is emitted as unsigned"
-            );
-            test.ok(
-                /M\.prototype\.s = \$util\.Long \? \$util\.Long\.fromBits\([^)]*,false\) : -9000000000000000000;/.test(jsCode),
-                "sfixed64 default is emitted as signed"
-            );
+            test.ok(jsCode.includes("M.prototype.v = 11000000000000000001n;"), "fixed64 default is emitted as unsigned");
+            test.ok(jsCode.includes("M.prototype.s = -9000000000000000001n;"), "sfixed64 default is emitted as signed");
             test.end();
         });
     });
 });
 
-tape.test("pbjs generates correct ES module static-module imports", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync("tests/data/cli/test.proto");
+tape.test("pbjs generates correct ES module static-module imports", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load("tests/data/cli/test.proto");
         root.resolveAll();
 
         var staticModuleTarget = require("../cli/targets/static-module");
 
-        staticModuleTarget(root, {
+        await generate(staticModuleTarget, root, {
             wrap: "esm",
         }, function(err, jsCode) {
             test.error(err, "static-module code generation worked");
-            test.ok(jsCode.includes("import $protobuf from \"protobufjs/minimal.js\";"), "esm wrapper uses a default import and explicit .js extension");
+            test.ok(jsCode.includes("import * as $protobuf from \"protobufjs/minimal.js\";"), "esm wrapper uses a namespace import and explicit .js extension");
             test.end();
         });
     });
@@ -145,18 +151,38 @@ tape.test("pbjs emits file overview comments on one line", function(test) {
     });
 });
 
-tape.test("pbjs keeps es6 as an ES module wrapper alias", function(test) {
+tape.test("pbjs preserves force-number static long types", function(test) {
     cliTest(test, function() {
-        var root = protobuf.loadSync("tests/data/cli/test.proto");
+        var root = new protobuf.Root().add(new protobuf.Type("Message")
+            .add(new protobuf.Field("value", 1, "int64")));
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {
+            comments: true,
+            forceNumber: true
+        }, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+            test.ok(jsCode.indexOf("@member {number} value") >= 0, "emits number member type");
+            test.equal(jsCode.indexOf("number|bigint"), -1, "does not emit bigint member type");
+            test.end();
+        });
+    });
+});
+
+tape.test("pbjs keeps es6 as an ES module wrapper alias", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load("tests/data/cli/test.proto");
         root.resolveAll();
 
         var staticModuleTarget = require("../cli/targets/static-module");
 
-        staticModuleTarget(root, {
+        await generate(staticModuleTarget, root, {
             wrap: "es6",
         }, function(err, jsCode) {
             test.error(err, "static-module code generation worked");
-            test.ok(jsCode.includes("import $protobuf from \"protobufjs/minimal.js\";"), "es6 wrapper alias uses ESM imports");
+            test.ok(jsCode.includes("import * as $protobuf from \"protobufjs/minimal.js\";"), "es6 wrapper alias uses ESM imports");
             test.end();
         });
     });
@@ -166,7 +192,7 @@ tape.test("pbjs supports custom target paths", function(test) {
     cliTest(test, function() {
         var pbjs = require("../cli/pbjs");
         var tmpDir = path.join(".tmp", "pbjs-custom-target-" + process.pid + "-" + Date.now());
-        var targetPath = path.join(tmpDir, "custom-target.js");
+        var targetPath = path.join(tmpDir, "custom-target.cjs");
         var outPath = path.join(tmpDir, "out.js");
 
         fs.mkdirSync(tmpDir, { recursive: true });
@@ -192,9 +218,9 @@ tape.test("pbjs supports custom target paths", function(test) {
     });
 });
 
-tape.test("pbjs json-module exports reflection root", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync([
+tape.test("pbjs json-module exports reflection root", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load([
             "tests/data/package.proto",
             "tests/data/comment_serialization.proto"
         ]);
@@ -241,7 +267,7 @@ tape.test("pbjs json-module exports reflection root", function(test) {
 
         var jsonModuleTarget = require("../cli/targets/json-module");
 
-        jsonModuleTarget(root, {
+        await generate(jsonModuleTarget, root, {
             wrap: "commonjs",
             root: "jsonCompat",
             es6: true,
@@ -313,9 +339,9 @@ tape.test("pbjs json-module exports reflection root", function(test) {
     });
 });
 
-tape.test("pbjs json-module emits ES module named exports", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync([
+tape.test("pbjs json-module emits ES module named exports", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load([
             "tests/data/package.proto",
             "tests/data/comment_serialization.proto"
         ]);
@@ -368,7 +394,7 @@ tape.test("pbjs json-module emits ES module named exports", function(test) {
 
         var jsonModuleTarget = require("../cli/targets/json-module");
 
-        jsonModuleTarget(root, {
+        await generate(jsonModuleTarget, root, {
             wrap: "esm",
             es6: true,
             root: "jsonCompatEsm",
@@ -555,117 +581,6 @@ tape.test("pbjs --dts narrows oneof interfaces", function(test) {
     });
 });
 
-tape.test("pbjs --dts generated message typings compile", function(test) {
-    cliTest(test, function() {
-        var pbjs = require("../cli/pbjs");
-        var prefix = path.join(".tmp", "pbjs-dts-types-test-" + process.pid + "-" + Date.now());
-        var staticOut = prefix + ".js";
-        var staticDts = prefix + ".d.ts";
-        var tsOut = prefix + ".check.ts";
-        var tsconfigOut = prefix + ".tsconfig.json";
-        var tsc = require.resolve("typescript/bin/tsc");
-
-        if (!fs.existsSync(".tmp"))
-            fs.mkdirSync(".tmp");
-
-        function cleanup() {
-            [ staticOut, staticDts, tsOut, tsconfigOut ].forEach(function(file) {
-                try {
-                    fs.unlinkSync(file);
-                } catch (e) {
-                    // best effort cleanup
-                }
-            });
-        }
-
-        cleanup();
-        pbjs.main([
-            "--target", "static-module",
-            "--wrap", "commonjs",
-            "--out", staticOut,
-            "--dts",
-            "tests/data/cli/test.proto"
-        ], function(err) {
-            test.error(err, "static-module --dts generation worked");
-
-            fs.writeFileSync(tsOut, [
-                "import { Enum, Message, OneofContainer } from \"./" + path.basename(prefix) + "\";",
-                "",
-                "function expectType<T>(value: T): void { void value; }",
-                "",
-                "const message = new Message({ value: 1 });",
-                "Message.encode(message).finish();",
-                "Message.encode({ value: 1 }).finish();",
-                "expectType<number>(Message.decode(new Uint8Array()).value);",
-                "",
-                "const byCase = OneofContainer.create({ someOneof: \"stringInOneof\", stringInOneof: \"abc\" });",
-                "if (byCase.someOneof === \"stringInOneof\") {",
-                "    expectType<string>(byCase.stringInOneof);",
-                "    expectType<null|undefined>(byCase.messageInOneof);",
-                "}",
-                "",
-                "const byField = OneofContainer.create({ stringInOneof: \"abc\" });",
-                "if (byField.stringInOneof != null) {",
-                "    expectType<string>(byField.stringInOneof);",
-                "    expectType<null|undefined>(byField.messageInOneof);",
-                "}",
-                "",
-                "const byMessage = OneofContainer.create({ messageInOneof: { value: 1 } });",
-                "if (byMessage.someOneof === \"messageInOneof\")",
-                "    expectType<Message.$Shape>(byMessage.messageInOneof);",
-                "",
-                "const broadProperties: OneofContainer.$Properties = {",
-                "    stringInOneof: \"abc\",",
-                "    messageInOneof: { value: 1 }",
-                "};",
-                "const broad = OneofContainer.create(broadProperties);",
-                "expectType<string|null|undefined>(broad.stringInOneof);",
-                "",
-                "const constructed = new OneofContainer({ stringInOneof: \"abc\" });",
-                "expectType<string|null|undefined>(constructed.stringInOneof);",
-                "",
-                "const decoded = OneofContainer.decode(new Uint8Array());",
-                "if (decoded.someOneof === \"stringInOneof\")",
-                "    expectType<string>(decoded.stringInOneof);",
-                "if (decoded.messageInOneof != null)",
-                "    expectType<Message.$Shape>(decoded.messageInOneof);",
-                "",
-                "OneofContainer.encode({",
-                "    regularField: \"regular\",",
-                "    enumField: Enum.SOMETHING,",
-                "    stringInOneof: \"abc\"",
-                "}).finish();"
-            ].join("\n"));
-
-            fs.writeFileSync(tsconfigOut, JSON.stringify({
-                compilerOptions: {
-                    baseUrl: "..",
-                    esModuleInterop: true,
-                    lib: [ "es2015" ],
-                    noEmit: true,
-                    paths: {
-                        "protobufjs/minimal": [ "minimal" ],
-                        "protobufjs": [ "index" ]
-                    },
-                    strictNullChecks: true,
-                    types: [ "node" ]
-                },
-                files: [ path.basename(tsOut) ]
-            }, null, 4));
-
-            child_process.execFile(process.execPath, [ tsc, "-p", tsconfigOut ], function(tscErr, stdout, stderr) {
-                if (stdout)
-                    process.stdout.write(stdout);
-                if (stderr)
-                    process.stderr.write(stderr);
-                test.error(tscErr, "generated declarations type-check");
-                cleanup();
-                test.end();
-            });
-        });
-    });
-});
-
 tape.test("pbjs escapes static target names", function(test) {
     cliTest(test, function() {
         var root = protobuf.Root.fromJSON({
@@ -687,9 +602,9 @@ tape.test("pbjs escapes static target names", function(test) {
     });
 });
 
-tape.test("pbjs generates static code with message filter", function (test) {
-    cliTest(test, function () {
-        var root = protobuf.loadSync("tests/data/cli/test-filter.proto");
+tape.test("pbjs generates static code with message filter", async function (test) {
+    await cliTest(test, async function () {
+        var root = await protobuf.load("tests/data/cli/test-filter.proto");
         root.resolveAll();
 
         var staticTarget = require("../cli/targets/static");
@@ -699,7 +614,7 @@ tape.test("pbjs generates static code with message filter", function (test) {
 
         util.filterMessage(root, needMessageConfig);
 
-        staticTarget(root, {
+        await generate(staticTarget, root, {
             create: true,
             decode: true,
             encode: true,

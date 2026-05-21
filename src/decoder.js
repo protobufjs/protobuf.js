@@ -1,18 +1,19 @@
-"use strict";
-module.exports = decoder;
-
-var Enum    = require("./enum"),
-    types   = require("./types"),
-    util    = require("./util");
+import { Enum } from "./enum.js";
+import { types } from "./types.js";
+import { util } from "./util.js";
 
 function missing(field) {
     return "missing required '" + field.name + "'";
 }
 
+function stringMethod(field) {
+    return field._features.utf8_validation === "VERIFY" ? "stringVerify" : "string";
+}
+
 /**
  * Generates a decoder specific to the specified message type.
  * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
@@ -64,11 +65,14 @@ function decoder(mtype) {
                 ("k=null");
 
             if (types.long[type] !== undefined) gen
-                ("v=util.Long?util.Long.fromNumber(0,%j):0", type === "uint64" || type === "fixed64");
+                ("v=0n");
             else if (types.defaults[type] !== undefined) gen
                 ("v=%j", types.defaults[type]);
             else gen
                 ("v=null");
+
+            var keyType = field.keyType === "string" ? stringMethod(field) : field.keyType,
+                valueType = type === "string" ? stringMethod(field) : type;
 
             gen
                 ("while(r.pos<c2){")
@@ -78,7 +82,7 @@ function decoder(mtype) {
                         ("case 1:")
                             ("if(u!==%i)", types.mapKey[field.keyType])
                                 ("break")
-                            ("k=r.%s()", field.keyType)
+                            ("k=r.%s()", keyType)
                             ("continue")
                         ("case 2:")
                             ("if(u!==%i)", types.basic[type] === undefined ? 2 : types.basic[type])
@@ -87,7 +91,7 @@ function decoder(mtype) {
             if (types.basic[type] === undefined) gen
                             ("v=types[%i].decode(r,r.uint32(),undefined,q+1)", i); // can't be groups
             else gen
-                            ("v=r.%s()", type);
+                            ("v=r.%s()", valueType);
 
             gen
                             ("continue")
@@ -97,7 +101,7 @@ function decoder(mtype) {
 
             var val = types.basic[type] === undefined ? "v||new types[" + i + "].ctor" : "v";
             if (types.long[field.keyType] !== undefined) gen
-                ("%s[typeof k===\"object\"?util.longToHash(k):k]=%s", ref, val);
+                ("%s[String(k)]=%s", ref, val);
             else {
                 if (field.keyType === "string") gen
                 ("if(k===\"__proto__\")")
@@ -134,7 +138,7 @@ function decoder(mtype) {
                 else gen
                     ("%s.push(types[%i].decode(r,r.uint32(),undefined,q+1))", ref, i);
             } else gen
-                    ("%s.push(r.%s())", ref, type);
+                    ("%s.push(r.%s())", ref, type === "string" ? stringMethod(field) : type);
 
         // Non-repeated
         } else if (types.basic[type] === undefined) {
@@ -152,7 +156,7 @@ function decoder(mtype) {
             ("case %i:{", field.id)
                 ("if(u!==%i)", types.basic[type])
                     ("break")
-                ("%s=r.%s()", ref, type);
+                ("%s=r.%s()", ref, type === "string" ? stringMethod(field) : type);
         } else {
             gen
             ("case %i:{", field.id)
@@ -162,10 +166,12 @@ function decoder(mtype) {
                 // TODO: Protoc rejects open enums whose first value is not zero.
                 // We should do the same, but for v8 this would be a regression.
                 ("if((v=r.%s())!==%j)", type, field.typeDefault);
-            else if (type === "string" || type === "bytes") gen
+            else if (type === "string") gen
+                ("if((v=r.%s()).length)", stringMethod(field));
+            else if (type === "bytes") gen
                 ("if((v=r.%s()).length)", type);
             else if (types.long[type] !== undefined) gen
-                ("if(typeof(v=r.%s())===\"object\"?v.low||v.high:v!==0)", type);
+                ("if((v=r.%s())!==0n)", type);
             else if (type === "double" || type === "float") gen
                 ("if((v=r.%s())!==0)", type);
             else gen
@@ -204,3 +210,5 @@ function decoder(mtype) {
     ("return m");
     /* eslint-enable no-unexpected-multiline */
 }
+
+export { decoder };

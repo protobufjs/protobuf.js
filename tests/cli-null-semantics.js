@@ -6,9 +6,9 @@ var fs = require("fs");
 var protobuf = require("..");
 var cliTest = require("./helpers/cli");
 
-tape.test("without null-defaults, absent optional fields have zero values", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync("tests/data/cli/null-defaults.proto");
+tape.test("without null-defaults, absent optional fields have zero values", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load("tests/data/cli/null-defaults.proto");
         root.resolveAll();
 
         var staticTarget = require("../cli/targets/static");
@@ -41,9 +41,9 @@ tape.test("without null-defaults, absent optional fields have zero values", func
     });
 });
 
-tape.test("with null-defaults, absent optional fields have null values", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync("tests/data/cli/null-defaults.proto");
+tape.test("with null-defaults, absent optional fields have null values", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load("tests/data/cli/null-defaults.proto");
         root.resolveAll();
 
         var staticTarget = require("../cli/targets/static");
@@ -77,9 +77,9 @@ tape.test("with null-defaults, absent optional fields have null values", functio
     });
 });
 
-tape.test("with --null-semantics, optional fields are handled correctly in proto2", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync("tests/data/cli/null-defaults.proto");
+tape.test("with --null-semantics, optional fields are handled correctly in proto2", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load("tests/data/cli/null-defaults.proto");
         root.resolveAll();
 
         var staticTarget = require("../cli/targets/static");
@@ -112,9 +112,9 @@ tape.test("with --null-semantics, optional fields are handled correctly in proto
     });
 });
 
-tape.test("with --null-semantics, optional fields are handled correctly in proto3", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync("tests/data/cli/null-defaults-proto3.proto");
+tape.test("with --null-semantics, optional fields are handled correctly in proto3", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load("tests/data/cli/null-defaults-proto3.proto");
         root.resolveAll();
 
         var staticTarget = require("../cli/targets/static");
@@ -147,9 +147,9 @@ tape.test("with --null-semantics, optional fields are handled correctly in proto
     });
 });
 
-tape.test("with --null-semantics, optional fields are handled correctly in editions", function(test) {
-    cliTest(test, function() {
-        var root = protobuf.loadSync("tests/data/cli/null-defaults-edition2023.proto");
+tape.test("with --null-semantics, optional fields are handled correctly in editions", async function(test) {
+    await cliTest(test, async function() {
+        var root = await protobuf.load("tests/data/cli/null-defaults-edition2023.proto");
         root.resolveAll();
 
         var staticTarget = require("../cli/targets/static");

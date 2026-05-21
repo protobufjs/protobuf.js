@@ -1,5 +1,4 @@
-"use strict";
-var pbjs = require("../cli/pbjs");
+import pbjs from "../cli/pbjs.js";
 
 [
     "google/protobuf/api.proto",

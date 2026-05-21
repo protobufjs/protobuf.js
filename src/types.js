@@ -1,12 +1,10 @@
-"use strict";
-
 /**
  * Common type constants.
  * @namespace
  */
-var types = exports;
+var types = {};
 
-var util = require("./util");
+import { util } from "./util.js";
 
 var s = [
     "double",   // 0
@@ -34,7 +32,7 @@ function bake(values, offset) {
 }
 
 /**
- * Basic type wire types.
+ * Basic field types with their associated wire type.
  * @type {Object.<string,number>}
  * @const
  * @property {number} double=1 Fixed64 wire type
@@ -112,7 +110,7 @@ types.defaults = bake([
 ]);
 
 /**
- * Basic long type wire types.
+ * 64-bit integer field types with their associated wire type.
  * @type {Object.<string,number>}
  * @const
  * @property {number} int64=0 Varint wire type
@@ -194,3 +192,5 @@ types.packed = bake([
     /* sfixed64 */ 1,
     /* bool     */ 0
 ]);
+
+export { types };

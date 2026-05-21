@@ -1,10 +1,7 @@
-"use strict";
-module.exports = ReflectionObject;
+import { OneOf } from "./oneof.js";
+import { util } from "./util.js";
 
 ReflectionObject.className = "ReflectionObject";
-
-const OneOf = require("./oneof");
-var util = require("./util");
 
 var Root; // cyclic
 
@@ -380,3 +377,5 @@ ReflectionObject.prototype._editionToJSON = function _editionToJSON() {
 ReflectionObject._configure = function(Root_) {
     Root = Root_;
 };
+
+export { ReflectionObject };

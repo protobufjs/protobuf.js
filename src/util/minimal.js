@@ -1,32 +1,31 @@
-"use strict";
-var util = exports;
+import * as base64 from "./base64.js";
+import * as float from "./float.js";
+import EventEmitter from "./eventemitter.js";
+import isString from "./is-string.js";
+import { pool } from "./pool.js";
+import { isNode } from "./is-node.js";
 
-// used to return a Promise where callback is omitted
-util.asPromise = require("./aspromise");
+/**
+ * Various utility functions.
+ * @namespace
+ */
+export var util = {};
 
 // converts to / from base64 encoded strings
-util.base64 = require("./base64");
+util.base64 = base64;
 
 // base class of rpc.Service
-util.EventEmitter = require("./eventemitter");
+util.EventEmitter = EventEmitter;
 
 // float handling accross browsers
-util.float = require("./float");
-
-// requires modules optionally and hides the call from bundlers
-util.inquire = require("./inquire");
-
-// converts to / from utf8 encoded strings
-util.utf8 = require("./utf8");
+util.float = float;
 
 // provides a node-like buffer pool in the browser
-util.pool = require("./pool");
-
-// utility to work with the low and high bits of a 64 bit value
-util.LongBits = require("./longbits");
+util.pool = pool;
 
 /**
  * Tests if the specified key can affect object prototypes.
+ * @memberof util
  * @param {string} key Key to test
  * @returns {boolean} `true` if the key is unsafe
  */
@@ -41,11 +40,7 @@ util.isUnsafeProperty = isUnsafeProperty;
  * @memberof util
  * @type {boolean}
  */
-util.isNode = Boolean(typeof global !== "undefined"
-                   && global
-                   && global.process
-                   && global.process.versions
-                   && global.process.versions.node);
+util.isNode = isNode;
 
 /**
  * Global object reference.
@@ -87,9 +82,7 @@ util.isInteger = Number.isInteger || /* istanbul ignore next */ function isInteg
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is a string
  */
-util.isString = function isString(value) {
-    return typeof value === "string" || value instanceof String;
-};
+util.isString = isString;
 
 /**
  * Tests if the specified value is a non-null object.
@@ -126,6 +119,7 @@ util.isSet = function isSet(obj, prop) {
 /**
  * Any compatible Buffer instance.
  * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
+ * @memberof util
  * @interface Buffer
  * @extends Uint8Array
  */
@@ -157,48 +151,14 @@ util._Buffer_allocUnsafe = null;
  * @returns {Uint8Array|Buffer} Buffer
  */
 util.newBuffer = function newBuffer(sizeOrArray) {
-    /* istanbul ignore next */
     return typeof sizeOrArray === "number"
         ? util.Buffer
             ? util._Buffer_allocUnsafe(sizeOrArray)
-            : new util.Array(sizeOrArray)
+            : new Uint8Array(sizeOrArray)
         : util.Buffer
             ? util._Buffer_from(sizeOrArray)
-            : typeof Uint8Array === "undefined"
-                ? sizeOrArray
-                : new Uint8Array(sizeOrArray);
+            : new Uint8Array(sizeOrArray);
 };
-
-/**
- * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
- * @type {Constructor<Uint8Array>}
- */
-util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
-
-/**
- * Any compatible Long instance.
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @interface Long
- * @property {number} low Low bits
- * @property {number} high High bits
- * @property {boolean} unsigned Whether unsigned or not
- */
-
-/**
- * Long.js's Long class if available.
- * @type {Constructor<Long>}
- */
-util.Long = /* istanbul ignore next */ util.global.dcodeIO && /* istanbul ignore next */ util.global.dcodeIO.Long
-         || /* istanbul ignore next */ util.global.Long
-         || (function() {
-                try {
-                    var Long = require("long");
-                    return Long && Long.isLong ? Long : null;
-                } catch (e) {
-                    /* istanbul ignore next */
-                    return null;
-                }
-            })();
 
 /**
  * Regular expression used to verify 2 bit (`bool`) map keys.
@@ -219,43 +179,7 @@ util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
  * @type {RegExp}
  * @const
  */
-util.key64Re = /^(?:[\x00-\xff]{8}|-?(?:0|[1-9][0-9]*))$/; // eslint-disable-line no-control-regex
-
-/**
- * Converts a number or long to an 8 characters long hash string.
- * @param {Long|number} value Value to convert
- * @returns {string} Hash
- */
-util.longToHash = function longToHash(value) {
-    return value
-        ? util.LongBits.from(value).toHash()
-        : util.LongBits.zeroHash;
-};
-
-/**
- * Converts an 8 characters long hash string to a long or number.
- * @param {string} hash Hash
- * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {Long|number} Original value
- */
-util.longFromHash = function longFromHash(hash, unsigned) {
-    var bits = util.LongBits.fromHash(hash);
-    if (util.Long)
-        return util.Long.fromBits(bits.lo, bits.hi, unsigned);
-    return bits.toNumber(Boolean(unsigned));
-};
-
-/**
- * Converts a 64 bit key to a long or number if it is an 8 characters long hash string.
- * @param {string} key Map key
- * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {Long|number|string} Original value
- */
-util.longFromKey = function longFromKey(key, unsigned) {
-    return util.key64Re.test(key) && !util.key32Re.test(key)
-        ? util.longFromHash(key, unsigned)
-        : key;
-};
+util.key64Re = /^-?(?:0|[1-9][0-9]*)$/;
 
 /**
  * Converts a boolean key to a boolean value.
@@ -416,6 +340,7 @@ util.ProtocolError = newError("ProtocolError");
 
 /**
  * A OneOf getter as returned by {@link util.oneOfGetter}.
+ * @memberof util
  * @typedef OneOfGetter
  * @type {function}
  * @returns {string|undefined} Set field name, if any
@@ -445,6 +370,7 @@ util.oneOfGetter = function getOneOf(fieldNames) {
 
 /**
  * A OneOf setter as returned by {@link util.oneOfSetter}.
+ * @memberof util
  * @typedef OneOfSetter
  * @type {function}
  * @param {string|undefined} value Field name
@@ -476,7 +402,7 @@ util.oneOfSetter = function setOneOf(fieldNames) {
  *
  * These options are close to proto3's JSON mapping with the exception that internal types like Any are handled just like messages. More precisely:
  *
- * - Longs become strings
+ * - 64-bit integer values become strings
  * - Enums become string keys
  * - Bytes become base64 encoded strings
  * - (Sub-)Messages become plain objects

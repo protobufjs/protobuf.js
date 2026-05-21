@@ -1,13 +1,11 @@
-"use strict";
-module.exports = Field;
+import { ReflectionObject } from "./object.js";
+import { Enum } from "./enum.js";
+import { types } from "./types.js";
+import { util } from "./util.js";
+import { length as utf8Length, write as writeUtf8 } from "./util/utf8.js";
 
 // extends ReflectionObject
-var ReflectionObject = require("./object");
 ((Field.prototype = Object.create(ReflectionObject.prototype)).constructor = Field).className = "Field";
-
-var Enum  = require("./enum"),
-    types = require("./types"),
-    util  = require("./util");
 
 var Type; // cyclic
 
@@ -143,10 +141,10 @@ function Field(name, id, type, rule, extend, options, comment) {
     this.defaultValue = null;
 
     /**
-     * Whether this field's value should be treated as a long.
+     * Whether this field's value is a 64-bit integer.
      * @type {boolean}
      */
-    this.long = util.Long ? types.long[type] !== undefined : /* istanbul ignore next */ false;
+    this.long = types.long[type] !== undefined;
 
     /**
      * Whether this field's value is a buffer.
@@ -326,19 +324,16 @@ Field.prototype.resolve = function resolve() {
     }
 
     // convert to internal data type if necesssary
-    if (this.long) {
-        this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type === "uint64" || this.type === "fixed64");
-
-        /* istanbul ignore else */
-        if (Object.freeze)
-            Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
-
+    if (this.long && this.typeDefault !== null) {
+        this.typeDefault = BigInt(this.typeDefault);
+        if (this.type !== "uint64" && this.type !== "fixed64")
+            this.typeDefault = BigInt.asIntN(64, this.typeDefault);
     } else if (this.bytes && typeof this.typeDefault === "string") {
         var buf;
         if (util.base64.test(this.typeDefault))
             util.base64.decode(this.typeDefault, buf = util.newBuffer(util.base64.length(this.typeDefault)), 0);
         else
-            util.utf8.write(this.typeDefault, buf = util.newBuffer(util.utf8.length(this.typeDefault)), 0);
+            writeUtf8(this.typeDefault, buf = util.newBuffer(utf8Length(this.typeDefault)), 0);
         this.typeDefault = buf;
     }
 
@@ -416,7 +411,7 @@ Field.prototype._resolveFeatures = function _resolveFeatures(edition) {
  * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
  * @param {T} [defaultValue] Default value
  * @returns {FieldDecorator} Decorator function
- * @template T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]
+ * @template T extends number | number[] | bigint | bigint[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | util.Buffer | util.Buffer[]
  * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
  */
 Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
@@ -439,6 +434,8 @@ Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
 Field._configure = function configure(Type_) {
     Type = Type_;
 };
+
+export { Field };
 
 /**
  * Field decorator (TypeScript).

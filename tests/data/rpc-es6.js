@@ -1,5 +1,5 @@
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-mixed-operators, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
-import $protobuf from "protobufjs/minimal.js";
+import * as $protobuf from "protobufjs/minimal.js";
 
 // Common aliases
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
@@ -204,7 +204,7 @@ export const MyRequest = $root.MyRequest = (() => {
             case 1: {
                     if (wireType !== 2)
                         break;
-                    if ((value = reader.string()).length)
+                    if ((value = reader.stringVerify()).length)
                         message.path = value;
                     else
                         delete message.path;

@@ -20,13 +20,13 @@ export namespace common {
 
     /** Properties of a google.protobuf.Duration message. */
     interface IDuration {
-        seconds?: (number|Long);
+        seconds?: (number|bigint);
         nanos?: number;
     }
 
     /** Properties of a google.protobuf.Timestamp message. */
     interface ITimestamp {
-        seconds?: (number|Long);
+        seconds?: (number|bigint);
         nanos?: number;
     }
 
@@ -67,12 +67,12 @@ export namespace common {
 
     /** Properties of a google.protobuf.Int64Value message. */
     interface IInt64Value {
-        value?: (number|Long);
+        value?: (number|bigint);
     }
 
     /** Properties of a google.protobuf.UInt64Value message. */
     interface IUInt64Value {
-        value?: (number|Long);
+        value?: (number|bigint);
     }
 
     /** Properties of a google.protobuf.Int32Value message. */
@@ -126,14 +126,14 @@ export namespace converter {
      * @param mtype Message type
      * @returns Codegen instance
      */
-    function fromObject(mtype: Type): Codegen;
+    function fromObject(mtype: Type): util.Codegen;
 
     /**
      * Generates a runtime message to plain object converter specific to the specified message type.
      * @param mtype Message type
      * @returns Codegen instance
      */
-    function toObject(mtype: Type): Codegen;
+    function toObject(mtype: Type): util.Codegen;
 }
 
 /**
@@ -141,14 +141,14 @@ export namespace converter {
  * @param mtype Message type
  * @returns Codegen instance
  */
-export function decoder(mtype: Type): Codegen;
+export function decoder(mtype: Type): util.Codegen;
 
 /**
  * Generates an encoder specific to the specified message type.
  * @param mtype Message type
  * @returns Codegen instance
  */
-export function encoder(mtype: Type): Codegen;
+export function encoder(mtype: Type): util.Codegen;
 
 /** Reflected enum. */
 export class Enum extends ReflectionObject {
@@ -322,7 +322,7 @@ export class Field extends FieldBase {
      * @returns Decorator function
      * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
      */
-    static d<T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
+    static d<T extends number | number[] | bigint | bigint[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | util.Buffer | util.Buffer[]>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
 }
 
 /** Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions. */
@@ -370,7 +370,7 @@ export class FieldBase extends ReflectionObject {
     /** The field's default value on prototypes. */
     defaultValue: any;
 
-    /** Whether this field's value should be treated as a long. */
+    /** Whether this field's value is a 64-bit integer. */
     long: boolean;
 
     /** Whether this field's value is a buffer. */
@@ -449,47 +449,13 @@ export interface IExtensionField extends IField {
 export type FieldDecorator = (prototype: object, fieldName: string) => void;
 
 /**
- * A node-style callback as used by {@link load} and {@link Root#load}.
- * @param error Error, if any, otherwise `null`
- * @param [root] Root, if there hasn't been an error
- */
-export type LoadCallback = (error: (Error|null), root?: Root) => void;
-
-/**
- * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
- * @param filename One or multiple files to load
- * @param root Root namespace, defaults to create a new one if omitted.
- * @param callback Callback function
- * @see {@link Root#load}
- */
-export function load(filename: (string|string[]), root: Root, callback: LoadCallback): void;
-
-/**
- * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
- * @param filename One or multiple files to load
- * @param callback Callback function
- * @see {@link Root#load}
- */
-export function load(filename: (string|string[]), callback: LoadCallback): void;
-
-/**
- * Loads one or multiple .proto or preprocessed .json files into a common root namespace and returns a promise.
+ * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
  * @param filename One or multiple files to load
  * @param [root] Root namespace, defaults to create a new one if omitted.
  * @returns Promise
  * @see {@link Root#load}
  */
 export function load(filename: (string|string[]), root?: Root): Promise<Root>;
-
-/**
- * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).
- * @param filename One or multiple files to load
- * @param [root] Root namespace, defaults to create a new one if omitted.
- * @returns Root namespace
- * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
- * @see {@link Root#loadSync}
- */
-export function loadSync(filename: (string|string[]), root?: Root): Root;
 
 /** Build type, one of `"full"`, `"light"` or `"minimal"`. */
 export const build: string;
@@ -541,7 +507,7 @@ export class MapField extends FieldBase {
      * @returns Decorator function
      * @deprecated Legacy TypeScript decorator support. Will be removed in a future release.
      */
-    static d<T extends { [key: string]: number | Long | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|Constructor<{}>)): FieldDecorator;
+    static d<T extends { [key: string]: number | bigint | string | boolean | Uint8Array | util.Buffer | number[] | Message<{}> }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|Constructor<{}>)): FieldDecorator;
 }
 
 /** Map field descriptor. */
@@ -1133,14 +1099,6 @@ export interface IOneOf {
  */
 export type OneOfDecorator = (prototype: object, oneofName: string) => void;
 
-/**
- * Parses the given .proto source and returns an object with the parsed contents.
- * @param source Source contents
- * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns Parser result
- */
-export function parse(source: string, options?: IParseOptions): IParserResult;
-
 /** Result object returned from {@link parse}. */
 export interface IParserResult {
 
@@ -1186,7 +1144,15 @@ export interface IToJSONOptions {
  */
 export function parse(source: string, root: Root, options?: IParseOptions): IParserResult;
 
-/** Wire format reader using `Uint8Array` if available, otherwise `Array`. */
+/**
+ * Parses the given .proto source and returns an object with the parsed contents.
+ * @param source Source contents
+ * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns Parser result
+ */
+export function parse(source: string, options?: IParseOptions): IParserResult;
+
+/** Wire format reader using `Uint8Array`. */
 export class Reader {
 
     /**
@@ -1210,7 +1176,7 @@ export class Reader {
      * @returns A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
      * @throws {Error} If `buffer` is not a valid buffer
      */
-    static create(buffer: (Uint8Array|Buffer)): (Reader|BufferReader);
+    static create(buffer: (Uint8Array|util.Buffer)): (Reader|BufferReader);
 
     /**
      * Returns raw bytes from the backing buffer without advancing the reader.
@@ -1248,19 +1214,19 @@ export class Reader {
      * Reads a varint as a signed 64 bit value.
      * @returns Value read
      */
-    int64(): Long;
+    int64(): bigint;
 
     /**
      * Reads a varint as an unsigned 64 bit value.
      * @returns Value read
      */
-    uint64(): Long;
+    uint64(): bigint;
 
     /**
      * Reads a zig-zag encoded varint as a signed 64 bit value.
      * @returns Value read
      */
-    sint64(): Long;
+    sint64(): bigint;
 
     /**
      * Reads a varint as a boolean.
@@ -1284,13 +1250,13 @@ export class Reader {
      * Reads fixed 64 bits.
      * @returns Value read
      */
-    fixed64(): Long;
+    fixed64(): bigint;
 
     /**
      * Reads zig-zag encoded fixed 64 bits.
      * @returns Value read
      */
-    sfixed64(): Long;
+    sfixed64(): bigint;
 
     /**
      * Reads a float (32 bit) as a number.
@@ -1315,6 +1281,12 @@ export class Reader {
      * @returns Value read
      */
     string(): string;
+
+    /**
+     * Reads a string preceeded by its byte length as a varint, rejecting invalid UTF8.
+     * @returns Value read
+     */
+    stringVerify(): string;
 
     /**
      * Skips the specified number of bytes if specified, otherwise skips a varint.
@@ -1343,7 +1315,7 @@ export class BufferReader extends Reader {
      * Constructs a new buffer reader instance.
      * @param buffer Buffer to read from
      */
-    constructor(buffer: Buffer);
+    constructor(buffer: util.Buffer);
 
     /**
      * Returns raw bytes from the backing buffer without advancing the reader.
@@ -1351,13 +1323,13 @@ export class BufferReader extends Reader {
      * @param end End offset
      * @returns Raw bytes
      */
-    raw(start: number, end: number): Buffer;
+    raw(start: number, end: number): util.Buffer;
 
     /**
      * Reads a sequence of bytes preceeded by its length as a varint.
      * @returns Value read
      */
-    bytes(): Buffer;
+    bytes(): util.Buffer;
 }
 
 /** Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together. */
@@ -1397,41 +1369,17 @@ export class Root extends NamespaceBase {
      * Fetch content from file path or url
      * This method exists so you can override it with your own logic.
      * @param path File path or url
-     * @param callback Callback function
+     * @returns Promise
      */
-    fetch(path: string, callback: FetchCallback): void;
+    fetch(path: string): Promise<string>;
 
     /**
-     * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
-     * @param filename Names of one or multiple files to load
-     * @param options Parse options
-     * @param callback Callback function
-     */
-    load(filename: (string|string[]), options: IParseOptions, callback: LoadCallback): void;
-
-    /**
-     * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
-     * @param filename Names of one or multiple files to load
-     * @param callback Callback function
-     */
-    load(filename: (string|string[]), callback: LoadCallback): void;
-
-    /**
-     * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
+     * Loads one or multiple .proto or preprocessed .json files into this root namespace.
      * @param filename Names of one or multiple files to load
      * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
      * @returns Promise
      */
     load(filename: (string|string[]), options?: IParseOptions): Promise<Root>;
-
-    /**
-     * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace (node only).
-     * @param filename Names of one or multiple files to load
-     * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
-     * @returns Root namespace
-     * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
-     */
-    loadSync(filename: (string|string[]), options?: IParseOptions): Root;
 }
 
 /**
@@ -1459,7 +1407,7 @@ export namespace rpc {
      * @param [callback] Node-style callback called with the error, if any, and the response message
      * @returns Promise if `callback` has been omitted, otherwise `undefined`
      */
-    type ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> = (request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>) => Promise<Message<TRes>>;
+    type ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> = (request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>) => Promise<TRes>;
 
     /** An RPC service as returned by {@link Service#create}. */
     class Service extends util.EventEmitter {
@@ -1487,9 +1435,10 @@ export namespace rpc {
          * @param requestCtor Request constructor
          * @param responseCtor Response constructor
          * @param request Request message or plain object
-         * @param callback Service callback
+         * @param [callback] Service callback
+         * @returns Promise if `callback` has been omitted, otherwise `undefined`
          */
-        rpcCall<TReq extends Message<TReq>, TRes extends Message<TRes>>(method: (Method|rpc.ServiceMethod<TReq, TRes>), requestCtor: Constructor<TReq>, responseCtor: Constructor<TRes>, request: (TReq|Properties<TReq>), callback: rpc.ServiceMethodCallback<TRes>): void;
+        rpcCall<TReq extends Message<TReq>, TRes extends Message<TRes>>(method: (Method|rpc.ServiceMethod<TReq, TRes>), requestCtor: Constructor<TReq>, responseCtor: Constructor<TRes>, request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>): Promise<TRes>;
 
         /**
          * Ends this service and emits the `end` event.
@@ -1688,7 +1637,7 @@ export class Type extends NamespaceBase {
      * @param mtype Message type
      * @returns Codegen instance
      */
-    static generateConstructor(mtype: Type): Codegen;
+    static generateConstructor(mtype: Type): util.Codegen;
 
     /**
      * Creates a message type from a message type descriptor.
@@ -1853,9 +1802,9 @@ export interface IType extends INamespace {
 export interface IConversionOptions {
 
     /**
-     * Long conversion type.
-     * Valid values are `BigInt`, `String` and `Number` (the global types).
-     * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
+     * 64-bit integer conversion type.
+     * Valid values are `String` and `Number` (the global types).
+     * Defaults to copy the present value, which is usually a bigint.
      */
     longs?: Function;
 
@@ -1899,7 +1848,7 @@ export type TypeDecorator<T extends Message<T>> = (target: Constructor<T>) => vo
 /** Common type constants. */
 export namespace types {
 
-    /** Basic type wire types. */
+    /** Basic field types with their associated wire type. */
     const basic: {
         "double": number,
         "float": number,
@@ -1938,7 +1887,7 @@ export namespace types {
         "message": null
     };
 
-    /** Basic long type wire types. */
+    /** 64-bit integer field types with their associated wire type. */
     const long: {
         "int64": number,
         "uint64": number,
@@ -1990,113 +1939,8 @@ export type Properties<T> = { [P in keyof T]?: T[P] };
 /** Dynamically reflected message type. */
 export type ReflectedMessage = Message<{}> & { [k: string]: any };
 
-/**
- * Callback as used by {@link util.asPromise}.
- * @param error Error, if any
- * @param params Additional arguments
- */
-export type asPromiseCallback = (error: (Error|null), ...params: any[]) => void;
-
-/**
- * Appends code to the function's body or finishes generation.
- * @param [formatStringOrScope] Format string or, to finish the function, an object of additional scope variables, if any
- * @param [formatParams] Format parameters
- * @returns Itself or the generated function if finished
- * @throws {Error} If format parameter counts do not match
- */
-export type Codegen = (formatStringOrScope?: (string|{ [k: string]: any }), ...formatParams: any[]) => (Codegen|Function);
-
-/**
- * Event listener as used by {@link util.EventEmitter}.
- * @param args Arguments
- */
-export type EventEmitterListener = (...args: any[]) => void;
-
-/**
- * Node-style callback as used by {@link util.fetch}.
- * @param error Error, if any, otherwise `null`
- * @param [contents] File contents, if there hasn't been an error
- */
-export type FetchCallback = (error: Error, contents?: string) => void;
-
-/** Options as used by {@link util.fetch}. */
-export interface IFetchOptions {
-
-    /** Whether expecting a binary response */
-    binary?: boolean;
-
-    /** If `true`, forces the use of XMLHttpRequest */
-    xhr?: boolean;
-}
-
-/**
- * Tests if the specified key can affect object prototypes.
- * @param key Key to test
- * @returns `true` if the key is unsafe
- */
-export function isUnsafeProperty(key: string): boolean;
-
-/**
- * Any compatible Buffer instance.
- * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
- */
-export interface Buffer extends Uint8Array {
-}
-
-/**
- * Any compatible Long instance.
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- */
-export interface Long {
-
-    /** Low bits */
-    low: number;
-
-    /** High bits */
-    high: number;
-
-    /** Whether unsigned or not */
-    unsigned: boolean;
-}
-
-/**
- * A OneOf getter as returned by {@link util.oneOfGetter}.
- * @returns Set field name, if any
- */
-export type OneOfGetter = () => (string|undefined);
-
-/**
- * A OneOf setter as returned by {@link util.oneOfSetter}.
- * @param value Field name
- */
-export type OneOfSetter = (value: (string|undefined)) => void;
-
-/**
- * An allocator as used by {@link util.pool}.
- * @param size Buffer size
- * @returns Buffer
- */
-export type PoolAllocator = (size: number) => Uint8Array;
-
-/**
- * A slicer as used by {@link util.pool}.
- * @param start Start offset
- * @param end End offset
- * @returns Buffer slice
- */
-export type PoolSlicer = (this: Uint8Array, start: number, end: number) => Uint8Array;
-
 /** Various utility functions. */
 export namespace util {
-
-    /**
-     * Returns a promise from a node-style callback function.
-     * @param fn Function to call
-     * @param ctx Function context
-     * @param params Function arguments
-     * @returns Promisified function
-     */
-    function asPromise(fn: asPromiseCallback, ctx: any, ...params: any[]): Promise<any>;
 
     /** A minimal base64 implementation for number arrays. */
     namespace base64 {
@@ -2141,7 +1985,7 @@ export namespace util {
      * @param [functionName] Function name if not anonymous
      * @returns Appender that appends code to the function's body
      */
-    function codegen(functionParams: string[], functionName?: string): Codegen;
+    function codegen(functionParams: string[], functionName?: string): util.Codegen;
 
     namespace codegen {
 
@@ -2150,11 +1994,20 @@ export namespace util {
     }
 
     /**
+     * Appends code to the function's body or finishes generation.
+     * @param [formatStringOrScope] Format string or, to finish the function, an object of additional scope variables, if any
+     * @param [formatParams] Format parameters
+     * @returns Itself or the generated function if finished
+     * @throws {Error} If format parameter counts do not match
+     */
+    type Codegen = (formatStringOrScope?: (string|{ [k: string]: any }), ...formatParams: any[]) => (util.Codegen|Function);
+
+    /**
      * Begins generating a function.
      * @param [functionName] Function name if not anonymous
      * @returns Appender that appends code to the function's body
      */
-    function codegen(functionName?: string): Codegen;
+    function codegen(functionName?: string): util.Codegen;
 
     /** A minimal event emitter. */
     class EventEmitter {
@@ -2189,27 +2042,10 @@ export namespace util {
     }
 
     /**
-     * Fetches the contents of a file.
-     * @param filename File path or url
-     * @param options Fetch options
-     * @param callback Callback function
+     * Event listener as used by {@link util.EventEmitter}.
+     * @param args Arguments
      */
-    function fetch(filename: string, options: IFetchOptions, callback: FetchCallback): void;
-
-    /**
-     * Fetches the contents of a file.
-     * @param path File path or url
-     * @param callback Callback function
-     */
-    function fetch(path: string, callback: FetchCallback): void;
-
-    /**
-     * Fetches the contents of a file.
-     * @param path File path or url
-     * @param [options] Fetch options
-     * @returns Promise
-     */
-    function fetch(path: string, options?: IFetchOptions): Promise<(string|Uint8Array)>;
+    type EventEmitterListener = (...args: any[]) => void;
 
     /** Reads / writes floats / doubles from / to buffers. */
     namespace float {
@@ -2280,94 +2116,18 @@ export namespace util {
     }
 
     /**
-     * Requires a module only if available.
-     * @param moduleName Module to require
-     * @returns Required module if available and not empty, otherwise `null`
-     * @deprecated Legacy optional require helper. Will be removed in a future release.
+     * Tests if the specified value is a string.
+     * @param value Value to test
+     * @returns `true` if the value is a string
      */
-    function inquire(moduleName: string): object;
+    function isString(value: any): boolean;
 
-    /** Helper class for working with the low and high bits of a 64 bit value. */
-    class LongBits {
-
-        /**
-         * Constructs new long bits.
-         * @param lo Low 32 bits, unsigned
-         * @param hi High 32 bits, unsigned
-         */
-        constructor(lo: number, hi: number);
-
-        /** Low bits. */
-        lo: number;
-
-        /** High bits. */
-        hi: number;
-
-        /** Zero bits. */
-        static zero: util.LongBits;
-
-        /** Zero hash. */
-        static zeroHash: string;
-
-        /**
-         * Constructs new long bits from the specified number.
-         * @param value Value
-         * @returns Instance
-         */
-        static fromNumber(value: number): util.LongBits;
-
-        /**
-         * Constructs new long bits from a number, long or string.
-         * @param value Value
-         * @returns Instance
-         */
-        static from(value: (Long|number|string)): util.LongBits;
-
-        /**
-         * Converts this long bits to a possibly unsafe JavaScript number.
-         * @param [unsigned=false] Whether unsigned or not
-         * @returns Possibly unsafe number
-         */
-        toNumber(unsigned?: boolean): number;
-
-        /**
-         * Converts this long bits to a long.
-         * @param [unsigned=false] Whether unsigned or not
-         * @returns Long
-         */
-        toLong(unsigned?: boolean): Long;
-
-        /**
-         * Constructs new long bits from the specified 8 characters long hash.
-         * @param hash Hash
-         * @returns Bits
-         */
-        static fromHash(hash: string): util.LongBits;
-
-        /**
-         * Converts this long bits to a 8 characters long hash.
-         * @returns Hash
-         */
-        toHash(): string;
-
-        /**
-         * Zig-zag encodes this long bits.
-         * @returns `this`
-         */
-        zzEncode(): util.LongBits;
-
-        /**
-         * Zig-zag decodes this long bits.
-         * @returns `this`
-         */
-        zzDecode(): util.LongBits;
-
-        /**
-         * Calculates the length of this longbits when encoded as a varint.
-         * @returns Length
-         */
-        length(): number;
-    }
+    /**
+     * Tests if the specified key can affect object prototypes.
+     * @param key Key to test
+     * @returns `true` if the key is unsafe
+     */
+    function isUnsafeProperty(key: string): boolean;
 
     /** Whether running within node or not. */
     let isNode: boolean;
@@ -2387,13 +2147,6 @@ export namespace util {
      * @returns `true` if the value is an integer
      */
     function isInteger(value: any): boolean;
-
-    /**
-     * Tests if the specified value is a string.
-     * @param value Value to test
-     * @returns `true` if the value is a string
-     */
-    function isString(value: any): boolean;
 
     /**
      * Tests if the specified value is a non-null object.
@@ -2419,8 +2172,12 @@ export namespace util {
      */
     function isSet(obj: object, prop: string): boolean;
 
-    /** Node's Buffer class if available. */
-    let Buffer: Constructor<Buffer>;
+    /**
+     * Any compatible Buffer instance.
+     * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
+     */
+    interface Buffer extends Uint8Array {
+    }
 
     /**
      * Creates a new buffer of whatever type supported by the environment.
@@ -2428,12 +2185,6 @@ export namespace util {
      * @returns Buffer
      */
     function newBuffer(sizeOrArray?: (number|number[])): (Uint8Array|Buffer);
-
-    /** Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`. */
-    let Array: Constructor<Uint8Array>;
-
-    /** Long.js's Long class if available. */
-    let Long: Constructor<Long>;
 
     /** Regular expression used to verify 2 bit (`bool`) map keys. */
     const key2Re: RegExp;
@@ -2443,29 +2194,6 @@ export namespace util {
 
     /** Regular expression used to verify 64 bit (`int64` etc.) map keys. */
     const key64Re: RegExp;
-
-    /**
-     * Converts a number or long to an 8 characters long hash string.
-     * @param value Value to convert
-     * @returns Hash
-     */
-    function longToHash(value: (Long|number)): string;
-
-    /**
-     * Converts an 8 characters long hash string to a long or number.
-     * @param hash Hash
-     * @param [unsigned=false] Whether unsigned or not
-     * @returns Original value
-     */
-    function longFromHash(hash: string, unsigned?: boolean): (Long|number);
-
-    /**
-     * Converts a 64 bit key to a long or number if it is an 8 characters long hash string.
-     * @param key Map key
-     * @param [unsigned=false] Whether unsigned or not
-     * @returns Original value
-     */
-    function longFromKey(key: string, unsigned?: boolean): (Long|number|string);
 
     /**
      * Converts a boolean key to a boolean value.
@@ -2525,11 +2253,23 @@ export namespace util {
     }
 
     /**
+     * A OneOf getter as returned by {@link util.oneOfGetter}.
+     * @returns Set field name, if any
+     */
+    type OneOfGetter = () => (string|undefined);
+
+    /**
      * Builds a getter for a oneof's present field name.
      * @param fieldNames Field names
      * @returns Unbound getter
      */
     function oneOfGetter(fieldNames: string[]): OneOfGetter;
+
+    /**
+     * A OneOf setter as returned by {@link util.oneOfSetter}.
+     * @param value Field name
+     */
+    type OneOfSetter = (value: (string|undefined)) => void;
 
     /**
      * Builds a setter for a oneof's present field name.
@@ -2543,7 +2283,7 @@ export namespace util {
      *
      * These options are close to proto3's JSON mapping with the exception that internal types like Any are handled just like messages. More precisely:
      *
-     * - Longs become strings
+     * - 64-bit integer values become strings
      * - Enums become string keys
      * - Bytes become base64 encoded strings
      * - (Sub-)Messages become plain objects
@@ -2583,6 +2323,21 @@ export namespace util {
     }
 
     /**
+     * An allocator as used by {@link util.pool}.
+     * @param size Buffer size
+     * @returns Buffer
+     */
+    type PoolAllocator = (size: number) => Uint8Array;
+
+    /**
+     * A slicer as used by {@link util.pool}.
+     * @param start Start offset
+     * @param end End offset
+     * @returns Buffer slice
+     */
+    type PoolSlicer = (this: Uint8Array, start: number, end: number) => Uint8Array;
+
+    /**
      * A general purpose buffer pool.
      * @param alloc Allocator
      * @param slice Slicer
@@ -2590,38 +2345,6 @@ export namespace util {
      * @returns Pooled allocator
      */
     function pool(alloc: PoolAllocator, slice: PoolSlicer, size?: number): PoolAllocator;
-
-    /** A minimal UTF8 implementation for number arrays. */
-    namespace utf8 {
-
-        /**
-         * Calculates the UTF8 byte length of a string.
-         * @param string String
-         * @returns Byte length
-         */
-        function length(string: string): number;
-
-        /**
-         * Reads UTF8 bytes as a string.
-         * @param buffer Source buffer
-         * @param start Source start
-         * @param end Source end
-         * @returns String read
-         */
-        function read(buffer: Uint8Array, start: number, end: number): string;
-
-        /**
-         * Writes a string as UTF8 bytes.
-         * @param string Source string
-         * @param buffer Destination buffer
-         * @param offset Destination offset
-         * @returns Bytes written
-         */
-        function write(string: string, buffer: Uint8Array, offset: number): number;
-    }
-
-    /** Node's fs module if available. */
-    let fs: { [k: string]: any };
 
     /**
      * Converts an object's values to an array.
@@ -2712,7 +2435,7 @@ export namespace util {
  * @param mtype Message type
  * @returns Codegen instance
  */
-export function verifier(mtype: Type): Codegen;
+export function verifier(mtype: Type): util.Codegen;
 
 /** Wrappers for common types. */
 export const wrappers: { [k: string]: IWrapper };
@@ -2742,7 +2465,7 @@ export interface IWrapper {
     toObject?: WrapperToObjectConverter;
 }
 
-/** Wire format writer using `Uint8Array` if available, otherwise `Array`. */
+/** Wire format writer using `Uint8Array`. */
 export class Writer {
 
     /** Constructs a new writer instance. */
@@ -2750,15 +2473,6 @@ export class Writer {
 
     /** Current length. */
     len: number;
-
-    /** Operations head. */
-    head: object;
-
-    /** Operations tail */
-    tail: object;
-
-    /** Linked forked states. */
-    states: (object|null);
 
     /**
      * Creates a new writer.
@@ -2798,25 +2512,22 @@ export class Writer {
      * Writes an unsigned 64 bit value as a varint.
      * @param value Value to write
      * @returns `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    uint64(value: (Long|number|string)): Writer;
+    uint64(value: (number|bigint)): Writer;
 
     /**
      * Writes a signed 64 bit value as a varint.
      * @param value Value to write
      * @returns `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    int64(value: (Long|number|string)): Writer;
+    int64(value: (number|bigint)): Writer;
 
     /**
      * Writes a signed 64 bit value as a varint, zig-zag encoded.
      * @param value Value to write
      * @returns `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    sint64(value: (Long|number|string)): Writer;
+    sint64(value: (number|bigint)): Writer;
 
     /**
      * Writes a boolish value as a varint.
@@ -2843,17 +2554,15 @@ export class Writer {
      * Writes an unsigned 64 bit value as fixed 64 bits.
      * @param value Value to write
      * @returns `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    fixed64(value: (Long|number|string)): Writer;
+    fixed64(value: (number|bigint)): Writer;
 
     /**
      * Writes a signed 64 bit value as fixed 64 bits.
      * @param value Value to write
      * @returns `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    sfixed64(value: (Long|number|string)): Writer;
+    sfixed64(value: (number|bigint)): Writer;
 
     /**
      * Writes a float (32 bit).
@@ -2937,7 +2646,7 @@ export class BufferWriter extends Writer {
      * @param size Buffer size
      * @returns Buffer
      */
-    static alloc(size: number): Buffer;
+    static alloc(size: number): util.Buffer;
 
     /**
      * Writes raw bytes without a tag or length prefix.
@@ -2950,5 +2659,5 @@ export class BufferWriter extends Writer {
      * Finishes the write operation.
      * @returns Finished buffer
      */
-    finish(): Buffer;
+    finish(): util.Buffer;
 }

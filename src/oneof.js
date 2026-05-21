@@ -1,12 +1,9 @@
-"use strict";
-module.exports = OneOf;
+import { ReflectionObject } from "./object.js";
+import { Field } from "./field.js";
+import { util } from "./util.js";
 
 // extends ReflectionObject
-var ReflectionObject = require("./object");
 ((OneOf.prototype = Object.create(ReflectionObject.prototype)).constructor = OneOf).className = "OneOf";
-
-var Field = require("./field"),
-    util  = require("./util");
 
 /**
  * Constructs a new oneof instance.
@@ -223,3 +220,5 @@ OneOf.d = function decorateOneOf() {
         });
     };
 };
+
+export { OneOf };

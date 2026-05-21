@@ -1,28 +1,18 @@
-"use strict";
+import { util } from "./util/minimal.js";
+import { roots } from "./roots.js";
+import { codegen } from "./util/codegen.js";
+import * as path from "./util/path.js";
+import * as patterns from "./util/patterns.js";
 
-/**
- * Various utility functions.
- * @namespace
- */
-var util = module.exports = require("./util/minimal");
+var Type, // configured
+    Enum,
+    Root;
 
-var roots = require("./roots");
-
-var Type, // cyclic
-    Enum;
-
-util.codegen  = require("./util/codegen");
-util.fetch    = require("./util/fetch");
-util.path     = require("./util/path");
-util.patterns = require("./util/patterns");
+util.codegen  = codegen;
+util.path     = path;
+util.patterns = patterns;
 
 var reservedRe = util.patterns.reservedRe;
-
-/**
- * Node's fs module if available.
- * @type {Object.<string,*>}
- */
-util.fs = require("./util/fs");
 
 /**
  * Converts an object's values to an array.
@@ -133,7 +123,7 @@ util.decorateType = function decorateType(ctor, typeName) {
 
     /* istanbul ignore next */
     if (!Type)
-        Type = require("./type");
+        throw Error("decorators are not configured");
 
     var type = new Type(typeName || ctor.name);
     util.decorateRoot.add(type);
@@ -159,7 +149,7 @@ util.decorateEnum = function decorateEnum(object) {
 
     /* istanbul ignore next */
     if (!Enum)
-        Enum = require("./enum");
+        throw Error("decorators are not configured");
 
     var enm = new Enum("Enum" + decorateEnumIndex++, object);
     util.decorateRoot.add(enm);
@@ -214,6 +204,22 @@ util.setProperty = function setProperty(dst, path, value, ifNotSet) {
  */
 Object.defineProperty(util, "decorateRoot", {
     get: function() {
-        return roots["decorated"] || (roots["decorated"] = new (require("./root"))());
+        if (!Root)
+            throw Error("decorators are not configured");
+        return roots["decorated"] || (roots["decorated"] = new Root());
     }
 });
+
+var configure = util._configure;
+
+util._configure = function(Type_, Enum_, Root_) {
+    configure();
+    if (Type_)
+        Type = Type_;
+    if (Enum_)
+        Enum = Enum_;
+    if (Root_)
+        Root = Root_;
+};
+
+export { util };

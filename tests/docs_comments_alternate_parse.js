@@ -2,13 +2,11 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("proto comments in alternate-parse mode", function(test) {
+tape.test("proto comments in alternate-parse mode", async function(test) {
     test.plan(27);
     var options = {alternateCommentMode: true};
     var root = new protobuf.Root();
-    root.load("tests/data/comments-alternate-parse.proto", options, function(err, root) {
-        if (err)
-            throw test.fail(err.message);
+    await root.load("tests/data/comments-alternate-parse.proto", options);
 
         test.equal(root.lookup("Test1").comment, "Message with\na\nmulti-line comment.", "should parse double-slash multiline comment");
         test.equal(root.lookup("Test2").comment, "Message\nwith\na multiline plain slash-star\ncomment.", "should parse slash-star multiline comment");
@@ -41,17 +39,13 @@ tape.test("proto comments in alternate-parse mode", function(test) {
         test.equal(root.lookup("ServiceTest.ThreeLine012345678901234567890123456712345671234567123456783927483923473892837489238749832432874983274983274983274").comment, 'Very very long method');
         test.equal(root.lookup("ServiceTest.TwoLineMethodNoComment").comment, null);
 
-        test.end();
-    });
 });
 
-tape.test("proto comments in alternate-parse mode with trailing comment preferred", function(test) {
+tape.test("proto comments in alternate-parse mode with trailing comment preferred", async function(test) {
     test.plan(24);
     var options = {alternateCommentMode: true, preferTrailingComment: true};
     var root = new protobuf.Root();
-    root.load("tests/data/comments-alternate-parse.proto", options, function(err, root) {
-        if (err)
-            throw test.fail(err.message);
+    await root.load("tests/data/comments-alternate-parse.proto", options);
 
         test.equal(root.lookup("Test1").comment, "Message with\na\nmulti-line comment.", "should parse double-slash multiline comment");
         test.equal(root.lookup("Test2").comment, "Message\nwith\na multiline plain slash-star\ncomment.", "should parse slash-star multiline comment");
@@ -81,8 +75,6 @@ tape.test("proto comments in alternate-parse mode with trailing comment preferre
         test.equal(root.lookup("ServiceTest.ThreeLine012345678901234567890123456712345671234567123456783927483923473892837489238749832432874983274983274983274").comment, 'Very very long method');
         test.equal(root.lookup("ServiceTest.TwoLineMethodNoComment").comment, null);
 
-        test.end();
-    });
 });
 
 tape.test("proto comments in alternate-parse mode maintain line numbers", function(test) {

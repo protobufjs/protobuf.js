@@ -36,15 +36,35 @@ tape.test("utf8", function(test) {
         comp = utf8.read(surrogatePairErr, 0, surrogatePairErr.length);
         test.equal(comp, surrogatePairErr.toString("utf8"), "should decode to the same byte data as node buffers (surrogate pair over chunk)");
 
+        var bom = new Buffer([0xEF, 0xBB, 0xBF, 0x61]);
+        comp = utf8.read(bom, 0, bom.length);
+        test.equal(comp, "\ufeffa", "should preserve a leading UTF-8 BOM");
+        test.equal(utf8.readStrict(bom, 0, bom.length), "\ufeffa", "should preserve a leading UTF-8 BOM in strict mode");
+
         [
             [0xC0, 0x80],             // U+0000 encoded as two bytes
             [0xE0, 0x81, 0xBF],       // U+007F encoded as three bytes
             [0xF0, 0x80, 0x9F, 0xBF], // U+07FF encoded as four bytes
             [0xF4, 0x90, 0x80, 0x80]  // >U+10FFFF encoded as four bytes
         ].forEach(function(bytes) {
-            var overlong = new Buffer(bytes);
-            comp = utf8.read(overlong, 0, overlong.length);
-            test.equal(comp, "\ufffd", "should decode overlong UTF-8 sequences as replacement characters");
+            var invalid = new Buffer(bytes);
+            comp = utf8.read(invalid, 0, invalid.length);
+            test.equal(comp, invalid.toString("utf8"), "should decode invalid UTF-8 sequences as replacement characters");
+        });
+
+        [
+            [0xC0, 0x80],             // U+0000 encoded as two bytes
+            [0xE0, 0x81, 0xBF],       // U+007F encoded as three bytes
+            [0xF0, 0x80, 0x9F, 0xBF], // U+07FF encoded as four bytes
+            [0xF4, 0x90, 0x80, 0x80], // >U+10FFFF encoded as four bytes
+            [0xED, 0xA0, 0x80],       // U+D800 surrogate
+            [0x80],                   // stray continuation byte
+            [0xE2, 0x82]              // truncated sequence
+        ].forEach(function(bytes) {
+            var invalid = new Buffer(bytes);
+            test.throws(function() {
+                utf8.readStrict(invalid, 0, invalid.length);
+            }, /valid|utf-?8/i, "should reject invalid UTF-8 sequences");
         });
 
         test.end();

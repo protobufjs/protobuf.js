@@ -1,50 +1,56 @@
-"use strict";
-var $protobuf = require("../light");
-module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).lookup(".google.protobuf");
+import { createRequire } from "node:module";
+import {
+    Namespace,
+    Root,
+    Enum,
+    Type,
+    Field,
+    MapField,
+    OneOf,
+    Service,
+    Method,
+    util,
+    Reader
+} from "../light.js";
 
-var Namespace = $protobuf.Namespace,
-    Root      = $protobuf.Root,
-    Enum      = $protobuf.Enum,
-    Type      = $protobuf.Type,
-    Field     = $protobuf.Field,
-    MapField  = $protobuf.MapField,
-    OneOf     = $protobuf.OneOf,
-    Service   = $protobuf.Service,
-    Method    = $protobuf.Method,
-    patterns  = $protobuf.util.patterns;
+var descriptorJson = createRequire(import.meta.url)("../google/protobuf/descriptor.json"),
+    descriptorRoot = Root.fromJSON(descriptorJson).lookup(".google.protobuf");
 
-var numberRe  = patterns.numberRe,
+export default descriptorRoot;
+
+var patterns  = util.patterns,
+    numberRe  = patterns.numberRe,
     typeRefRe = patterns.typeRefRe;
 
 // --- Root ---
 
 /**
  * Properties of a FileDescriptorSet message.
- * @interface IFileDescriptorSet
- * @property {IFileDescriptorProto[]} file Files
+ * @typedef {Object} FileDescriptorSet.$Properties
+ * @property {FileDescriptorProto.$Properties[]} file Files
  */
 
 /**
  * Properties of a FileDescriptorProto message.
- * @interface IFileDescriptorProto
+ * @typedef {Object} FileDescriptorProto.$Properties
  * @property {string} [name] File name
  * @property {string} [package] Package
  * @property {*} [dependency] Not supported
  * @property {*} [publicDependency] Not supported
  * @property {*} [weakDependency] Not supported
- * @property {IDescriptorProto[]} [messageType] Nested message types
- * @property {IEnumDescriptorProto[]} [enumType] Nested enums
- * @property {IServiceDescriptorProto[]} [service] Nested services
- * @property {IFieldDescriptorProto[]} [extension] Nested extension fields
- * @property {IFileOptions} [options] Options
+ * @property {DescriptorProto.$Properties[]} [messageType] Nested message types
+ * @property {EnumDescriptorProto.$Properties[]} [enumType] Nested enums
+ * @property {ServiceDescriptorProto.$Properties[]} [service] Nested services
+ * @property {FieldDescriptorProto.$Properties[]} [extension] Nested extension fields
+ * @property {FileOptions.$Properties} [options] Options
  * @property {*} [sourceCodeInfo] Not supported
  * @property {string} [syntax="proto2"] Syntax
- * @property {IEdition} [edition] Edition
+ * @property {Edition.$Value} [edition] Edition
  */
 
 /**
  * Values of the Edition enum.
- * @typedef IEdition
+ * @typedef Edition.$Value
  * @type {number}
  * @property {number} EDITION_UNKNOWN=0
  * @property {number} EDITION_LEGACY=900
@@ -62,13 +68,13 @@ var numberRe  = patterns.numberRe,
 
 /**
  * Properties of a FileOptions message.
- * @interface IFileOptions
+ * @typedef {Object} FileOptions.$Properties
  * @property {string} [javaPackage]
  * @property {string} [javaOuterClassname]
  * @property {boolean} [javaMultipleFiles]
  * @property {boolean} [javaGenerateEqualsAndHash]
  * @property {boolean} [javaStringCheckUtf8]
- * @property {IFileOptionsOptimizeMode} [optimizeFor=1]
+ * @property {FileOptionsOptimizeMode} [optimizeFor=1]
  * @property {string} [goPackage]
  * @property {boolean} [ccGenericServices]
  * @property {boolean} [javaGenericServices]
@@ -81,7 +87,7 @@ var numberRe  = patterns.numberRe,
 
 /**
  * Values of he FileOptions.OptimizeMode enum.
- * @typedef IFileOptionsOptimizeMode
+ * @typedef FileOptionsOptimizeMode
  * @type {number}
  * @property {number} SPEED=1
  * @property {number} CODE_SIZE=2
@@ -90,12 +96,12 @@ var numberRe  = patterns.numberRe,
 
 /**
  * Creates a root from a descriptor set.
- * @param {IFileDescriptorSet|Reader|Uint8Array} descriptor Descriptor
+ * @param {FileDescriptorSet.$Properties|Reader|Uint8Array} descriptor Descriptor
  * @returns {Root} Root instance
  */
 Root.fromDescriptor = function fromDescriptor(descriptor) {
 
-    descriptor = decodeDescriptor(descriptor, exports.FileDescriptorSet);
+    descriptor = decodeDescriptor(descriptor, descriptorRoot.FileDescriptorSet);
 
     var root = new Root();
 
@@ -121,7 +127,7 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
             if (fileDescriptor.service)
                 for (i = 0; i < fileDescriptor.service.length; ++i)
                     filePackage.add(Service.fromDescriptor(fileDescriptor.service[i], edition));
-            var opts = fromDescriptorOptions(fileDescriptor.options, exports.FileOptions);
+            var opts = fromDescriptorOptions(fileDescriptor.options, descriptorRoot.FileOptions);
             if (opts) {
                 var ks = Object.keys(opts);
                 for (i = 0; i < ks.length; ++i)
@@ -135,11 +141,11 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
 
 /**
  * Converts a root to a descriptor set.
- * @returns {Message<IFileDescriptorSet>} Descriptor
+ * @returns {Message<FileDescriptorSet.$Properties>} Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  */
 Root.prototype.toDescriptor = function toDescriptor(edition) {
-    var set = exports.FileDescriptorSet.create();
+    var set = descriptorRoot.FileDescriptorSet.create();
     Root_toDescriptorRecursive(this, set.file, edition);
     return set;
 };
@@ -148,7 +154,7 @@ Root.prototype.toDescriptor = function toDescriptor(edition) {
 function Root_toDescriptorRecursive(ns, files, edition) {
 
     // Create a new file
-    var file = exports.FileDescriptorProto.create({ name: ns.filename || (ns.fullName.substring(1).replace(/\./g, "_") || "root") + ".proto" });
+    var file = descriptorRoot.FileDescriptorProto.create({ name: ns.filename || (ns.fullName.substring(1).replace(/\./g, "_") || "root") + ".proto" });
     editionToDescriptor(edition, file);
     if (!(ns instanceof Root))
         file["package"] = ns.fullName.substring(1);
@@ -167,7 +173,7 @@ function Root_toDescriptorRecursive(ns, files, edition) {
             Root_toDescriptorRecursive(nested, files, edition); // requires new file
 
     // Keep package-level options
-    file.options = toDescriptorOptions(ns.options, exports.FileOptions);
+    file.options = toDescriptorOptions(ns.options, descriptorRoot.FileOptions);
 
     // And keep the file only if there is at least one nested object
     if (file.messageType.length + file.enumType.length + file.extension.length + file.service.length)
@@ -178,35 +184,45 @@ function Root_toDescriptorRecursive(ns, files, edition) {
 
 /**
  * Properties of a DescriptorProto message.
- * @interface IDescriptorProto
+ * @typedef {Object} DescriptorProto.$Properties
  * @property {string} [name] Message type name
- * @property {IFieldDescriptorProto[]} [field] Fields
- * @property {IFieldDescriptorProto[]} [extension] Extension fields
- * @property {IDescriptorProto[]} [nestedType] Nested message types
- * @property {IEnumDescriptorProto[]} [enumType] Nested enums
- * @property {IDescriptorProtoExtensionRange[]} [extensionRange] Extension ranges
- * @property {IOneofDescriptorProto[]} [oneofDecl] Oneofs
- * @property {IMessageOptions} [options] Not supported
- * @property {IDescriptorProtoReservedRange[]} [reservedRange] Reserved ranges
+ * @property {FieldDescriptorProto.$Properties[]} [field] Fields
+ * @property {FieldDescriptorProto.$Properties[]} [extension] Extension fields
+ * @property {DescriptorProto.$Properties[]} [nestedType] Nested message types
+ * @property {EnumDescriptorProto.$Properties[]} [enumType] Nested enums
+ * @property {DescriptorProto.ExtensionRange.$Properties[]} [extensionRange] Extension ranges
+ * @property {OneofDescriptorProto.$Properties[]} [oneofDecl] Oneofs
+ * @property {MessageOptions.$Properties} [options] Not supported
+ * @property {DescriptorProto.ReservedRange.$Properties[]} [reservedRange] Reserved ranges
  * @property {string[]} [reservedName] Reserved names
  */
 
 /**
  * Properties of a MessageOptions message.
- * @interface IMessageOptions
+ * @typedef {Object} MessageOptions.$Properties
  * @property {boolean} [mapEntry=false] Whether this message is a map entry
  */
 
 /**
+ * Reflected extension range descriptor proto.
+ * @namespace DescriptorProto.ExtensionRange
+ */
+
+/**
  * Properties of an ExtensionRange message.
- * @interface IDescriptorProtoExtensionRange
+ * @typedef {Object} DescriptorProto.ExtensionRange.$Properties
  * @property {number} [start] Start field id
  * @property {number} [end] End field id
  */
 
 /**
+ * Reflected reserved range descriptor proto.
+ * @namespace DescriptorProto.ReservedRange
+ */
+
+/**
  * Properties of a ReservedRange message.
- * @interface IDescriptorProtoReservedRange
+ * @typedef {Object} DescriptorProto.ReservedRange.$Properties
  * @property {number} [start] Start field id
  * @property {number} [end] End field id
  */
@@ -218,7 +234,7 @@ var unnamedMessageIndex = 0;
  *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
  *
- * @param {IDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {DescriptorProto.$Properties|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  * @param {boolean} [nested=false] Whether or not this is a nested object
  * @param {number} [depth] Current nesting depth, defaults to `0`
@@ -227,11 +243,11 @@ var unnamedMessageIndex = 0;
 Type.fromDescriptor = function fromDescriptor(descriptor, edition, nested, depth) {
     if (depth === undefined)
         depth = 0;
-    if (depth > $protobuf.util.nestingLimit)
+    if (depth > util.nestingLimit)
         throw Error("max depth exceeded");
-    descriptor = decodeDescriptor(descriptor, exports.DescriptorProto);
+    descriptor = decodeDescriptor(descriptor, descriptorRoot.DescriptorProto);
 
-    var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++, fromDescriptorOptions(descriptor.options, exports.MessageOptions)),
+    var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++, fromDescriptorOptions(descriptor.options, descriptorRoot.MessageOptions)),
         i,
         mapEntries = {};
 
@@ -285,11 +301,11 @@ Type.fromDescriptor = function fromDescriptor(descriptor, edition, nested, depth
 
 /**
  * Converts a type to a descriptor.
- * @returns {Message<IDescriptorProto>} Descriptor
+ * @returns {Message<DescriptorProto.$Properties>} Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  */
 Type.prototype.toDescriptor = function toDescriptor(edition) {
-    var descriptor = exports.DescriptorProto.create({ name: this.name }),
+    var descriptor = descriptorRoot.DescriptorProto.create({ name: this.name }),
         i;
 
     /* Fields */ for (i = 0; i < this.fieldsArray.length; ++i) {
@@ -301,13 +317,13 @@ Type.prototype.toDescriptor = function toDescriptor(edition) {
                 valueTypeName = valueType === /* type */ 11 || valueType === /* enum */ 14
                     ? this._fieldsArray[i].resolvedType && shortname(this.parent, this._fieldsArray[i].resolvedType) || this._fieldsArray[i].type
                     : undefined;
-            descriptor.nestedType.push(exports.DescriptorProto.create({
+            descriptor.nestedType.push(descriptorRoot.DescriptorProto.create({
                 name: fieldDescriptor.typeName,
                 field: [
-                    exports.FieldDescriptorProto.create({ name: "key", number: 1, label: 1, type: keyType }), // can't reference a type or enum
-                    exports.FieldDescriptorProto.create({ name: "value", number: 2, label: 1, type: valueType, typeName: valueTypeName })
+                    descriptorRoot.FieldDescriptorProto.create({ name: "key", number: 1, label: 1, type: keyType }), // can't reference a type or enum
+                    descriptorRoot.FieldDescriptorProto.create({ name: "value", number: 2, label: 1, type: valueType, typeName: valueTypeName })
                 ],
-                options: exports.MessageOptions.create({ mapEntry: true })
+                options: descriptorRoot.MessageOptions.create({ mapEntry: true })
             }));
         }
     }
@@ -324,15 +340,15 @@ Type.prototype.toDescriptor = function toDescriptor(edition) {
     }
     /* Extension ranges */ if (this.extensions)
         for (i = 0; i < this.extensions.length; ++i)
-            descriptor.extensionRange.push(exports.DescriptorProto.ExtensionRange.create({ start: this.extensions[i][0], end: this.extensions[i][1] }));
+            descriptor.extensionRange.push(descriptorRoot.DescriptorProto.ExtensionRange.create({ start: this.extensions[i][0], end: this.extensions[i][1] }));
     /* Reserved... */ if (this.reserved)
         for (i = 0; i < this.reserved.length; ++i)
             /* Names */ if (typeof this.reserved[i] === "string")
                 descriptor.reservedName.push(this.reserved[i]);
             /* Ranges */ else
-                descriptor.reservedRange.push(exports.DescriptorProto.ReservedRange.create({ start: this.reserved[i][0], end: this.reserved[i][1] }));
+                descriptor.reservedRange.push(descriptorRoot.DescriptorProto.ReservedRange.create({ start: this.reserved[i][0], end: this.reserved[i][1] }));
 
-    descriptor.options = toDescriptorOptions(this.options, exports.MessageOptions);
+    descriptor.options = toDescriptorOptions(this.options, descriptorRoot.MessageOptions);
 
     return descriptor;
 };
@@ -354,23 +370,23 @@ function FieldBase_fromDescriptor(descriptor, edition, nested, mapEntries) {
 
 /**
  * Properties of a FieldDescriptorProto message.
- * @interface IFieldDescriptorProto
+ * @typedef {Object} FieldDescriptorProto.$Properties
  * @property {string} [name] Field name
  * @property {number} [number] Field id
- * @property {IFieldDescriptorProtoLabel} [label] Field rule
- * @property {IFieldDescriptorProtoType} [type] Field basic type
+ * @property {FieldDescriptorProtoLabel} [label] Field rule
+ * @property {FieldDescriptorProtoType} [type] Field basic type
  * @property {string} [typeName] Field type name
  * @property {string} [extendee] Extended type name
  * @property {string} [defaultValue] Literal default value
  * @property {number} [oneofIndex] Oneof index if part of a oneof
  * @property {*} [jsonName] Not supported
- * @property {IFieldOptions} [options] Field options
+ * @property {FieldOptions.$Properties} [options] Field options
  * @property {boolean} [proto3Optional] Whether this is a proto3 optional field
  */
 
 /**
  * Values of the FieldDescriptorProto.Label enum.
- * @typedef IFieldDescriptorProtoLabel
+ * @typedef FieldDescriptorProtoLabel
  * @type {number}
  * @property {number} LABEL_OPTIONAL=1
  * @property {number} LABEL_REQUIRED=2
@@ -379,7 +395,7 @@ function FieldBase_fromDescriptor(descriptor, edition, nested, mapEntries) {
 
 /**
  * Values of the FieldDescriptorProto.Type enum.
- * @typedef IFieldDescriptorProtoType
+ * @typedef FieldDescriptorProtoType
  * @type {number}
  * @property {number} TYPE_DOUBLE=1
  * @property {number} TYPE_FLOAT=2
@@ -403,14 +419,14 @@ function FieldBase_fromDescriptor(descriptor, edition, nested, mapEntries) {
 
 /**
  * Properties of a FieldOptions message.
- * @interface IFieldOptions
+ * @typedef {Object} FieldOptions.$Properties
  * @property {boolean} [packed] Whether packed or not (defaults to `false` for proto2 and `true` for proto3)
- * @property {IFieldOptionsJSType} [jstype] JavaScript value type (not used by protobuf.js)
+ * @property {FieldOptionsJSType} [jstype] JavaScript value type (not used by protobuf.js)
  */
 
 /**
  * Values of the FieldOptions.JSType enum.
- * @typedef IFieldOptionsJSType
+ * @typedef FieldOptionsJSType
  * @type {number}
  * @property {number} JS_NORMAL=0
  * @property {number} JS_STRING=1
@@ -422,14 +438,14 @@ function FieldBase_fromDescriptor(descriptor, edition, nested, mapEntries) {
  *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
  *
- * @param {IFieldDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {FieldDescriptorProto.$Properties|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  * @param {boolean} [nested=false] Whether or not this is a top-level object
  * @returns {Field} Field instance
  */
 Field.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
 
-    descriptor = decodeDescriptor(descriptor, exports.FieldDescriptorProto);
+    descriptor = decodeDescriptor(descriptor, descriptorRoot.FieldDescriptorProto);
 
     if (typeof descriptor.number !== "number")
         throw Error("missing field id");
@@ -471,7 +487,7 @@ Field.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
     if (!nested)
         field._edition = edition;
 
-    field.options = fromDescriptorOptions(descriptor.options, exports.FieldOptions);
+    field.options = fromDescriptorOptions(descriptor.options, descriptorRoot.FieldOptions);
     if (descriptor.proto3Optional || descriptor.proto3_optional)
         (field.options || (field.options = {})).proto3_optional = true;
 
@@ -526,22 +542,22 @@ function MapField_fromDescriptor(descriptor, entryDescriptor) {
         descriptor.number,
         fromDescriptorType(keyDescriptor.type),
         valueType,
-        fromDescriptorOptions(descriptor.options, exports.FieldOptions)
+        fromDescriptorOptions(descriptor.options, descriptorRoot.FieldOptions)
     );
 }
 
 /**
  * Converts a field to a descriptor.
- * @returns {Message<IFieldDescriptorProto>} Descriptor
+ * @returns {Message<FieldDescriptorProto.$Properties>} Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  */
 Field.prototype.toDescriptor = function toDescriptor(edition) {
-    var descriptor = exports.FieldDescriptorProto.create({ name: this.name, number: this.id });
+    var descriptor = descriptorRoot.FieldDescriptorProto.create({ name: this.name, number: this.id });
 
     if (this.map) {
 
         descriptor.type = 11; // message
-        descriptor.typeName = $protobuf.util.ucFirst(this.name); // fieldName -> FieldNameEntry (built in Type#toDescriptor)
+        descriptor.typeName = util.ucFirst(this.name); // fieldName -> FieldNameEntry (built in Type#toDescriptor)
         descriptor.label = 3; // repeated
 
     } else {
@@ -575,7 +591,7 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
     }
 
     if (this.options) {
-        descriptor.options = toDescriptorOptions(this.options, exports.FieldOptions);
+        descriptor.options = toDescriptorOptions(this.options, descriptorRoot.FieldOptions);
         if (this.options["default"] != null)
             descriptor.defaultValue = String(this.options["default"]);
         if (this.options.proto3_optional)
@@ -584,9 +600,9 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
 
     if (edition === "proto3") { // defaults to packed=true
         if (!this.packed)
-            (descriptor.options || (descriptor.options = exports.FieldOptions.create())).packed = false;
+            (descriptor.options || (descriptor.options = descriptorRoot.FieldOptions.create())).packed = false;
     } else if ((!edition || edition === "proto2") && this.packed) // defaults to packed=false
-        (descriptor.options || (descriptor.options = exports.FieldOptions.create())).packed = true;
+        (descriptor.options || (descriptor.options = descriptorRoot.FieldOptions.create())).packed = true;
 
     return descriptor;
 };
@@ -595,25 +611,25 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
 
 /**
  * Properties of an EnumDescriptorProto message.
- * @interface IEnumDescriptorProto
+ * @typedef {Object} EnumDescriptorProto.$Properties
  * @property {string} [name] Enum name
- * @property {IEnumValueDescriptorProto[]} [value] Enum values
- * @property {IEnumOptions} [options] Enum options
+ * @property {EnumValueDescriptorProto.$Properties[]} [value] Enum values
+ * @property {EnumOptions.$Properties} [options] Enum options
  */
 
 /**
  * Properties of an EnumValueDescriptorProto message.
- * @interface IEnumValueDescriptorProto
+ * @typedef {Object} EnumValueDescriptorProto.$Properties
  * @property {string} [name] Name
  * @property {number} [number] Value
- * @property {IEnumValueOptions} [options] Enum value options
+ * @property {EnumValueOptions.$Properties} [options] Enum value options
  */
 
 /**
  * Properties of an EnumValueOptions message.
- * @interface IEnumValueOptions
+ * @typedef {Object} EnumValueOptions.$Properties
  * @property {boolean} [deprecated]
- * @property {IFeatureSet} [features]
+ * @property {FeatureSet.$Properties} [features]
  * @property {boolean} [debugRedact]
  * @property {*} [featureSupport]
  * @property {Array.<*>} [uninterpretedOption]
@@ -621,14 +637,14 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
 
 /**
  * Properties of an EnumOptions message.
- * @interface IEnumOptions
+ * @typedef {Object} EnumOptions.$Properties
  * @property {boolean} [allowAlias] Whether aliases are allowed
  * @property {boolean} [deprecated]
  */
 
 /**
  * Properties of a FeatureSet message.
- * @interface IFeatureSet
+ * @typedef {Object} FeatureSet.$Properties
  * @property {number} [fieldPresence]
  * @property {number} [enumType]
  * @property {number} [repeatedFieldEncoding]
@@ -646,14 +662,14 @@ var unnamedEnumIndex = 0;
  *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
  *
- * @param {IEnumDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {EnumDescriptorProto.$Properties|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  * @param {boolean} [nested=false] Whether or not this is a top-level object
  * @returns {Enum} Enum instance
  */
 Enum.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
 
-    descriptor = decodeDescriptor(descriptor, exports.EnumDescriptorProto);
+    descriptor = decodeDescriptor(descriptor, descriptorRoot.EnumDescriptorProto);
 
     // Construct values object
     var values = {},
@@ -663,7 +679,7 @@ Enum.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
             var name  = descriptor.value[i].name,
                 valueName = name && name.length ? name : "NAME" + (descriptor.value[i].number || 0),
                 value = descriptor.value[i].number || 0,
-                options = fromDescriptorOptions(descriptor.value[i].options, exports.EnumValueOptions);
+                options = fromDescriptorOptions(descriptor.value[i].options, descriptorRoot.EnumValueOptions);
             values[valueName] = value;
             if (options)
                 (valuesOptions || (valuesOptions = {}))[valueName] = options;
@@ -672,7 +688,7 @@ Enum.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
     var enm = new Enum(
         descriptor.name && descriptor.name.length ? descriptor.name : "Enum" + unnamedEnumIndex++,
         values,
-        fromDescriptorOptions(descriptor.options, exports.EnumOptions),
+        fromDescriptorOptions(descriptor.options, descriptorRoot.EnumOptions),
         undefined,
         undefined,
         valuesOptions
@@ -686,23 +702,23 @@ Enum.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
 
 /**
  * Converts an enum to a descriptor.
- * @returns {Message<IEnumDescriptorProto>} Descriptor
+ * @returns {Message<EnumDescriptorProto.$Properties>} Descriptor
  */
 Enum.prototype.toDescriptor = function toDescriptor() {
 
     // Values
     var values = [];
     for (var i = 0, ks = Object.keys(this.values); i < ks.length; ++i)
-        values.push(exports.EnumValueDescriptorProto.create({
+        values.push(descriptorRoot.EnumValueDescriptorProto.create({
             name: ks[i],
             number: this.values[ks[i]],
-            options: this.valuesOptions && toDescriptorOptions(this.valuesOptions[ks[i]], exports.EnumValueOptions)
+            options: this.valuesOptions && toDescriptorOptions(this.valuesOptions[ks[i]], descriptorRoot.EnumValueOptions)
         }));
 
-    return exports.EnumDescriptorProto.create({
+    return descriptorRoot.EnumDescriptorProto.create({
         name: this.name,
         value: values,
-        options: toDescriptorOptions(this.options, exports.EnumOptions)
+        options: toDescriptorOptions(this.options, descriptorRoot.EnumOptions)
     });
 };
 
@@ -710,15 +726,15 @@ Enum.prototype.toDescriptor = function toDescriptor() {
 
 /**
  * Properties of a OneofDescriptorProto message.
- * @interface IOneofDescriptorProto
+ * @typedef {Object} OneofDescriptorProto.$Properties
  * @property {string} [name] Oneof name
- * @property {IOneofOptions} [options] Oneof options
+ * @property {OneofOptions.$Properties} [options] Oneof options
  */
 
 /**
  * Properties of a OneofOptions message.
- * @interface IOneofOptions
- * @property {IFeatureSet} [features]
+ * @typedef {Object} OneofOptions.$Properties
+ * @property {FeatureSet.$Properties} [features]
  * @property {Array.<*>} [uninterpretedOption]
  */
 
@@ -729,28 +745,28 @@ var unnamedOneofIndex = 0;
  *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
  *
- * @param {IOneofDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {OneofDescriptorProto.$Properties|Reader|Uint8Array} descriptor Descriptor
  * @returns {OneOf} OneOf instance
  */
 OneOf.fromDescriptor = function fromDescriptor(descriptor) {
 
-    descriptor = decodeDescriptor(descriptor, exports.OneofDescriptorProto);
+    descriptor = decodeDescriptor(descriptor, descriptorRoot.OneofDescriptorProto);
 
     return new OneOf(
         // unnamedOneOfIndex is global, not per type, because we have no ref to a type here
         descriptor.name && descriptor.name.length ? descriptor.name : "oneof" + unnamedOneofIndex++,
-        fromDescriptorOptions(descriptor.options, exports.OneofOptions)
+        fromDescriptorOptions(descriptor.options, descriptorRoot.OneofOptions)
     );
 };
 
 /**
  * Converts a oneof to a descriptor.
- * @returns {Message<IOneofDescriptorProto>} Descriptor
+ * @returns {Message<OneofDescriptorProto.$Properties>} Descriptor
  */
 OneOf.prototype.toDescriptor = function toDescriptor() {
-    return exports.OneofDescriptorProto.create({
+    return descriptorRoot.OneofDescriptorProto.create({
         name: this.name,
-        options: toDescriptorOptions(this.options, exports.OneofOptions)
+        options: toDescriptorOptions(this.options, descriptorRoot.OneofOptions)
     });
 };
 
@@ -758,15 +774,15 @@ OneOf.prototype.toDescriptor = function toDescriptor() {
 
 /**
  * Properties of a ServiceDescriptorProto message.
- * @interface IServiceDescriptorProto
+ * @typedef {Object} ServiceDescriptorProto.$Properties
  * @property {string} [name] Service name
- * @property {IMethodDescriptorProto[]} [method] Methods
- * @property {IServiceOptions} [options] Options
+ * @property {MethodDescriptorProto.$Properties[]} [method] Methods
+ * @property {ServiceOptions.$Properties} [options] Options
  */
 
 /**
  * Properties of a ServiceOptions message.
- * @interface IServiceOptions
+ * @typedef {Object} ServiceOptions.$Properties
  * @property {boolean} [deprecated]
  */
 
@@ -777,16 +793,16 @@ var unnamedServiceIndex = 0;
  *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
  *
- * @param {IServiceDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {ServiceDescriptorProto.$Properties|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  * @param {boolean} [nested=false] Whether or not this is a top-level object
  * @returns {Service} Service instance
  */
 Service.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
 
-    descriptor = decodeDescriptor(descriptor, exports.ServiceDescriptorProto);
+    descriptor = decodeDescriptor(descriptor, descriptorRoot.ServiceDescriptorProto);
 
-    var service = new Service(descriptor.name && descriptor.name.length ? descriptor.name : "Service" + unnamedServiceIndex++, fromDescriptorOptions(descriptor.options, exports.ServiceOptions));
+    var service = new Service(descriptor.name && descriptor.name.length ? descriptor.name : "Service" + unnamedServiceIndex++, fromDescriptorOptions(descriptor.options, descriptorRoot.ServiceOptions));
     if (!nested)
         service._edition = edition;
     if (descriptor.method)
@@ -798,7 +814,7 @@ Service.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
 
 /**
  * Converts a service to a descriptor.
- * @returns {Message<IServiceDescriptorProto>} Descriptor
+ * @returns {Message<ServiceDescriptorProto.$Properties>} Descriptor
  */
 Service.prototype.toDescriptor = function toDescriptor() {
 
@@ -807,10 +823,10 @@ Service.prototype.toDescriptor = function toDescriptor() {
     for (var i = 0; i < this.methodsArray.length; ++i)
         methods.push(this._methodsArray[i].toDescriptor());
 
-    return exports.ServiceDescriptorProto.create({
+    return descriptorRoot.ServiceDescriptorProto.create({
         name: this.name,
         method: methods,
-        options: toDescriptorOptions(this.options, exports.ServiceOptions)
+        options: toDescriptorOptions(this.options, descriptorRoot.ServiceOptions)
     });
 };
 
@@ -818,11 +834,11 @@ Service.prototype.toDescriptor = function toDescriptor() {
 
 /**
  * Properties of a MethodDescriptorProto message.
- * @interface IMethodDescriptorProto
+ * @typedef {Object} MethodDescriptorProto.$Properties
  * @property {string} [name] Method name
  * @property {string} [inputType] Request type name
  * @property {string} [outputType] Response type name
- * @property {IMethodOptions} [options] Not supported
+ * @property {MethodOptions.$Properties} [options] Not supported
  * @property {boolean} [clientStreaming=false] Whether requests are streamed
  * @property {boolean} [serverStreaming=false] Whether responses are streamed
  */
@@ -832,7 +848,7 @@ Service.prototype.toDescriptor = function toDescriptor() {
  *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
  *
- * @interface IMethodOptions
+ * @typedef {Object} MethodOptions.$Properties
  * @property {boolean} [deprecated]
  */
 
@@ -840,12 +856,12 @@ var unnamedMethodIndex = 0;
 
 /**
  * Creates a method from a descriptor.
- * @param {IMethodDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {MethodDescriptorProto.$Properties|Reader|Uint8Array} descriptor Descriptor
  * @returns {Method} Reflected method instance
  */
 Method.fromDescriptor = function fromDescriptor(descriptor) {
 
-    descriptor = decodeDescriptor(descriptor, exports.MethodDescriptorProto);
+    descriptor = decodeDescriptor(descriptor, descriptorRoot.MethodDescriptorProto);
 
     var inputType = descriptor.inputType,
         outputType = descriptor.outputType;
@@ -867,22 +883,22 @@ Method.fromDescriptor = function fromDescriptor(descriptor) {
         outputType,
         Boolean(descriptor.clientStreaming),
         Boolean(descriptor.serverStreaming),
-        fromDescriptorOptions(descriptor.options, exports.MethodOptions)
+        fromDescriptorOptions(descriptor.options, descriptorRoot.MethodOptions)
     );
 };
 
 /**
  * Converts a method to a descriptor.
- * @returns {Message<IMethodDescriptorProto>} Descriptor
+ * @returns {Message<MethodDescriptorProto.$Properties>} Descriptor
  */
 Method.prototype.toDescriptor = function toDescriptor() {
-    return exports.MethodDescriptorProto.create({
+    return descriptorRoot.MethodDescriptorProto.create({
         name: this.name,
         inputType: this.resolvedRequestType ? this.resolvedRequestType.fullName : this.requestType,
         outputType: this.resolvedResponseType ? this.resolvedResponseType.fullName : this.responseType,
         clientStreaming: this.requestStream,
         serverStreaming: this.responseStream,
-        options: toDescriptorOptions(this.options, exports.MethodOptions)
+        options: toDescriptorOptions(this.options, descriptorRoot.MethodOptions)
     });
 };
 
@@ -990,7 +1006,7 @@ function toDescriptorOptionsRecursive(obj, type) {
     var keys = Object.keys(obj);
     for (var i = 0; i < keys.length; ++i) {
         var key = keys[i];
-        var newKey = $protobuf.util.camelCase(key);
+        var newKey = util.camelCase(key);
         if (!Object.prototype.hasOwnProperty.call(type.fields, newKey)) continue;
         var field = type.fields[newKey];
         if (field.resolvedType instanceof Type) {
@@ -1014,7 +1030,7 @@ function toDescriptorOptions(options, type) {
 
 // Decodes descriptor input supplied as either a reader or buffer.
 function decodeDescriptor(descriptor, type) {
-    if (descriptor instanceof $protobuf.Reader || typeof descriptor.length === "number")
+    if (descriptor instanceof Reader || typeof descriptor.length === "number")
         return type.decode(descriptor);
     return descriptor;
 }
@@ -1048,9 +1064,9 @@ function underScore(str) {
 function editionFromDescriptor(fileDescriptor) {
     if (fileDescriptor.syntax === "editions") {
         switch(fileDescriptor.edition) {
-            case exports.Edition.EDITION_2023:
+            case descriptorRoot.Edition.EDITION_2023:
                 return "2023";
-            case exports.Edition.EDITION_2024:
+            case descriptorRoot.Edition.EDITION_2024:
                 return "2024";
             default:
                 throw new Error("Unsupported edition " + fileDescriptor.edition);
@@ -1070,10 +1086,10 @@ function editionToDescriptor(edition, fileDescriptor) {
         fileDescriptor.syntax = "editions";
         switch(edition) {
             case "2023":
-                fileDescriptor.edition = exports.Edition.EDITION_2023;
+                fileDescriptor.edition = descriptorRoot.Edition.EDITION_2023;
                 break;
             case "2024":
-                fileDescriptor.edition = exports.Edition.EDITION_2024;
+                fileDescriptor.edition = descriptorRoot.Edition.EDITION_2024;
                 break;
             default:
                 throw new Error("Unsupported edition " + edition);
@@ -1084,138 +1100,144 @@ function editionToDescriptor(edition, fileDescriptor) {
 // --- exports ---
 
 /**
+ * Reflected descriptor root.
+ * @type {$protobuf.Root}
+ * @const
+ */
+export var root = descriptorRoot.root;
+
+/**
  * Reflected file descriptor set.
- * @name FileDescriptorSet
  * @type {$protobuf.Type}
  * @const
  */
+export var FileDescriptorSet = descriptorRoot.FileDescriptorSet;
 
 /**
  * Reflected file descriptor proto.
- * @name FileDescriptorProto
  * @type {$protobuf.Type}
  * @const
  */
+export var FileDescriptorProto = descriptorRoot.FileDescriptorProto;
 
 /**
  * Reflected descriptor proto.
- * @name DescriptorProto
  * @type {$protobuf.Type & {
  *     ExtensionRange: $protobuf.Type,
  *     ReservedRange: $protobuf.Type
  * }}
  * @const
  */
+export var DescriptorProto = descriptorRoot.DescriptorProto;
 
 /**
  * Reflected field descriptor proto.
- * @name FieldDescriptorProto
  * @type {$protobuf.Type & {
  *     Label: $protobuf.Enum,
  *     Type: $protobuf.Enum
  * }}
  * @const
  */
+export var FieldDescriptorProto = descriptorRoot.FieldDescriptorProto;
 
 /**
  * Reflected oneof descriptor proto.
- * @name OneofDescriptorProto
  * @type {$protobuf.Type}
  * @const
  */
+export var OneofDescriptorProto = descriptorRoot.OneofDescriptorProto;
 
 /**
  * Reflected enum descriptor proto.
- * @name EnumDescriptorProto
  * @type {$protobuf.Type}
  * @const
  */
+export var EnumDescriptorProto = descriptorRoot.EnumDescriptorProto;
 
 /**
  * Reflected service descriptor proto.
- * @name ServiceDescriptorProto
  * @type {$protobuf.Type}
  * @const
  */
+export var ServiceDescriptorProto = descriptorRoot.ServiceDescriptorProto;
 
 /**
  * Reflected enum value descriptor proto.
- * @name EnumValueDescriptorProto
  * @type {$protobuf.Type}
  * @const
  */
+export var EnumValueDescriptorProto = descriptorRoot.EnumValueDescriptorProto;
 
 /**
  * Reflected method descriptor proto.
- * @name MethodDescriptorProto
  * @type {$protobuf.Type}
  * @const
  */
+export var MethodDescriptorProto = descriptorRoot.MethodDescriptorProto;
 
 /**
  * Reflected file options.
- * @name FileOptions
  * @type {$protobuf.Type & {
  *     OptimizeMode: $protobuf.Enum
  * }}
  * @const
  */
+export var FileOptions = descriptorRoot.FileOptions;
 
 /**
  * Reflected message options.
- * @name MessageOptions
  * @type {$protobuf.Type}
  * @const
  */
+export var MessageOptions = descriptorRoot.MessageOptions;
 
 /**
  * Reflected field options.
- * @name FieldOptions
  * @type {$protobuf.Type & {
  *     CType: $protobuf.Enum,
  *     JSType: $protobuf.Enum
  * }}
  * @const
  */
+export var FieldOptions = descriptorRoot.FieldOptions;
 
 /**
  * Reflected oneof options.
- * @name OneofOptions
  * @type {$protobuf.Type}
  * @const
  */
+export var OneofOptions = descriptorRoot.OneofOptions;
 
 /**
  * Reflected enum options.
- * @name EnumOptions
  * @type {$protobuf.Type}
  * @const
  */
+export var EnumOptions = descriptorRoot.EnumOptions;
 
 /**
  * Reflected enum value options.
- * @name EnumValueOptions
  * @type {$protobuf.Type}
  * @const
  */
+export var EnumValueOptions = descriptorRoot.EnumValueOptions;
 
 /**
  * Reflected service options.
- * @name ServiceOptions
  * @type {$protobuf.Type}
  * @const
  */
+export var ServiceOptions = descriptorRoot.ServiceOptions;
 
 /**
  * Reflected method options.
- * @name MethodOptions
  * @type {$protobuf.Type}
  * @const
  */
+export var MethodOptions = descriptorRoot.MethodOptions;
 
 /**
  * Reflected feature set.
- * @name FeatureSet
  * @type {$protobuf.Type & {
  *     FieldPresence: $protobuf.Enum,
  *     EnumType: $protobuf.Enum,
@@ -1228,39 +1250,47 @@ function editionToDescriptor(edition, fileDescriptor) {
  * }}
  * @const
  */
+export var FeatureSet = descriptorRoot.FeatureSet;
 
 /**
  * Reflected feature set defaults.
- * @name FeatureSetDefaults
  * @type {$protobuf.Type & {
  *     FeatureSetEditionDefault: $protobuf.Type
  * }}
  * @const
  */
+export var FeatureSetDefaults = descriptorRoot.FeatureSetDefaults;
 
 /**
  * Reflected uninterpretet option.
- * @name UninterpretedOption
  * @type {$protobuf.Type & {
  *     NamePart: $protobuf.Type
  * }}
  * @const
  */
+export var UninterpretedOption = descriptorRoot.UninterpretedOption;
 
 /**
  * Reflected source code info.
- * @name SourceCodeInfo
  * @type {$protobuf.Type & {
  *     Location: $protobuf.Type
  * }}
  * @const
  */
+export var SourceCodeInfo = descriptorRoot.SourceCodeInfo;
 
 /**
  * Reflected generated code info.
- * @name GeneratedCodeInfo
  * @type {$protobuf.Type & {
  *     Annotation: $protobuf.Type
  * }}
  * @const
  */
+export var GeneratedCodeInfo = descriptorRoot.GeneratedCodeInfo;
+
+/**
+ * Reflected edition enum.
+ * @type {$protobuf.Enum}
+ * @const
+ */
+export var Edition = descriptorRoot.Edition;

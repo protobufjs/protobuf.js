@@ -1,17 +1,14 @@
-"use strict";
-module.exports = encoder;
-
-var Enum     = require("./enum"),
-    types    = require("./types"),
-    util     = require("./util");
+import { Enum } from "./enum.js";
+import { types } from "./types.js";
+import { util } from "./util.js";
 
 /**
  * Generates a partial message type encoder.
- * @param {Codegen} gen Codegen instance
+ * @param {util.Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
  * @param {string} ref Variable reference
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  * @ignore
  */
 function genTypePartial(gen, field, fieldIndex, ref) {
@@ -23,7 +20,7 @@ function genTypePartial(gen, field, fieldIndex, ref) {
 /**
  * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -54,7 +51,7 @@ function encoder(mtype) {
             if (field.keyType === "bool") gen
             ("w.uint32(%i).fork().uint32(%i).bool(util.boolFromKey(ks[i]))", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType]);
             else if (types.long[field.keyType] !== undefined) gen
-            ("w.uint32(%i).fork().uint32(%i).%s(util.longFromKey(ks[i],%j))", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType, field.keyType === "uint64" || field.keyType === "fixed64");
+            ("w.uint32(%i).fork().uint32(%i).%s(BigInt(ks[i]))", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             else gen
             ("w.uint32(%i).fork().uint32(%i).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             if (wireType === undefined) gen
@@ -109,3 +106,5 @@ function encoder(mtype) {
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
+
+export { encoder };

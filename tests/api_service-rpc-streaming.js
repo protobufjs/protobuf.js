@@ -2,13 +2,11 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("runtime services", function(test) {
+tape.test("runtime services", async function(test) {
 
     // FIXME
 
-    protobuf.load("tests/data/rpc.proto", function(err, root) {
-        if (err)
-            return test.fail(err.message);
+    var root = await protobuf.load("tests/data/rpc.proto");
 
         var MyService  = root.lookup("MyService"),
             MyMethod   = MyService.get("MyMethod").resolve(),
@@ -130,7 +128,6 @@ tape.test("runtime services", function(test) {
                 });
             });
         });
-    });
 });
 
 function fakeRPC(test) {

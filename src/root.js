@@ -1,14 +1,12 @@
-"use strict";
-module.exports = Root;
+import { Namespace } from "./namespace.js";
+import { Field } from "./field.js";
+import { Enum } from "./enum.js";
+import { OneOf } from "./oneof.js";
+import { util } from "./util.js";
+import { isNode } from "./util/is-node.js";
 
 // extends Namespace
-var Namespace = require("./namespace");
 ((Root.prototype = Object.create(Namespace.prototype)).constructor = Root).className = "Root";
-
-var Field   = require("./field"),
-    Enum    = require("./enum"),
-    OneOf   = require("./oneof"),
-    util    = require("./util");
 
 var Type,   // cyclic
     parse,  // might be excluded
@@ -85,53 +83,46 @@ Root.prototype.resolvePath = util.path.resolve;
  * This method exists so you can override it with your own logic.
  * @function
  * @param {string} path File path or url
- * @param {FetchCallback} callback Callback function
- * @returns {undefined}
+ * @returns {Promise<string>} Promise
  */
-Root.prototype.fetch = util.fetch;
+Root.prototype.fetch = async function fetch(path) {
+    if (isNode) {
+        try {
+            var fs = await import(/* webpackIgnore: true */ "fs");
+            var contents = await fs.promises.readFile(path);
+            return contents.toString("utf8");
+        } catch (err) {
+            if (typeof globalThis.fetch !== "function")
+                throw err;
+        }
+    }
 
-// A symbol-like function to safely signal synchronous loading
-/* istanbul ignore next */
-function SYNC() {} // eslint-disable-line no-empty-function
+    if (typeof globalThis.fetch !== "function")
+        throw Error("fetch is not available");
+
+    var response = await globalThis.fetch(path);
+    if (!response.ok)
+        throw Error("status " + response.status);
+
+    return response.text();
+};
 
 /**
- * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
+ * Loads one or multiple .proto or preprocessed .json files into this root namespace.
  * @param {string|string[]} filename Names of one or multiple files to load
- * @param {IParseOptions} options Parse options
- * @param {LoadCallback} callback Callback function
- * @returns {undefined}
+ * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns {Promise<Root>} Promise
  */
-Root.prototype.load = function load(filename, options, callback) {
-    if (typeof options === "function") {
-        callback = options;
-        options = undefined;
-    }
+Root.prototype.load = async function load(filename, options) {
+    if (typeof options === "function")
+        throw TypeError("callbacks are no longer supported");
+
     var self = this;
-    if (!callback) {
-        return util.asPromise(load, self, filename, options);
-    }
-
-    var sync = callback === SYNC; // undocumented
-
-    // Finishes loading by calling the callback (exactly once)
-    function finish(err, root) {
-        /* istanbul ignore if */
-        if (!callback) {
-            return;
-        }
-        if (sync) {
-            throw err;
-        }
-        if (root) {
-            root.resolveAll();
-        }
-        var cb = callback;
-        callback = null;
-        cb(err, root);
-    }
 
     // Bundled definition existence checking
     function getBundledFileName(filename) {
+        if (!common)
+            return null;
         var idx = filename.lastIndexOf("google/protobuf/");
         if (idx > -1) {
             var altname = filename.substring(idx);
@@ -142,40 +133,41 @@ Root.prototype.load = function load(filename, options, callback) {
     }
 
     // Processes a single file
-    function process(filename, source, depth) {
+    async function process(filename, source, depth) {
         if (depth === undefined)
             depth = 0;
-        try {
-            if (depth > util.recursionLimit)
-                throw Error("max depth exceeded");
-            if (util.isString(source) && source.charAt(0) === "{")
-                source = JSON.parse(source);
-            if (!util.isString(source))
-                self.setOptions(source.options).addJSON(source.nested);
-            else {
-                parse.filename = filename;
-                var parsed = parse(source, self, options),
-                    resolved,
-                    i = 0;
-                if (parsed.imports)
-                    for (; i < parsed.imports.length; ++i)
-                        if (resolved = getBundledFileName(parsed.imports[i]) || self.resolvePath(filename, parsed.imports[i]))
-                            fetch(resolved, false, depth + 1);
-                if (parsed.weakImports)
-                    for (i = 0; i < parsed.weakImports.length; ++i)
-                        if (resolved = getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i]))
-                            fetch(resolved, true, depth + 1);
-            }
-        } catch (err) {
-            finish(err);
+        if (depth > util.recursionLimit)
+            throw Error("max depth exceeded");
+        if (util.isString(source) && source.charAt(0) === "{")
+            source = JSON.parse(source);
+        if (!util.isString(source)) {
+            self.setOptions(source.options).addJSON(source.nested, depth);
+            return;
         }
-        if (!sync && !queued) {
-            finish(null, self); // only once anyway
+
+        if (!parse)
+            throw Error("parser is not configured");
+
+        parse.filename = filename;
+        var parsed = parse(source, self, options),
+            resolved,
+            i = 0,
+            imports = [];
+        if (parsed.imports) {
+            for (; i < parsed.imports.length; ++i)
+                if (resolved = getBundledFileName(parsed.imports[i]) || self.resolvePath(filename, parsed.imports[i]))
+                    imports.push(fetch(resolved, false, depth + 1));
         }
+        if (parsed.weakImports) {
+            for (i = 0; i < parsed.weakImports.length; ++i)
+                if (resolved = getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i]))
+                    imports.push(fetch(resolved, true, depth + 1));
+        }
+        await Promise.all(imports);
     }
 
     // Fetches a single file
-    function fetch(filename, weak, depth) {
+    async function fetch(filename, weak, depth) {
         if (depth === undefined)
             depth = 0;
         filename = getBundledFileName(filename) || filename;
@@ -187,104 +179,33 @@ Root.prototype.load = function load(filename, options, callback) {
         self.files.push(filename);
 
         // Shortcut bundled definitions
-        if (Object.prototype.hasOwnProperty.call(common, filename)) {
-            if (sync) {
-                process(filename, common[filename], depth);
-            } else {
-                ++queued;
-                setTimeout(function() {
-                    --queued;
-                    process(filename, common[filename], depth);
-                });
-            }
+        if (common && Object.prototype.hasOwnProperty.call(common, filename)) {
+            await process(filename, common[filename], depth);
             return;
         }
 
         // Otherwise fetch from disk or network
-        if (sync) {
-            var source;
-            try {
-                source = util.fs.readFileSync(filename).toString("utf8");
-            } catch (err) {
-                if (!weak)
-                    finish(err);
-                return;
-            }
-            process(filename, source, depth);
-        } else {
-            ++queued;
-            self.fetch(filename, function(err, source) {
-                --queued;
-                /* istanbul ignore if */
-                if (!callback) {
-                    return; // terminated meanwhile
-                }
-                if (err) {
-                    /* istanbul ignore else */
-                    if (!weak)
-                        finish(err);
-                    else if (!queued) // can't be covered reliably
-                        finish(null, self);
-                    return;
-                }
-                process(filename, source, depth);
-            });
+        try {
+            await process(filename, await self.fetch(filename), depth);
+        } catch (err) {
+            if (!weak)
+                throw err;
         }
     }
-    var queued = 0;
 
     // Assembling the root namespace doesn't require working type
     // references anymore, so we can load everything in parallel
     if (util.isString(filename)) {
         filename = [ filename ];
     }
+    var fetches = [];
     for (var i = 0, resolved; i < filename.length; ++i)
         if (resolved = self.resolvePath("", filename[i]))
-            fetch(resolved);
-    if (sync) {
-        self.resolveAll();
-        return self;
-    }
-    if (!queued) {
-        finish(null, self);
-    }
+            fetches.push(fetch(resolved));
 
+    await Promise.all(fetches);
+    self.resolveAll();
     return self;
-};
-// function load(filename:string, options:IParseOptions, callback:LoadCallback):undefined
-
-/**
- * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
- * @function Root#load
- * @param {string|string[]} filename Names of one or multiple files to load
- * @param {LoadCallback} callback Callback function
- * @returns {undefined}
- * @variation 2
- */
-// function load(filename:string, callback:LoadCallback):undefined
-
-/**
- * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
- * @function Root#load
- * @param {string|string[]} filename Names of one or multiple files to load
- * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns {Promise<Root>} Promise
- * @variation 3
- */
-// function load(filename:string, [options:IParseOptions]):Promise<Root>
-
-/**
- * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace (node only).
- * @function Root#loadSync
- * @param {string|string[]} filename Names of one or multiple files to load
- * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns {Root} Root namespace
- * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
- */
-Root.prototype.loadSync = function loadSync(filename, options) {
-    if (!util.isNode)
-        throw Error("not supported");
-    return this.load(filename, options, SYNC);
 };
 
 /**
@@ -414,3 +335,5 @@ Root._configure = function(Type_, parse_, common_) {
     parse  = parse_;
     common = common_;
 };
+
+export { Root };

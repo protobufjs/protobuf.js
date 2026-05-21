@@ -1,19 +1,14 @@
-"use strict";
-
-/**
- * A minimal UTF8 implementation for number arrays.
- * @memberof util
- * @namespace
- */
-var utf8 = exports,
-    replacementChar = "\ufffd";
+var encoder = new TextEncoder(),
+    decoder = new TextDecoder("utf-8", { ignoreBOM: true }),
+    strictDecoder = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
 
 /**
  * Calculates the UTF8 byte length of a string.
+ * @private
  * @param {string} string String
  * @returns {number} Byte length
  */
-utf8.length = function utf8_length(string) {
+export function length(string) {
     var len = 0,
         c = 0;
     for (var i = 0; i < string.length; ++i) {
@@ -29,41 +24,15 @@ utf8.length = function utf8_length(string) {
             len += 3;
     }
     return len;
-};
-
-function utf8_read_js(buffer, start, end, str) {
-    for (var i = start; i < end;) {
-        var t = buffer[i++];
-        if (t <= 0x7F) {
-            str += String.fromCharCode(t);
-        } else if (t >= 0xC0 && t < 0xE0) {
-            var c2 = (t & 0x1F) << 6 | buffer[i++] & 0x3F;
-            str += c2 >= 0x80 ? String.fromCharCode(c2) : replacementChar;
-        } else if (t >= 0xE0 && t < 0xF0) {
-            var c3 = (t & 0xF) << 12 | (buffer[i++] & 0x3F) << 6 | buffer[i++] & 0x3F;
-            str += c3 >= 0x800 ? String.fromCharCode(c3) : replacementChar;
-        } else if (t >= 0xF0) {
-            var t2 = (t & 7) << 18 | (buffer[i++] & 0x3F) << 12 | (buffer[i++] & 0x3F) << 6 | buffer[i++] & 0x3F;
-            if (t2 < 0x10000 || t2 > 0x10FFFF)
-                str += replacementChar;
-            else {
-                t2 -= 0x10000;
-                str += String.fromCharCode(0xD800 + (t2 >> 10));
-                str += String.fromCharCode(0xDC00 + (t2 & 0x3FF));
-            }
-        }
-    }
-    return str;
 }
 
-/**
- * Reads UTF8 bytes as a string.
- * @param {Uint8Array} buffer Source buffer
- * @param {number} start Source start
- * @param {number} end Source end
- * @returns {string} String read
- */
-utf8.read = function utf8_read_ascii(buffer, start, end) {
+function decode(decoder, buffer, start, end) {
+    return decoder.decode(start === 0 && end === buffer.length
+        ? buffer
+        : buffer.subarray(start, end));
+}
+
+function readWithDecoder(buffer, start, end, decoder) {
     if (end - start < 1)
         return "";
 
@@ -81,50 +50,54 @@ utf8.read = function utf8_read_ascii(buffer, start, end) {
         c7 = buffer[i + 6];
         c8 = buffer[i + 7];
         if ((c1 | c2 | c3 | c4 | c5 | c6 | c7 | c8) & 0x80)
-            return utf8_read_js(buffer, i, end, str);
+            return str + decode(decoder, buffer, i, end);
         str += String.fromCharCode(c1, c2, c3, c4, c5, c6, c7, c8);
     }
 
     for (; i < end; ++i) {
         c1 = buffer[i];
         if (c1 & 0x80)
-            return utf8_read_js(buffer, i, end, str);
+            return str + decode(decoder, buffer, i, end);
         str += String.fromCharCode(c1);
     }
 
     return str;
-};
+}
+
+/**
+ * Reads UTF8 bytes as a string.
+ * @private
+ * @param {Uint8Array} buffer Source buffer
+ * @param {number} start Source start
+ * @param {number} end Source end
+ * @returns {string} String read
+ */
+export function read(buffer, start, end) {
+    return readWithDecoder(buffer, start, end, decoder);
+}
+
+/**
+ * Reads UTF8 bytes as a string, rejecting invalid UTF8.
+ * @private
+ * @param {Uint8Array} buffer Source buffer
+ * @param {number} start Source start
+ * @param {number} end Source end
+ * @returns {string} String read
+ */
+export function readStrict(buffer, start, end) {
+    return readWithDecoder(buffer, start, end, strictDecoder);
+}
 
 /**
  * Writes a string as UTF8 bytes.
+ * @private
  * @param {string} string Source string
  * @param {Uint8Array} buffer Destination buffer
  * @param {number} offset Destination offset
  * @returns {number} Bytes written
  */
-utf8.write = function utf8_write(string, buffer, offset) {
-    var start = offset,
-        c1, // character 1
-        c2; // character 2
-    for (var i = 0; i < string.length; ++i) {
-        c1 = string.charCodeAt(i);
-        if (c1 < 128) {
-            buffer[offset++] = c1;
-        } else if (c1 < 2048) {
-            buffer[offset++] = c1 >> 6       | 192;
-            buffer[offset++] = c1       & 63 | 128;
-        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = string.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
-            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
-            ++i;
-            buffer[offset++] = c1 >> 18      | 240;
-            buffer[offset++] = c1 >> 12 & 63 | 128;
-            buffer[offset++] = c1 >> 6  & 63 | 128;
-            buffer[offset++] = c1       & 63 | 128;
-        } else {
-            buffer[offset++] = c1 >> 12      | 224;
-            buffer[offset++] = c1 >> 6  & 63 | 128;
-            buffer[offset++] = c1       & 63 | 128;
-        }
-    }
-    return offset - start;
-};
+export function write(string, buffer, offset) {
+    return encoder.encodeInto(string, offset
+        ? buffer.subarray(offset)
+        : buffer).written;
+}

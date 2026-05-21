@@ -1,12 +1,11 @@
-"use strict";
+import js from "@eslint/js";
+import globals from "globals";
+import jsdoc from "eslint-plugin-jsdoc";
 
-var js = require("@eslint/js"),
-    globals = require("globals"),
-    jsdoc = require("eslint-plugin-jsdoc");
-
-module.exports = [
+export default [
     {
         ignores: [
+            ".tmp/**",
             "**/node_modules/**",
             "bin/**",
             "cli/wrappers/**",
@@ -16,10 +15,7 @@ module.exports = [
             "examples/**",
             "lib/deep-equal/**",
             "lib/jsdoc-template/**",
-            "lib/prelude.js",
-            "lib/polyfill.js",
             "lib/tape-adapter.js",
-            "sandbox/**",
             "scripts/**",
             "tests/**"
         ]
@@ -36,8 +32,8 @@ module.exports = [
             jsdoc: jsdoc
         },
         languageOptions: {
-            ecmaVersion: 6,
-            sourceType: "commonjs",
+            ecmaVersion: "latest",
+            sourceType: "module",
             globals: Object.assign(
                 {},
                 globals.node,
@@ -164,6 +160,15 @@ module.exports = [
             "unicode-bom": [ 2, "never" ]
 
             // ECMAScript 6                     // maybe next time
+        }
+    },
+    {
+        files: [
+            "bench/**/*.js",
+            "cli/**/*.js"
+        ],
+        languageOptions: {
+            sourceType: "commonjs"
         }
     }
 ];

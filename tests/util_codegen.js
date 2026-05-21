@@ -1,7 +1,7 @@
 var tape = require("tape");
 
 var protobuf = require("..");
-var codegen = require("../src/util/codegen");
+var codegen = require("../src/util/codegen").codegen;
 
 tape.test("codegen", function(test) {
     test.equal(protobuf.util.codegen.verbose, false, "should not be verbose by default");

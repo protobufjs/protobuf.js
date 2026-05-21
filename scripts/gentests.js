@@ -1,8 +1,10 @@
-"use strict";
-var fs   = require("fs"),
-    path = require("path"),
-    pbjs = require("../cli/pbjs"),
-    pbts = require("../cli/pbts");
+import fs from "node:fs";
+import path from "node:path";
+import { createRequire } from "node:module";
+import pbjs from "../cli/pbjs.js";
+import pbts from "../cli/pbts.js";
+
+var requireGenerated = createRequire(import.meta.url);
 
 [
     { file: "tests/data/comments.proto", flags: [] },
@@ -32,10 +34,10 @@ var fs   = require("fs"),
         var pathToProtobufjs = path.relative(path.dirname(out), "minimal").replace(/\\/g, "/");
         fs.writeFileSync(out, output.replace(/"protobufjs\/minimal"/g, JSON.stringify(pathToProtobufjs)));
         process.stdout.write("pbjs: " + file + " -> " + out + "\n");
-        try {
-            require(path.join(__dirname, "..", out));
-        } catch (err) {
-            if (!flags.includes("es6")) {
+        if (!flags.includes("es6")) {
+            try {
+                requireGenerated(path.resolve(out));
+            } catch (err) {
                 process.stderr.write("ERROR: " + err.message + "\n");
             }
         }

@@ -1,11 +1,8 @@
-"use strict";
-module.exports = Method;
+import { ReflectionObject } from "./object.js";
+import { util } from "./util.js";
 
 // extends ReflectionObject
-var ReflectionObject = require("./object");
 ((Method.prototype = Object.create(ReflectionObject.prototype)).constructor = Method).className = "Method";
-
-var util = require("./util");
 
 /**
  * Constructs a new service method instance.
@@ -159,3 +156,5 @@ Method.prototype.resolve = function resolve() {
 
     return ReflectionObject.prototype.resolve.call(this);
 };
+
+export { Method };

@@ -4180,7 +4180,7 @@ $root.jspb = (function() {
              * @typedef {Object} jspb.test.DefaultValues.$Properties
              * @property {string|null} [stringField] DefaultValues stringField
              * @property {boolean|null} [boolField] DefaultValues boolField
-             * @property {number|Long|null} [intField] DefaultValues intField
+             * @property {number|bigint|null} [intField] DefaultValues intField
              * @property {jspb.test.DefaultValues.Enum|null} [enumField] DefaultValues enumField
              * @property {string|null} [emptyField] DefaultValues emptyField
              * @property {Uint8Array|null} [bytesField] DefaultValues bytesField
@@ -4233,11 +4233,11 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues intField.
-             * @member {number|Long} intField
+             * @member {number|bigint} intField
              * @memberof jspb.test.DefaultValues
              * @instance
              */
-            DefaultValues.prototype.intField = $util.Long ? $util.Long.fromBits(11,0,false) : 11;
+            DefaultValues.prototype.intField = 11n;
 
             /**
              * DefaultValues enumField.
@@ -4438,8 +4438,8 @@ $root.jspb = (function() {
                     if (typeof message.boolField !== "boolean")
                         return "boolField: boolean expected";
                 if (message.intField != null && message.hasOwnProperty("intField"))
-                    if (!$util.isInteger(message.intField) && !(message.intField && $util.isInteger(message.intField.low) && $util.isInteger(message.intField.high)))
-                        return "intField: integer|Long expected";
+                    if (typeof message.intField !== "bigint" && !$util.isInteger(message.intField))
+                        return "intField: integer|bigint expected";
                 if (message.enumField != null && message.hasOwnProperty("enumField"))
                     switch (message.enumField) {
                     default:
@@ -4478,14 +4478,7 @@ $root.jspb = (function() {
                 if (object.boolField != null)
                     message.boolField = Boolean(object.boolField);
                 if (object.intField != null)
-                    if ($util.Long)
-                        message.intField = $util.Long.fromValue(object.intField, false);
-                    else if (typeof object.intField === "string")
-                        message.intField = parseInt(object.intField, 10);
-                    else if (typeof object.intField === "number")
-                        message.intField = object.intField;
-                    else if (typeof object.intField === "object")
-                        message.intField = new $util.LongBits(object.intField.low >>> 0, object.intField.high >>> 0).toNumber();
+                    message.intField = BigInt.asIntN(64, BigInt(object.intField));
                 switch (object.enumField) {
                 default:
                     if (typeof object.enumField === "number") {
@@ -4532,11 +4525,7 @@ $root.jspb = (function() {
                 if (options.defaults) {
                     object.stringField = "default<>abc";
                     object.boolField = true;
-                    if ($util.Long) {
-                        var long = new $util.Long(11, 0, false);
-                        object.intField = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
-                    } else
-                        object.intField = options.longs === String ? "11" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("11") : 11;
+                    object.intField = options.longs === String ? "11" : options.longs === Number ? 11 : 11n;
                     object.enumField = options.enums === String ? "E1" : 13;
                     object.emptyField = "";
                     if (options.bytes === String)
@@ -4556,12 +4545,7 @@ $root.jspb = (function() {
                 if (message.boolField != null && message.hasOwnProperty("boolField"))
                     object.boolField = message.boolField;
                 if (message.intField != null && message.hasOwnProperty("intField"))
-                    if (typeof BigInt !== "undefined" && options.longs === BigInt)
-                        object.intField = typeof message.intField === "number" ? BigInt(message.intField) : $util.Long.fromBits(message.intField.low >>> 0, message.intField.high >>> 0, false).toBigInt();
-                    else if (typeof message.intField === "number")
-                        object.intField = options.longs === String ? String(message.intField) : message.intField;
-                    else
-                        object.intField = options.longs === String ? $util.Long.prototype.toString.call(message.intField) : options.longs === Number ? new $util.LongBits(message.intField.low >>> 0, message.intField.high >>> 0).toNumber() : message.intField;
+                    object.intField = options.longs === String ? String(message.intField) : options.longs === Number ? Number(message.intField) : message.intField;
                 if (message.enumField != null && message.hasOwnProperty("enumField"))
                     object.enumField = options.enums === String ? $root.jspb.test.DefaultValues.Enum[message.enumField] === undefined ? message.enumField : $root.jspb.test.DefaultValues.Enum[message.enumField] : message.enumField;
                 if (message.emptyField != null && message.hasOwnProperty("emptyField"))
@@ -9499,7 +9483,7 @@ $root.jspb = (function() {
              * @typedef {Object} jspb.test.TestMapFieldsNoBinary.$Properties
              * @property {Object.<string,string>|null} [mapStringString] TestMapFieldsNoBinary mapStringString
              * @property {Object.<string,number>|null} [mapStringInt32] TestMapFieldsNoBinary mapStringInt32
-             * @property {Object.<string,number|Long>|null} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64
+             * @property {Object.<string,number|bigint>|null} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64
              * @property {Object.<string,boolean>|null} [mapStringBool] TestMapFieldsNoBinary mapStringBool
              * @property {Object.<string,number>|null} [mapStringDouble] TestMapFieldsNoBinary mapStringDouble
              * @property {Object.<string,jspb.test.MapValueEnumNoBinary>|null} [mapStringEnum] TestMapFieldsNoBinary mapStringEnum
@@ -9569,7 +9553,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringInt64.
-             * @member {Object.<string,number|Long>} mapStringInt64
+             * @member {Object.<string,number|bigint>} mapStringInt64
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -9707,7 +9691,7 @@ $root.jspb = (function() {
                         writer.uint32(/* id 8, wireType 2 =*/66).fork().uint32(/* id 1, wireType 0 =*/8).int32(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.mapInt32String[keys[i]]).ldelim();
                 if (message.mapInt64String != null && Object.hasOwnProperty.call(message, "mapInt64String"))
                     for (var keys = Object.keys(message.mapInt64String), i = 0; i < keys.length; ++i)
-                        writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 0 =*/8).int64($util.longFromKey(keys[i], false)).uint32(/* id 2, wireType 2 =*/18).string(message.mapInt64String[keys[i]]).ldelim();
+                        writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 0 =*/8).int64(BigInt(keys[i])).uint32(/* id 2, wireType 2 =*/18).string(message.mapInt64String[keys[i]]).ldelim();
                 if (message.mapBoolString != null && Object.hasOwnProperty.call(message, "mapBoolString"))
                     for (var keys = Object.keys(message.mapBoolString), i = 0; i < keys.length; ++i)
                         writer.uint32(/* id 10, wireType 2 =*/82).fork().uint32(/* id 1, wireType 0 =*/8).bool($util.boolFromKey(keys[i])).uint32(/* id 2, wireType 2 =*/18).string(message.mapBoolString[keys[i]]).ldelim();
@@ -9832,7 +9816,7 @@ $root.jspb = (function() {
                                 message.mapStringInt64 = {};
                             var end2 = reader.uint32() + reader.pos;
                             key = "";
-                            value = $util.Long ? $util.Long.fromNumber(0, false) : 0;
+                            value = 0n;
                             while (reader.pos < end2) {
                                 var tag2 = reader.tag();
                                 wireType = tag2 & 7;
@@ -10028,7 +10012,7 @@ $root.jspb = (function() {
                                 }
                                 reader.skipType(wireType, _depth, tag2);
                             }
-                            message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = value;
+                            message.mapInt64String[String(key)] = value;
                             continue;
                         }
                     case 10: {
@@ -10157,8 +10141,8 @@ $root.jspb = (function() {
                         return "mapStringInt64: object expected";
                     var key = Object.keys(message.mapStringInt64);
                     for (var i = 0; i < key.length; ++i)
-                        if (!$util.isInteger(message.mapStringInt64[key[i]]) && !(message.mapStringInt64[key[i]] && $util.isInteger(message.mapStringInt64[key[i]].low) && $util.isInteger(message.mapStringInt64[key[i]].high)))
-                            return "mapStringInt64: integer|Long{k:string} expected";
+                        if (typeof message.mapStringInt64[key[i]] !== "bigint" && !$util.isInteger(message.mapStringInt64[key[i]]))
+                            return "mapStringInt64: integer|bigint{k:string} expected";
                 }
                 if (message.mapStringBool != null && message.hasOwnProperty("mapStringBool")) {
                     if (!$util.isObject(message.mapStringBool))
@@ -10217,7 +10201,7 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapInt64String);
                     for (var i = 0; i < key.length; ++i) {
                         if (!$util.key64Re.test(key[i]))
-                            return "mapInt64String: integer|Long key{k:int64} expected";
+                            return "mapInt64String: integer key{k:int64} expected";
                         if (!$util.isString(message.mapInt64String[key[i]]))
                             return "mapInt64String: string{k:int64} expected";
                     }
@@ -10294,14 +10278,7 @@ $root.jspb = (function() {
                     for (var keys = Object.keys(object.mapStringInt64), i = 0; i < keys.length; ++i) {
                         if (keys[i] === "__proto__")
                             $util.makeProp(message.mapStringInt64, keys[i]);
-                        if ($util.Long)
-                            message.mapStringInt64[keys[i]] = $util.Long.fromValue(object.mapStringInt64[keys[i]], false);
-                        else if (typeof object.mapStringInt64[keys[i]] === "string")
-                            message.mapStringInt64[keys[i]] = parseInt(object.mapStringInt64[keys[i]], 10);
-                        else if (typeof object.mapStringInt64[keys[i]] === "number")
-                            message.mapStringInt64[keys[i]] = object.mapStringInt64[keys[i]];
-                        else if (typeof object.mapStringInt64[keys[i]] === "object")
-                            message.mapStringInt64[keys[i]] = new $util.LongBits(object.mapStringInt64[keys[i]].low >>> 0, object.mapStringInt64[keys[i]].high >>> 0).toNumber();
+                        message.mapStringInt64[keys[i]] = BigInt.asIntN(64, BigInt(object.mapStringInt64[keys[i]]));
                     }
                 }
                 if (object.mapStringBool) {
@@ -10469,12 +10446,7 @@ $root.jspb = (function() {
                     for (var j = 0; j < keys2.length; ++j) {
                         if (keys2[j] === "__proto__")
                             $util.makeProp(object.mapStringInt64, keys2[j]);
-                        if (typeof BigInt !== "undefined" && options.longs === BigInt)
-                            object.mapStringInt64[keys2[j]] = typeof message.mapStringInt64[keys2[j]] === "number" ? BigInt(message.mapStringInt64[keys2[j]]) : $util.Long.fromBits(message.mapStringInt64[keys2[j]].low >>> 0, message.mapStringInt64[keys2[j]].high >>> 0, false).toBigInt();
-                        else if (typeof message.mapStringInt64[keys2[j]] === "number")
-                            object.mapStringInt64[keys2[j]] = options.longs === String ? String(message.mapStringInt64[keys2[j]]) : message.mapStringInt64[keys2[j]];
-                        else
-                            object.mapStringInt64[keys2[j]] = options.longs === String ? $util.Long.prototype.toString.call(message.mapStringInt64[keys2[j]]) : options.longs === Number ? new $util.LongBits(message.mapStringInt64[keys2[j]].low >>> 0, message.mapStringInt64[keys2[j]].high >>> 0).toNumber() : message.mapStringInt64[keys2[j]];
+                        object.mapStringInt64[keys2[j]] = options.longs === String ? String(message.mapStringInt64[keys2[j]]) : options.longs === Number ? Number(message.mapStringInt64[keys2[j]]) : message.mapStringInt64[keys2[j]];
                     }
                 }
                 if (message.mapStringBool && (keys2 = Object.keys(message.mapStringBool)).length) {
@@ -10520,10 +10492,9 @@ $root.jspb = (function() {
                 if (message.mapInt64String && (keys2 = Object.keys(message.mapInt64String)).length) {
                     object.mapInt64String = {};
                     for (var j = 0; j < keys2.length; ++j) {
-                        var k2 = $util.longFromKey(keys2[j], false).toString();
                         if (keys2[j] === "__proto__")
                             $util.makeProp(object.mapInt64String, keys2[j]);
-                        object.mapInt64String[k2] = message.mapInt64String[keys2[j]];
+                        object.mapInt64String[keys2[j]] = message.mapInt64String[keys2[j]];
                     }
                 }
                 if (message.mapBoolString && (keys2 = Object.keys(message.mapBoolString)).length) {
@@ -12389,7 +12360,7 @@ $root.google = (function() {
                     case 900:
                     case 998:
                     case 999:
-                    case 1000:
+                    case 1e3:
                     case 1001:
                     case 1:
                     case 2:
@@ -12526,8 +12497,8 @@ $root.google = (function() {
                     message.edition = 999;
                     break;
                 case "EDITION_2023":
-                case 1000:
-                    message.edition = 1000;
+                case 1e3:
+                    message.edition = 1e3;
                     break;
                 case "EDITION_2024":
                 case 1001:
@@ -19777,7 +19748,7 @@ $root.google = (function() {
                         case 900:
                         case 998:
                         case 999:
-                        case 1000:
+                        case 1e3:
                         case 1001:
                         case 1:
                         case 2:
@@ -19833,8 +19804,8 @@ $root.google = (function() {
                         message.edition = 999;
                         break;
                     case "EDITION_2023":
-                    case 1000:
-                        message.edition = 1000;
+                    case 1e3:
+                        message.edition = 1e3;
                         break;
                     case "EDITION_2024":
                     case 1001:
@@ -20158,7 +20129,7 @@ $root.google = (function() {
                         case 900:
                         case 998:
                         case 999:
-                        case 1000:
+                        case 1e3:
                         case 1001:
                         case 1:
                         case 2:
@@ -20176,7 +20147,7 @@ $root.google = (function() {
                         case 900:
                         case 998:
                         case 999:
-                        case 1000:
+                        case 1e3:
                         case 1001:
                         case 1:
                         case 2:
@@ -20197,7 +20168,7 @@ $root.google = (function() {
                         case 900:
                         case 998:
                         case 999:
-                        case 1000:
+                        case 1e3:
                         case 1001:
                         case 1:
                         case 2:
@@ -20250,8 +20221,8 @@ $root.google = (function() {
                         message.editionIntroduced = 999;
                         break;
                     case "EDITION_2023":
-                    case 1000:
-                        message.editionIntroduced = 1000;
+                    case 1e3:
+                        message.editionIntroduced = 1e3;
                         break;
                     case "EDITION_2024":
                     case 1001:
@@ -20306,8 +20277,8 @@ $root.google = (function() {
                         message.editionDeprecated = 999;
                         break;
                     case "EDITION_2023":
-                    case 1000:
-                        message.editionDeprecated = 1000;
+                    case 1e3:
+                        message.editionDeprecated = 1e3;
                         break;
                     case "EDITION_2024":
                     case 1001:
@@ -20364,8 +20335,8 @@ $root.google = (function() {
                         message.editionRemoved = 999;
                         break;
                     case "EDITION_2023":
-                    case 1000:
-                        message.editionRemoved = 1000;
+                    case 1e3:
+                        message.editionRemoved = 1e3;
                         break;
                     case "EDITION_2024":
                     case 1001:
@@ -22285,8 +22256,8 @@ $root.google = (function() {
              * @typedef {Object} google.protobuf.UninterpretedOption.$Properties
              * @property {Array.<google.protobuf.UninterpretedOption.NamePart.$Properties>|null} [name] UninterpretedOption name
              * @property {string|null} [identifierValue] UninterpretedOption identifierValue
-             * @property {number|Long|null} [positiveIntValue] UninterpretedOption positiveIntValue
-             * @property {number|Long|null} [negativeIntValue] UninterpretedOption negativeIntValue
+             * @property {number|bigint|null} [positiveIntValue] UninterpretedOption positiveIntValue
+             * @property {number|bigint|null} [negativeIntValue] UninterpretedOption negativeIntValue
              * @property {number|null} [doubleValue] UninterpretedOption doubleValue
              * @property {Uint8Array|null} [stringValue] UninterpretedOption stringValue
              * @property {string|null} [aggregateValue] UninterpretedOption aggregateValue
@@ -22340,19 +22311,19 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption positiveIntValue.
-             * @member {number|Long} positiveIntValue
+             * @member {number|bigint} positiveIntValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              */
-            UninterpretedOption.prototype.positiveIntValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+            UninterpretedOption.prototype.positiveIntValue = 0n;
 
             /**
              * UninterpretedOption negativeIntValue.
-             * @member {number|Long} negativeIntValue
+             * @member {number|bigint} negativeIntValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              */
-            UninterpretedOption.prototype.negativeIntValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+            UninterpretedOption.prototype.negativeIntValue = 0n;
 
             /**
              * UninterpretedOption doubleValue.
@@ -22570,11 +22541,11 @@ $root.google = (function() {
                     if (!$util.isString(message.identifierValue))
                         return "identifierValue: string expected";
                 if (message.positiveIntValue != null && message.hasOwnProperty("positiveIntValue"))
-                    if (!$util.isInteger(message.positiveIntValue) && !(message.positiveIntValue && $util.isInteger(message.positiveIntValue.low) && $util.isInteger(message.positiveIntValue.high)))
-                        return "positiveIntValue: integer|Long expected";
+                    if (typeof message.positiveIntValue !== "bigint" && !$util.isInteger(message.positiveIntValue))
+                        return "positiveIntValue: integer|bigint expected";
                 if (message.negativeIntValue != null && message.hasOwnProperty("negativeIntValue"))
-                    if (!$util.isInteger(message.negativeIntValue) && !(message.negativeIntValue && $util.isInteger(message.negativeIntValue.low) && $util.isInteger(message.negativeIntValue.high)))
-                        return "negativeIntValue: integer|Long expected";
+                    if (typeof message.negativeIntValue !== "bigint" && !$util.isInteger(message.negativeIntValue))
+                        return "negativeIntValue: integer|bigint expected";
                 if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     if (typeof message.doubleValue !== "number")
                         return "doubleValue: number expected";
@@ -22616,23 +22587,9 @@ $root.google = (function() {
                 if (object.identifierValue != null)
                     message.identifierValue = String(object.identifierValue);
                 if (object.positiveIntValue != null)
-                    if ($util.Long)
-                        message.positiveIntValue = $util.Long.fromValue(object.positiveIntValue, true);
-                    else if (typeof object.positiveIntValue === "string")
-                        message.positiveIntValue = parseInt(object.positiveIntValue, 10);
-                    else if (typeof object.positiveIntValue === "number")
-                        message.positiveIntValue = object.positiveIntValue;
-                    else if (typeof object.positiveIntValue === "object")
-                        message.positiveIntValue = new $util.LongBits(object.positiveIntValue.low >>> 0, object.positiveIntValue.high >>> 0).toNumber(true);
+                    message.positiveIntValue = BigInt.asUintN(64, BigInt(object.positiveIntValue));
                 if (object.negativeIntValue != null)
-                    if ($util.Long)
-                        message.negativeIntValue = $util.Long.fromValue(object.negativeIntValue, false);
-                    else if (typeof object.negativeIntValue === "string")
-                        message.negativeIntValue = parseInt(object.negativeIntValue, 10);
-                    else if (typeof object.negativeIntValue === "number")
-                        message.negativeIntValue = object.negativeIntValue;
-                    else if (typeof object.negativeIntValue === "object")
-                        message.negativeIntValue = new $util.LongBits(object.negativeIntValue.low >>> 0, object.negativeIntValue.high >>> 0).toNumber();
+                    message.negativeIntValue = BigInt.asIntN(64, BigInt(object.negativeIntValue));
                 if (object.doubleValue != null)
                     message.doubleValue = Number(object.doubleValue);
                 if (object.stringValue != null)
@@ -22666,16 +22623,8 @@ $root.google = (function() {
                     object.name = [];
                 if (options.defaults) {
                     object.identifierValue = "";
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, true);
-                        object.positiveIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
-                    } else
-                        object.positiveIntValue = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, false);
-                        object.negativeIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
-                    } else
-                        object.negativeIntValue = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                    object.positiveIntValue = options.longs === String ? "0" : options.longs === Number ? 0 : 0n;
+                    object.negativeIntValue = options.longs === String ? "0" : options.longs === Number ? 0 : 0n;
                     object.doubleValue = 0;
                     if (options.bytes === String)
                         object.stringValue = "";
@@ -22694,19 +22643,9 @@ $root.google = (function() {
                 if (message.identifierValue != null && message.hasOwnProperty("identifierValue"))
                     object.identifierValue = message.identifierValue;
                 if (message.positiveIntValue != null && message.hasOwnProperty("positiveIntValue"))
-                    if (typeof BigInt !== "undefined" && options.longs === BigInt)
-                        object.positiveIntValue = typeof message.positiveIntValue === "number" ? BigInt(message.positiveIntValue) : $util.Long.fromBits(message.positiveIntValue.low >>> 0, message.positiveIntValue.high >>> 0, true).toBigInt();
-                    else if (typeof message.positiveIntValue === "number")
-                        object.positiveIntValue = options.longs === String ? String(message.positiveIntValue) : message.positiveIntValue;
-                    else
-                        object.positiveIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.positiveIntValue) : options.longs === Number ? new $util.LongBits(message.positiveIntValue.low >>> 0, message.positiveIntValue.high >>> 0).toNumber(true) : message.positiveIntValue;
+                    object.positiveIntValue = options.longs === String ? String(message.positiveIntValue) : options.longs === Number ? Number(message.positiveIntValue) : message.positiveIntValue;
                 if (message.negativeIntValue != null && message.hasOwnProperty("negativeIntValue"))
-                    if (typeof BigInt !== "undefined" && options.longs === BigInt)
-                        object.negativeIntValue = typeof message.negativeIntValue === "number" ? BigInt(message.negativeIntValue) : $util.Long.fromBits(message.negativeIntValue.low >>> 0, message.negativeIntValue.high >>> 0, false).toBigInt();
-                    else if (typeof message.negativeIntValue === "number")
-                        object.negativeIntValue = options.longs === String ? String(message.negativeIntValue) : message.negativeIntValue;
-                    else
-                        object.negativeIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.negativeIntValue) : options.longs === Number ? new $util.LongBits(message.negativeIntValue.low >>> 0, message.negativeIntValue.high >>> 0).toNumber() : message.negativeIntValue;
+                    object.negativeIntValue = options.longs === String ? String(message.negativeIntValue) : options.longs === Number ? Number(message.negativeIntValue) : message.negativeIntValue;
                 if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     object.doubleValue = options.json && !isFinite(message.doubleValue) ? String(message.doubleValue) : message.doubleValue;
                 if (message.stringValue != null && message.hasOwnProperty("stringValue"))
@@ -24234,7 +24173,7 @@ $root.google = (function() {
                     case 900:
                     case 998:
                     case 999:
-                    case 1000:
+                    case 1e3:
                     case 1001:
                     case 1:
                     case 2:
@@ -24252,7 +24191,7 @@ $root.google = (function() {
                     case 900:
                     case 998:
                     case 999:
-                    case 1000:
+                    case 1e3:
                     case 1001:
                     case 1:
                     case 2:
@@ -24315,8 +24254,8 @@ $root.google = (function() {
                     message.minimumEdition = 999;
                     break;
                 case "EDITION_2023":
-                case 1000:
-                    message.minimumEdition = 1000;
+                case 1e3:
+                    message.minimumEdition = 1e3;
                     break;
                 case "EDITION_2024":
                 case 1001:
@@ -24371,8 +24310,8 @@ $root.google = (function() {
                     message.maximumEdition = 999;
                     break;
                 case "EDITION_2023":
-                case 1000:
-                    message.maximumEdition = 1000;
+                case 1e3:
+                    message.maximumEdition = 1e3;
                     break;
                 case "EDITION_2024":
                 case 1001:
@@ -24681,7 +24620,7 @@ $root.google = (function() {
                         case 900:
                         case 998:
                         case 999:
-                        case 1000:
+                        case 1e3:
                         case 1001:
                         case 1:
                         case 2:
@@ -24744,8 +24683,8 @@ $root.google = (function() {
                         message.edition = 999;
                         break;
                     case "EDITION_2023":
-                    case 1000:
-                        message.edition = 1000;
+                    case 1e3:
+                        message.edition = 1e3;
                         break;
                     case "EDITION_2024":
                     case 1001:

@@ -1,18 +1,16 @@
-"use strict";
-module.exports = BufferReader;
+import { Reader } from "./reader.js";
+import { util } from "./util/minimal.js";
+import { readStrict as readUtf8Strict } from "./util/utf8.js";
 
 // extends Reader
-var Reader = require("./reader");
 (BufferReader.prototype = Object.create(Reader.prototype)).constructor = BufferReader;
-
-var util = require("./util/minimal");
 
 /**
  * Constructs a new buffer reader instance.
  * @classdesc Wire format reader using node buffers.
  * @extends Reader
  * @constructor
- * @param {Buffer} buffer Buffer to read from
+ * @param {util.Buffer} buffer Buffer to read from
  */
 function BufferReader(buffer) {
     Reader.call(this, buffer);
@@ -20,7 +18,7 @@ function BufferReader(buffer) {
     /**
      * Read buffer.
      * @name BufferReader#buf
-     * @type {Buffer}
+     * @type {util.Buffer}
      */
 }
 
@@ -36,7 +34,7 @@ BufferReader._configure = function () {
  * @function
  * @param {number} start Start offset
  * @param {number} end End offset
- * @returns {Buffer} Raw bytes
+ * @returns {util.Buffer} Raw bytes
  */
 BufferReader.prototype.raw = function read_raw_buffer(start, end) {
     if (start === end)
@@ -63,10 +61,28 @@ BufferReader.prototype.string = function read_string_buffer() {
 };
 
 /**
+ * @override
+ */
+BufferReader.prototype.stringVerify = function read_string_buffer_verify() {
+    var len = this.uint32(), // modifies pos
+        start = this.pos,
+        end = this.pos + len;
+
+    /* istanbul ignore if */
+    if (end > this.len)
+        throw RangeError("index out of range: " + this.pos + " + " + len + " > " + this.len);
+
+    this.pos = end;
+    return readUtf8Strict(this.buf, start, end);
+};
+
+/**
  * Reads a sequence of bytes preceeded by its length as a varint.
  * @name BufferReader#bytes
  * @function
- * @returns {Buffer} Value read
+ * @returns {util.Buffer} Value read
  */
 
 BufferReader._configure();
+
+export { BufferReader };

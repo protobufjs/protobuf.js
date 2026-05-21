@@ -11,9 +11,9 @@ tape.test("writer & reader", function(test) {
         Reader.create(1);
     }, "should throw when creating a Reader from something else than a buffer");
 
-    test.doesNotThrow(function() {
+    test.throws(function() {
         Reader.create([]);
-    }, "should not throw when creating a Reader from an array (comp)");
+    }, "should throw when creating a Reader from an array");
 
     // uint32, int32, sint32
 
@@ -39,7 +39,7 @@ tape.test("writer & reader", function(test) {
     test.ok(expect("uint32", -1 >>> 0, [ 255, 255, 255, 255, 15 ]), "should write -1 as an unsigned varint of length 5");
     test.ok(expect("int32", -1, [ 255, 255, 255, 255, 255, 255, 255, 255, 255, 1 ]), "should write -1 as a signed varint of length 10");
     test.ok(expect("sint32", -1, [ 1 ]), "should write -1 as a signed zig-zag encoded varint of length 1");
-    var reader = Reader.create([ 128, 128, 128, 128, 128, 0, 1 ]);
+    var reader = Reader.create(protobuf.util.newBuffer([ 128, 128, 128, 128, 128, 0, 1 ]));
     test.equal(reader.uint32(), 0, "should read non-minimal uint32 varints");
     test.equal(reader.uint32(), 1, "should stop after the non-minimal uint32 varint");
 
@@ -73,13 +73,12 @@ tape.test("writer & reader", function(test) {
         [ 140737488355327, [ 255, 255, 255, 255, 255, 255, 31 ] ]
     ]);
 
-    test.ok(protobuf.util.Long, "should use long.js");
     values.forEach(function(val) {
-        var longVal = protobuf.util.Long.fromNumber(val[0], false);
+        var value64 = BigInt(val[0]);
         
-        test.ok(expect("uint64", longVal, val[1]), "should write " + longVal + " as an unsigned varint of length " + val[1].length + " and read it back equally");
-        test.ok(expect("int64", longVal, val[1]), "should write " + longVal + " as a signed varint of length " + val[1].length + " and read it back equally");
-        var zzBaseVal = longVal.shru(1).xor(longVal.and(1).negate());
+        test.ok(expect("uint64", value64, val[1]), "should write " + value64 + " as an unsigned varint of length " + val[1].length + " and read it back equally");
+        test.ok(expect("int64", value64, val[1]), "should write " + value64 + " as a signed varint of length " + val[1].length + " and read it back equally");
+        var zzBaseVal = value64 >> 1n ^ -(value64 & 1n);
         test.ok(expect("sint64", zzBaseVal, val[1]), "should write " + zzBaseVal + " as a signed zig-zag encoded varint of length " + val[1].length + " and read it back equally");
     });
 
@@ -93,17 +92,26 @@ tape.test("writer & reader", function(test) {
 
     test.ok(expect("bool", true, [1]), "should write true as a varint of length 1 and read it back equally");
     test.ok(expect("bool", false, [0]), "should write false as a varint of length 1 and read it back equally");
-    test.equal(Reader.create([ 128, 128, 128, 128, 16 ]).bool(), true, "should read 64 bit non-zero bool varints as true");
+    test.equal(Reader.create(protobuf.util.newBuffer([ 128, 128, 128, 128, 16 ])).bool(), true, "should read 64 bit non-zero bool varints as true");
 
     // string, see also util_utf8
 
     test.ok(expect("string", "123", [3,49,50,51]), "should write \"123\" as a string prefixed with its length as a varint and read it back equally");
     test.ok(expect("string", "hello world", [11,104,101,108,108,111,32,119,111,114,108,100], Writer), "should write ascii strings with the array writer");
     test.ok(expect("string", "ä", [2,195,164], Writer), "should write non-ascii strings with the array writer");
+    test.same(Array.prototype.slice.call(new Writer().string("\ud800").finish()), [3,239,191,189], "should write lone surrogates as replacement characters with the array writer");
+    test.same(Array.prototype.slice.call(Writer.create().string("\ud800").finish()), [3,239,191,189], "should write lone surrogates as replacement characters with the default writer");
     test.ok(expect("string", "", [0]), "should write \"\" as a string prefixed with its length as a varint and read it back equally");
     test.throws(function() {
         Reader.create(protobuf.util.newBuffer([ 3, 49, 50 ])).string();
     }, /index out of range/, "should throw on truncated strings");
+    var invalidUtf8 = [ 2, 0xc0, 0xaf ],
+        invalidReplacement = protobuf.util.Buffer
+            ? protobuf.util.Buffer.from(invalidUtf8.slice(1)).toString("utf8")
+            : "\ufffd\ufffd";
+    test.equal(Reader.create(Uint8Array.from(invalidUtf8)).string(), invalidReplacement, "should replace invalid UTF-8 strings");
+    if (protobuf.util.Buffer)
+        test.equal(Reader.create(protobuf.util.Buffer.from(invalidUtf8)).string(), invalidReplacement, "should replace invalid UTF-8 strings with the buffer reader");
 
     // bytes
 
@@ -113,7 +121,7 @@ tape.test("writer & reader", function(test) {
 
     // raw bytes
 
-    var rawReader = Reader.create([0,1,2,3]);
+    var rawReader = Reader.create(protobuf.util.newBuffer([0,1,2,3]));
     test.deepEqual(Array.prototype.slice.call(rawReader.raw(1, 3)), [1,2], "should read raw bytes without a length prefix");
     test.equal(rawReader.pos, 0, "should read raw bytes without advancing");
     if (protobuf.util.Buffer)
@@ -151,21 +159,21 @@ tape.test("writer & reader", function(test) {
 
         // writes at offset and preserves existing data
         var w2 = Writer.create();
-        w2.uint32(100).string("hello").bool(true);
+        w2.uint32(100).string("hello").string("\u00e4".repeat(30)).bool(true);
         var expected = w2.finish();
 
         var w3 = Writer.create();
-        w3.uint32(100).string("hello").bool(true);
-        var offset = 3;
-        var buf3 = new Uint8Array(offset + w3.len);
-        for (var i = 0; i < offset; ++i)
-            buf3[i] = 99;
+        w3.uint32(100).string("hello").string("\u00e4".repeat(30)).bool(true);
+        var padding = 5,
+            offset = 3,
+            storage = new Uint8Array(padding + offset + w3.len),
+            buf3 = storage.subarray(padding);
+        for (var i = 0; i < padding + offset; ++i)
+            storage[i] = 99;
         w3.finishInto(buf3, offset);
 
-        for (var i = 0; i < offset; ++i)
-            test.equal(buf3[i], 99, "preserves byte at index " + i + " before offset");
-        for (var i = 0; i < expected.length; ++i)
-            test.equal(buf3[offset + i], expected[i], "byte at offset+" + i + " matches finish()");
+        test.same(Array.prototype.slice.call(storage, 0, padding + offset), Array(padding + offset).fill(99), "preserves bytes before output");
+        test.same(Array.prototype.slice.call(buf3, offset, offset + expected.length), Array.prototype.slice.call(expected), "writes bytes at offset");
 
         test.end();
     });
@@ -203,10 +211,10 @@ function expect(type, value, expected, WriterToTest) {
             console.error("actual", Array.prototype.slice.call(actual), "!= expected", expected);
             return false;
         }
-    var longActual = protobuf.util.newBuffer(20);
+    var bufferActual = protobuf.util.newBuffer(20);
     for (var l = 0; l < actual.length; ++l)
-        longActual[l] = actual[l];
-    [ actual, longActual ] // also test readLongVarint fast route
+        bufferActual[l] = actual[l];
+    [ actual, bufferActual ] // also test readVarint64 fast route
     .forEach(function(actual) {
         var reader = Reader.create(actual);
         var actualValue = reader[type]();
@@ -222,7 +230,7 @@ function expect(type, value, expected, WriterToTest) {
             for (var j = 0; j < buf.length; ++j)
                 if (actualValue[j] !== buf[j])
                     return false;
-        } else if (actualValue !== value) {
+        } else if (typeof actualValue === "bigint" ? actualValue !== BigInt(value.toString()) : actualValue !== value) {
             console.error("actual value", actualValue, "!= expected", value);
             return false;
         }

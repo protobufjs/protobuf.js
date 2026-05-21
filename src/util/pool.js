@@ -1,8 +1,6 @@
-"use strict";
-module.exports = pool;
-
 /**
  * An allocator as used by {@link util.pool}.
+ * @memberof util
  * @typedef PoolAllocator
  * @type {function}
  * @param {number} size Buffer size
@@ -11,6 +9,7 @@ module.exports = pool;
 
 /**
  * A slicer as used by {@link util.pool}.
+ * @memberof util
  * @typedef PoolSlicer
  * @type {function}
  * @param {number} start Start offset
@@ -21,14 +20,14 @@ module.exports = pool;
 
 /**
  * A general purpose buffer pool.
- * @memberof util
+ * @name util.pool
  * @function
  * @param {PoolAllocator} alloc Allocator
  * @param {PoolSlicer} slice Slicer
  * @param {number} [size=8192] Slab size
  * @returns {PoolAllocator} Pooled allocator
  */
-function pool(alloc, slice, size) {
+export function pool(alloc, slice, size) {
     var SIZE   = size || 8192;
     var MAX    = SIZE >>> 1;
     var slab   = null;

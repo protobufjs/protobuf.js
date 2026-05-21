@@ -4,6 +4,7 @@ var path = require("path");
 
 var protobuf = require("protobufjs");
 var descriptor = require("protobufjs/ext/descriptor");
+descriptor = descriptor.default || descriptor;
 
 var pbjs = require("./pbjs");
 var util = require("./util");
@@ -38,7 +39,6 @@ var booleanOptions = new Set([
     "service",
     "sparse",
     "keep-case",
-    "force-long",
     "force-number",
     "force-enum-string",
     "force-message",

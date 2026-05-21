@@ -1,21 +1,20 @@
-"use strict";
 /**
  * Runtime message from/to plain object converters.
  * @namespace
  */
-var converter = exports;
+var converter = {};
 
-var Enum  = require("./enum"),
-    types = require("./types"),
-    util  = require("./util");
+import { Enum } from "./enum.js";
+import { types } from "./types.js";
+import { util } from "./util.js";
 
 /**
  * Generates a partial value fromObject conveter.
- * @param {Codegen} gen Codegen instance
+ * @param {util.Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
  * @param {string} prop Property reference
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  * @ignore
  */
 function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
@@ -67,15 +66,11 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                 // eslint-disable-next-line no-fallthrough
             case "int64":
             case "sint64":
-            case "sfixed64": gen
-                ("if(util.Long)")
-                    ("m%s=util.Long.fromValue(d%s,%j)", prop, prop, isUnsigned)
-                ("else if(typeof d%s===\"string\")", prop)
-                    ("m%s=parseInt(d%s,10)", prop, prop)
-                ("else if(typeof d%s===\"number\")", prop)
-                    ("m%s=d%s", prop, prop)
-                ("else if(typeof d%s===\"object\")", prop)
-                    ("m%s=new util.LongBits(d%s.low>>>0,d%s.high>>>0).toNumber(%s)", prop, prop, prop, isUnsigned ? "true" : "");
+            case "sfixed64":
+                if (isUnsigned) gen
+                ("m%s=BigInt.asUintN(64,BigInt(d%s))", prop, prop);
+                else gen
+                ("m%s=BigInt.asIntN(64,BigInt(d%s))", prop, prop);
                 break;
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", prop)
@@ -101,7 +96,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
 /**
  * Generates a plain object to runtime message converter specific to the specified message type.
  * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  */
 converter.fromObject = function fromObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -161,7 +156,7 @@ converter.fromObject = function fromObject(mtype) {
                 else if (field.type === "bool") gen
     ("if(d%s){", prop);
                 else if (types.long[field.type] !== undefined) gen
-    ("if(typeof d%s===\"object\"?d%s.low||d%s.high:Number(d%s)!==0){", prop, prop, prop, prop);
+    ("if(BigInt(d%s)!==0n){", prop);
                 else gen
     ("if(Number(d%s)!==0){", prop);
             }
@@ -178,12 +173,12 @@ converter.fromObject = function fromObject(mtype) {
 
 /**
  * Generates a partial value toObject converter.
- * @param {Codegen} gen Codegen instance
+ * @param {util.Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
  * @param {string} dstProp Destination property reference
  * @param {string} [srcProp] Source property reference
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  * @ignore
  */
 function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
@@ -196,7 +191,6 @@ function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
         else gen
             ("d%s=types[%i].toObject(m%s,o,q+1)", dstProp, fieldIndex, srcProp);
     } else {
-        var isUnsigned = false;
         switch (field.type) {
             case "double":
             case "float": gen
@@ -204,17 +198,10 @@ function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
                 break;
             case "uint64":
             case "fixed64":
-                isUnsigned = true;
-                // eslint-disable-next-line no-fallthrough
             case "int64":
             case "sint64":
             case "sfixed64": gen
-            ("if(typeof BigInt!==\"undefined\"&&o.longs===BigInt)")
-                ("d%s=typeof m%s===\"number\"?BigInt(m%s):util.Long.fromBits(m%s.low>>>0,m%s.high>>>0,%j).toBigInt()", dstProp, srcProp, srcProp, srcProp, srcProp, isUnsigned)
-            ("else if(typeof m%s===\"number\")", srcProp)
-                ("d%s=o.longs===String?String(m%s):m%s", dstProp, srcProp, srcProp)
-            ("else") // Long-like
-                ("d%s=o.longs===String?util.Long.prototype.toString.call(m%s):o.longs===Number?new util.LongBits(m%s.low>>>0,m%s.high>>>0).toNumber(%s):m%s", dstProp, srcProp, srcProp, srcProp, isUnsigned ? "true": "", srcProp);
+            ("d%s=o.longs===String?String(m%s):o.longs===Number?Number(m%s):m%s", dstProp, srcProp, srcProp, srcProp);
                 break;
             case "bytes": gen
             ("d%s=o.bytes===String?util.base64.encode(m%s,0,m%s.length):o.bytes===Array?Array.prototype.slice.call(m%s):m%s", dstProp, srcProp, srcProp, srcProp, srcProp);
@@ -231,7 +218,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
 /**
  * Generates a runtime message to plain object converter specific to the specified message type.
  * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @returns {util.Codegen} Codegen instance
  */
 converter.toObject = function toObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -280,11 +267,7 @@ converter.toObject = function toObject(mtype) {
             if (field.resolvedType instanceof Enum) gen
         ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
             else if (field.long) gen
-        ("if(util.Long){")
-            ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
-            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():typeof BigInt!==\"undefined\"&&o.longs===BigInt?n.toBigInt():n", prop)
-        ("}else")
-            ("d%s=o.longs===String?%j:typeof BigInt!==\"undefined\"&&o.longs===BigInt?BigInt(%j):%i", prop, field.typeDefault.toString(), field.typeDefault.toString(), field.typeDefault.toNumber());
+        ("d%s=o.longs===String?%j:o.longs===Number?%i:%sn", prop, field.typeDefault.toString(), Number(field.typeDefault), field.typeDefault.toString());
             else if (field.bytes) {
                 var arrayDefault = Array.prototype.slice.call(field.typeDefault);
                 gen
@@ -308,17 +291,11 @@ converter.toObject = function toObject(mtype) {
     ("var ks2");
             } gen
     ("if(m%s&&(ks2=Object.keys(m%s)).length){", prop, prop)
-        ("d%s={}", prop);
-            var longKey = types.long[field.keyType] !== undefined,
-                srcProp = prop + "[ks2[j]]";
-            gen
-        ("for(var j=0;j<ks2.length;++j){");
-            if (longKey) gen
-            ("var k2=util.longFromKey(ks2[j],%j).toString()", field.keyType === "uint64" || field.keyType === "fixed64");
-            gen
+        ("d%s={}", prop)
+        ("for(var j=0;j<ks2.length;++j){")
         ("if(ks2[j]===\"__proto__\")")
             ("util.makeProp(d%s,ks2[j])", prop);
-            genValuePartial_toObject(gen, field, /* sorted */ index, longKey ? prop + "[k2]" : srcProp, srcProp)
+            genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[ks2[j]]")
         ("}");
         } else if (field.repeated) { gen
     ("if(m%s&&m%s.length){", prop, prop)
@@ -340,3 +317,5 @@ converter.toObject = function toObject(mtype) {
     ("return d");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
+
+export { converter };

@@ -1,6 +1,3 @@
-"use strict";
-module.exports = EventEmitter;
-
 /**
  * Constructs a new event emitter instance.
  * @classdesc A minimal event emitter.
@@ -19,6 +16,7 @@ function EventEmitter() {
 
 /**
  * Event listener as used by {@link util.EventEmitter}.
+ * @memberof util
  * @typedef EventEmitterListener
  * @type {function}
  * @param {...*} args Arguments
@@ -84,3 +82,5 @@ EventEmitter.prototype.emit = function emit(evt) {
     }
     return this;
 };
+
+export default EventEmitter;

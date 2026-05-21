@@ -1,14 +1,12 @@
-"use strict";
-
 /**
  * Wrappers for common types.
  * @type {Object.<string,IWrapper>}
  * @const
  */
-var wrappers = exports;
+var wrappers = {};
 
-var Message = require("./message"),
-    util    = require("./util/minimal");
+import { Message } from "./message.js";
+import { util } from "./util/minimal.js";
 
 /**
  * From object converter part of an {@link IWrapper}.
@@ -83,8 +81,12 @@ wrappers[".google.protobuf.Any"] = {
             prefix = message.type_url.substring(0, message.type_url.lastIndexOf("/") + 1);
             var type = this.lookup(name);
             /* istanbul ignore else */
-            if (type)
-                message = type.decode(message.value, undefined, undefined, depth + 1);
+            if (type) {
+                var value = message.value;
+                if (!(value instanceof Uint8Array))
+                    value = new Uint8Array(value);
+                message = type.decode(value, undefined, undefined, depth + 1);
+            }
         }
 
         // wrap value if unmapped
@@ -104,3 +106,5 @@ wrappers[".google.protobuf.Any"] = {
         return this.toObject(message, options, depth);
     }
 };
+
+export { wrappers };

@@ -1,6 +1,4 @@
-"use strict";
-
-var fs = require("fs");
+import fs from "node:fs";
 
 var args = process.argv.slice(2),
     file = args[0],
