@@ -1,6 +1,7 @@
 var tape = require("tape");
 
 var protobuf = require("..");
+var pbjs = require("../cli/pbjs");
 
 var proto = "message A {\
     required uint32 a = 1;\
@@ -56,4 +57,34 @@ tape.test("reusing", function(test) {
     });
 
     test.end();
+});
+
+tape.test("reusing with generated static encodeDelimited", function(test) {
+    var root = protobuf.parse(proto).root.resolveAll();
+
+    pbjs.generate(root, {
+        target: "static",
+        root: "test_delimited_writer"
+    }, function(err, output) {
+        test.error(err, "static code generation worked");
+
+        var staticRoot = new Function("$protobuf", output + "\nreturn $root;")(protobuf); // eslint-disable-line no-new-func
+        var writer = protobuf.Writer.create();
+
+        staticRoot.A.encodeDelimited({
+            a: 1
+        }, writer);
+
+        staticRoot.B.encodeDelimited({
+            b: "a"
+        }, writer);
+
+        var buffer = writer.finish();
+        var reader = protobuf.Reader.create(buffer);
+
+        test.deepEqual(staticRoot.A.decodeDelimited(reader), { a: 1 }, "read back the first message");
+        test.deepEqual(staticRoot.B.decodeDelimited(reader), { b: "a" }, "read back the second message");
+        test.equal(reader.pos, reader.len, "consume the reader");
+        test.end();
+    });
 });

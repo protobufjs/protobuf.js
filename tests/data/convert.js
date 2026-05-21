@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-mixed-operators, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, default-case, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -204,7 +204,7 @@ $root.Message = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Message.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -326,7 +326,7 @@ $root.Message = (function() {
                         message.int64Map = {};
                     var end2 = reader.uint32() + reader.pos;
                     key = "";
-                    value = 0;
+                    value = $util.Long ? $util.Long.fromNumber(0, false) : 0;
                     while (reader.pos < end2) {
                         var tag2 = reader.tag();
                         wireType = tag2 & 7;
