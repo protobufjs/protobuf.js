@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.3.0...protobufjs-cli-v1.3.1) (2026-05-22)
+
+
+### Bug Fixes
+
+* Treat fixed64 as unsigned in converters ([#2266](https://github.com/protobufjs/protobuf.js/issues/2266)) ([479dfdc](https://github.com/protobufjs/protobuf.js/commit/479dfdcc690feb9f71986049d3d38c7a0f979abb))
+
 ## [1.3.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.2.2...protobufjs-cli-v1.3.0) (2026-05-18)
 
 
