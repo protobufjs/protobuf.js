@@ -186,6 +186,89 @@ tape.test("decode nesting", function(test) {
     test.end();
 });
 
+tape.test("encode nesting", function(test) {
+    function nestedObject(depth, field) {
+        var object = { value: 42 };
+        for (var i = 0; i < depth; ++i) {
+            if (field === "child")
+                object = { child: object };
+            else if (field === "children")
+                object = { children: [ object ] };
+            else
+                object = { childMap: { child: object } };
+        }
+        return object;
+    }
+
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Node: {
+                fields: {
+                    child: { type: "Node", id: 1 },
+                    children: { rule: "repeated", type: "Node", id: 2 },
+                    childMap: { keyType: "string", type: "Node", id: 3 },
+                    value: { type: "int32", id: 4 }
+                }
+            }
+        }
+    });
+    var Node = root.lookupType("Node");
+    var recursionLimit = protobuf.util.recursionLimit;
+
+    protobuf.util.recursionLimit = 3;
+    try {
+        test.ok(Node.encode(nestedObject(2, "child")).finish().length, "should encode singular messages below the limit");
+        test.throws(function() {
+            Node.encode(nestedObject(4, "child")).finish();
+        }, /max depth exceeded/, "should reject excessive singular message nesting");
+
+        test.ok(Node.encode(nestedObject(2, "children")).finish().length, "should encode repeated messages below the limit");
+        test.throws(function() {
+            Node.encode(nestedObject(4, "children")).finish();
+        }, /max depth exceeded/, "should reject excessive repeated message nesting");
+
+        test.ok(Node.encode(nestedObject(2, "childMap")).finish().length, "should encode map message values below the limit");
+        test.throws(function() {
+            Node.encode(nestedObject(4, "childMap")).finish();
+        }, /max depth exceeded/, "should reject excessive map message value nesting");
+    } finally {
+        protobuf.util.recursionLimit = recursionLimit;
+    }
+
+    test.end();
+});
+
+tape.test("encode setup preserves nesting", function(test) {
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Parent: {
+                fields: {
+                    child: { type: "Child", id: 1 }
+                }
+            },
+            Child: {
+                fields: {
+                    next: { type: "Child", id: 1 },
+                    value: { type: "int32", id: 2 }
+                }
+            }
+        }
+    });
+    var Parent = root.lookupType("Parent");
+    var recursionLimit = protobuf.util.recursionLimit;
+
+    protobuf.util.recursionLimit = 1;
+    try {
+        test.throws(function() {
+            Parent.encode({ child: { next: { value: 42 } } }).finish();
+        }, /max depth exceeded/, "should preserve depth through nested type setup");
+    } finally {
+        protobuf.util.recursionLimit = recursionLimit;
+    }
+
+    test.end();
+});
+
 tape.test("object conversion nesting", function(test) {
     function nestedObject(depth) {
         var object = { value: 42 };

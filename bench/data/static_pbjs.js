@@ -21,15 +21,19 @@ $root.Test = (function() {
     Test.prototype.inner = null;
     Test.prototype.float = 0;
 
-    Test.encode = function encode(message, writer) {
+    Test.encode = function encode(message, writer, q) {
         if (!writer)
             writer = $Writer.create();
+        if (q === undefined)
+            q = 0;
+        if (q > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.string != null && Object.hasOwnProperty.call(message, "string"))
             writer.uint32(10).string(message.string);
         if (message.uint32 != null && Object.hasOwnProperty.call(message, "uint32"))
             writer.uint32(16).uint32(message.uint32);
         if (message.inner != null && Object.hasOwnProperty.call(message, "inner"))
-            $root.Test.Inner.encode(message.inner, writer.uint32(26).fork()).ldelim();
+            $root.Test.Inner.encode(message.inner, writer.uint32(26).fork(), q + 1).ldelim();
         if (message.float != null && Object.hasOwnProperty.call(message, "float"))
             writer.uint32(37).float(message.float);
         return writer;
@@ -85,15 +89,19 @@ $root.Test = (function() {
         Inner.prototype.innerInner = null;
         Inner.prototype.outer = null;
 
-        Inner.encode = function encode(message, writer) {
+        Inner.encode = function encode(message, writer, q) {
             if (!writer)
                 writer = $Writer.create();
+            if (q === undefined)
+                q = 0;
+            if (q > $util.recursionLimit)
+                throw Error("max depth exceeded");
             if (message.int32 != null && Object.hasOwnProperty.call(message, "int32"))
                 writer.uint32(8).int32(message.int32);
             if (message.innerInner != null && Object.hasOwnProperty.call(message, "innerInner"))
-                $root.Test.Inner.InnerInner.encode(message.innerInner, writer.uint32(18).fork()).ldelim();
+                $root.Test.Inner.InnerInner.encode(message.innerInner, writer.uint32(18).fork(), q + 1).ldelim();
             if (message.outer != null && Object.hasOwnProperty.call(message, "outer"))
-                $root.Outer.encode(message.outer, writer.uint32(26).fork()).ldelim();
+                $root.Outer.encode(message.outer, writer.uint32(26).fork(), q + 1).ldelim();
             return writer;
         };
 
@@ -143,9 +151,13 @@ $root.Test = (function() {
             InnerInner.prototype["enum"] = 0;
             InnerInner.prototype.sint32 = 0;
 
-            InnerInner.encode = function encode(message, writer) {
+            InnerInner.encode = function encode(message, writer, q) {
                 if (!writer)
                     writer = $Writer.create();
+                if (q === undefined)
+                    q = 0;
+                if (q > $util.recursionLimit)
+                    throw Error("max depth exceeded");
                 if (message.long != null && Object.hasOwnProperty.call(message, "long"))
                     writer.uint32(8).int64(message.long);
                 if (message["enum"] != null && Object.hasOwnProperty.call(message, "enum"))
@@ -220,9 +232,13 @@ $root.Outer = (function() {
     Outer.prototype.bool = $util.emptyArray;
     Outer.prototype.double = 0;
 
-    Outer.encode = function encode(message, writer) {
+    Outer.encode = function encode(message, writer, q) {
         if (!writer)
             writer = $Writer.create();
+        if (q === undefined)
+            q = 0;
+        if (q > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.bool != null && message.bool.length) {
             writer.uint32(10).fork();
             for (var i = 0; i < message.bool.length; ++i)

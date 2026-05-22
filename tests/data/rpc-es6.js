@@ -128,9 +128,13 @@ export const MyRequest = $root.MyRequest = (() => {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    MyRequest.encode = function encode(message, writer) {
+    MyRequest.encode = function encode(message, writer, q) {
         if (!writer)
             writer = $Writer.create();
+        if (q === undefined)
+            q = 0;
+        if (q > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.path != null && Object.hasOwnProperty.call(message, "path"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
         return writer;
@@ -252,9 +256,13 @@ export const MyRequest = $root.MyRequest = (() => {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    MyRequest.toObject = function toObject(message, options) {
+    MyRequest.toObject = function toObject(message, options, q) {
         if (!options)
             options = {};
+        if (q === undefined)
+            q = 0;
+        if (q > $util.recursionLimit)
+            throw Error("max depth exceeded");
         let object = {};
         if (options.defaults)
             object.path = "";
@@ -345,9 +353,13 @@ export const MyResponse = $root.MyResponse = (() => {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    MyResponse.encode = function encode(message, writer) {
+    MyResponse.encode = function encode(message, writer, q) {
         if (!writer)
             writer = $Writer.create();
+        if (q === undefined)
+            q = 0;
+        if (q > $util.recursionLimit)
+            throw Error("max depth exceeded");
         if (message.status != null && Object.hasOwnProperty.call(message, "status"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
         return writer;
@@ -469,9 +481,13 @@ export const MyResponse = $root.MyResponse = (() => {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    MyResponse.toObject = function toObject(message, options) {
+    MyResponse.toObject = function toObject(message, options, q) {
         if (!options)
             options = {};
+        if (q === undefined)
+            q = 0;
+        if (q > $util.recursionLimit)
+            throw Error("max depth exceeded");
         let object = {};
         if (options.defaults)
             object.status = 0;
