@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.4.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.4.1...protobufjs-cli-v2.4.2) (2026-05-22)
+
+
+### Bug Fixes
+
+* Align reserved range semantics ([#2277](https://github.com/protobufjs/protobuf.js/issues/2277)) ([48aa10f](https://github.com/protobufjs/protobuf.js/commit/48aa10f642bde16b6061463cd9ee9fa6f495532f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * protobufjs bumped from file:.. to 8.4.2
+  * peerDependencies
+    * protobufjs bumped from ^8.4.1 to ^8.4.2
+
 ## [2.4.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.4.0...protobufjs-cli-v2.4.1) (2026-05-21)
 
 
