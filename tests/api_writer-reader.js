@@ -38,6 +38,8 @@ tape.test("writer & reader", function(test) {
 
     test.ok(expect("uint32", -1 >>> 0, [ 255, 255, 255, 255, 15 ]), "should write -1 as an unsigned varint of length 5");
     test.ok(expect("int32", -1, [ 255, 255, 255, 255, 255, 255, 255, 255, 255, 1 ]), "should write -1 as a signed varint of length 10");
+    test.ok(expectCoerced("int32", -0.1, [ 0 ], 0), "should coerce fractional signed varints before sizing");
+    test.ok(expectCoerced("int32", 2147483648, [ 128, 128, 128, 128, 248, 255, 255, 255, 255, 1 ], -2147483648), "should coerce out-of-range signed varints before sizing");
     test.ok(expect("sint32", -1, [ 1 ]), "should write -1 as a signed zig-zag encoded varint of length 1");
     var reader = Reader.create([ 128, 128, 128, 128, 128, 0, 1 ]);
     test.equal(reader.uint32(), 0, "should read non-minimal uint32 varints");
@@ -170,6 +172,16 @@ tape.test("writer & reader", function(test) {
         test.end();
     });
 
+    test.test(test.name + " - repeated finish", function(test) {
+
+        [ "int32", "uint64", "int64", "sint64" ].forEach(function(type) {
+            var writer = Writer.create()[type](-1);
+            test.same(Array.prototype.slice.call(writer.finish()), Array.prototype.slice.call(writer.finish()), "should preserve " + type + " operation state");
+        });
+
+        test.end();
+    });
+
     test.throws(function() {
       const root = protobuf.Root.fromJSON({
         nested: {
@@ -230,6 +242,35 @@ function expect(type, value, expected, WriterToTest) {
     // also test browser writer if running under node
     if (WriterToTest !== protobuf.Writer) {
         if (!expect(type, value, expected, Writer)) {
+            console.error("in browser writer");
+            return false;
+        }
+    }
+    return true;
+}
+
+function expectCoerced(type, value, expected, expectedValue, WriterToTest) {
+    if (!WriterToTest)
+        WriterToTest = Writer.create().constructor;
+    var writer = new WriterToTest();
+    var actual = writer[type](value).finish();
+    if (actual.length !== expected.length) {
+        console.error("actual", Array.prototype.slice.call(actual), "!= expected", expected);
+        return false;
+    }
+    for (var i = 0; i < expected.length; ++i)
+        if (actual[i] !== expected[i]) {
+            console.error("actual", Array.prototype.slice.call(actual), "!= expected", expected);
+            return false;
+        }
+    var reader = Reader.create(actual);
+    var actualValue = reader[type]();
+    if (actualValue !== expectedValue) {
+        console.error("actual value", actualValue, "!= expected", expectedValue);
+        return false;
+    }
+    if (WriterToTest !== protobuf.Writer) {
+        if (!expectCoerced(type, value, expected, expectedValue, Writer)) {
             console.error("in browser writer");
             return false;
         }
