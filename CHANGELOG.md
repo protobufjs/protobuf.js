@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.4.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.4.1...protobufjs-v8.4.2) (2026-05-22)
+
+
+### Bug Fixes
+
+* Align reserved range semantics ([#2277](https://github.com/protobufjs/protobuf.js/issues/2277)) ([48aa10f](https://github.com/protobufjs/protobuf.js/commit/48aa10f642bde16b6061463cd9ee9fa6f495532f))
+* Coerce int32 values before writer sizing ([#2281](https://github.com/protobufjs/protobuf.js/issues/2281)) ([53c2e54](https://github.com/protobufjs/protobuf.js/commit/53c2e54729cdb9aed87e59c40215cb44fdeb122e))
+
 ## [8.4.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.4.0...protobufjs-v8.4.1) (2026-05-21)
 
 
