@@ -51,6 +51,48 @@ tape.test("descriptor - proto2 roundtrip", function (test) {
     test.end();
 });
 
+tape.test("descriptor - ranges use descriptor end semantics at boundary", function (test) {
+    var root = protobuf.parse(`syntax = "proto2";
+
+        message Message {
+            extensions 100 to 199;
+            reserved 2, 9 to 11;
+            reserved "old";
+            optional string value = 1;
+
+            enum Values {
+                reserved -2 to -1, 2, 40 to max;
+                reserved "OLD";
+                ZERO = 0;
+                OK = 1;
+            }
+        }
+    `).root.resolveAll();
+
+    var descriptorSet = root.toDescriptor("proto2"),
+        descriptorMessage = descriptorSet.file[0].messageType[0],
+        descriptorEnum = descriptorMessage.enumType[0];
+
+    test.same(root.lookupType("Message").extensions, [[100, 199]], "extensions are inclusive internally");
+    test.same(root.lookupType("Message").reserved, [[2, 2], [9, 11], "old"], "message reserved ranges are inclusive internally");
+    test.same(root.lookupEnum("Message.Values").reserved, [[-2, -1], [2, 2], [40, 2147483647], "OLD"], "enum reserved ranges are inclusive internally");
+
+    test.same(descriptorMessage.extensionRange.map(function(range) {
+        return [range.start, range.end];
+    }), [[100, 200]], "message extension descriptors use exclusive end");
+    test.same(descriptorMessage.reservedRange.map(function(range) {
+        return [range.start, range.end];
+    }), [[2, 3], [9, 12]], "message reserved descriptors use exclusive end");
+    test.same(descriptorEnum.reservedRange.map(function(range) {
+        return [range.start, range.end];
+    }), [[-2, -1], [2, 2], [40, 2147483647]], "enum reserved descriptors keep inclusive end");
+    test.same(descriptorEnum.reservedName, ["OLD"], "enum reserved names are emitted");
+
+    test.same(protobuf.Root.fromDescriptor(descriptorSet).toJSON(), root.toJSON(), "JSON should roundtrip");
+
+    test.end();
+});
+
 tape.test("descriptor - proto3 roundtrip", function (test) {
     var root = protobuf.parse(`syntax = "proto3";
 

@@ -25,6 +25,8 @@ var out = [];
 var indent = 0;
 var first = false;
 var syntax = 3;
+var maxFieldId = 0x1FFFFFFF; // 2^29 - 1
+var maxEnumId = 0x7FFFFFFF; // 2^31 - 1
 
 function proto_target(root, options, callback) {
     if (options) {
@@ -146,23 +148,29 @@ function buildEnum(enm) {
         }
         push(name + " = " + val + ";");
     });
+    buildRanges("reserved", enm.reserved, maxEnumId);
     --indent; first = false;
     push("}");
 }
 
-function buildRanges(keyword, ranges) {
+function buildRanges(keyword, ranges, max) {
+    max = max || maxFieldId;
     if (ranges && ranges.length) {
-        var parts = [];
+        var parts = [],
+            names = [];
         ranges.forEach(function(range) {
             if (typeof range === "string")
-                parts.push("\"" + escape(range) + "\"");
+                names.push("\"" + escape(range) + "\"");
             else if (range[0] === range[1])
                 parts.push(range[0]);
             else
-                parts.push(range[0] + " to " + (range[1] === 0x1FFFFFFF ? "max" : range[1]));
+                parts.push(range[0] + " to " + (range[1] === max ? "max" : range[1]));
         });
         push("");
-        push(keyword + " " + parts.join(", ") + ";");
+        if (parts.length)
+            push(keyword + " " + parts.join(", ") + ";");
+        if (names.length)
+            push(keyword + " " + names.join(", ") + ";");
     }
 }
 

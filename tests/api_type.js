@@ -109,6 +109,10 @@ tape.test("reflected types", function(test) {
     }, Error, "should throw when trying to add reserved ids");
 
     test.throws(function() {
+        type.add(new protobuf.Field("c", 999, "uint32"));
+    }, Error, "should throw when trying to add reserved range end ids");
+
+    test.throws(function() {
         type.add(new protobuf.Field("b", 2, "uint32"));
     }, Error, "should throw when trying to add reserved names");
 

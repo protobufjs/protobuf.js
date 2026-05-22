@@ -33,6 +33,31 @@ message OptionalFields {
     });
 });
 
+tape.test("proto3 enum reserved max roundtrip", function(test) {
+    const proto = `syntax = "proto3";
+
+enum Values {
+
+    ZERO = 0;
+    OK = 1;
+
+    reserved -2 to -1, 40 to max;
+    reserved "OLD";
+}`;
+    cliTest(test, function() {
+        var root = protobuf.parse(proto).root.resolveAll();
+        var protoTarget = require("../cli/targets/proto3");
+
+        protoTarget(root, {}, function(err, output) {
+            test.error(err, "proto code generation worked");
+
+            test.equal(output, proto);
+
+            test.end();
+        });
+    });
+});
+
 tape.test("proto2 roundtrip", function(test) {
     const proto = `syntax = "proto2";
 

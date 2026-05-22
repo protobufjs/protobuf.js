@@ -27,6 +27,9 @@ var base10Re    = /^[1-9][0-9]*$/,
     nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
     typeRefRe   = util.patterns.typeRefRe;
 
+var maxFieldId = 536870911, // 2^29 - 1
+    maxEnumId = 2147483647; // 2^31 - 1
+
 /**
  * Result object returned from {@link parse}.
  * @interface IParserResult
@@ -146,7 +149,7 @@ function parse(source, root, options) {
         }
     }
 
-    function readRanges(target, acceptStrings) {
+    function readRanges(target, acceptStrings, max, acceptNegative) {
         var token, start;
         do {
             if (acceptStrings && ((token = peek()) === "\"" || token === "'")) {
@@ -157,7 +160,7 @@ function parse(source, root, options) {
                 }
             } else {
                 try {
-                    target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
+                    target.push([ start = parseId(next(), acceptNegative, max), skip("to", true) ? parseId(next(), acceptNegative, max) : start ]);
                 } catch (err) {
                     if (acceptStrings && typeRefRe.test(token) && edition >= 2023) {
                         target.push(token);
@@ -216,10 +219,10 @@ function parse(source, root, options) {
         throw illegal(token, "number", insideTryCatch);
     }
 
-    function parseId(token, acceptNegative) {
+    function parseId(token, acceptNegative, max) {
         switch (token) {
             case "max": case "MAX": case "Max":
-                return 536870911;
+                return max || maxFieldId;
             case "0":
                 return 0;
         }
@@ -677,7 +680,7 @@ function parse(source, root, options) {
               break;
 
             case "reserved":
-              readRanges(enm.reserved || (enm.reserved = []), true);
+              readRanges(enm.reserved || (enm.reserved = []), true, maxEnumId, true);
               if(enm.reserved === undefined) enm.reserved = [];
               break;
 
