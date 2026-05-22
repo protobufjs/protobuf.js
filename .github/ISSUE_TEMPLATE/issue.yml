@@ -1,0 +1,42 @@
+name: Issue
+description: Report a bug or other actionable issue.
+body:
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include the smallest schema, code, command, input, or error output that reproduces the issue.
+    validations:
+      required: true
+  - type: input
+    id: protobufjs-version
+    attributes:
+      label: protobufjs version
+    validations:
+      required: true
+  - type: input
+    id: protobufjs-cli-version
+    attributes:
+      label: protobufjs-cli version, if applicable
+      description: Required when using pbjs, pbts, or protoc-gen-pbjs.
+    validations:
+      required: false
+  - type: input
+    id: environment
+    attributes:
+      label: Environment, if applicable
+      description: Node / browser / bundler / CLI / TypeScript / other
+    validations:
+      required: false
