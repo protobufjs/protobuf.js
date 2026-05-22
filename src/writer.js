@@ -225,7 +225,7 @@ Writer.prototype.uint32 = function write_uint32(value) {
  * @returns {Writer} `this`
  */
 Writer.prototype.int32 = function write_int32(value) {
-    return value < 0
+    return (value |= 0) < 0
         ? this._push(writeVarint64, 10, LongBits.fromNumber(value)) // 10 bytes per spec
         : this.uint32(value);
 };
@@ -240,16 +240,18 @@ Writer.prototype.sint32 = function write_sint32(value) {
 };
 
 function writeVarint64(val, buf, pos) {
-    while (val.hi) {
-        buf[pos++] = val.lo & 127 | 128;
-        val.lo = (val.lo >>> 7 | val.hi << 25) >>> 0;
-        val.hi >>>= 7;
+    var lo = val.lo,
+        hi = val.hi;
+    while (hi) {
+        buf[pos++] = lo & 127 | 128;
+        lo = (lo >>> 7 | hi << 25) >>> 0;
+        hi >>>= 7;
     }
-    while (val.lo > 127) {
-        buf[pos++] = val.lo & 127 | 128;
-        val.lo = val.lo >>> 7;
+    while (lo > 127) {
+        buf[pos++] = lo & 127 | 128;
+        lo = lo >>> 7;
     }
-    buf[pos++] = val.lo;
+    buf[pos++] = lo;
 }
 
 /**
