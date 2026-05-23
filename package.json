@@ -26,6 +26,7 @@
     "bench": "node bench",
     "build": "npm run build:bundle && npm run build:types",
     "build:bundle": "gulp --gulpfile scripts/gulpfile.js",
+    "build:tests": "node ./scripts/gentests.js",
     "build:types": "node cli/bin/pbts --main --global protobuf --out index.d.ts src/ && node cli/bin/pbts --main --import \"\\$protobuf=..\" --out ext/descriptor.generated.d.ts ext/descriptor.js && node cli/bin/pbts --main --out ext/textformat.generated.d.ts ext/textformat.js",
     "coverage": "npm run coverage:test && npm run coverage:report",
     "coverage:test": "nyc --silent tape -r ./lib/tape-adapter tests/*.js tests/node/*.js",
@@ -43,7 +44,7 @@
     "test": "npm run test:sources && npm run test:types",
     "test:sources": "tape -r ./lib/tape-adapter tests/*.js tests/node/*.js",
     "test:types": "tsc tests/comp_typescript.ts --target es2019 --module commonjs --types node --lib es2019 --esModuleInterop --strictNullChecks --experimentalDecorators --emitDecoratorMetadata && tsc -p tsconfig.test-types.json",
-    "make": "npm run lint:sources && npm run build && npm run lint:types && node ./scripts/gentests.js && npm test"
+    "make": "npm run lint:sources && npm run build && npm run lint:types && npm run build:tests && npm test"
   },
   "dependencies": {
     "long": "^5.3.2"
