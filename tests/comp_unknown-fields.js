@@ -72,6 +72,107 @@ tape.test("unknown fields - can be discarded", function(test) {
     test.end();
 });
 
+tape.test("unknown fields - reader discardUnknown option", function(test) {
+    var root = protobuf.parse(proto).root,
+        SimpleV1 = root.lookupType("SimpleV1"),
+        SimpleV2 = root.lookupType("SimpleV2"),
+        encoded = SimpleV2.encode({
+            known: 1,
+            futureBool: true,
+            futureString: "hello"
+        }).finish(),
+        reader = protobuf.Reader.create(encoded);
+
+    reader.discardUnknown = true;
+    var decoded = SimpleV1.decode(reader);
+
+    test.equal(decoded.known, 1, "should decode known fields");
+    test.equal(Object.hasOwnProperty.call(decoded, "$unknowns"), false, "should not retain unknown fields");
+
+    var restored = SimpleV2.decode(SimpleV1.encode(decoded).finish());
+    test.equal(restored.known, 1, "should preserve known fields");
+    test.equal(Object.hasOwnProperty.call(restored, "futureBool"), false, "should discard unknown bool field");
+    test.equal(Object.hasOwnProperty.call(restored, "futureString"), false, "should discard unknown string field");
+    test.end();
+});
+
+tape.test("unknown fields - reader discardUnknown option propagates to nested messages", function(test) {
+    var nestedProto = "syntax = \"proto3\";\n"
+        + "message InnerV1 {\n"
+        + "  int32 known = 1;\n"
+        + "}\n"
+        + "message InnerV2 {\n"
+        + "  int32 known = 1;\n"
+        + "  string future = 2;\n"
+        + "}\n"
+        + "message OuterV1 {\n"
+        + "  InnerV1 inner = 1;\n"
+        + "}\n"
+        + "message OuterV2 {\n"
+        + "  InnerV2 inner = 1;\n"
+        + "  string future = 2;\n"
+        + "}\n",
+        root = protobuf.parse(nestedProto).root,
+        OuterV1 = root.lookupType("OuterV1"),
+        OuterV2 = root.lookupType("OuterV2"),
+        encoded = OuterV2.encode({
+            inner: {
+                known: 1,
+                future: "nested"
+            },
+            future: "outer"
+        }).finish(),
+        reader = protobuf.Reader.create(encoded);
+
+    reader.discardUnknown = true;
+    var decoded = OuterV1.decode(reader);
+
+    test.equal(decoded.inner.known, 1, "should decode known nested fields");
+    test.equal(Object.hasOwnProperty.call(decoded, "$unknowns"), false, "should not retain outer unknown fields");
+    test.equal(Object.hasOwnProperty.call(decoded.inner, "$unknowns"), false, "should not retain nested unknown fields");
+    test.end();
+});
+
+tape.test("unknown fields - reader discardUnknown option applies to decodeDelimited", function(test) {
+    var root = protobuf.parse(proto).root,
+        SimpleV1 = root.lookupType("SimpleV1"),
+        SimpleV2 = root.lookupType("SimpleV2"),
+        encoded = SimpleV2.encodeDelimited({
+            known: 1,
+            futureBool: true
+        }).finish(),
+        reader = protobuf.Reader.create(encoded);
+
+    reader.discardUnknown = true;
+    var decoded = SimpleV1.decodeDelimited(reader);
+
+    test.equal(decoded.known, 1, "should decode known fields");
+    test.equal(Object.hasOwnProperty.call(decoded, "$unknowns"), false, "should not retain unknown fields");
+    test.end();
+});
+
+tape.test("unknown fields - Reader.discardUnknown default", function(test) {
+    var root = protobuf.parse(proto).root,
+        SimpleV1 = root.lookupType("SimpleV1"),
+        SimpleV2 = root.lookupType("SimpleV2"),
+        discardUnknown = protobuf.Reader.discardUnknown,
+        encoded = SimpleV2.encode({
+            known: 1,
+            futureBool: true
+        }).finish();
+
+    try {
+        protobuf.Reader.discardUnknown = true;
+
+        var decoded = SimpleV1.decode(encoded);
+        test.equal(decoded.known, 1, "should decode known fields");
+        test.equal(Object.hasOwnProperty.call(decoded, "$unknowns"), false, "should use the reader default");
+    } finally {
+        protobuf.Reader.discardUnknown = discardUnknown;
+    }
+    test.end();
+});
+
 tape.test("unknown fields - only encode own unknown fields", function(test) {
     var root = protobuf.parse(proto).root,
         SimpleV1 = root.lookupType("SimpleV1"),

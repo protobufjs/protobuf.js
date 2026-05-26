@@ -1,6 +1,6 @@
 // test currently consists only of not throwing
 
-import { Root, Message, Method, Type, Field, MapField, OneOf, IEnum, IField, IMethod, IOneOf, IService, IType, ReflectedMessage } from "..";
+import { Root, Message, Method, Type, Field, MapField, OneOf, IEnum, IField, IMethod, IOneOf, IService, IType, ReflectedMessage, Reader } from "..";
 
 // Reflection
 const root = Root.fromJSON({
@@ -23,6 +23,11 @@ type Assert<T extends true> = T;
 type ReflectedTypeIsType = Assert<typeof reflectedCreated.$type extends Type ? true : false>;
 const reflectedCreatedValue: string = reflectedCreated.value;
 const reflectedDecodedValue: string = HelloReflected.decode(HelloReflected.encode({ value: "hi" }).finish()).value;
+const reflectedReader = Reader.create(HelloReflected.encode({ value: "hi" }).finish());
+reflectedReader.discardUnknown = true;
+const reflectedDecodedWithReader: ReflectedMessage = HelloReflected.decode(reflectedReader);
+const readerDiscardUnknownDefault: boolean = Reader.discardUnknown;
+Reader.discardUnknown = readerDiscardUnknownDefault;
 const reflectedConvertedValue: string = HelloReflected.fromObject({ value: "hi" }).value;
 
 const parsedOptionValue: number | undefined = HelloReflected.parsedOptions?.[0]["(custom_option)"];
@@ -62,6 +67,9 @@ helloCreated.foo();
 let helloMessage = new Hello({ value: "hi" });
 let helloBuffer  = Hello.encode(helloMessage.foo()).finish();
 let helloDecoded = Hello.decode(helloBuffer);
+let helloReader = Reader.create(helloBuffer);
+helloReader.discardUnknown = true;
+let helloDecodedWithReader = Hello.decode(helloReader);
 
 // Decorators
 
