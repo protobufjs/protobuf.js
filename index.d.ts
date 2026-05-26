@@ -666,13 +666,16 @@ export class Method extends ReflectionObject {
     requestType: string;
 
     /** Whether requests are streamed or not. */
-    requestStream?: boolean;
+    requestStream?: true;
 
     /** Response type. */
     responseType: string;
 
     /** Whether responses are streamed or not. */
-    responseStream?: boolean;
+    responseStream?: true;
+
+    /** gRPC-style method path. */
+    path: string;
 
     /** Resolved request type. */
     resolvedRequestType: (Type|null);
@@ -1453,13 +1456,17 @@ export namespace rpc {
      */
     type ServiceMethodCallback<TRes extends Message<TRes>> = (error: (Error|null), response?: TRes) => void;
 
-    /**
-     * A service method part of a {@link rpc.Service} as created by {@link Service.create}.
-     * @param request Request message or plain object
-     * @param [callback] Node-style callback called with the error, if any, and the response message
-     * @returns Promise if `callback` has been omitted, otherwise `undefined`
-     */
-    type ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> = (request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>) => Promise<Message<TRes>>;
+    /** A service method part of a {@link rpc.Service} as created by {@link Service.create}. */
+    type ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> = {
+  (request: TReq|Properties<TReq>, callback: rpc.ServiceMethodCallback<TRes>): void;
+  (request: TReq|Properties<TReq>): Promise<TRes>;
+  readonly name: string;
+  readonly path: string;
+  readonly requestType: string;
+  readonly responseType: string;
+  readonly requestStream: true|undefined;
+  readonly responseStream: true|undefined;
+};
 
     /** An RPC service as returned by {@link Service#create}. */
     class Service extends util.EventEmitter {

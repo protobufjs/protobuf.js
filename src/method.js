@@ -61,7 +61,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 
     /**
      * Whether requests are streamed or not.
-     * @type {boolean|undefined}
+     * @type {true|undefined}
      */
     this.requestStream = requestStream ? true : undefined; // toJSON
 
@@ -73,9 +73,15 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 
     /**
      * Whether responses are streamed or not.
-     * @type {boolean|undefined}
+     * @type {true|undefined}
      */
     this.responseStream = responseStream ? true : undefined; // toJSON
+
+    /**
+     * gRPC-style method path.
+     * @type {string}
+     */
+    this.path = "/" + this.name;
 
     /**
      * Resolved request type.
@@ -153,6 +159,14 @@ Method.prototype.resolve = function resolve() {
     /* istanbul ignore if */
     if (this.resolved)
         return this;
+
+    if (this.parent) {
+        var serviceName = this.parent.fullName;
+        if (serviceName.charAt(0) === ".")
+            serviceName = serviceName.substring(1);
+        this.path = "/" + serviceName + "/" + this.name;
+    } else
+        this.path = "/" + this.name;
 
     this.resolvedRequestType = this.parent.lookupType(this.requestType);
     this.resolvedResponseType = this.parent.lookupType(this.responseType);

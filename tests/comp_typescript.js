@@ -35,6 +35,35 @@ const reflectedConvertedValue = HelloReflected.fromObject({ value: "hi" }).value
 const parsedOptionValue = (_a = HelloReflected.parsedOptions) === null || _a === void 0 ? void 0 : _a[0]["(custom_option)"];
 const reflectedMethod = new __1.Method("Call", undefined, "Hello", "Hello", false, false, undefined, undefined, [{ option: 1 }]);
 const parsedMethodOptionValue = (_b = reflectedMethod.parsedOptions) === null || _b === void 0 ? void 0 : _b[0].option;
+const reflectedMethodPath = reflectedMethod.path;
+const reflectedMethodRequestStream = reflectedMethod.requestStream;
+const rpcImpl = (method, requestData, callback) => {
+    const path = method.path;
+    const requestType = method.requestType;
+    const responseStream = method.responseStream;
+    callback(null, requestData);
+};
+function checkGenericRpcServiceMethod(method, request) {
+    const promiseResult = method(request);
+    const callbackResult = method(request, (err, response) => {
+        const callbackError = err;
+        const callbackResponse = response;
+    });
+    const path = method.path;
+    const requestStream = method.requestStream;
+}
+function checkStaticRpcServiceTypes(staticRpcService, staticRpcRequest) {
+    const staticRpcResponse = staticRpcService.myMethod(staticRpcRequest);
+    staticRpcService.myMethod(staticRpcRequest, (err, response) => {
+        const staticRpcError = err;
+        const staticRpcCallbackResponse = response;
+    });
+    const staticRpcMethodPath = staticRpcService.myMethod.path;
+    const staticRpcMethodRequestType = staticRpcService.myMethod.requestType;
+    const staticRpcMethodResponseType = staticRpcService.myMethod.responseType;
+    const staticRpcMethodRequestStream = staticRpcService.myMethod.requestStream;
+    const staticRpcMethodResponseStream = staticRpcService.myMethod.responseStream;
+}
 const enumDescriptor = {
     edition: "proto2",
     values: { A: 0 },

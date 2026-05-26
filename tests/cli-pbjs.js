@@ -110,6 +110,67 @@ tape.test("pbjs generates unsigned fixed64 defaults", function(test) {
     });
 });
 
+tape.test("pbjs static service methods expose rpc metadata", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.parse([
+            "syntax = \"proto3\";",
+            "package rpcmeta;",
+            "service TestService {",
+            "  rpc Unary (Request) returns (Response);",
+            "  rpc ServerStream (Request) returns (stream Response);",
+            "  rpc ClientStream (stream Request) returns (Response);",
+            "}",
+            "message Request {}",
+            "message Response {}"
+        ].join("\n")).root;
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {
+            create: true,
+            decode: true,
+            encode: true,
+            convert: true,
+            service: true,
+            comments: true,
+            root: "rpcMetadata"
+        }, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+
+            delete protobuf.roots.rpcMetadata;
+            var $protobuf = protobuf;
+            eval(jsCode);
+
+            var TestService = protobuf.roots.rpcMetadata.rpcmeta.TestService;
+            var unary = TestService.prototype.unary;
+            var serverStream = TestService.prototype.serverStream;
+            var clientStream = TestService.prototype.clientStream;
+
+            test.equal(unary.name, "Unary", "unary method exposes its proto name");
+            test.equal(unary.path, "/rpcmeta.TestService/Unary", "unary method exposes its rpc path");
+            test.equal(unary.requestType, "Request", "unary method exposes request type");
+            test.equal(unary.responseType, "Response", "unary method exposes response type");
+            test.equal(unary.requestStream, undefined, "unary method has no request stream flag");
+            test.equal(unary.responseStream, undefined, "unary method has no response stream flag");
+
+            test.equal(serverStream.responseStream, true, "server streaming method exposes response stream flag");
+            test.equal(clientStream.requestStream, true, "client streaming method exposes request stream flag");
+
+            require("../cli/pbts").process(jsCode, [], function(dtsErr, tsCode) {
+                test.error(dtsErr, "declaration generation worked");
+                test.ok(tsCode.indexOf("unary: rpcmeta.TestService.Unary;") >= 0, "declaration exposes method as typed property");
+                test.ok(tsCode.indexOf("type Unary = {") >= 0, "declaration emits method callable type");
+                test.ok(tsCode.indexOf("readonly path: \"/rpcmeta.TestService/Unary\";") >= 0, "declaration exposes literal rpc path");
+                test.ok(tsCode.indexOf("readonly responseStream: true;") >= 0, "declaration exposes streaming metadata");
+
+                delete protobuf.roots.rpcMetadata;
+                test.end();
+            });
+        });
+    });
+});
+
 tape.test("pbjs generates correct ES module static-module imports", function(test) {
     cliTest(test, function() {
         var root = protobuf.loadSync("tests/data/cli/test.proto");
