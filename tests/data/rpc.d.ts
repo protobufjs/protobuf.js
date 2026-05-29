@@ -4,12 +4,21 @@ import Long = require("long");
 export class MyService extends $protobuf.rpc.Service {
     constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
     static create(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): MyService;
-    myMethod(request: IMyRequest, callback: MyService.MyMethodCallback): void;
-    myMethod(request: IMyRequest): Promise<MyResponse>;
+    myMethod: MyService.MyMethod;
 }
 
 export namespace MyService {
     type MyMethodCallback = (error: (Error|null), response?: MyResponse) => void;
+    type MyMethod = {
+  (request: IMyRequest, callback: MyService.MyMethodCallback): void;
+  (request: IMyRequest): Promise<MyResponse>;
+  readonly name: "MyMethod";
+  readonly path: "/MyService/MyMethod";
+  readonly requestType: "MyRequest";
+  readonly responseType: "MyResponse";
+  readonly requestStream: undefined;
+  readonly responseStream: undefined;
+};
 }
 
 export interface IMyRequest extends MyRequest.$Properties {

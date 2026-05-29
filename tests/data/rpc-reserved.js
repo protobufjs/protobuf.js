@@ -52,27 +52,35 @@ $root.MyService = (function() {
 
     /**
      * Calls Delete.
-     * @function delete
      * @memberof MyService
-     * @instance
-     * @param {IMyRequest} request MyRequest message or plain object
-     * @param {MyService.DeleteCallback} callback Node-style callback called with the error, if any, and MyResponse
-     * @returns {undefined}
-     * @variation 1
+     * @typedef Delete
+     * @type {{
+     *   (request: IMyRequest, callback: MyService.DeleteCallback): void;
+     *   (request: IMyRequest): Promise<MyResponse>;
+     *   readonly name: "Delete";
+     *   readonly path: "/MyService/Delete";
+     *   readonly requestType: "MyRequest";
+     *   readonly responseType: "MyResponse";
+     *   readonly requestStream: undefined;
+     *   readonly responseStream: undefined;
+     * }}
      */
-    Object.defineProperty(MyService.prototype["delete"] = function delete_(request, callback) {
-        return this.rpcCall(delete_, $root.MyRequest, $root.MyResponse, request, callback);
-    }, "name", { value: "Delete" });
 
     /**
      * Calls Delete.
-     * @function delete
-     * @memberof MyService
-     * @instance
-     * @param {IMyRequest} request MyRequest message or plain object
-     * @returns {Promise<MyResponse>} Promise
-     * @variation 2
+     * @name MyService#delete
+     * @type {MyService.Delete}
      */
+    Object.defineProperties(MyService.prototype["delete"] = function delete_(request, callback) {
+        return this.rpcCall(delete_, $root.MyRequest, $root.MyResponse, request, callback);
+    }, {
+        name: { value: "Delete" },
+        path: { value: "/MyService/Delete" },
+        requestType: { value: "MyRequest" },
+        responseType: { value: "MyResponse" },
+        requestStream: { value: undefined },
+        responseStream: { value: undefined }
+    });
 
     return MyService;
 })();

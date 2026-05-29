@@ -167,6 +167,8 @@ Message types expose focused methods for validation, conversion, and binary I/O.
 * **message#toJSON**(): `object`  
   Converts a message instance to JSON-compatible output using default conversion options.
 
+Message instances provide runtime identity, so they can be tested with `instanceof`. Their `toJSON` method integrates them with `JSON.stringify`.
+
 Length-delimited methods read and write a varint byte length before the message, which is useful for streams and framed protocols.
 
 If required fields are missing while decoding proto2 data, `decode` throws `protobuf.util.ProtocolError` with the partially decoded message available as `err.instance`.
@@ -311,7 +313,23 @@ protobuf.js will populate the constructor with the usual static runtime methods 
 
 ### Services
 
-protobuf.js supports service clients built from reflected service definitions. The service API is transport-agnostic: provide an `rpcImpl` function to connect it to HTTP, WebSocket, gRPC, or another transport. See [examples/streaming-rpc.js](./examples/streaming-rpc.js) for details.
+protobuf.js supports service clients built from service definitions. The service API is transport-agnostic: provide an `rpcImpl` function to connect it to HTTP, WebSocket, gRPC, or another transport.
+
+```js
+function myRpcImpl(method, requestData, callback) {
+  // method.name
+  // method.path
+  // method.requestStream?
+  // method.responseStream?
+  performRequest(requestData, function(err, responseData) {
+    callback(err, responseData);
+  });
+}
+
+const myService = MyService.create(myRpcImpl/*, requestDelimited?, responseDelimited? */);
+```
+
+See [examples/streaming-rpc.js](./examples/streaming-rpc.js) for a streaming example.
 
 ### Descriptors
 

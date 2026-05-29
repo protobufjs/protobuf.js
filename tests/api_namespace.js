@@ -35,6 +35,19 @@ tape.test("reflected namespaces", function(test) {
 
     test.equal(ns.get("Msg").lookupTypeOrEnum("Enm"), ns.lookup(".ns.Msg.Enm"), "should lookup the nearest type or enum");
 
+    var collisionRoot = protobuf.parse("syntax = \"proto3\";\
+message NestedMessage { int32 id = 1; }\
+message TestMessage {\
+    message NestedMessage {\
+        int32 id = 1;\
+        string name = 2;\
+    }\
+    NestedMessage nested = 1;\
+}").root.resolveAll();
+    var TestMessage = collisionRoot.lookupType("TestMessage");
+    test.equal(TestMessage.fields.nested.resolvedType.fullName, ".TestMessage.NestedMessage", "should prefer nested types over global types with the same name");
+    test.equal(TestMessage.decode(TestMessage.encode({ nested: { id: 1, name: "hello" } }).finish()).nested.name, "hello", "should encode fields from the nested type");
+
     test.throws(function() {
         ns.lookupType("Enm");
     }, Error, "should throw when looking up an enum as a type");

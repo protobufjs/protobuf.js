@@ -23,10 +23,16 @@ var util = require("../util/minimal");
  * @typedef rpc.ServiceMethod
  * @template TReq extends Message<TReq>
  * @template TRes extends Message<TRes>
- * @type {function}
- * @param {TReq|Properties<TReq>} request Request message or plain object
- * @param {rpc.ServiceMethodCallback<TRes>} [callback] Node-style callback called with the error, if any, and the response message
- * @returns {Promise<Message<TRes>>} Promise if `callback` has been omitted, otherwise `undefined`
+ * @type {{
+ *   (request: TReq|Properties<TReq>, callback: rpc.ServiceMethodCallback<TRes>): void;
+ *   (request: TReq|Properties<TReq>): Promise<TRes>;
+ *   readonly name: string;
+ *   readonly path: string;
+ *   readonly requestType: string;
+ *   readonly responseType: string;
+ *   readonly requestStream: true|undefined;
+ *   readonly responseStream: true|undefined;
+ * }}
  */
 
 /**
