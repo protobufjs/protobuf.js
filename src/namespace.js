@@ -426,14 +426,14 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
     if (path[0] === "")
         return this.root.lookup(path.slice(1), filterTypes);
 
-    // Early bailout for objects with matching absolute paths
-    var found = this.root._fullyQualifiedObjects && this.root._fullyQualifiedObjects["." + flatPath];
+    // Lookup at this namespace and below
+    var found = this._lookupImpl(path, flatPath);
     if (found && (!filterTypes || filterTypes.indexOf(found.constructor) > -1)) {
         return found;
     }
 
-    // Do a regular lookup at this namespace and below
-    found = this._lookupImpl(path, flatPath);
+    // Fall back to respective absolute path once relative scope has been checked (non-standard)
+    found = this.root._fullyQualifiedObjects && this.root._fullyQualifiedObjects["." + flatPath];
     if (found && (!filterTypes || filterTypes.indexOf(found.constructor) > -1)) {
         return found;
     }
