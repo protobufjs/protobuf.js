@@ -42,7 +42,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             } gen
             ("}");
         } else gen
-            ("if(typeof d%s!==\"object\")", prop)
+            ("if(!util.isObject(d%s))", prop)
                 ("throw TypeError(%j)", field.fullName + ": object expected")
             ("m%s=types[%i].fromObject(d%s,q+1)", prop, fieldIndex, prop);
     } else {
@@ -109,6 +109,8 @@ converter.fromObject = function fromObject(mtype) {
     var gen = util.codegen(["d", "q"], mtype.name + "$fromObject")
     ("if(d instanceof C)")
         ("return d")
+    ("if(!util.isObject(d))")
+        ("throw TypeError(%j)", mtype.fullName + ": object expected")
     ("if(q===undefined)q=0")
     ("if(q>util.recursionLimit)")
         ("throw Error(\"max depth exceeded\")");
@@ -125,7 +127,7 @@ converter.fromObject = function fromObject(mtype) {
         // Map fields
         if (field.map) { gen
     ("if(d%s){", prop)
-        ("if(typeof d%s!==\"object\")", prop)
+        ("if(!util.isObject(d%s))", prop)
             ("throw TypeError(%j)", field.fullName + ": object expected")
         ("m%s={}", prop)
         ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
