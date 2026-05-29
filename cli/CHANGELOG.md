@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.5.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.4.2...protobufjs-cli-v2.5.0) (2026-05-29)
+
+
+### Features
+
+* Expose RPC metadata on service methods ([#2286](https://github.com/protobufjs/protobuf.js/issues/2286)) ([711a279](https://github.com/protobufjs/protobuf.js/commit/711a27995f5d15597462b14a7f2cae3852619a6d))
+
+
+### Bug Fixes
+
+* **cli:** Consistently handle derived names ([#2293](https://github.com/protobufjs/protobuf.js/issues/2293)) ([9e80030](https://github.com/protobufjs/protobuf.js/commit/9e80030b25a24c587fe5f2cae67f66e19b24fee4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * protobufjs bumped from file:.. to 8.5.0
+  * peerDependencies
+    * protobufjs bumped from ^8.4.2 to ^8.5.0
+
 ## [2.4.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.4.1...protobufjs-cli-v2.4.2) (2026-05-22)
 
 

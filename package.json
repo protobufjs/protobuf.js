@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "8.4.2",
+  "version": "8.5.0",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript & TypeScript.",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",

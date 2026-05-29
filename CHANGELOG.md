@@ -1,5 +1,20 @@
 # Changelog
 
+## [8.5.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.4.2...protobufjs-v8.5.0) (2026-05-29)
+
+
+### Features
+
+* Add option to discard unknown fields ([#2289](https://github.com/protobufjs/protobuf.js/issues/2289)) ([f8c489b](https://github.com/protobufjs/protobuf.js/commit/f8c489bf44e09060aa6c63a8a0dea2920fa8e5e6))
+* Expose RPC metadata on service methods ([#2286](https://github.com/protobufjs/protobuf.js/issues/2286)) ([711a279](https://github.com/protobufjs/protobuf.js/commit/711a27995f5d15597462b14a7f2cae3852619a6d))
+
+
+### Bug Fixes
+
+* **cli:** Consistently handle derived names ([#2293](https://github.com/protobufjs/protobuf.js/issues/2293)) ([9e80030](https://github.com/protobufjs/protobuf.js/commit/9e80030b25a24c587fe5f2cae67f66e19b24fee4))
+* Consistently reject null message argument in fromObject ([#2287](https://github.com/protobufjs/protobuf.js/issues/2287)) ([0f6178d](https://github.com/protobufjs/protobuf.js/commit/0f6178d83afab6a48584527f625ebe6ce6671750))
+* Prefer nested type resolution over global fallback ([#2288](https://github.com/protobufjs/protobuf.js/issues/2288)) ([4b4c703](https://github.com/protobufjs/protobuf.js/commit/4b4c703c17b9b089492f77afaa16a6c17c5ccbaa))
+
 ## [8.4.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.4.1...protobufjs-v8.4.2) (2026-05-22)
 
 
