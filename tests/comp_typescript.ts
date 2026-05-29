@@ -1,6 +1,8 @@
 // test currently consists only of not throwing
 
-import { Root, Message, Method, Type, Field, MapField, OneOf, IEnum, IField, IMethod, IOneOf, IService, IType, ReflectedMessage } from "..";
+import { Root, Message, Method, Type, Field, MapField, OneOf, IEnum, IField, IMethod, IOneOf, IService, IType, ReflectedMessage, RPCImpl } from "..";
+import type { rpc as RpcNamespace } from "..";
+import type { MyService as StaticRpcService, MyRequest as StaticRpcRequest, MyResponse as StaticRpcResponse } from "./data/rpc.d";
 
 // Reflection
 const root = Root.fromJSON({
@@ -28,6 +30,35 @@ const reflectedConvertedValue: string = HelloReflected.fromObject({ value: "hi" 
 const parsedOptionValue: number | undefined = HelloReflected.parsedOptions?.[0]["(custom_option)"];
 const reflectedMethod = new Method("Call", undefined, "Hello", "Hello", false, false, undefined, undefined, [{ option: 1 }]);
 const parsedMethodOptionValue: number | undefined = reflectedMethod.parsedOptions?.[0].option;
+const reflectedMethodPath: string = reflectedMethod.path;
+const reflectedMethodRequestStream: true | undefined = reflectedMethod.requestStream;
+const rpcImpl: RPCImpl = (method, requestData, callback) => {
+    const path: string = method.path;
+    const requestType: string = method.requestType;
+    const responseStream: true | undefined = method.responseStream;
+    callback(null, requestData);
+};
+function checkGenericRpcServiceMethod(method: RpcNamespace.ServiceMethod<Message<{}>, Message<{}>>, request: Message<{}>): void {
+    const promiseResult: Promise<Message<{}>> = method(request);
+    const callbackResult: void = method(request, (err, response) => {
+        const callbackError: Error | null = err;
+        const callbackResponse: Message<{}> | undefined = response;
+    });
+    const path: string = method.path;
+    const requestStream: true | undefined = method.requestStream;
+}
+function checkStaticRpcServiceTypes(staticRpcService: StaticRpcService, staticRpcRequest: StaticRpcRequest): void {
+    const staticRpcResponse: Promise<StaticRpcResponse> = staticRpcService.myMethod(staticRpcRequest);
+    staticRpcService.myMethod(staticRpcRequest, (err, response) => {
+        const staticRpcError: Error | null = err;
+        const staticRpcCallbackResponse: StaticRpcResponse | undefined = response;
+    });
+    const staticRpcMethodPath: "/MyService/MyMethod" = staticRpcService.myMethod.path;
+    const staticRpcMethodRequestType: "MyRequest" = staticRpcService.myMethod.requestType;
+    const staticRpcMethodResponseType: "MyResponse" = staticRpcService.myMethod.responseType;
+    const staticRpcMethodRequestStream: undefined = staticRpcService.myMethod.requestStream;
+    const staticRpcMethodResponseStream: undefined = staticRpcService.myMethod.responseStream;
+}
 
 const enumDescriptor: IEnum = {
     edition: "proto2",

@@ -43,7 +43,6 @@ tape.test("reflected services", function(test) {
     def.methods.MyMethod = methodDef;
     MyService = protobuf.Service.fromJSON("MyService", def);
     test.same(MyService.toJSON(), def, "should construct with methods from and convert back to JSON");
-    MyMethod = MyService.get("MyMethod");
 
     test.end();
 });
@@ -68,6 +67,7 @@ tape.test("feature resolution legacy proto3", function(test) {
 
     test.same(Service.toJSON(), json, "JSON should roundtrip");
     test.same(Method.toJSON(), json.methods.Method, "method JSON should roundtrip");
+    test.equal(Method.path, "/Service/Method", "should expose the method path");
 
     test.equal(Service._edition, "proto3", "should infer proto3 syntax");
     test.equal(Service._features.field_presence, "IMPLICIT", "should have implicit presence by default");

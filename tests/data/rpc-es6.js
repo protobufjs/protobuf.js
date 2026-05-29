@@ -50,27 +50,35 @@ export const MyService = $root.MyService = (() => {
 
     /**
      * Calls MyMethod.
-     * @function myMethod
      * @memberof MyService
-     * @instance
-     * @param {IMyRequest} request MyRequest message or plain object
-     * @param {MyService.MyMethodCallback} callback Node-style callback called with the error, if any, and MyResponse
-     * @returns {undefined}
-     * @variation 1
+     * @typedef MyMethod
+     * @type {{
+     *   (request: IMyRequest, callback: MyService.MyMethodCallback): void;
+     *   (request: IMyRequest): Promise<MyResponse>;
+     *   readonly name: "MyMethod";
+     *   readonly path: "/MyService/MyMethod";
+     *   readonly requestType: "MyRequest";
+     *   readonly responseType: "MyResponse";
+     *   readonly requestStream: undefined;
+     *   readonly responseStream: undefined;
+     * }}
      */
-    Object.defineProperty(MyService.prototype.myMethod = function myMethod(request, callback) {
-        return this.rpcCall(myMethod, $root.MyRequest, $root.MyResponse, request, callback);
-    }, "name", { value: "MyMethod" });
 
     /**
      * Calls MyMethod.
-     * @function myMethod
-     * @memberof MyService
-     * @instance
-     * @param {IMyRequest} request MyRequest message or plain object
-     * @returns {Promise<MyResponse>} Promise
-     * @variation 2
+     * @name MyService#myMethod
+     * @type {MyService.MyMethod}
      */
+    Object.defineProperties(MyService.prototype.myMethod = function myMethod(request, callback) {
+        return this.rpcCall(myMethod, $root.MyRequest, $root.MyResponse, request, callback);
+    }, {
+        name: { value: "MyMethod" },
+        path: { value: "/MyService/MyMethod" },
+        requestType: { value: "MyRequest" },
+        responseType: { value: "MyResponse" },
+        requestStream: { value: undefined },
+        responseStream: { value: undefined }
+    });
 
     return MyService;
 })();

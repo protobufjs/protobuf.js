@@ -883,7 +883,8 @@ function buildService(ref, service) {
     service.methodsArray.forEach(function(method) {
         method.resolve();
         var lcName = protobuf.util.lcFirst(method.name),
-            cbName = escapeName(method.name + "Callback");
+            cbName = escapeName(method.name + "Callback"),
+            methodTypeName = escapeName(method.name);
         push("");
         pushComment([
             "Callback as used by {@link " + exportName(service) + "#" + escapeName(lcName) + "}.",
@@ -897,30 +898,39 @@ function buildService(ref, service) {
         push("");
         pushComment([
             method.comment || "Calls " + method.name + ".",
-            "@function " + lcName,
             "@memberof " + exportName(service),
-            "@instance",
-            "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
-            "@param {" + exportName(service) + "." + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
-            "@returns {undefined}",
-            "@variation 1"
+            "@typedef " + methodTypeName,
+            "@type {{",
+            "  (request: " + exportName(method.resolvedRequestType, !config.forceMessage) + ", callback: " + exportName(service) + "." + cbName + "): void;",
+            "  (request: " + exportName(method.resolvedRequestType, !config.forceMessage) + "): Promise<" + exportName(method.resolvedResponseType) + ">;",
+            "  readonly name: " + JSON.stringify(method.name) + ";",
+            "  readonly path: " + JSON.stringify(method.path) + ";",
+            "  readonly requestType: " + JSON.stringify(method.requestType) + ";",
+            "  readonly responseType: " + JSON.stringify(method.responseType) + ";",
+            "  readonly requestStream: " + (method.requestStream ? "true" : "undefined") + ";",
+            "  readonly responseStream: " + (method.responseStream ? "true" : "undefined") + ";",
+            "}}"
         ]);
-        push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
+        push("");
+        pushComment([
+            method.comment || "Calls " + method.name + ".",
+            "@name " + exportName(service) + "#" + lcName,
+            "@type {" + exportName(service) + "." + methodTypeName + "}"
+        ]);
+        push("Object.defineProperties(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
             ++indent;
             push("return this.rpcCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request, callback);");
             --indent;
-        push("}, \"name\", { value: " + JSON.stringify(method.name) + " });");
-        if (config.comments)
-            push("");
-        pushComment([
-            method.comment || "Calls " + method.name + ".",
-            "@function " + lcName,
-            "@memberof " + exportName(service),
-            "@instance",
-            "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
-            "@returns {Promise<" + exportName(method.resolvedResponseType) + ">} Promise",
-            "@variation 2"
-        ]);
+        push("}, {");
+            ++indent;
+            push("name: { value: " + JSON.stringify(method.name) + " },");
+            push("path: { value: " + JSON.stringify(method.path) + " },");
+            push("requestType: { value: " + JSON.stringify(method.requestType) + " },");
+            push("responseType: { value: " + JSON.stringify(method.responseType) + " },");
+            push("requestStream: { value: " + (method.requestStream ? "true" : "undefined") + " },");
+            push("responseStream: { value: " + (method.responseStream ? "true" : "undefined") + " }");
+            --indent;
+        push("});");
     });
 }
 

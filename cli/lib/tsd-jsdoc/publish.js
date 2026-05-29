@@ -837,8 +837,20 @@ function handleTypeDef(element, parent) {
         if (element.tsType)
             write(element.tsType.replace(/\r?\n|\r/g, "\n"));
         else {
-            if (element.type && element.type.names.length === 1 && element.type.names[0] === "function")
-                writeFunctionSignature(element, false, true);
+            if (element.type && element.type.names.length === 1 && element.type.names[0] === "function") {
+                if (element.properties && element.properties.length) {
+                    writeln("{");
+                    ++indent;
+                    writeFunctionSignature(element, false, false);
+                    writeln(";");
+                    element.properties.forEach(function(property) {
+                        writeProperty(property);
+                    });
+                    --indent;
+                    write("}");
+                } else
+                    writeFunctionSignature(element, false, true);
+            }
             else if (type === "object") {
                 if (element.properties && element.properties.length)
                     writeInterfaceBody(element);
