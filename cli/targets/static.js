@@ -41,7 +41,7 @@ function static_target(root, options, callback) {
             }
             push("// Exported root namespace");
         }
-        var rootProp = util.safeProp(config.root || "default");
+        var rootProp = "[" + JSON.stringify(String(config.root || "default")) + "]";
         push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
         buildNamespace(null, root);
         return callback(null, out.join("\n"));
@@ -79,18 +79,24 @@ function pushComment(lines) {
     push(" */");
 }
 
+function objectPath(object) {
+    var parts = [];
+    while (object && object.name !== "") {
+        parts.unshift(escapeName(object.name));
+        object = object.parent;
+    }
+    return parts;
+}
+
 function exportName(object, asInterface) {
     if (asInterface) {
         if (object.__interfaceName)
             return object.__interfaceName;
     } else if (object.__exportName)
         return object.__exportName;
-    var parts = object.fullName.substring(1).split("."),
-        i = 0;
-    while (i < parts.length)
-        parts[i] = escapeName(parts[i++]);
-    if (asInterface)
-        parts[i - 1] = "I" + parts[i - 1];
+    var parts = objectPath(object);
+    if (asInterface && parts.length)
+        parts[parts.length - 1] = "I" + parts[parts.length - 1];
     return object[asInterface ? "__interfaceName" : "__exportName"] = parts.join(".");
 }
 
@@ -141,7 +147,15 @@ function buildNamespace(ref, ns) {
         push((config.es6 ? "const" : "var") + " " + escapeName(ns.name) + " = {};");
     }
 
+    var seenNames = new Set();
     ns.nestedArray.forEach(function(nested) {
+        // Only check names of elements that are emitted below
+        if (!(nested instanceof Enum || nested instanceof Namespace) || nested instanceof Service && !config.service)
+            return;
+        var name = escapeName(nested.name);
+        if (seenNames.has(name))
+            throw Error("duplicate generated name '" + name + "'");
+        seenNames.add(name);
         if (nested instanceof Enum)
             buildEnum(ns.name, nested);
         else if (nested instanceof Namespace)
@@ -237,8 +251,27 @@ var renameVars = {
 
 function buildFunction(type, functionName, gen, scope) {
     var code = gen.toString(functionName);
-
     var ast = espree.parse(code);
+
+    function rootMemberRef(object) {
+        var ref = {
+            "type": "Identifier",
+            "name": "$root"
+        };
+        var parts = objectPath(object);
+        for (var i = 0; i < parts.length; ++i)
+            ref = {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": ref,
+                "property": {
+                    "type": "Identifier",
+                    "name": parts[i]
+                }
+            };
+        return ref;
+    }
+
     /* eslint-disable no-extra-parens */
     estraverse.replace(ast, {
         enter: function(node, parent) {
@@ -263,10 +296,7 @@ function buildFunction(type, functionName, gen, scope) {
                  || (parent.type === "BinaryExpression" && parent.operator === "instanceof" && parent.right === node)
                 )
             )
-                return {
-                    "type": "Identifier",
-                    "name": "$root" + type.fullName
-                };
+                return rootMemberRef(type);
             // replace types[N].ctor with the field's actual type constructor
             if (
                 node.type === "MemberExpression"
@@ -275,10 +305,7 @@ function buildFunction(type, functionName, gen, scope) {
              && node.object.property.type === "Literal"
              && node.property.type === "Identifier" && node.property.name === "ctor"
             )
-                return {
-                    "type": "Identifier",
-                    "name": "$root" + type.fieldsArray[node.object.property.value].resolvedType.fullName
-                };
+                return rootMemberRef(type.fieldsArray[node.object.property.value].resolvedType);
             // replace types[N].values with the field's actual enum object
             if (
                 node.type === "MemberExpression"
@@ -287,20 +314,14 @@ function buildFunction(type, functionName, gen, scope) {
              && node.object.property.type === "Literal"
              && node.property.type === "Identifier" && node.property.name === "values"
             )
-                return {
-                    "type": "Identifier",
-                    "name": "$root" + type.fieldsArray[node.object.property.value].resolvedType.fullName
-                };
+                return rootMemberRef(type.fieldsArray[node.object.property.value].resolvedType);
             // replace types[N] with the field's actual type
             if (
                 node.type === "MemberExpression"
              && node.object.type === "Identifier" && node.object.name === "types"
              && node.property.type === "Literal"
             )
-                return {
-                    "type": "Identifier",
-                    "name": "$root" + type.fieldsArray[node.property.value].resolvedType.fullName
-                };
+                return rootMemberRef(type.fieldsArray[node.property.value].resolvedType);
             return undefined;
         }
     });
