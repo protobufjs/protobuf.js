@@ -432,6 +432,8 @@
                 
                     <li data-name="BufferReader#buf"><a href="BufferReader.html#buf">buf</a></li>
                 
+                    <li data-name="BufferReader#discardUnknown"><a href="BufferReader.html#discardUnknown">discardUnknown</a></li>
+                
                     <li data-name="BufferReader#len"><a href="BufferReader.html#len">len</a></li>
                 
                     <li data-name="BufferReader#pos"><a href="BufferReader.html#pos">pos</a></li>
@@ -1046,6 +1048,8 @@
                 
                     <li data-name="Method#parsedOptions"><a href="Method.html#parsedOptions">parsedOptions</a></li>
                 
+                    <li data-name="Method#path"><a href="Method.html#path">path</a></li>
+                
                     <li data-name="Method#requestStream"><a href="Method.html#requestStream">requestStream</a></li>
                 
                     <li data-name="Method#requestType"><a href="Method.html#requestType">requestType</a></li>
@@ -1396,9 +1400,13 @@
                 
                     <li data-name="Reader#buf"><a href="Reader.html#buf">buf</a></li>
                 
+                    <li data-name="Reader#discardUnknown"><a href="Reader.html#discardUnknown">discardUnknown</a></li>
+                
                     <li data-name="Reader#len"><a href="Reader.html#len">len</a></li>
                 
                     <li data-name="Reader#pos"><a href="Reader.html#pos">pos</a></li>
+                
+                    <li data-name="Reader.discardUnknown"><a href="Reader.html#.discardUnknown">discardUnknown</a></li>
                 
                     <li data-name="Reader.recursionLimit"><a href="Reader.html#.recursionLimit">recursionLimit</a></li>
                 
@@ -2228,106 +2236,32 @@
                 
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".ServiceMethod">
-            
-            rpc.ServiceMethod<span class="signature">(request, <span class="optional">callback</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Promise&lt;<a href="Message.html">Message</a>.&lt;TRes>> }</span>
-        </h4>
-    
+        <h4 class="name" id=".ServiceMethod">rpc.ServiceMethod <span class="type-signature type">{ {
+  (request: TReq|Properties&lt;TReq>, callback: rpc.ServiceMethodCallback&lt;TRes>): void;
+  (request: TReq|Properties&lt;TReq>): Promise&lt;TRes>;
+  readonly name: string;
+  readonly path: string;
+  readonly requestType: string;
+  readonly responseType: string;
+  readonly requestStream: true|undefined;
+  readonly responseStream: true|undefined;
+} }</span></h4>
+
         
         <div class="tag-source">
             <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/rpc/service.js">rpc/service.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/rpc/service.js#L21">line 21</a>
         </div>
         
     </div>
-
+    
     
 </dt>
 <dd>
-    
     
     <div class="description">
         <p>A service method part of a <a href="rpc.Service.html">rpc.Service</a> as created by Service.create.</p>
     </div>
     
-
-    
-    
-    
-    
-    
-        <h5 class="subsection-title">Parameters:</h5>
-        
-
-<table class="params parameter-table">
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>request</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">TReq</span>
-|
-
-<span class="param-type"><a href="global.html#Properties">Properties</a>.&lt;TReq></span>
-
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Request message or plain object</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="rpc.html#.ServiceMethodCallback">rpc.ServiceMethodCallback</a>.&lt;TRes></span>
-
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Node-style callback called with the error, if any, and the response message</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-
-    
     
     
 
@@ -2352,39 +2286,6 @@
 
 
 
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5 class="subsection-title">Returns:</h5>
-    
-
-
-<table class="returns return-table">
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        Promise.&lt;<a href="Message.html">Message</a>.&lt;TRes>>
-                        
-                    
-            </td>
-            <td class="description last">Promise if <code>callback</code> has been omitted, otherwise <code>undefined</code></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-
-    
     
     
 </dd>

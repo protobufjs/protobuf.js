@@ -432,6 +432,8 @@
                 
                     <li data-name="BufferReader#buf"><a href="BufferReader.html#buf">buf</a></li>
                 
+                    <li data-name="BufferReader#discardUnknown"><a href="BufferReader.html#discardUnknown">discardUnknown</a></li>
+                
                     <li data-name="BufferReader#len"><a href="BufferReader.html#len">len</a></li>
                 
                     <li data-name="BufferReader#pos"><a href="BufferReader.html#pos">pos</a></li>
@@ -1046,6 +1048,8 @@
                 
                     <li data-name="Method#parsedOptions"><a href="Method.html#parsedOptions">parsedOptions</a></li>
                 
+                    <li data-name="Method#path"><a href="Method.html#path">path</a></li>
+                
                     <li data-name="Method#requestStream"><a href="Method.html#requestStream">requestStream</a></li>
                 
                     <li data-name="Method#requestType"><a href="Method.html#requestType">requestType</a></li>
@@ -1396,9 +1400,13 @@
                 
                     <li data-name="Reader#buf"><a href="Reader.html#buf">buf</a></li>
                 
+                    <li data-name="Reader#discardUnknown"><a href="Reader.html#discardUnknown">discardUnknown</a></li>
+                
                     <li data-name="Reader#len"><a href="Reader.html#len">len</a></li>
                 
                     <li data-name="Reader#pos"><a href="Reader.html#pos">pos</a></li>
+                
+                    <li data-name="Reader.discardUnknown"><a href="Reader.html#.discardUnknown">discardUnknown</a></li>
                 
                     <li data-name="Reader.recursionLimit"><a href="Reader.html#.recursionLimit">recursionLimit</a></li>
                 
@@ -2552,7 +2560,7 @@
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L96">line 96</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L102">line 102</a>
         </div>
         
     </div>
@@ -2846,7 +2854,7 @@
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L102">line 102</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L108">line 108</a>
         </div>
         
     </div>
@@ -2891,7 +2899,56 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="requestStream">requestStream <span class="type-signature type">{ boolean | undefined }</span></h4>
+        <h4 class="name" id="path">path <span class="type-signature type">{ string }</span></h4>
+
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L84">line 84</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>gRPC-style method path.</p>
+    </div>
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="requestStream">requestStream <span class="type-signature type">{ true | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -3042,7 +3099,7 @@
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L84">line 84</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L90">line 90</a>
         </div>
         
     </div>
@@ -3091,7 +3148,7 @@
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L90">line 90</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L96">line 96</a>
         </div>
         
     </div>
@@ -3136,7 +3193,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="responseStream">responseStream <span class="type-signature type">{ boolean | undefined }</span></h4>
+        <h4 class="name" id="responseStream">responseStream <span class="type-signature type">{ true | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -3731,7 +3788,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L151">line 151</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L157">line 157</a>
         </div>
         
     </div>
@@ -4359,7 +4416,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L134">line 134</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L140">line 140</a>
         </div>
         
     </div>
@@ -4586,7 +4643,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L125">line 125</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/method.js#L131">line 131</a>
         </div>
         
     </div>

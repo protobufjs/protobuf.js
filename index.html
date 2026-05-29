@@ -432,6 +432,8 @@
                 
                     <li data-name="BufferReader#buf"><a href="BufferReader.html#buf">buf</a></li>
                 
+                    <li data-name="BufferReader#discardUnknown"><a href="BufferReader.html#discardUnknown">discardUnknown</a></li>
+                
                     <li data-name="BufferReader#len"><a href="BufferReader.html#len">len</a></li>
                 
                     <li data-name="BufferReader#pos"><a href="BufferReader.html#pos">pos</a></li>
@@ -1046,6 +1048,8 @@
                 
                     <li data-name="Method#parsedOptions"><a href="Method.html#parsedOptions">parsedOptions</a></li>
                 
+                    <li data-name="Method#path"><a href="Method.html#path">path</a></li>
+                
                     <li data-name="Method#requestStream"><a href="Method.html#requestStream">requestStream</a></li>
                 
                     <li data-name="Method#requestType"><a href="Method.html#requestType">requestType</a></li>
@@ -1396,9 +1400,13 @@
                 
                     <li data-name="Reader#buf"><a href="Reader.html#buf">buf</a></li>
                 
+                    <li data-name="Reader#discardUnknown"><a href="Reader.html#discardUnknown">discardUnknown</a></li>
+                
                     <li data-name="Reader#len"><a href="Reader.html#len">len</a></li>
                 
                     <li data-name="Reader#pos"><a href="Reader.html#pos">pos</a></li>
+                
+                    <li data-name="Reader.discardUnknown"><a href="Reader.html#.discardUnknown">discardUnknown</a></li>
                 
                     <li data-name="Reader.recursionLimit"><a href="Reader.html#.recursionLimit">recursionLimit</a></li>
                 
@@ -2263,8 +2271,8 @@ const encoded = AwesomeMessage.encode(message).finish();
 const decoded = AwesomeMessage.decode(encoded);
 </code></pre>
 <p><code>encode</code> expects a message instance or equivalent plain object and does not verify input implicitly. Use <code>verify</code> for plain objects whose shape is not guaranteed, <code>create</code> to create a message instance from already valid data when useful, and <code>fromObject</code> when conversion from broader JavaScript objects is needed.</p>
-<p>Plain objects can be encoded directly when they already use protobuf.js runtime types: numbers for 32-bit numeric fields, booleans for <code>bool</code>, strings for <code>string</code>, <code>Uint8Array</code> or <code>Buffer</code> for <code>bytes</code>, arrays for repeated fields, and plain objects for maps. Map keys are the string representation of the respective value or an 8-character hash string for 64-bit/<code>Long</code> keys.</p>
-<p>Install <a target="_blank" href="https://github.com/dcodeIO/long.js"><code>long</code></a> with protobuf.js when exact 64-bit integer support is required.</p>
+<p>Plain objects can be encoded directly when they already use protobuf.js runtime types: numbers for 32-bit numeric fields, booleans for <code>bool</code>, strings for <code>string</code>, <code>Uint8Array</code> or <code>Buffer</code> for <code>bytes</code>, arrays for repeated fields, and plain objects for maps. Map keys are the string representation of the respective value or an 8-character hash string for 64-bit/<code>Long</code> keys. When exact 64-bit integer support is required, install <a target="_blank" href="https://github.com/dcodeIO/long.js"><code>long</code></a> with protobuf.js.</p>
+<p>Unknown fields present on the wire are preserved by default in <code>message.$unknowns</code> and forwarded when the message is re-encoded. Unknown field data can be dropped from a decoded message with <code>delete message.$unknowns</code>, discarded during decode per reader with <code>reader.discardUnknown = true</code>, or disabled by default for subsequently created readers with <code>Reader.discardUnknown = true</code>.</p>
 <h3 id="convert-plain-objects">Convert plain objects</h3>
 <p>Conversion is an explicit interoperability boundary. <code>fromObject</code> accepts common JavaScript inputs such as enum values by name, base64 bytes, decimal 64-bit strings, <code>Long</code>, and <code>BigInt</code>; <code>toObject</code> lets callers choose the output expected by their application or transport.</p>
 <pre class="prettyprint source lang-ts"><code>const message = AwesomeMessage.fromObject({ awesomeField: 42 });
@@ -2361,6 +2369,7 @@ Converts a message instance to a configurable plain JavaScript object.</p>
 Converts a message instance to JSON-compatible output using default conversion options.</p>
 </li>
 </ul>
+<p>Message instances provide runtime identity, so they can be tested with <code>instanceof</code>. Their <code>toJSON</code> method integrates them with <code>JSON.stringify</code>.</p>
 <p>Length-delimited methods read and write a varint byte length before the message, which is useful for streams and framed protocols.</p>
 <p>If required fields are missing while decoding proto2 data, <code>decode</code> throws <code>protobuf.util.ProtocolError</code> with the partially decoded message available as <code>err.instance</code>.</p>
 <h2 id="code-generation">Code generation</h2>
@@ -2480,7 +2489,20 @@ decoded.customInstanceMethod(); // string
 </code></pre>
 <p>protobuf.js will populate the constructor with the usual static runtime methods and use it for decoded messages. In TypeScript, custom members are visible when using the custom class type in consuming code.</p>
 <h3 id="services">Services</h3>
-<p>protobuf.js supports service clients built from reflected service definitions. The service API is transport-agnostic: provide an <code>rpcImpl</code> function to connect it to HTTP, WebSocket, gRPC, or another transport. See <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/examples/streaming-rpc.js">examples/streaming-rpc.js</a> for details.</p>
+<p>protobuf.js supports service clients built from service definitions. The service API is transport-agnostic: provide an <code>rpcImpl</code> function to connect it to HTTP, WebSocket, gRPC, or another transport.</p>
+<pre class="prettyprint source lang-js"><code>function myRpcImpl(method, requestData, callback) {
+  // method.name
+  // method.path
+  // method.requestStream?
+  // method.responseStream?
+  performRequest(requestData, function(err, responseData) {
+    callback(err, responseData);
+  });
+}
+
+const myService = MyService.create(myRpcImpl/*, requestDelimited?, responseDelimited? */);
+</code></pre>
+<p>See <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/examples/streaming-rpc.js">examples/streaming-rpc.js</a> for a streaming example.</p>
 <h3 id="descriptors">Descriptors</h3>
 <p>For <code>google/protobuf/descriptor.proto</code> interoperability, see <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/ext/README.md#descriptor">ext/descriptor</a>. Note that because protobuf.js does not use <code>descriptor.proto</code> internally, options are parsed and presented literally.</p>
 <h3 id="text-format">Text format</h3>
