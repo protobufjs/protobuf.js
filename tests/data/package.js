@@ -557,8 +557,10 @@ $root.Package = (function() {
                 }
             }
             reader.skipType(wireType, _depth, tag);
-            $util.makeProp(message, "$unknowns", false);
-            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+            if (!reader.discardUnknown) {
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+            }
         }
         if (_end !== undefined)
             throw Error("missing end group");
@@ -1078,8 +1080,10 @@ $root.Package = (function() {
                     }
                 }
                 reader.skipType(wireType, _depth, tag);
-                $util.makeProp(message, "$unknowns", false);
-                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                if (!reader.discardUnknown) {
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                }
             }
             if (_end !== undefined)
                 throw Error("missing end group");

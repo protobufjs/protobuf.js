@@ -186,8 +186,10 @@ function decoder(mtype) {
     // Unknown fields
     gen
         ("r.skipType(%s,q,t)", i ? "u" : "t&7")
-        ("util.makeProp(m,\"$unknowns\",false);")
-        ("(m.$unknowns||(m.$unknowns=[])).push(r.raw(s,r.pos))")
+        ("if(!r.discardUnknown){")
+            ("util.makeProp(m,\"$unknowns\",false);")
+            ("(m.$unknowns||(m.$unknowns=[])).push(r.raw(s,r.pos))")
+        ("}")
     ("}")
     ("if(z!==undefined)")
         ("throw Error(\"missing end group\")");

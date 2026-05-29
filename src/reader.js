@@ -38,6 +38,12 @@ function Reader(buffer) {
      * @type {number}
      */
     this.len = buffer.length;
+
+    /**
+     * Whether to discard unknown fields while decoding.
+     * @type {boolean}
+     */
+    this.discardUnknown = Reader.discardUnknown;
 }
 
 var create_array = typeof Uint8Array !== "undefined"
@@ -449,6 +455,12 @@ Reader.prototype.skip = function skip(length) {
  * @type {number}
  */
 Reader.recursionLimit = util.recursionLimit;
+
+/**
+ * Whether readers discard unknown fields while decoding.
+ * @type {boolean}
+ */
+Reader.discardUnknown = false;
 
 /**
  * Skips the next element of the specified wire type.
