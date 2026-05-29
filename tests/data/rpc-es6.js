@@ -5,7 +5,7 @@ import $protobuf from "protobufjs/minimal.js";
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-const $root = $protobuf.roots.test_rpc || ($protobuf.roots.test_rpc = {});
+const $root = $protobuf.roots["test_rpc"] || ($protobuf.roots["test_rpc"] = {});
 
 export const MyService = $root.MyService = (() => {
 

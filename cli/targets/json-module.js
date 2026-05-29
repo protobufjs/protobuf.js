@@ -38,7 +38,7 @@ function escapeName(name) {
 
 function json_module(root, options, callback) {
     try {
-        var rootProp = protobuf.util.safeProp(options.root || "default");
+        var rootProp = "[" + JSON.stringify(String(options.root || "default")) + "]";
         var output = [
             (options.es6 ? "const" : "var") + " $root = ($protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = new $protobuf.Root()))\n"
         ];
