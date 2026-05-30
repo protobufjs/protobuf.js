@@ -7,7 +7,7 @@ var $protobuf = require("../../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots.test_vector_tile || ($protobuf.roots.test_vector_tile = {});
+var $root = $protobuf.roots["test_vector_tile"] || ($protobuf.roots["test_vector_tile"] = {});
 
 $root.vector_tile = (function() {
 
@@ -95,7 +95,7 @@ $root.vector_tile = (function() {
          * @returns {$protobuf.Writer} Writer
          */
         Tile.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
+            return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
         };
 
         /**
@@ -190,6 +190,8 @@ $root.vector_tile = (function() {
         Tile.fromObject = function fromObject(object, long) {
             if (object instanceof $root.vector_tile.Tile)
                 return object;
+            if (!$util.isObject(object))
+                throw TypeError(".vector_tile.Tile: object expected");
             if (long === undefined)
                 long = 0;
             if (long > $util.recursionLimit)
@@ -200,7 +202,7 @@ $root.vector_tile = (function() {
                     throw TypeError(".vector_tile.Tile.layers: array expected");
                 message.layers = [];
                 for (var i = 0; i < object.layers.length; ++i) {
-                    if (typeof object.layers[i] !== "object")
+                    if (!$util.isObject(object.layers[i]))
                         throw TypeError(".vector_tile.Tile.layers: object expected");
                     message.layers[i] = $root.vector_tile.Tile.Layer.fromObject(object.layers[i], long + 1);
                 }
@@ -420,7 +422,7 @@ $root.vector_tile = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Value.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -549,6 +551,8 @@ $root.vector_tile = (function() {
             Value.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.vector_tile.Tile.Value)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".vector_tile.Tile.Value: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -809,7 +813,7 @@ $root.vector_tile = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Feature.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -946,6 +950,8 @@ $root.vector_tile = (function() {
             Feature.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.vector_tile.Tile.Feature)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".vector_tile.Tile.Feature: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -1215,7 +1221,7 @@ $root.vector_tile = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Layer.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -1361,6 +1367,8 @@ $root.vector_tile = (function() {
             Layer.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.vector_tile.Tile.Layer)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".vector_tile.Tile.Layer: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -1375,7 +1383,7 @@ $root.vector_tile = (function() {
                         throw TypeError(".vector_tile.Tile.Layer.features: array expected");
                     message.features = [];
                     for (var i = 0; i < object.features.length; ++i) {
-                        if (typeof object.features[i] !== "object")
+                        if (!$util.isObject(object.features[i]))
                             throw TypeError(".vector_tile.Tile.Layer.features: object expected");
                         message.features[i] = $root.vector_tile.Tile.Feature.fromObject(object.features[i], long + 1);
                     }
@@ -1392,7 +1400,7 @@ $root.vector_tile = (function() {
                         throw TypeError(".vector_tile.Tile.Layer.values: array expected");
                     message.values = [];
                     for (var i = 0; i < object.values.length; ++i) {
-                        if (typeof object.values[i] !== "object")
+                        if (!$util.isObject(object.values[i]))
                             throw TypeError(".vector_tile.Tile.Layer.values: object expected");
                         message.values[i] = $root.vector_tile.Tile.Value.fromObject(object.values[i], long + 1);
                     }

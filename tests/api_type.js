@@ -305,6 +305,44 @@ tape.test("object conversion nesting", function(test) {
     test.end();
 });
 
+tape.test("object conversion rejects null message values", function(test) {
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Document: {
+                fields: {
+                    attrs: { keyType: "string", type: "Metadata", id: 1 },
+                    tags: { rule: "repeated", type: "Metadata", id: 2 },
+                    meta: { type: "Metadata", id: 3 }
+                }
+            },
+            Metadata: {
+                fields: {
+                    key: { type: "string", id: 1 },
+                    value: { type: "string", id: 2 }
+                }
+            }
+        }
+    });
+    var Document = root.lookupType("Document");
+    var Metadata = root.lookupType("Metadata");
+
+    test.throws(function() {
+        Metadata.fromObject(null);
+    }, /object expected/, "should reject null top-level messages");
+
+    test.throws(function() {
+        Document.fromObject({ attrs: { bad: null } });
+    }, /object expected/, "should reject null map message values");
+
+    test.throws(function() {
+        Document.fromObject({ tags: [ null ] });
+    }, /object expected/, "should reject null repeated message values");
+
+    test.equal(Object.prototype.hasOwnProperty.call(Document.fromObject({ meta: null }), "meta"), false, "should ignore null singular message fields");
+
+    test.end();
+});
+
 tape.test("feature resolution legacy proto3", function(test) {
     var json = {
         fields: {

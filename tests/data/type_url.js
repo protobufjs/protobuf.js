@@ -7,7 +7,7 @@ var $protobuf = require("../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots.test_type_url || ($protobuf.roots.test_type_url = {});
+var $root = $protobuf.roots["test_type_url"] || ($protobuf.roots["test_type_url"] = {});
 
 $root.TypeUrlTest = (function() {
 
@@ -84,7 +84,7 @@ $root.TypeUrlTest = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     TypeUrlTest.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -173,13 +173,15 @@ $root.TypeUrlTest = (function() {
     TypeUrlTest.fromObject = function fromObject(object, long) {
         if (object instanceof $root.TypeUrlTest)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".TypeUrlTest: object expected");
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
             throw Error("maximum nesting depth exceeded");
         var message = new $root.TypeUrlTest();
         if (object.nested != null) {
-            if (typeof object.nested !== "object")
+            if (!$util.isObject(object.nested))
                 throw TypeError(".TypeUrlTest.nested: object expected");
             message.nested = $root.TypeUrlTest.Nested.fromObject(object.nested, long + 1);
         }
@@ -311,7 +313,7 @@ $root.TypeUrlTest = (function() {
          * @returns {$protobuf.Writer} Writer
          */
         Nested.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
+            return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
         };
 
         /**
@@ -398,6 +400,8 @@ $root.TypeUrlTest = (function() {
         Nested.fromObject = function fromObject(object, long) {
             if (object instanceof $root.TypeUrlTest.Nested)
                 return object;
+            if (!$util.isObject(object))
+                throw TypeError(".TypeUrlTest.Nested: object expected");
             if (long === undefined)
                 long = 0;
             if (long > $util.recursionLimit)

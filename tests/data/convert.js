@@ -7,7 +7,7 @@ var $protobuf = require("../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots.test_convert || ($protobuf.roots.test_convert = {});
+var $root = $protobuf.roots["test_convert"] || ($protobuf.roots["test_convert"] = {});
 
 $root.Message = (function() {
 
@@ -188,7 +188,7 @@ $root.Message = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Message.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -401,6 +401,8 @@ $root.Message = (function() {
     Message.fromObject = function fromObject(object, long) {
         if (object instanceof $root.Message)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".Message: object expected");
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
@@ -491,7 +493,7 @@ $root.Message = (function() {
                 }
         }
         if (object.int64Map) {
-            if (typeof object.int64Map !== "object")
+            if (!$util.isObject(object.int64Map))
                 throw TypeError(".Message.int64Map: object expected");
             message.int64Map = {};
             for (var keys = Object.keys(object.int64Map), i = 0; i < keys.length; ++i) {

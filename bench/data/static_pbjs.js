@@ -5,7 +5,7 @@ var $protobuf = require("../../minimal");
 
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
-var $root = $protobuf.roots.test_bench || ($protobuf.roots.test_bench = {});
+var $root = $protobuf.roots["test_bench"] || ($protobuf.roots["test_bench"] = {});
 
 $root.Test = (function() {
 

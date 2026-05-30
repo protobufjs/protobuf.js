@@ -7,7 +7,7 @@ var $protobuf = require("../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots.test_test || ($protobuf.roots.test_test = {});
+var $root = $protobuf.roots["test_test"] || ($protobuf.roots["test_test"] = {});
 
 $root.jspb = (function() {
 
@@ -91,7 +91,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Empty.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -171,6 +171,8 @@ $root.jspb = (function() {
             Empty.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.Empty)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.Empty: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -309,7 +311,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             EnumContainer.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -401,6 +403,8 @@ $root.jspb = (function() {
             EnumContainer.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.EnumContainer)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.EnumContainer: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -576,7 +580,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Simple1.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -684,6 +688,8 @@ $root.jspb = (function() {
             Simple1.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.Simple1)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.Simple1: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -854,7 +860,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Simple2.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -955,6 +961,8 @@ $root.jspb = (function() {
             Simple2.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.Simple2)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.Simple2: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -1136,7 +1144,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             SpecialCases.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -1248,6 +1256,8 @@ $root.jspb = (function() {
             SpecialCases.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.SpecialCases)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.SpecialCases: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -1449,7 +1459,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             OptionalFields.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -1581,6 +1591,8 @@ $root.jspb = (function() {
             OptionalFields.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.OptionalFields)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.OptionalFields: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -1591,7 +1603,7 @@ $root.jspb = (function() {
                 if (object.aBool != null)
                     message.aBool = Boolean(object.aBool);
                 if (object.aNestedMessage != null) {
-                    if (typeof object.aNestedMessage !== "object")
+                    if (!$util.isObject(object.aNestedMessage))
                         throw TypeError(".jspb.test.OptionalFields.aNestedMessage: object expected");
                     message.aNestedMessage = $root.jspb.test.OptionalFields.Nested.fromObject(object.aNestedMessage, long + 1);
                 }
@@ -1600,7 +1612,7 @@ $root.jspb = (function() {
                         throw TypeError(".jspb.test.OptionalFields.aRepeatedMessage: array expected");
                     message.aRepeatedMessage = [];
                     for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
-                        if (typeof object.aRepeatedMessage[i] !== "object")
+                        if (!$util.isObject(object.aRepeatedMessage[i]))
                             throw TypeError(".jspb.test.OptionalFields.aRepeatedMessage: object expected");
                         message.aRepeatedMessage[i] = $root.jspb.test.OptionalFields.Nested.fromObject(object.aRepeatedMessage[i], long + 1);
                     }
@@ -1761,7 +1773,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -1848,6 +1860,8 @@ $root.jspb = (function() {
                 Nested.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.jspb.test.OptionalFields.Nested)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".jspb.test.OptionalFields.Nested: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -2081,7 +2095,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             HasExtensions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -2244,6 +2258,8 @@ $root.jspb = (function() {
             HasExtensions.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.HasExtensions)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.HasExtensions: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -2256,12 +2272,12 @@ $root.jspb = (function() {
                 if (object.str3 != null)
                     message.str3 = String(object.str3);
                 if (object[".jspb.test.IsExtension.extField"] != null) {
-                    if (typeof object[".jspb.test.IsExtension.extField"] !== "object")
+                    if (!$util.isObject(object[".jspb.test.IsExtension.extField"]))
                         throw TypeError(".jspb.test.HasExtensions..jspb.test.IsExtension.extField: object expected");
                     message[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.fromObject(object[".jspb.test.IsExtension.extField"], long + 1);
                 }
                 if (object[".jspb.test.IndirectExtension.simple"] != null) {
-                    if (typeof object[".jspb.test.IndirectExtension.simple"] !== "object")
+                    if (!$util.isObject(object[".jspb.test.IndirectExtension.simple"]))
                         throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.simple: object expected");
                     message[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.fromObject(object[".jspb.test.IndirectExtension.simple"], long + 1);
                 }
@@ -2279,13 +2295,13 @@ $root.jspb = (function() {
                         throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple: array expected");
                     message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                     for (var i = 0; i < object[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
-                        if (typeof object[".jspb.test.IndirectExtension.repeatedSimple"][i] !== "object")
+                        if (!$util.isObject(object[".jspb.test.IndirectExtension.repeatedSimple"][i]))
                             throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple: object expected");
                         message[".jspb.test.IndirectExtension.repeatedSimple"][i] = $root.jspb.test.Simple1.fromObject(object[".jspb.test.IndirectExtension.repeatedSimple"][i], long + 1);
                     }
                 }
                 if (object[".jspb.test.simple1"] != null) {
-                    if (typeof object[".jspb.test.simple1"] !== "object")
+                    if (!$util.isObject(object[".jspb.test.simple1"]))
                         throw TypeError(".jspb.test.HasExtensions..jspb.test.simple1: object expected");
                     message[".jspb.test.simple1"] = $root.jspb.test.Simple1.fromObject(object[".jspb.test.simple1"], long + 1);
                 }
@@ -2499,7 +2515,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Complex.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -2632,6 +2648,8 @@ $root.jspb = (function() {
             Complex.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.Complex)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.Complex: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -2642,7 +2660,7 @@ $root.jspb = (function() {
                 if (object.anOutOfOrderBool != null)
                     message.anOutOfOrderBool = Boolean(object.anOutOfOrderBool);
                 if (object.aNestedMessage != null) {
-                    if (typeof object.aNestedMessage !== "object")
+                    if (!$util.isObject(object.aNestedMessage))
                         throw TypeError(".jspb.test.Complex.aNestedMessage: object expected");
                     message.aNestedMessage = $root.jspb.test.Complex.Nested.fromObject(object.aNestedMessage, long + 1);
                 }
@@ -2651,7 +2669,7 @@ $root.jspb = (function() {
                         throw TypeError(".jspb.test.Complex.aRepeatedMessage: array expected");
                     message.aRepeatedMessage = [];
                     for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
-                        if (typeof object.aRepeatedMessage[i] !== "object")
+                        if (!$util.isObject(object.aRepeatedMessage[i]))
                             throw TypeError(".jspb.test.Complex.aRepeatedMessage: object expected");
                         message.aRepeatedMessage[i] = $root.jspb.test.Complex.Nested.fromObject(object.aRepeatedMessage[i], long + 1);
                     }
@@ -2811,7 +2829,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -2899,6 +2917,8 @@ $root.jspb = (function() {
                 Nested.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.jspb.test.Complex.Nested)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".jspb.test.Complex.Nested: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -3029,7 +3049,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             OuterMessage.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -3109,6 +3129,8 @@ $root.jspb = (function() {
             OuterMessage.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.OuterMessage)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.OuterMessage: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -3230,7 +3252,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Complex.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -3317,6 +3339,8 @@ $root.jspb = (function() {
                 Complex.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.jspb.test.OuterMessage.Complex)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".jspb.test.OuterMessage.Complex: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -3458,7 +3482,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             IsExtension.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -3545,6 +3569,8 @@ $root.jspb = (function() {
             IsExtension.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.IsExtension)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.IsExtension: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -3672,7 +3698,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             IndirectExtension.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -3752,6 +3778,8 @@ $root.jspb = (function() {
             IndirectExtension.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.IndirectExtension)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.IndirectExtension: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -3931,7 +3959,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             DefaultValues.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -4058,6 +4086,8 @@ $root.jspb = (function() {
             DefaultValues.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.DefaultValues)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.DefaultValues: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -4358,7 +4388,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FloatingPointFields.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -4518,6 +4548,8 @@ $root.jspb = (function() {
             FloatingPointFields.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.FloatingPointFields)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.FloatingPointFields: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -4767,7 +4799,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestClone.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -4901,6 +4933,8 @@ $root.jspb = (function() {
             TestClone.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.TestClone)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.TestClone: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -4909,7 +4943,7 @@ $root.jspb = (function() {
                 if (object.str != null)
                     message.str = String(object.str);
                 if (object.simple1 != null) {
-                    if (typeof object.simple1 !== "object")
+                    if (!$util.isObject(object.simple1))
                         throw TypeError(".jspb.test.TestClone.simple1: object expected");
                     message.simple1 = $root.jspb.test.Simple1.fromObject(object.simple1, long + 1);
                 }
@@ -4918,7 +4952,7 @@ $root.jspb = (function() {
                         throw TypeError(".jspb.test.TestClone.simple2: array expected");
                     message.simple2 = [];
                     for (var i = 0; i < object.simple2.length; ++i) {
-                        if (typeof object.simple2[i] !== "object")
+                        if (!$util.isObject(object.simple2[i]))
                             throw TypeError(".jspb.test.TestClone.simple2: object expected");
                         message.simple2[i] = $root.jspb.test.Simple1.fromObject(object.simple2[i], long + 1);
                     }
@@ -4931,7 +4965,7 @@ $root.jspb = (function() {
                 if (object.unused != null)
                     message.unused = String(object.unused);
                 if (object[".jspb.test.CloneExtension.extField"] != null) {
-                    if (typeof object[".jspb.test.CloneExtension.extField"] !== "object")
+                    if (!$util.isObject(object[".jspb.test.CloneExtension.extField"]))
                         throw TypeError(".jspb.test.TestClone..jspb.test.CloneExtension.extField: object expected");
                     message[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.fromObject(object[".jspb.test.CloneExtension.extField"], long + 1);
                 }
@@ -5092,7 +5126,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             CloneExtension.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -5179,6 +5213,8 @@ $root.jspb = (function() {
             CloneExtension.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.CloneExtension)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.CloneExtension: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -5394,7 +5430,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -5554,6 +5590,8 @@ $root.jspb = (function() {
             TestGroup.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.TestGroup)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.TestGroup: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -5564,40 +5602,40 @@ $root.jspb = (function() {
                         throw TypeError(".jspb.test.TestGroup.repeatedGroup: array expected");
                     message.repeatedGroup = [];
                     for (var i = 0; i < object.repeatedGroup.length; ++i) {
-                        if (typeof object.repeatedGroup[i] !== "object")
+                        if (!$util.isObject(object.repeatedGroup[i]))
                             throw TypeError(".jspb.test.TestGroup.repeatedGroup: object expected");
                         message.repeatedGroup[i] = $root.jspb.test.TestGroup.RepeatedGroup.fromObject(object.repeatedGroup[i], long + 1);
                     }
                 }
                 if (object.requiredGroup != null) {
-                    if (typeof object.requiredGroup !== "object")
+                    if (!$util.isObject(object.requiredGroup))
                         throw TypeError(".jspb.test.TestGroup.requiredGroup: object expected");
                     message.requiredGroup = $root.jspb.test.TestGroup.RequiredGroup.fromObject(object.requiredGroup, long + 1);
                 }
                 if (object.optionalGroup != null) {
-                    if (typeof object.optionalGroup !== "object")
+                    if (!$util.isObject(object.optionalGroup))
                         throw TypeError(".jspb.test.TestGroup.optionalGroup: object expected");
                     message.optionalGroup = $root.jspb.test.TestGroup.OptionalGroup.fromObject(object.optionalGroup, long + 1);
                 }
                 if (object.messageInGroup != null) {
-                    if (typeof object.messageInGroup !== "object")
+                    if (!$util.isObject(object.messageInGroup))
                         throw TypeError(".jspb.test.TestGroup.messageInGroup: object expected");
                     message.messageInGroup = $root.jspb.test.TestGroup.MessageInGroup.fromObject(object.messageInGroup, long + 1);
                 }
                 if (object.enumInGroup != null) {
-                    if (typeof object.enumInGroup !== "object")
+                    if (!$util.isObject(object.enumInGroup))
                         throw TypeError(".jspb.test.TestGroup.enumInGroup: object expected");
                     message.enumInGroup = $root.jspb.test.TestGroup.EnumInGroup.fromObject(object.enumInGroup, long + 1);
                 }
                 if (object.id != null)
                     message.id = String(object.id);
                 if (object.requiredSimple != null) {
-                    if (typeof object.requiredSimple !== "object")
+                    if (!$util.isObject(object.requiredSimple))
                         throw TypeError(".jspb.test.TestGroup.requiredSimple: object expected");
                     message.requiredSimple = $root.jspb.test.Simple2.fromObject(object.requiredSimple, long + 1);
                 }
                 if (object.optionalSimple != null) {
-                    if (typeof object.optionalSimple !== "object")
+                    if (!$util.isObject(object.optionalSimple))
                         throw TypeError(".jspb.test.TestGroup.optionalSimple: object expected");
                     message.optionalSimple = $root.jspb.test.Simple2.fromObject(object.optionalSimple, long + 1);
                 }
@@ -5767,7 +5805,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 RepeatedGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -5873,6 +5911,8 @@ $root.jspb = (function() {
                 RepeatedGroup.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.jspb.test.TestGroup.RepeatedGroup)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".jspb.test.TestGroup.RepeatedGroup: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -6024,7 +6064,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 RequiredGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -6112,6 +6152,8 @@ $root.jspb = (function() {
                 RequiredGroup.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.jspb.test.TestGroup.RequiredGroup)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".jspb.test.TestGroup.RequiredGroup: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -6249,7 +6291,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 OptionalGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -6337,6 +6379,8 @@ $root.jspb = (function() {
                 OptionalGroup.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.jspb.test.TestGroup.OptionalGroup)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".jspb.test.TestGroup.OptionalGroup: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -6474,7 +6518,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 MessageInGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -6565,13 +6609,15 @@ $root.jspb = (function() {
                 MessageInGroup.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.jspb.test.TestGroup.MessageInGroup)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".jspb.test.TestGroup.MessageInGroup: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
                     var message = new $root.jspb.test.TestGroup.MessageInGroup();
                     if (object.id != null) {
-                        if (typeof object.id !== "object")
+                        if (!$util.isObject(object.id))
                             throw TypeError(".jspb.test.TestGroup.MessageInGroup.id: object expected");
                         message.id = $root.jspb.test.TestGroup.MessageInGroup.NestedMessage.fromObject(object.id, long + 1);
                     }
@@ -6703,7 +6749,7 @@ $root.jspb = (function() {
                      * @returns {$protobuf.Writer} Writer
                      */
                     NestedMessage.encodeDelimited = function encodeDelimited(message, writer) {
-                        return this.encode(message, writer).ldelim();
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                     };
 
                     /**
@@ -6790,6 +6836,8 @@ $root.jspb = (function() {
                     NestedMessage.fromObject = function fromObject(object, long) {
                         if (object instanceof $root.jspb.test.TestGroup.MessageInGroup.NestedMessage)
                             return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".jspb.test.TestGroup.MessageInGroup.NestedMessage: object expected");
                         if (long === undefined)
                             long = 0;
                         if (long > $util.recursionLimit)
@@ -6930,7 +6978,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 EnumInGroup.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -7023,6 +7071,8 @@ $root.jspb = (function() {
                 EnumInGroup.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.jspb.test.TestGroup.EnumInGroup)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".jspb.test.TestGroup.EnumInGroup: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -7192,7 +7242,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestGroup1.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -7281,13 +7331,15 @@ $root.jspb = (function() {
             TestGroup1.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.TestGroup1)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.TestGroup1: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
                 var message = new $root.jspb.test.TestGroup1();
                 if (object.group != null) {
-                    if (typeof object.group !== "object")
+                    if (!$util.isObject(object.group))
                         throw TypeError(".jspb.test.TestGroup1.group: object expected");
                     message.group = $root.jspb.test.TestGroup.RepeatedGroup.fromObject(object.group, long + 1);
                 }
@@ -7433,7 +7485,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestReservedNames.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -7527,6 +7579,8 @@ $root.jspb = (function() {
             TestReservedNames.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.TestReservedNames)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.TestReservedNames: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -7660,7 +7714,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestReservedNamesExtension.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -7740,6 +7794,8 @@ $root.jspb = (function() {
             TestReservedNamesExtension.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.TestReservedNamesExtension)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.TestReservedNamesExtension: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -8012,7 +8068,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestMessageWithOneof.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -8196,6 +8252,8 @@ $root.jspb = (function() {
             TestMessageWithOneof.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.TestMessageWithOneof)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.TestMessageWithOneof: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -8206,7 +8264,7 @@ $root.jspb = (function() {
                 if (object.pthree != null)
                     message.pthree = String(object.pthree);
                 if (object.rone != null) {
-                    if (typeof object.rone !== "object")
+                    if (!$util.isObject(object.rone))
                         throw TypeError(".jspb.test.TestMessageWithOneof.rone: object expected");
                     message.rone = $root.jspb.test.TestMessageWithOneof.fromObject(object.rone, long + 1);
                 }
@@ -8418,7 +8476,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestEndsWithBytes.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -8512,6 +8570,8 @@ $root.jspb = (function() {
             TestEndsWithBytes.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.TestEndsWithBytes)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.TestEndsWithBytes: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -8812,7 +8872,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             TestMapFieldsNoBinary.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -9277,13 +9337,15 @@ $root.jspb = (function() {
             TestMapFieldsNoBinary.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.TestMapFieldsNoBinary)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.TestMapFieldsNoBinary: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
                 var message = new $root.jspb.test.TestMapFieldsNoBinary();
                 if (object.mapStringString) {
-                    if (typeof object.mapStringString !== "object")
+                    if (!$util.isObject(object.mapStringString))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringString: object expected");
                     message.mapStringString = {};
                     for (var keys = Object.keys(object.mapStringString), i = 0; i < keys.length; ++i) {
@@ -9293,7 +9355,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (object.mapStringInt32) {
-                    if (typeof object.mapStringInt32 !== "object")
+                    if (!$util.isObject(object.mapStringInt32))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringInt32: object expected");
                     message.mapStringInt32 = {};
                     for (var keys = Object.keys(object.mapStringInt32), i = 0; i < keys.length; ++i) {
@@ -9303,7 +9365,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (object.mapStringInt64) {
-                    if (typeof object.mapStringInt64 !== "object")
+                    if (!$util.isObject(object.mapStringInt64))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringInt64: object expected");
                     message.mapStringInt64 = {};
                     for (var keys = Object.keys(object.mapStringInt64), i = 0; i < keys.length; ++i) {
@@ -9320,7 +9382,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (object.mapStringBool) {
-                    if (typeof object.mapStringBool !== "object")
+                    if (!$util.isObject(object.mapStringBool))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringBool: object expected");
                     message.mapStringBool = {};
                     for (var keys = Object.keys(object.mapStringBool), i = 0; i < keys.length; ++i) {
@@ -9330,7 +9392,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (object.mapStringDouble) {
-                    if (typeof object.mapStringDouble !== "object")
+                    if (!$util.isObject(object.mapStringDouble))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringDouble: object expected");
                     message.mapStringDouble = {};
                     for (var keys = Object.keys(object.mapStringDouble), i = 0; i < keys.length; ++i) {
@@ -9340,7 +9402,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (object.mapStringEnum) {
-                    if (typeof object.mapStringEnum !== "object")
+                    if (!$util.isObject(object.mapStringEnum))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringEnum: object expected");
                     message.mapStringEnum = {};
                     for (var keys = Object.keys(object.mapStringEnum), i = 0; i < keys.length; ++i) {
@@ -9369,19 +9431,19 @@ $root.jspb = (function() {
                     }
                 }
                 if (object.mapStringMsg) {
-                    if (typeof object.mapStringMsg !== "object")
+                    if (!$util.isObject(object.mapStringMsg))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringMsg: object expected");
                     message.mapStringMsg = {};
                     for (var keys = Object.keys(object.mapStringMsg), i = 0; i < keys.length; ++i) {
                         if (keys[i] === "__proto__")
                             $util.makeProp(message.mapStringMsg, keys[i]);
-                        if (typeof object.mapStringMsg[keys[i]] !== "object")
+                        if (!$util.isObject(object.mapStringMsg[keys[i]]))
                             throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringMsg: object expected");
                         message.mapStringMsg[keys[i]] = $root.jspb.test.MapValueMessageNoBinary.fromObject(object.mapStringMsg[keys[i]], long + 1);
                     }
                 }
                 if (object.mapInt32String) {
-                    if (typeof object.mapInt32String !== "object")
+                    if (!$util.isObject(object.mapInt32String))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapInt32String: object expected");
                     message.mapInt32String = {};
                     for (var keys = Object.keys(object.mapInt32String), i = 0; i < keys.length; ++i) {
@@ -9391,7 +9453,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (object.mapInt64String) {
-                    if (typeof object.mapInt64String !== "object")
+                    if (!$util.isObject(object.mapInt64String))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapInt64String: object expected");
                     message.mapInt64String = {};
                     for (var keys = Object.keys(object.mapInt64String), i = 0; i < keys.length; ++i) {
@@ -9401,7 +9463,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (object.mapBoolString) {
-                    if (typeof object.mapBoolString !== "object")
+                    if (!$util.isObject(object.mapBoolString))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapBoolString: object expected");
                     message.mapBoolString = {};
                     for (var keys = Object.keys(object.mapBoolString), i = 0; i < keys.length; ++i) {
@@ -9411,18 +9473,18 @@ $root.jspb = (function() {
                     }
                 }
                 if (object.testMapFields != null) {
-                    if (typeof object.testMapFields !== "object")
+                    if (!$util.isObject(object.testMapFields))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.testMapFields: object expected");
                     message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.fromObject(object.testMapFields, long + 1);
                 }
                 if (object.mapStringTestmapfields) {
-                    if (typeof object.mapStringTestmapfields !== "object")
+                    if (!$util.isObject(object.mapStringTestmapfields))
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringTestmapfields: object expected");
                     message.mapStringTestmapfields = {};
                     for (var keys = Object.keys(object.mapStringTestmapfields), i = 0; i < keys.length; ++i) {
                         if (keys[i] === "__proto__")
                             $util.makeProp(message.mapStringTestmapfields, keys[i]);
-                        if (typeof object.mapStringTestmapfields[keys[i]] !== "object")
+                        if (!$util.isObject(object.mapStringTestmapfields[keys[i]]))
                             throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringTestmapfields: object expected");
                         message.mapStringTestmapfields[keys[i]] = $root.jspb.test.TestMapFieldsNoBinary.fromObject(object.mapStringTestmapfields[keys[i]], long + 1);
                     }
@@ -9681,7 +9743,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             MapValueMessageNoBinary.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -9768,6 +9830,8 @@ $root.jspb = (function() {
             MapValueMessageNoBinary.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.MapValueMessageNoBinary)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.MapValueMessageNoBinary: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -9895,7 +9959,7 @@ $root.jspb = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Deeply.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -9975,6 +10039,8 @@ $root.jspb = (function() {
             Deeply.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.Deeply)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".jspb.test.Deeply: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -10085,7 +10151,7 @@ $root.jspb = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -10165,6 +10231,8 @@ $root.jspb = (function() {
                 Nested.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.jspb.test.Deeply.Nested)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".jspb.test.Deeply.Nested: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -10286,7 +10354,7 @@ $root.jspb = (function() {
                      * @returns {$protobuf.Writer} Writer
                      */
                     Message.encodeDelimited = function encodeDelimited(message, writer) {
-                        return this.encode(message, writer).ldelim();
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                     };
 
                     /**
@@ -10373,6 +10441,8 @@ $root.jspb = (function() {
                     Message.fromObject = function fromObject(object, long) {
                         if (object instanceof $root.jspb.test.Deeply.Nested.Message)
                             return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".jspb.test.Deeply.Nested.Message: object expected");
                         if (long === undefined)
                             long = 0;
                         if (long > $util.recursionLimit)
@@ -10543,7 +10613,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FileDescriptorSet.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -10638,6 +10708,8 @@ $root.google = (function() {
             FileDescriptorSet.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.FileDescriptorSet)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.FileDescriptorSet: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -10648,7 +10720,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.FileDescriptorSet.file: array expected");
                     message.file = [];
                     for (var i = 0; i < object.file.length; ++i) {
-                        if (typeof object.file[i] !== "object")
+                        if (!$util.isObject(object.file[i]))
                             throw TypeError(".google.protobuf.FileDescriptorSet.file: object expected");
                         message.file[i] = $root.google.protobuf.FileDescriptorProto.fromObject(object.file[i], long + 1);
                     }
@@ -10980,7 +11052,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FileDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -11243,6 +11315,8 @@ $root.google = (function() {
             FileDescriptorProto.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.FileDescriptorProto)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.FileDescriptorProto: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -11285,7 +11359,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.FileDescriptorProto.messageType: array expected");
                     message.messageType = [];
                     for (var i = 0; i < object.messageType.length; ++i) {
-                        if (typeof object.messageType[i] !== "object")
+                        if (!$util.isObject(object.messageType[i]))
                             throw TypeError(".google.protobuf.FileDescriptorProto.messageType: object expected");
                         message.messageType[i] = $root.google.protobuf.DescriptorProto.fromObject(object.messageType[i], long + 1);
                     }
@@ -11295,7 +11369,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.FileDescriptorProto.enumType: array expected");
                     message.enumType = [];
                     for (var i = 0; i < object.enumType.length; ++i) {
-                        if (typeof object.enumType[i] !== "object")
+                        if (!$util.isObject(object.enumType[i]))
                             throw TypeError(".google.protobuf.FileDescriptorProto.enumType: object expected");
                         message.enumType[i] = $root.google.protobuf.EnumDescriptorProto.fromObject(object.enumType[i], long + 1);
                     }
@@ -11305,7 +11379,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.FileDescriptorProto.service: array expected");
                     message.service = [];
                     for (var i = 0; i < object.service.length; ++i) {
-                        if (typeof object.service[i] !== "object")
+                        if (!$util.isObject(object.service[i]))
                             throw TypeError(".google.protobuf.FileDescriptorProto.service: object expected");
                         message.service[i] = $root.google.protobuf.ServiceDescriptorProto.fromObject(object.service[i], long + 1);
                     }
@@ -11315,18 +11389,18 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.FileDescriptorProto.extension: array expected");
                     message.extension = [];
                     for (var i = 0; i < object.extension.length; ++i) {
-                        if (typeof object.extension[i] !== "object")
+                        if (!$util.isObject(object.extension[i]))
                             throw TypeError(".google.protobuf.FileDescriptorProto.extension: object expected");
                         message.extension[i] = $root.google.protobuf.FieldDescriptorProto.fromObject(object.extension[i], long + 1);
                     }
                 }
                 if (object.options != null) {
-                    if (typeof object.options !== "object")
+                    if (!$util.isObject(object.options))
                         throw TypeError(".google.protobuf.FileDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.FileOptions.fromObject(object.options, long + 1);
                 }
                 if (object.sourceCodeInfo != null) {
-                    if (typeof object.sourceCodeInfo !== "object")
+                    if (!$util.isObject(object.sourceCodeInfo))
                         throw TypeError(".google.protobuf.FileDescriptorProto.sourceCodeInfo: object expected");
                     message.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.fromObject(object.sourceCodeInfo, long + 1);
                 }
@@ -11711,7 +11785,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             DescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -11938,6 +12012,8 @@ $root.google = (function() {
             DescriptorProto.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.DescriptorProto)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.DescriptorProto: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -11950,7 +12026,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.DescriptorProto.field: array expected");
                     message.field = [];
                     for (var i = 0; i < object.field.length; ++i) {
-                        if (typeof object.field[i] !== "object")
+                        if (!$util.isObject(object.field[i]))
                             throw TypeError(".google.protobuf.DescriptorProto.field: object expected");
                         message.field[i] = $root.google.protobuf.FieldDescriptorProto.fromObject(object.field[i], long + 1);
                     }
@@ -11960,7 +12036,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.DescriptorProto.extension: array expected");
                     message.extension = [];
                     for (var i = 0; i < object.extension.length; ++i) {
-                        if (typeof object.extension[i] !== "object")
+                        if (!$util.isObject(object.extension[i]))
                             throw TypeError(".google.protobuf.DescriptorProto.extension: object expected");
                         message.extension[i] = $root.google.protobuf.FieldDescriptorProto.fromObject(object.extension[i], long + 1);
                     }
@@ -11970,7 +12046,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.DescriptorProto.nestedType: array expected");
                     message.nestedType = [];
                     for (var i = 0; i < object.nestedType.length; ++i) {
-                        if (typeof object.nestedType[i] !== "object")
+                        if (!$util.isObject(object.nestedType[i]))
                             throw TypeError(".google.protobuf.DescriptorProto.nestedType: object expected");
                         message.nestedType[i] = $root.google.protobuf.DescriptorProto.fromObject(object.nestedType[i], long + 1);
                     }
@@ -11980,7 +12056,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.DescriptorProto.enumType: array expected");
                     message.enumType = [];
                     for (var i = 0; i < object.enumType.length; ++i) {
-                        if (typeof object.enumType[i] !== "object")
+                        if (!$util.isObject(object.enumType[i]))
                             throw TypeError(".google.protobuf.DescriptorProto.enumType: object expected");
                         message.enumType[i] = $root.google.protobuf.EnumDescriptorProto.fromObject(object.enumType[i], long + 1);
                     }
@@ -11990,7 +12066,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.DescriptorProto.extensionRange: array expected");
                     message.extensionRange = [];
                     for (var i = 0; i < object.extensionRange.length; ++i) {
-                        if (typeof object.extensionRange[i] !== "object")
+                        if (!$util.isObject(object.extensionRange[i]))
                             throw TypeError(".google.protobuf.DescriptorProto.extensionRange: object expected");
                         message.extensionRange[i] = $root.google.protobuf.DescriptorProto.ExtensionRange.fromObject(object.extensionRange[i], long + 1);
                     }
@@ -12000,13 +12076,13 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.DescriptorProto.oneofDecl: array expected");
                     message.oneofDecl = [];
                     for (var i = 0; i < object.oneofDecl.length; ++i) {
-                        if (typeof object.oneofDecl[i] !== "object")
+                        if (!$util.isObject(object.oneofDecl[i]))
                             throw TypeError(".google.protobuf.DescriptorProto.oneofDecl: object expected");
                         message.oneofDecl[i] = $root.google.protobuf.OneofDescriptorProto.fromObject(object.oneofDecl[i], long + 1);
                     }
                 }
                 if (object.options != null) {
-                    if (typeof object.options !== "object")
+                    if (!$util.isObject(object.options))
                         throw TypeError(".google.protobuf.DescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.MessageOptions.fromObject(object.options, long + 1);
                 }
@@ -12015,7 +12091,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.DescriptorProto.reservedRange: array expected");
                     message.reservedRange = [];
                     for (var i = 0; i < object.reservedRange.length; ++i) {
-                        if (typeof object.reservedRange[i] !== "object")
+                        if (!$util.isObject(object.reservedRange[i]))
                             throw TypeError(".google.protobuf.DescriptorProto.reservedRange: object expected");
                         message.reservedRange[i] = $root.google.protobuf.DescriptorProto.ReservedRange.fromObject(object.reservedRange[i], long + 1);
                     }
@@ -12254,7 +12330,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 ExtensionRange.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -12357,6 +12433,8 @@ $root.google = (function() {
                 ExtensionRange.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.DescriptorProto.ExtensionRange)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".google.protobuf.DescriptorProto.ExtensionRange: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -12367,7 +12445,7 @@ $root.google = (function() {
                     if (object.end != null)
                         message.end = object.end | 0;
                     if (object.options != null) {
-                        if (typeof object.options !== "object")
+                        if (!$util.isObject(object.options))
                             throw TypeError(".google.protobuf.DescriptorProto.ExtensionRange.options: object expected");
                         message.options = $root.google.protobuf.ExtensionRangeOptions.fromObject(object.options, long + 1);
                     }
@@ -12520,7 +12598,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 ReservedRange.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -12614,6 +12692,8 @@ $root.google = (function() {
                 ReservedRange.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.DescriptorProto.ReservedRange)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".google.protobuf.DescriptorProto.ReservedRange: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -12798,7 +12878,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             ExtensionRangeOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -12929,6 +13009,8 @@ $root.google = (function() {
             ExtensionRangeOptions.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.ExtensionRangeOptions)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.ExtensionRangeOptions: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -12939,7 +13021,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.ExtensionRangeOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
+                        if (!$util.isObject(object.uninterpretedOption[i]))
                             throw TypeError(".google.protobuf.ExtensionRangeOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i], long + 1);
                     }
@@ -12949,13 +13031,13 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.ExtensionRangeOptions.declaration: array expected");
                     message.declaration = [];
                     for (var i = 0; i < object.declaration.length; ++i) {
-                        if (typeof object.declaration[i] !== "object")
+                        if (!$util.isObject(object.declaration[i]))
                             throw TypeError(".google.protobuf.ExtensionRangeOptions.declaration: object expected");
                         message.declaration[i] = $root.google.protobuf.ExtensionRangeOptions.Declaration.fromObject(object.declaration[i], long + 1);
                     }
                 }
                 if (object.features != null) {
-                    if (typeof object.features !== "object")
+                    if (!$util.isObject(object.features))
                         throw TypeError(".google.protobuf.ExtensionRangeOptions.features: object expected");
                     message.features = $root.google.protobuf.FeatureSet.fromObject(object.features, long + 1);
                 }
@@ -13165,7 +13247,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Declaration.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -13280,6 +13362,8 @@ $root.google = (function() {
                 Declaration.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.ExtensionRangeOptions.Declaration)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".google.protobuf.ExtensionRangeOptions.Declaration: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -13566,7 +13650,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FieldDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -13752,6 +13836,8 @@ $root.google = (function() {
             FieldDescriptorProto.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.FieldDescriptorProto)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.FieldDescriptorProto: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -13872,7 +13958,7 @@ $root.google = (function() {
                 if (object.jsonName != null)
                     message.jsonName = String(object.jsonName);
                 if (object.options != null) {
-                    if (typeof object.options !== "object")
+                    if (!$util.isObject(object.options))
                         throw TypeError(".google.protobuf.FieldDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.FieldOptions.fromObject(object.options, long + 1);
                 }
@@ -14113,7 +14199,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             OneofDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -14209,6 +14295,8 @@ $root.google = (function() {
             OneofDescriptorProto.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.OneofDescriptorProto)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.OneofDescriptorProto: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -14217,7 +14305,7 @@ $root.google = (function() {
                 if (object.name != null)
                     message.name = String(object.name);
                 if (object.options != null) {
-                    if (typeof object.options !== "object")
+                    if (!$util.isObject(object.options))
                         throw TypeError(".google.protobuf.OneofDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.OneofOptions.fromObject(object.options, long + 1);
                 }
@@ -14417,7 +14505,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             EnumDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -14569,6 +14657,8 @@ $root.google = (function() {
             EnumDescriptorProto.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.EnumDescriptorProto)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.EnumDescriptorProto: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -14581,13 +14671,13 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.EnumDescriptorProto.value: array expected");
                     message.value = [];
                     for (var i = 0; i < object.value.length; ++i) {
-                        if (typeof object.value[i] !== "object")
+                        if (!$util.isObject(object.value[i]))
                             throw TypeError(".google.protobuf.EnumDescriptorProto.value: object expected");
                         message.value[i] = $root.google.protobuf.EnumValueDescriptorProto.fromObject(object.value[i], long + 1);
                     }
                 }
                 if (object.options != null) {
-                    if (typeof object.options !== "object")
+                    if (!$util.isObject(object.options))
                         throw TypeError(".google.protobuf.EnumDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.EnumOptions.fromObject(object.options, long + 1);
                 }
@@ -14596,7 +14686,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.EnumDescriptorProto.reservedRange: array expected");
                     message.reservedRange = [];
                     for (var i = 0; i < object.reservedRange.length; ++i) {
-                        if (typeof object.reservedRange[i] !== "object")
+                        if (!$util.isObject(object.reservedRange[i]))
                             throw TypeError(".google.protobuf.EnumDescriptorProto.reservedRange: object expected");
                         message.reservedRange[i] = $root.google.protobuf.EnumDescriptorProto.EnumReservedRange.fromObject(object.reservedRange[i], long + 1);
                     }
@@ -14794,7 +14884,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 EnumReservedRange.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -14888,6 +14978,8 @@ $root.google = (function() {
                 EnumReservedRange.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.EnumDescriptorProto.EnumReservedRange)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".google.protobuf.EnumDescriptorProto.EnumReservedRange: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -15057,7 +15149,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             EnumValueDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -15160,6 +15252,8 @@ $root.google = (function() {
             EnumValueDescriptorProto.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.EnumValueDescriptorProto)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.EnumValueDescriptorProto: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -15170,7 +15264,7 @@ $root.google = (function() {
                 if (object.number != null)
                     message.number = object.number | 0;
                 if (object.options != null) {
-                    if (typeof object.options !== "object")
+                    if (!$util.isObject(object.options))
                         throw TypeError(".google.protobuf.EnumValueDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.EnumValueOptions.fromObject(object.options, long + 1);
                 }
@@ -15336,7 +15430,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             ServiceDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -15447,6 +15541,8 @@ $root.google = (function() {
             ServiceDescriptorProto.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.ServiceDescriptorProto)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.ServiceDescriptorProto: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -15459,13 +15555,13 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.ServiceDescriptorProto.method: array expected");
                     message.method = [];
                     for (var i = 0; i < object.method.length; ++i) {
-                        if (typeof object.method[i] !== "object")
+                        if (!$util.isObject(object.method[i]))
                             throw TypeError(".google.protobuf.ServiceDescriptorProto.method: object expected");
                         message.method[i] = $root.google.protobuf.MethodDescriptorProto.fromObject(object.method[i], long + 1);
                     }
                 }
                 if (object.options != null) {
-                    if (typeof object.options !== "object")
+                    if (!$util.isObject(object.options))
                         throw TypeError(".google.protobuf.ServiceDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.ServiceOptions.fromObject(object.options, long + 1);
                 }
@@ -15666,7 +15762,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             MethodDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -15790,6 +15886,8 @@ $root.google = (function() {
             MethodDescriptorProto.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.MethodDescriptorProto)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.MethodDescriptorProto: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -15802,7 +15900,7 @@ $root.google = (function() {
                 if (object.outputType != null)
                     message.outputType = String(object.outputType);
                 if (object.options != null) {
-                    if (typeof object.options !== "object")
+                    if (!$util.isObject(object.options))
                         throw TypeError(".google.protobuf.MethodDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.MethodOptions.fromObject(object.options, long + 1);
                 }
@@ -16179,7 +16277,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FileOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -16422,6 +16520,8 @@ $root.google = (function() {
             FileOptions.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.FileOptions)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.FileOptions: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -16484,7 +16584,7 @@ $root.google = (function() {
                 if (object.rubyPackage != null)
                     message.rubyPackage = String(object.rubyPackage);
                 if (object.features != null) {
-                    if (typeof object.features !== "object")
+                    if (!$util.isObject(object.features))
                         throw TypeError(".google.protobuf.FileOptions.features: object expected");
                     message.features = $root.google.protobuf.FeatureSet.fromObject(object.features, long + 1);
                 }
@@ -16493,7 +16593,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.FileOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
+                        if (!$util.isObject(object.uninterpretedOption[i]))
                             throw TypeError(".google.protobuf.FileOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i], long + 1);
                     }
@@ -16778,7 +16878,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             MessageOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -16917,6 +17017,8 @@ $root.google = (function() {
             MessageOptions.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.MessageOptions)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.MessageOptions: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -16933,7 +17035,7 @@ $root.google = (function() {
                 if (object.deprecatedLegacyJsonFieldConflicts != null)
                     message.deprecatedLegacyJsonFieldConflicts = Boolean(object.deprecatedLegacyJsonFieldConflicts);
                 if (object.features != null) {
-                    if (typeof object.features !== "object")
+                    if (!$util.isObject(object.features))
                         throw TypeError(".google.protobuf.MessageOptions.features: object expected");
                     message.features = $root.google.protobuf.FeatureSet.fromObject(object.features, long + 1);
                 }
@@ -16942,7 +17044,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.MessageOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
+                        if (!$util.isObject(object.uninterpretedOption[i]))
                             throw TypeError(".google.protobuf.MessageOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i], long + 1);
                     }
@@ -17250,7 +17352,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FieldOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -17490,6 +17592,8 @@ $root.google = (function() {
             FieldOptions.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.FieldOptions)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.FieldOptions: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -17625,18 +17729,18 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.FieldOptions.editionDefaults: array expected");
                     message.editionDefaults = [];
                     for (var i = 0; i < object.editionDefaults.length; ++i) {
-                        if (typeof object.editionDefaults[i] !== "object")
+                        if (!$util.isObject(object.editionDefaults[i]))
                             throw TypeError(".google.protobuf.FieldOptions.editionDefaults: object expected");
                         message.editionDefaults[i] = $root.google.protobuf.FieldOptions.EditionDefault.fromObject(object.editionDefaults[i], long + 1);
                     }
                 }
                 if (object.features != null) {
-                    if (typeof object.features !== "object")
+                    if (!$util.isObject(object.features))
                         throw TypeError(".google.protobuf.FieldOptions.features: object expected");
                     message.features = $root.google.protobuf.FeatureSet.fromObject(object.features, long + 1);
                 }
                 if (object.featureSupport != null) {
-                    if (typeof object.featureSupport !== "object")
+                    if (!$util.isObject(object.featureSupport))
                         throw TypeError(".google.protobuf.FieldOptions.featureSupport: object expected");
                     message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.fromObject(object.featureSupport, long + 1);
                 }
@@ -17645,7 +17749,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.FieldOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
+                        if (!$util.isObject(object.uninterpretedOption[i]))
                             throw TypeError(".google.protobuf.FieldOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i], long + 1);
                     }
@@ -17918,7 +18022,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 EditionDefault.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -18027,6 +18131,8 @@ $root.google = (function() {
                 EditionDefault.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.FieldOptions.EditionDefault)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".google.protobuf.FieldOptions.EditionDefault: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -18258,7 +18364,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 FeatureSupport.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -18411,6 +18517,8 @@ $root.google = (function() {
                 FeatureSupport.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.FieldOptions.FeatureSupport)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".google.protobuf.FieldOptions.FeatureSupport: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -18743,7 +18851,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             OneofOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -18847,13 +18955,15 @@ $root.google = (function() {
             OneofOptions.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.OneofOptions)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.OneofOptions: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
                 var message = new $root.google.protobuf.OneofOptions();
                 if (object.features != null) {
-                    if (typeof object.features !== "object")
+                    if (!$util.isObject(object.features))
                         throw TypeError(".google.protobuf.OneofOptions.features: object expected");
                     message.features = $root.google.protobuf.FeatureSet.fromObject(object.features, long + 1);
                 }
@@ -18862,7 +18972,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.OneofOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
+                        if (!$util.isObject(object.uninterpretedOption[i]))
                             throw TypeError(".google.protobuf.OneofOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i], long + 1);
                     }
@@ -19062,7 +19172,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             EnumOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -19194,6 +19304,8 @@ $root.google = (function() {
             EnumOptions.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.EnumOptions)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.EnumOptions: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -19206,7 +19318,7 @@ $root.google = (function() {
                 if (object.deprecatedLegacyJsonFieldConflicts != null)
                     message.deprecatedLegacyJsonFieldConflicts = Boolean(object.deprecatedLegacyJsonFieldConflicts);
                 if (object.features != null) {
-                    if (typeof object.features !== "object")
+                    if (!$util.isObject(object.features))
                         throw TypeError(".google.protobuf.EnumOptions.features: object expected");
                     message.features = $root.google.protobuf.FeatureSet.fromObject(object.features, long + 1);
                 }
@@ -19215,7 +19327,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.EnumOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
+                        if (!$util.isObject(object.uninterpretedOption[i]))
                             throw TypeError(".google.protobuf.EnumOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i], long + 1);
                     }
@@ -19419,7 +19531,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             EnumValueOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -19546,6 +19658,8 @@ $root.google = (function() {
             EnumValueOptions.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.EnumValueOptions)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.EnumValueOptions: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -19554,14 +19668,14 @@ $root.google = (function() {
                 if (object.deprecated != null)
                     message.deprecated = Boolean(object.deprecated);
                 if (object.features != null) {
-                    if (typeof object.features !== "object")
+                    if (!$util.isObject(object.features))
                         throw TypeError(".google.protobuf.EnumValueOptions.features: object expected");
                     message.features = $root.google.protobuf.FeatureSet.fromObject(object.features, long + 1);
                 }
                 if (object.debugRedact != null)
                     message.debugRedact = Boolean(object.debugRedact);
                 if (object.featureSupport != null) {
-                    if (typeof object.featureSupport !== "object")
+                    if (!$util.isObject(object.featureSupport))
                         throw TypeError(".google.protobuf.EnumValueOptions.featureSupport: object expected");
                     message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.fromObject(object.featureSupport, long + 1);
                 }
@@ -19570,7 +19684,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.EnumValueOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
+                        if (!$util.isObject(object.uninterpretedOption[i]))
                             throw TypeError(".google.protobuf.EnumValueOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i], long + 1);
                     }
@@ -19747,7 +19861,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             ServiceOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -19858,13 +19972,15 @@ $root.google = (function() {
             ServiceOptions.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.ServiceOptions)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.ServiceOptions: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
                 var message = new $root.google.protobuf.ServiceOptions();
                 if (object.features != null) {
-                    if (typeof object.features !== "object")
+                    if (!$util.isObject(object.features))
                         throw TypeError(".google.protobuf.ServiceOptions.features: object expected");
                     message.features = $root.google.protobuf.FeatureSet.fromObject(object.features, long + 1);
                 }
@@ -19875,7 +19991,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.ServiceOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
+                        if (!$util.isObject(object.uninterpretedOption[i]))
                             throw TypeError(".google.protobuf.ServiceOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i], long + 1);
                     }
@@ -20057,7 +20173,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             MethodOptions.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -20181,6 +20297,8 @@ $root.google = (function() {
             MethodOptions.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.MethodOptions)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.MethodOptions: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -20209,7 +20327,7 @@ $root.google = (function() {
                     break;
                 }
                 if (object.features != null) {
-                    if (typeof object.features !== "object")
+                    if (!$util.isObject(object.features))
                         throw TypeError(".google.protobuf.MethodOptions.features: object expected");
                     message.features = $root.google.protobuf.FeatureSet.fromObject(object.features, long + 1);
                 }
@@ -20218,7 +20336,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.MethodOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
+                        if (!$util.isObject(object.uninterpretedOption[i]))
                             throw TypeError(".google.protobuf.MethodOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i], long + 1);
                     }
@@ -20452,7 +20570,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             UninterpretedOption.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -20589,6 +20707,8 @@ $root.google = (function() {
             UninterpretedOption.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.UninterpretedOption)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.UninterpretedOption: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -20599,7 +20719,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.UninterpretedOption.name: array expected");
                     message.name = [];
                     for (var i = 0; i < object.name.length; ++i) {
-                        if (typeof object.name[i] !== "object")
+                        if (!$util.isObject(object.name[i]))
                             throw TypeError(".google.protobuf.UninterpretedOption.name: object expected");
                         message.name[i] = $root.google.protobuf.UninterpretedOption.NamePart.fromObject(object.name[i], long + 1);
                     }
@@ -20817,7 +20937,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 NamePart.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -20913,6 +21033,8 @@ $root.google = (function() {
                 NamePart.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.UninterpretedOption.NamePart)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".google.protobuf.UninterpretedOption.NamePart: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -21137,7 +21259,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FeatureSet.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -21324,6 +21446,8 @@ $root.google = (function() {
             FeatureSet.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.FeatureSet)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.FeatureSet: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -21754,7 +21878,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 VisibilityFeature.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -21834,6 +21958,8 @@ $root.google = (function() {
                 VisibilityFeature.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.FeatureSet.VisibilityFeature)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".google.protobuf.FeatureSet.VisibilityFeature: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -22005,7 +22131,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             FeatureSetDefaults.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -22144,6 +22270,8 @@ $root.google = (function() {
             FeatureSetDefaults.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.FeatureSetDefaults)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.FeatureSetDefaults: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -22154,7 +22282,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.FeatureSetDefaults.defaults: array expected");
                     message.defaults = [];
                     for (var i = 0; i < object.defaults.length; ++i) {
-                        if (typeof object.defaults[i] !== "object")
+                        if (!$util.isObject(object.defaults[i]))
                             throw TypeError(".google.protobuf.FeatureSetDefaults.defaults: object expected");
                         message.defaults[i] = $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.fromObject(object.defaults[i], long + 1);
                     }
@@ -22432,7 +22560,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 FeatureSetEditionDefault.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -22552,6 +22680,8 @@ $root.google = (function() {
                 FeatureSetEditionDefault.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -22614,12 +22744,12 @@ $root.google = (function() {
                         break;
                     }
                     if (object.overridableFeatures != null) {
-                        if (typeof object.overridableFeatures !== "object")
+                        if (!$util.isObject(object.overridableFeatures))
                             throw TypeError(".google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.overridableFeatures: object expected");
                         message.overridableFeatures = $root.google.protobuf.FeatureSet.fromObject(object.overridableFeatures, long + 1);
                     }
                     if (object.fixedFeatures != null) {
-                        if (typeof object.fixedFeatures !== "object")
+                        if (!$util.isObject(object.fixedFeatures))
                             throw TypeError(".google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.fixedFeatures: object expected");
                         message.fixedFeatures = $root.google.protobuf.FeatureSet.fromObject(object.fixedFeatures, long + 1);
                     }
@@ -22766,7 +22896,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             SourceCodeInfo.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -22861,6 +22991,8 @@ $root.google = (function() {
             SourceCodeInfo.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.SourceCodeInfo)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.SourceCodeInfo: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -22871,7 +23003,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.SourceCodeInfo.location: array expected");
                     message.location = [];
                     for (var i = 0; i < object.location.length; ++i) {
-                        if (typeof object.location[i] !== "object")
+                        if (!$util.isObject(object.location[i]))
                             throw TypeError(".google.protobuf.SourceCodeInfo.location: object expected");
                         message.location[i] = $root.google.protobuf.SourceCodeInfo.Location.fromObject(object.location[i], long + 1);
                     }
@@ -23063,7 +23195,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Location.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -23206,6 +23338,8 @@ $root.google = (function() {
                 Location.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.SourceCodeInfo.Location)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".google.protobuf.SourceCodeInfo.Location: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
@@ -23396,7 +23530,7 @@ $root.google = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             GeneratedCodeInfo.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
+                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
             };
 
             /**
@@ -23491,6 +23625,8 @@ $root.google = (function() {
             GeneratedCodeInfo.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.google.protobuf.GeneratedCodeInfo)
                     return object;
+                if (!$util.isObject(object))
+                    throw TypeError(".google.protobuf.GeneratedCodeInfo: object expected");
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
@@ -23501,7 +23637,7 @@ $root.google = (function() {
                         throw TypeError(".google.protobuf.GeneratedCodeInfo.annotation: array expected");
                     message.annotation = [];
                     for (var i = 0; i < object.annotation.length; ++i) {
-                        if (typeof object.annotation[i] !== "object")
+                        if (!$util.isObject(object.annotation[i]))
                             throw TypeError(".google.protobuf.GeneratedCodeInfo.annotation: object expected");
                         message.annotation[i] = $root.google.protobuf.GeneratedCodeInfo.Annotation.fromObject(object.annotation[i], long + 1);
                     }
@@ -23686,7 +23822,7 @@ $root.google = (function() {
                  * @returns {$protobuf.Writer} Writer
                  */
                 Annotation.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
+                    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
                 };
 
                 /**
@@ -23818,6 +23954,8 @@ $root.google = (function() {
                 Annotation.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.GeneratedCodeInfo.Annotation)
                         return object;
+                    if (!$util.isObject(object))
+                        throw TypeError(".google.protobuf.GeneratedCodeInfo.Annotation: object expected");
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)

@@ -1,5 +1,5 @@
 "use strict";
-module.exports = {};
+module.exports = Object.create(null);
 
 /**
  * Named roots.

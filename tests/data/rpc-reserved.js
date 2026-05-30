@@ -152,7 +152,7 @@ $root.MyRequest = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     MyRequest.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -239,6 +239,8 @@ $root.MyRequest = (function() {
     MyRequest.fromObject = function fromObject(object, long) {
         if (object instanceof $root.MyRequest)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".MyRequest: object expected");
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
@@ -377,7 +379,7 @@ $root.MyResponse = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     MyResponse.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -464,6 +466,8 @@ $root.MyResponse = (function() {
     MyResponse.fromObject = function fromObject(object, long) {
         if (object instanceof $root.MyResponse)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".MyResponse: object expected");
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
