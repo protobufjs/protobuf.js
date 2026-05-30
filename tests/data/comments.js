@@ -7,7 +7,7 @@ var $protobuf = require("../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots.test_comments || ($protobuf.roots.test_comments = {});
+var $root = $protobuf.roots["test_comments"] || ($protobuf.roots["test_comments"] = {});
 
 $root.Test1 = (function() {
 
@@ -109,7 +109,7 @@ $root.Test1 = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Test1.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -210,6 +210,8 @@ $root.Test1 = (function() {
     Test1.fromObject = function fromObject(object, long) {
         if (object instanceof $root.Test1)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".Test1: object expected");
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
@@ -348,7 +350,7 @@ $root.Test2 = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Test2.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -428,6 +430,8 @@ $root.Test2 = (function() {
     Test2.fromObject = function fromObject(object, long) {
         if (object instanceof $root.Test2)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".Test2: object expected");
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)

@@ -5,7 +5,7 @@ import * as $protobuf from "../../minimal";
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-const $root = $protobuf.roots.test_rpc || ($protobuf.roots.test_rpc = {});
+const $root = $protobuf.roots["test_rpc"] || ($protobuf.roots["test_rpc"] = {});
 
 export const MyService = $root.MyService = (() => {
 
@@ -150,7 +150,7 @@ export const MyRequest = $root.MyRequest = (() => {
      * @returns {$protobuf.Writer} Writer
      */
     MyRequest.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -237,6 +237,8 @@ export const MyRequest = $root.MyRequest = (() => {
     MyRequest.fromObject = function fromObject(object, long) {
         if (object instanceof $root.MyRequest)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".MyRequest: object expected");
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
@@ -375,7 +377,7 @@ export const MyResponse = $root.MyResponse = (() => {
      * @returns {$protobuf.Writer} Writer
      */
     MyResponse.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -462,6 +464,8 @@ export const MyResponse = $root.MyResponse = (() => {
     MyResponse.fromObject = function fromObject(object, long) {
         if (object instanceof $root.MyResponse)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".MyResponse: object expected");
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)

@@ -115,7 +115,7 @@ exports.wrap = function(OUTPUT, options) {
         return $1.length ? OUTPUT.replace(/^/mg, $1) : OUTPUT;
     });
     if (options.lint !== "")
-        wrap = "/*" + options.lint + "*/\n" + wrap;
+        wrap = "/*" + String(options.lint).replace(/\*\//g, "* /") + "*/\n" + wrap;
     return wrap.replace(/\r?\n/g, "\n");
 };
 

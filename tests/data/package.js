@@ -7,7 +7,7 @@ var $protobuf = require("../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots.test_package || ($protobuf.roots.test_package = {});
+var $root = $protobuf.roots["test_package"] || ($protobuf.roots["test_package"] = {});
 
 $root.Package = (function() {
 
@@ -272,7 +272,7 @@ $root.Package = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Package.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
+        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
     /**
@@ -589,6 +589,8 @@ $root.Package = (function() {
     Package.fromObject = function fromObject(object, long) {
         if (object instanceof $root.Package)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".Package: object expected");
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
@@ -607,7 +609,7 @@ $root.Package = (function() {
         if (object.license != null)
             message.license = String(object.license);
         if (object.repository != null) {
-            if (typeof object.repository !== "object")
+            if (!$util.isObject(object.repository))
                 throw TypeError(".Package.repository: object expected");
             message.repository = $root.Package.Repository.fromObject(object.repository, long + 1);
         }
@@ -625,7 +627,7 @@ $root.Package = (function() {
         if (object.main != null)
             message.main = String(object.main);
         if (object.bin) {
-            if (typeof object.bin !== "object")
+            if (!$util.isObject(object.bin))
                 throw TypeError(".Package.bin: object expected");
             message.bin = {};
             for (var keys = Object.keys(object.bin), i = 0; i < keys.length; ++i) {
@@ -635,7 +637,7 @@ $root.Package = (function() {
             }
         }
         if (object.scripts) {
-            if (typeof object.scripts !== "object")
+            if (!$util.isObject(object.scripts))
                 throw TypeError(".Package.scripts: object expected");
             message.scripts = {};
             for (var keys = Object.keys(object.scripts), i = 0; i < keys.length; ++i) {
@@ -645,7 +647,7 @@ $root.Package = (function() {
             }
         }
         if (object.dependencies) {
-            if (typeof object.dependencies !== "object")
+            if (!$util.isObject(object.dependencies))
                 throw TypeError(".Package.dependencies: object expected");
             message.dependencies = {};
             for (var keys = Object.keys(object.dependencies), i = 0; i < keys.length; ++i) {
@@ -655,7 +657,7 @@ $root.Package = (function() {
             }
         }
         if (object.devDependencies) {
-            if (typeof object.devDependencies !== "object")
+            if (!$util.isObject(object.devDependencies))
                 throw TypeError(".Package.devDependencies: object expected");
             message.devDependencies = {};
             for (var keys = Object.keys(object.devDependencies), i = 0; i < keys.length; ++i) {
@@ -896,7 +898,7 @@ $root.Package = (function() {
          * @returns {$protobuf.Writer} Writer
          */
         Repository.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
+            return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
         };
 
         /**
@@ -990,6 +992,8 @@ $root.Package = (function() {
         Repository.fromObject = function fromObject(object, long) {
             if (object instanceof $root.Package.Repository)
                 return object;
+            if (!$util.isObject(object))
+                throw TypeError(".Package.Repository: object expected");
             if (long === undefined)
                 long = 0;
             if (long > $util.recursionLimit)

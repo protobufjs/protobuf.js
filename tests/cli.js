@@ -191,6 +191,190 @@ tape.test("pbjs escapes static target names", function(test) {
     });
 });
 
+tape.test("pbjs escapes wrapper lint comments", function(test) {
+    cliTest(test, function() {
+        var root = new protobuf.Root();
+        var staticModuleTarget = require("../cli/targets/static-module");
+
+        staticModuleTarget(root, {
+            wrap: "commonjs",
+            lint: "note */ text"
+        }, function(err, jsCode) {
+            test.error(err, "static-module code generation worked");
+            test.equal(jsCode.indexOf("note */ text"), -1, "does not emit raw comment terminator");
+            test.ok(jsCode.indexOf("note * / text") >= 0, "escapes comment terminator");
+            test.doesNotThrow(function() {
+                new Function("require", "module", "exports", jsCode); // eslint-disable-line no-new-func
+            }, "should generate parseable output");
+            test.end();
+        });
+    });
+});
+
+tape.test("pbjs supports dictionary generated root names", function(test) {
+    cliTest(test, function() {
+        var staticTarget = require("../cli/targets/static");
+        var jsonModuleTarget = require("../cli/targets/json-module");
+        var root = protobuf.Root.fromJSON({
+            nested: {
+                M: {
+                    fields: {}
+                }
+            }
+        });
+
+        test.equal(Object.getPrototypeOf(protobuf.roots), null, "roots uses dictionary semantics");
+
+        delete protobuf.roots.__proto__;
+        delete protobuf.roots.constructor;
+        staticTarget(root, {
+            root: "__proto__"
+        }, function(staticErr, staticCode) {
+            test.error(staticErr, "static target accepts dictionary root name");
+            test.ok(staticCode.indexOf("$protobuf.roots[\"__proto__\"]") >= 0, "static target uses bracket root access");
+            var $protobuf = protobuf;
+            test.doesNotThrow(function() {
+                eval(staticCode);
+            }, "static output should execute");
+            test.ok(Object.prototype.hasOwnProperty.call(protobuf.roots, "__proto__"), "static target creates own root property");
+
+            jsonModuleTarget(root, {
+                wrap: "commonjs",
+                root: "constructor",
+                lint: ""
+            }, function(jsonErr, jsonCode) {
+                test.error(jsonErr, "json-module target accepts dictionary root name");
+                test.ok(jsonCode.indexOf("$protobuf.roots[\"constructor\"]") >= 0, "json-module target uses bracket root access");
+
+                var module = { exports: {} };
+                function localRequire(request) {
+                    if (request.indexOf("protobufjs") === 0)
+                        return protobuf;
+                    throw Error("unexpected require: " + request);
+                }
+
+                test.doesNotThrow(function() {
+                    new Function("require", "module", "exports", jsonCode)(localRequire, module, module.exports); // eslint-disable-line no-new-func
+                }, "json-module output should execute");
+                test.ok(Object.prototype.hasOwnProperty.call(protobuf.roots, "constructor"), "json-module target creates own root property");
+                test.equal(module.exports, protobuf.roots.constructor, "json-module exports dictionary root");
+                delete protobuf.roots.__proto__;
+                delete protobuf.roots.constructor;
+                test.end();
+            });
+        });
+    });
+});
+
+tape.test("pbjs rejects static target escaped name collisions", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.Root.fromJSON({
+            nested: {
+                "pkg-name": {
+                    nested: {}
+                },
+                pkgname: {
+                    nested: {}
+                }
+            }
+        });
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {}, function(err) {
+            test.match(err && err.message, /duplicate generated name 'pkgname'/, "rejects ambiguous generated names");
+            test.end();
+        });
+    });
+});
+
+tape.test("pbjs builds static references from escaped path segments", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.Root.fromJSON({
+            nested: {
+                "pkg.name": {
+                    nested: {
+                        Child: {
+                            fields: {
+                                value: { type: "string", id: 1 }
+                            }
+                        },
+                        Kind: {
+                            values: {
+                                UNKNOWN: 0,
+                                READY: 1
+                            }
+                        },
+                        Parent: {
+                            fields: {
+                                child: { type: "Child", id: 1 },
+                                kind: { type: "Kind", id: 2 }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {
+            create: true,
+            verify: true,
+            convert: true
+        }, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+            test.equal(jsCode.indexOf("$root.pkg.name"), -1, "does not split dotted descriptor names");
+            test.ok(jsCode.indexOf("$root.pkgname.Child") >= 0, "uses escaped path segment for child type");
+            test.ok(jsCode.indexOf("$root.pkgname.Parent") >= 0, "uses escaped path segment for parent type");
+            test.doesNotThrow(function() {
+                new Function("$protobuf", jsCode); // eslint-disable-line no-new-func
+            }, "should generate parseable output");
+            test.end();
+        });
+    });
+});
+
+tape.test("pbjs generated static encodeDelimited reuses writers", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.parse("message A {\
+    required uint32 a = 1;\
+}\
+message B {\
+    required string b = 1;\
+}").root.resolveAll();
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {
+            root: "test_delimited_writer",
+            encode: true,
+            decode: true,
+            delimited: true
+        }, function(err, output) {
+            test.error(err, "static code generation worked");
+            if (err)
+                return test.end();
+
+            var staticRoot = new Function("$protobuf", output + "\nreturn $root;")(protobuf); // eslint-disable-line no-new-func
+            var writer = protobuf.Writer.create();
+
+            staticRoot.A.encodeDelimited({
+                a: 1
+            }, writer);
+
+            staticRoot.B.encodeDelimited({
+                b: "a"
+            }, writer);
+
+            var buffer = writer.finish();
+            var reader = protobuf.Reader.create(buffer);
+
+            test.deepEqual(staticRoot.A.decodeDelimited(reader), { a: 1 }, "read back the first message");
+            test.deepEqual(staticRoot.B.decodeDelimited(reader), { b: "a" }, "read back the second message");
+            test.equal(reader.pos, reader.len, "consume the reader");
+            test.end();
+        });
+    });
+});
+
 tape.test("without null-defaults, absent optional fields have zero values", function(test) {
     cliTest(test, function() {
         var root = protobuf.loadSync("tests/data/cli/null-defaults.proto");
