@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.3.1...protobufjs-cli-v1.3.2) (2026-05-30)
+
+
+### Bug Fixes
+
+* Backport consistency and correctness fixes ([#2294](https://github.com/protobufjs/protobuf.js/issues/2294)) ([a92f72e](https://github.com/protobufjs/protobuf.js/commit/a92f72e1cb731f06040a7917d3e041666d5f5601))
+
 ## [1.3.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.3.0...protobufjs-cli-v1.3.1) (2026-05-22)
 
 
