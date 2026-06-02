@@ -16,6 +16,7 @@ const root = protobuf.Root.fromJSON({
 root.resolveAll();
 
 const type = root.lookupType("Message");
+textformat.install();
 const message = type.fromText("value: 1");
 const text: string = type.toText(message, { unknowns: true });
 

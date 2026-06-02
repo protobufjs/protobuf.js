@@ -38,6 +38,12 @@ Field.fromJSON = function fromJSON(name, json) {
     var field = new Field(name, json.id, json.type, json.rule, json.extend, json.options, json.comment);
     if (json.edition)
         field._edition = json.edition;
+    if (json.protoName)
+        field.protoName = json.protoName;
+    if (json.jsonName !== undefined)
+        field.jsonName = json.jsonName;
+    else if (json.options && json.options.json_name !== undefined)
+        field.jsonName = json.options.json_name;
     field._defaultEdition = "proto3";  // For backwards-compatibility.
     return field;
 };
@@ -177,6 +183,18 @@ function Field(name, id, type, rule, extend, options, comment) {
      * @type {string|null}
      */
     this.comment = comment;
+
+    /**
+     * Field name as declared in the .proto source, if different from `name`.
+     * @type {string|undefined}
+     */
+    this.protoName = undefined;
+
+    /**
+     * JSON name, if different from the derived default.
+     * @type {string|undefined}
+     */
+    this.jsonName = undefined;
 }
 
 /**
@@ -247,6 +265,22 @@ Object.defineProperty(Field.prototype, "hasPresence", {
 });
 
 /**
+ * The field name as declared in the .proto source (snake_case). Populated on resolve,
+ * falling back to `name`. Mirrors `FieldDescriptorProto.name`.
+ * @name Field#protoName
+ * @type {string}
+ * @readonly
+ */
+
+/**
+ * The JSON name of this field (lowerCamelCase per protoc's `ToJsonName`, or an
+ * explicit `[json_name]`). Populated on resolve. This is the key used on ProtoJSON output.
+ * @name Field#jsonName
+ * @type {string}
+ * @readonly
+ */
+
+/**
  * @override
  */
 Field.prototype.setOption = function setOption(name, value, ifNotSet) {
@@ -279,13 +313,15 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 Field.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
-        "edition" , this._editionToJSON(),
-        "rule"    , this.rule !== "optional" && this.rule || undefined,
-        "type"    , this.type,
-        "id"      , this.id,
-        "extend"  , this.extend,
-        "options" , this.options,
-        "comment" , keepComments ? this.comment : undefined
+        "edition"      , this._editionToJSON(),
+        "rule"         , this.rule !== "optional" && this.rule || undefined,
+        "type"         , this.type,
+        "id"           , this.id,
+        "extend"       , this.extend,
+        "protoName"    , this.protoName !== this.name ? this.protoName : undefined,
+        "jsonName"     , this.jsonName !== util.jsonName(this.protoName || this.name) ? this.jsonName : undefined,
+        "options"      , this.options,
+        "comment"      , keepComments ? this.comment : undefined
     ]);
 };
 
@@ -353,6 +389,12 @@ Field.prototype.resolve = function resolve() {
     // ensure proper value on prototype
     if (this.parent instanceof Type && this.parent._ctor)
         this.parent._ctor.prototype[this.name] = this.defaultValue;
+
+    // derive the proto/JSON names
+    if (this.protoName === undefined)
+        this.protoName = this.name;
+    if (this.jsonName === undefined)
+        this.jsonName = util.jsonName(this.protoName);
 
     return ReflectionObject.prototype.resolve.call(this);
 };

@@ -6,6 +6,7 @@ var fs = require("fs"),
 
 var args = process.argv.slice(2),
     jsonFile = null,
+    binaryOnly = false,
     files = [],
     report,
     runnerSummary,
@@ -14,6 +15,8 @@ var args = process.argv.slice(2),
 args.forEach(function(arg, index) {
     if (arg === "--json") {
         jsonFile = args[index + 1];
+    } else if (arg === "--binary-only") {
+        binaryOnly = true;
     } else if (index === 0 || args[index - 1] !== "--json") {
         files.push(arg);
     }
@@ -42,18 +45,18 @@ if (!runnerSummary) {
 }
 
 totals = report.totals;
-if (printTable("Wire format by syntax", "Syntax", [
-    binarySyntax("proto2"),
-    binarySyntax("proto3"),
-    binarySyntax("editions")
-].filter(Boolean)))
-    console.log("");
-printTable("By harness category", "Category", [
-    suite("Binary", "binary"),
-    suite("ProtoJSON", "json"),
-    suite("TextFormat", "textFormat"),
-    ["Overall", formatResult(totals.overall), formatResult(totals.byRequirement.required), formatResult(totals.byRequirement.recommended)]
-].filter(Boolean));
+printTable(null, "Category", conformanceRows());
+
+function conformanceRows() {
+    var rows = [suite("Binary", "binary")].concat(binarySyntaxRows());
+    if (!binaryOnly)
+        rows = rows.concat([
+            suite("ProtoJSON", "json"),
+            suite("TextFormat", "textFormat"),
+            ["Overall", formatResult(totals.overall), formatResult(totals.byRequirement.required), formatResult(totals.byRequirement.recommended)]
+        ]);
+    return rows.filter(Boolean);
+}
 
 function binarySyntax(syntax) {
     var byRequirement = totals.byBinarySyntaxRequirement && totals.byBinarySyntaxRequirement[syntax],
@@ -66,6 +69,18 @@ function binarySyntax(syntax) {
         formatResult(byRequirement && byRequirement.required),
         formatResult(byRequirement && byRequirement.recommended)
     ];
+}
+
+function binarySyntaxRows() {
+    var rows = [
+        binarySyntax("proto2"),
+        binarySyntax("proto3"),
+        binarySyntax("editions")
+    ].filter(Boolean);
+    rows.forEach(function(row) {
+        row[0] = "\u21b3 " + row[0];
+    });
+    return rows;
 }
 
 function suite(label, format) {
@@ -97,8 +112,10 @@ function printTable(title, firstColumn, rows) {
     if (!rows.length)
         return false;
 
-    console.log(title + ":");
-    console.log("");
+    if (title) {
+        console.log(title + ":");
+        console.log("");
+    }
     console.log("| " + padRight(firstColumn, suiteWidth) + " | " + padLeft("Total", totalWidth) + " | " + padLeft("Required", requiredWidth) + " | " + padLeft("Recommended", recommendedWidth) + " |");
     console.log("| " + repeat("-", suiteWidth) + " | " + repeat("-", totalWidth - 1) + ": | " + repeat("-", requiredWidth - 1) + ": | " + repeat("-", recommendedWidth - 1) + ": |");
     rows.forEach(function(row) {

@@ -69,39 +69,60 @@ function parseText(type, text) {
  */
 
 /**
+ * Parses a message from protobuf text format using the specified reflected type.
+ * @function fromText
+ * @name fromText
+ * @param {$protobuf.Type} type Reflected message type
+ * @param {string} text Text format input
+ * @returns {$protobuf.Message<{}>} Message instance
+ */
+textformat.fromText = function fromText(type, text) {
+    return parseText(type, text);
+};
+
+/**
  * Formats a message as protobuf text format using the specified reflected type.
- * @param {Type} type Reflected message type
- * @param {Message<{}>|Object.<string,*>} message Message instance or plain object
+ * @function toText
+ * @name toText
+ * @param {$protobuf.Type} type Reflected message type
+ * @param {$protobuf.Message<{}>|Object.<string,*>} message Message instance or plain object
  * @param {ITextFormatOptions} [options] Text format options
  * @returns {string} Text format output
- * @private
  */
-function formatText(type, message, options) {
+textformat.toText = function toText(type, message, options) {
     if (!(type instanceof Type))
         throw TypeError("type must be a Type");
     type.root.resolveAll();
     var lines = [];
     writeMessage(type, message, lines, 0, options || {}, 0);
     return lines.join("\n");
-}
-
-/**
- * Parses this type from protobuf text format.
- * @param {string} text Text format input
- * @returns {Message<{}>} Message instance
- */
-Type.prototype.fromText = function fromText(text) {
-    return parseText(this, text);
 };
 
 /**
- * Formats a message of this type as protobuf text format.
- * @param {Message<{}>|Object.<string,*>} message Message instance or plain object
- * @param {ITextFormatOptions} [options] Text format options
- * @returns {string} Text format output
+ * Installs reflected {@link Type} convenience methods.
+ * @function install
+ * @name install
+ * @returns {undefined}
  */
-Type.prototype.toText = function toText(message, options) {
-    return formatText(this, message, options);
+textformat.install = function install() {
+    /**
+     * Parses a message of this type from protobuf text format. Convenience for {@link textformat.fromText}.
+     * @param {string} text Text format input
+     * @returns {Message<{}>} Message instance
+     */
+    Type.prototype.fromText = function fromText(text) {
+        return textformat.fromText(this, text);
+    };
+
+    /**
+     * Formats a message of this type as protobuf text format. Convenience for {@link textformat.toText}.
+     * @param {Message<{}>|Object.<string,*>} message Message instance or plain object
+     * @param {ITextFormatOptions} [options] Text format options
+     * @returns {string} Text format output
+     */
+    Type.prototype.toText = function toText(message, options) {
+        return textformat.toText(this, message, options);
+    };
 };
 
 function Tokenizer(source) {

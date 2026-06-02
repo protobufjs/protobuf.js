@@ -363,7 +363,7 @@ function FieldBase_fromDescriptor(descriptor, edition, nested, mapEntries) {
  * @property {string} [extendee] Extended type name
  * @property {string} [defaultValue] Literal default value
  * @property {number} [oneofIndex] Oneof index if part of a oneof
- * @property {*} [jsonName] Not supported
+ * @property {string} [jsonName] JSON name (lowerCamelCase)
  * @property {IFieldOptions} [options] Field options
  * @property {boolean} [proto3Optional] Whether this is a proto3 optional field
  */
@@ -460,13 +460,22 @@ Field.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
             throw Error("illegal type name: " + extendee);
     } else
         extendee = undefined;
+    // Prefer json_name as the JS field name when present, while retaining both
+    // descriptor names for round-tripping and ProtoJSON lookup.
+    var fieldName = descriptor.jsonName && descriptor.jsonName.length
+        ? descriptor.jsonName
+        : descriptor.name.length ? descriptor.name : "field" + descriptor.number;
     var field = new Field(
-        descriptor.name.length ? descriptor.name : "field" + descriptor.number,
+        fieldName,
         descriptor.number,
         fieldType,
         fieldRule,
         extendee
     );
+    if (descriptor.name.length && descriptor.name !== fieldName)
+        field.protoName = descriptor.name;
+    if (descriptor.jsonName && descriptor.jsonName.length)
+        field.jsonName = descriptor.jsonName;
 
     if (!nested)
         field._edition = edition;
@@ -536,7 +545,13 @@ function MapField_fromDescriptor(descriptor, entryDescriptor) {
  * @param {string} [edition="proto2"] The syntax or edition to use
  */
 Field.prototype.toDescriptor = function toDescriptor(edition) {
-    var descriptor = exports.FieldDescriptorProto.create({ name: this.name, number: this.id });
+    // Emit descriptor names in FieldDescriptorProto form, including json_name only
+    // when it differs, and derive missing names so unresolved fields serialize consistently.
+    var protoName = this.protoName || this.name;
+    var jsonName = this.jsonName || $protobuf.util.jsonName(protoName);
+    var descriptor = exports.FieldDescriptorProto.create({ name: protoName, number: this.id });
+    if (jsonName !== protoName)
+        descriptor.jsonName = jsonName;
 
     if (this.map) {
 

@@ -93,11 +93,34 @@ var camelCaseRe = /_([a-z])/g;
  * Converts a string to camel case.
  * @param {string} str String to convert
  * @returns {string} Converted string
+ * @deprecated Use {@link util.jsonName} for protobuf field JSON names.
  */
 util.camelCase = function camelCase(str) {
     return str.substring(0, 1)
          + str.substring(1)
                .replace(camelCaseRe, function($0, $1) { return $1.toUpperCase(); });
+};
+
+/**
+ * Converts a proto field name to its protoc-compatible JSON name.
+ * @param {string} str Proto field name
+ * @returns {string} JSON name
+ */
+util.jsonName = function jsonName(str) {
+    var result = "",
+        upperNext = false,
+        i = 0;
+    for (; i < str.length; ++i) {
+        var ch = str.charAt(i);
+        if (ch === "_")
+            upperNext = true;
+        else if (upperNext) {
+            result += ch.toUpperCase();
+            upperNext = false;
+        } else
+            result += ch;
+    }
+    return result;
 };
 
 /**

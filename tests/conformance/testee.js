@@ -5,10 +5,14 @@ var fs = require("fs"),
     generated = require("./generated/messages.js"),
     reflectionRoot = protobuf.Root.fromJSON(require("./generated/messages.json")).resolveAll(),
     conformance = generated.conformance,
+    protojson = require("../../ext/protojson"),
+    textformat = require("../../ext/textformat"),
     list = process.argv.indexOf("--list") >= 0,
+    mode = process.env.PROTOBUFJS_CONFORMANCE_MODE || "reflect",
     testTypes = Object.create(null);
 
-require("../../ext/textformat");
+if (mode !== "static" && mode !== "reflect")
+    throw Error("unsupported PROTOBUFJS_CONFORMANCE_MODE: " + mode);
 
 var TEST_TYPES = [
     makeTestType("protobuf_test_messages.proto2.TestAllTypesProto2", generated.protobuf_test_messages.proto2.TestAllTypesProto2),
@@ -40,6 +44,11 @@ function makeTestType(name, type) {
         type: type,
         textType: reflectionRoot.lookupType(name)
     };
+}
+
+function isStaticSupported(request) {
+    return request.payload === "protobufPayload"
+        && request.requestedOutputFormat === conformance.WireFormat.PROTOBUF;
 }
 
 // Keep stdout synchronous because it carries the framed testee protocol.
@@ -78,12 +87,14 @@ try {
             };
         } else if (list) {
             response = { skipped: "list mode" };
+        } else if (mode === "static" && !isStaticSupported(request)) {
+            response = { skipped: "static mode supports protobuf input/output only" };
         } else {
             testCase = testTypes[request.messageType];
             if (!testCase) {
                 response = { runtimeError: "unknown message type: " + request.messageType };
             } else {
-                type = testCase.type;
+                type = mode === "reflect" ? testCase.textType : testCase.type;
                 // Parse the request payload into the requested generated type.
                 try {
                     switch (request.payload) {
@@ -91,13 +102,16 @@ try {
                             message = type.decode(request.protobufPayload);
                             break;
                         case "jsonPayload":
-                            message = type.fromObject(JSON.parse(request.jsonPayload));
+                            message = protojson.fromJsonString(type, request.jsonPayload, {
+                                ignoreUnknownFields: request.testCategory
+                                    === conformance.TestCategory.JSON_IGNORE_UNKNOWN_PARSING_TEST
+                            });
                             break;
                         case "jspbPayload":
-                            response = { parseError: "JSPB not supported" };
+                            response = { skipped: "JSPB not supported" };
                             break;
                         case "textPayload":
-                            message = testCase.textType.fromText(request.textPayload);
+                            message = textformat.fromText(type, request.textPayload);
                             break;
                         default:
                             response = { parseError: "unsupported format" };
@@ -115,21 +129,14 @@ try {
                                 response = { protobufPayload: type.encode(message).finish() };
                                 break;
                             case conformance.WireFormat.JSON:
-                                response = {
-                                    jsonPayload: JSON.stringify(type.toObject(message, {
-                                        json: true,
-                                        bytes: String,
-                                        longs: String,
-                                        enums: String
-                                    }))
-                                };
+                                response = { jsonPayload: protojson.toJsonString(type, message) };
                                 break;
                             case conformance.WireFormat.JSPB:
                                 response = { skipped: "JSPB not supported" };
                                 break;
                             case conformance.WireFormat.TEXT_FORMAT:
                                 response = {
-                                    textPayload: testCase.textType.toText(message, {
+                                    textPayload: textformat.toText(type, message, {
                                         unknowns: request.printUnknownFields
                                     })
                                 };

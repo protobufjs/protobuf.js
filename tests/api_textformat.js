@@ -1,7 +1,7 @@
 var tape = require("tape");
 
 var protobuf = require("..");
-require("../ext/textformat");
+var textformat = require("../ext/textformat");
 
 var proto = "syntax = \"proto3\";\
 message Child { string name = 1; }\
@@ -29,6 +29,16 @@ var root = protobuf.parse(proto).root,
     Msg = root.lookupType("Msg"),
     Child = root.lookupType("Child"),
     Kind = root.lookupEnum("Kind");
+
+tape.test("textformat - installs reflected Type convenience methods", function(test) {
+    delete protobuf.Type.prototype.fromText;
+    delete protobuf.Type.prototype.toText;
+
+    textformat.install();
+    test.equal(typeof protobuf.Type.prototype.fromText, "function", "installs fromText");
+    test.equal(typeof protobuf.Type.prototype.toText, "function", "installs toText");
+    test.end();
+});
 
 tape.test("textformat - parses scalar, repeated, map and nested fields", function(test) {
     var msg = Msg.fromText(

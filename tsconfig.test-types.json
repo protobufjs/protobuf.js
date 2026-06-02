@@ -12,6 +12,7 @@
     },
     "include": [
         "tests/comp_descriptor.ts",
+        "tests/comp_protojson.ts",
         "tests/comp_textformat.ts",
         "tests/data/*.ts"
     ]

@@ -73,6 +73,7 @@ runs:
       run: |
         mkdir -p "${{ inputs.output-dir }}"
         : > "${{ inputs.output-dir }}/failure_list.txt"
+        PROTOBUFJS_CONFORMANCE_MODE=reflect \
         "${{ inputs.runner-cache }}/build/conformance_test_runner" \
           --maximum_edition "${{ inputs.maximum-edition }}" \
           --enforce_recommended \
@@ -82,29 +83,68 @@ runs:
           "${{ steps.node.outputs.path }}" tests/conformance/testee.js --list \
           > "${{ inputs.output-dir }}/conformance-tests.log" 2>&1
 
-    - name: "Run conformance suite"
+    - name: "Run conformance suites"
       id: run-conformance
       shell: bash
       run: |
-        set +e
-        "${{ inputs.runner-cache }}/build/conformance_test_runner" \
-          --maximum_edition "${{ inputs.maximum-edition }}" \
-          --enforce_recommended \
-          --failure_list "${{ inputs.output-dir }}/failure_list.txt" \
-          --output_dir "${{ inputs.output-dir }}" \
-          "${{ steps.node.outputs.path }}" tests/conformance/testee.js \
-          > "${{ inputs.output-dir }}/conformance.log" 2>&1
-        status=$?
-        set -e
-        echo "exit_code=$status" >> "$GITHUB_OUTPUT"
-        tail -n 80 "${{ inputs.output-dir }}/conformance.log"
-        if [ -s "${{ inputs.output-dir }}/failing_tests.txt" ]; then
-          echo ""
-          echo "Failing conformance tests:"
-          cat "${{ inputs.output-dir }}/failing_tests.txt"
-        fi
+        status=0
 
-    - name: "Summarize conformance results"
+        run_mode() {
+          local mode="$1"
+          local mode_dir="${{ inputs.output-dir }}/${mode}"
+          local mode_status=0
+
+          mkdir -p "$mode_dir"
+          : > "$mode_dir/failure_list.txt"
+
+          set +e
+          PROTOBUFJS_CONFORMANCE_MODE="$mode" \
+          "${{ inputs.runner-cache }}/build/conformance_test_runner" \
+            --maximum_edition "${{ inputs.maximum-edition }}" \
+            --enforce_recommended \
+            --verbose \
+            --failure_list "$mode_dir/failure_list.txt" \
+            --output_dir "$mode_dir" \
+            "${{ steps.node.outputs.path }}" tests/conformance/testee.js \
+            > "$mode_dir/conformance.log" 2>&1
+          mode_status=$?
+          set -e
+
+          if [ "$mode_status" -ne 0 ]; then
+            status="$mode_status"
+          fi
+
+          echo ""
+          echo "Last conformance log lines for ${mode} mode:"
+          tail -n 80 "$mode_dir/conformance.log"
+          if [ -s "$mode_dir/failing_tests.txt" ]; then
+            echo ""
+            echo "Failing conformance tests for ${mode} mode:"
+            cat "$mode_dir/failing_tests.txt"
+          fi
+        }
+
+        run_mode static
+        run_mode reflect
+
+        echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+
+    - name: "Summarize static conformance results"
       if: always()
       shell: bash
-      run: node tests/conformance/report.js "${{ inputs.output-dir }}/conformance.log" "${{ inputs.output-dir }}/conformance-tests.log" --json "${{ inputs.output-dir }}/conformance.json" | tee -a "$GITHUB_STEP_SUMMARY"
+      run: |
+        {
+          echo "## Static"
+          echo ""
+          node tests/conformance/report.js "${{ inputs.output-dir }}/static/conformance.log" "${{ inputs.output-dir }}/conformance-tests.log" --binary-only --json "${{ inputs.output-dir }}/static/conformance.json"
+        } | tee -a "$GITHUB_STEP_SUMMARY"
+
+    - name: "Summarize reflect conformance results"
+      if: always()
+      shell: bash
+      run: |
+        {
+          echo "## Reflect"
+          echo ""
+          node tests/conformance/report.js "${{ inputs.output-dir }}/reflect/conformance.log" "${{ inputs.output-dir }}/conformance-tests.log" --json "${{ inputs.output-dir }}/reflect/conformance.json"
+        } | tee -a "$GITHUB_STEP_SUMMARY"

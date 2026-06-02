@@ -258,8 +258,8 @@ export interface IFieldDescriptorProto {
     /** Oneof index if part of a oneof */
     oneofIndex?: number;
 
-    /** Not supported */
-    jsonName?: any;
+    /** JSON name (lowerCamelCase) */
+    jsonName?: string;
 
     /** Field options */
     options?: IFieldOptions;
