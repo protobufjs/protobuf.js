@@ -312,17 +312,21 @@ const myService = MyService.create(myRpcImpl/*, requestDelimited?, responseDelim
 
 See [examples/streaming-rpc.js](./examples/streaming-rpc.js) for a streaming example.
 
+## Extensions
+
+Optional extensions provide descriptor conversion and text-based protobuf formats when reflection metadata is available. Most applications only need the binary APIs above.
+
 ### Descriptors
 
-For `google/protobuf/descriptor.proto` interoperability, see [ext/descriptor](./ext/README.md#descriptor). Note that because protobuf.js does not use `descriptor.proto` internally, options are parsed and presented literally.
+For converting reflected roots and objects to and from `protoc` descriptor messages, see [ext/descriptor](./ext/README.md#descriptor).
 
 ### ProtoJSON
 
-Protocol Buffers support a special [ProtoJSON format](https://protobuf.dev/programming-guides/json/) to share data with systems that do not support the binary wire format, for example when implementing gateways. Spec-compliant ProtoJSON is supported with reflection metadata present via the [ext/protojson](./ext/README.md#protojson) extension.
+Protocol Buffers support a special [ProtoJSON format](https://protobuf.dev/programming-guides/json/) to share data with systems that do not support the binary wire format, for example when implementing gateways. Spec-compliant ProtoJSON is supported via [ext/protojson](./ext/README.md#protojson).
 
 ### Text Format
 
-Protocol Buffers [Text Format](https://protobuf.dev/reference/protobuf/textformat-spec/) is a special syntax for representing protobuf data in text form, which can be useful for configurations or tests. Spec-compliant Text Format is supported with reflection metadata present via the [ext/textformat](./ext/README.md#textformat) extension.
+Protocol Buffers [Text Format](https://protobuf.dev/reference/protobuf/textformat-spec/) is a special syntax for representing protobuf data in text form, which can be useful for configurations or tests. Spec-compliant Text Format is supported via [ext/textformat](./ext/README.md#textformat).
 
 ### Content Security Policy
 
@@ -330,7 +334,7 @@ In [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disa
 
 ## Conformance
 
-protobuf.js targets complete binary wire-format conformance for **Proto2**, **Proto3** and **Editions** in any mode, plus complete **ProtoJSON** and **Text Format** conformance with reflection metadata present. CI runs the official Protocol Buffers conformance suite for validation, with logs [uploaded as artifacts](https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush).
+protobuf.js targets complete binary wire-format conformance for **Proto2**, **Proto3** and **Editions** in both static and reflection modes, plus complete **ProtoJSON** and **Text Format** conformance with reflection metadata present. CI runs the official Protocol Buffers conformance suite for validation, with logs [uploaded as artifacts](https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush).
 
 | Category   |               Total |            Required |         Recommended |
 | ---------- | ------------------: | ------------------: | ------------------: |

@@ -7,6 +7,7 @@ var js = require("@eslint/js"),
 module.exports = [
     {
         ignores: [
+            ".tmp/**",
             "**/node_modules/**",
             "bin/**",
             "cli/wrappers/**",
