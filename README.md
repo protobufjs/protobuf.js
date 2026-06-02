@@ -182,6 +182,8 @@ import { awesomepackage } from "./awesome.js";
 const message = awesomepackage.AwesomeMessage.create({ awesomeField: "hello" });
 ```
 
+In [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval, use generated static code instead of runtime code generation.
+
 ### Reflection bundles
 
 Bundling schemas avoids reparsing `.proto` files at runtime and can reduce browser requests when schemas would otherwise be loaded separately. While reflection requires at least `protobufjs/light.js`, large schemas often produce smaller bundles than equivalent static modules because most code is shared via reflection.
@@ -312,25 +314,21 @@ const myService = MyService.create(myRpcImpl/*, requestDelimited?, responseDelim
 
 See [examples/streaming-rpc.js](./examples/streaming-rpc.js) for a streaming example.
 
-## Extensions
+### Extensions
 
 Optional extensions provide descriptor conversion and text-based protobuf formats when reflection metadata is available. Most applications only need the binary APIs above.
 
-### Descriptors
+#### Descriptors
 
 For converting reflected roots and objects to and from `protoc` descriptor messages, see [ext/descriptor](./ext/README.md#descriptor).
 
-### ProtoJSON
+#### ProtoJSON
 
 Protocol Buffers support a special [ProtoJSON format](https://protobuf.dev/programming-guides/json/) to share data with systems that do not support the binary wire format, for example when implementing gateways. Spec-compliant ProtoJSON is supported via [ext/protojson](./ext/README.md#protojson).
 
-### Text Format
+#### Text Format
 
 Protocol Buffers [Text Format](https://protobuf.dev/reference/protobuf/textformat-spec/) is a special syntax for representing protobuf data in text form, which can be useful for configurations or tests. Spec-compliant Text Format is supported via [ext/textformat](./ext/README.md#textformat).
-
-### Content Security Policy
-
-In [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval, use generated static code instead of runtime code generation.
 
 ## Conformance
 
