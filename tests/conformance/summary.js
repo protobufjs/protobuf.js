@@ -104,8 +104,7 @@ function summarize(tests, failures, skips) {
         byFormat: summarizeGroups(tests, failures, skips, "format", formatOrder()),
         byFormatRequirement: summarizeMatrix(tests, failures, skips, "format", "requirement", formatOrder(), requirementOrder()),
         byBinarySyntax: summarizeGroups(binaryTests, failures, skips, "syntax", syntaxOrder()),
-        byBinarySyntaxRequirement: summarizeMatrix(binaryTests, failures, skips, "syntax", "requirement", syntaxOrder(), requirementOrder()),
-        bySyntax: summarizeGroups(tests, failures, skips, "syntax", syntaxOrder())
+        byBinarySyntaxRequirement: summarizeMatrix(binaryTests, failures, skips, "syntax", "requirement", syntaxOrder(), requirementOrder())
     };
 }
 

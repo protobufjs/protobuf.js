@@ -23,7 +23,7 @@ args.forEach(function(arg, index) {
 });
 
 if (!files[0]) {
-    console.error("usage: node tests/conformance/report.js <conformance-log> [test-list-log] [--json <summary-json>]");
+    console.error("usage: node tests/conformance/report.js <conformance-log> [test-list-log] [--binary-only] [--json <summary-json>]");
     process.exit(1);
 }
 
@@ -45,7 +45,7 @@ if (!runnerSummary) {
 }
 
 totals = report.totals;
-printTable(null, "Category", conformanceRows());
+printTable("Category", conformanceRows());
 
 function conformanceRows() {
     var rows = [suite("Binary", "binary")].concat(binarySyntaxRows());
@@ -95,7 +95,7 @@ function suite(label, format) {
     ];
 }
 
-function printTable(title, firstColumn, rows) {
+function printTable(firstColumn, rows) {
     var suiteWidth = maxWidth([firstColumn].concat(rows.map(function(row) {
             return row[0];
         }))),
@@ -112,10 +112,6 @@ function printTable(title, firstColumn, rows) {
     if (!rows.length)
         return false;
 
-    if (title) {
-        console.log(title + ":");
-        console.log("");
-    }
     console.log("| " + padRight(firstColumn, suiteWidth) + " | " + padLeft("Total", totalWidth) + " | " + padLeft("Required", requiredWidth) + " | " + padLeft("Recommended", recommendedWidth) + " |");
     console.log("| " + repeat("-", suiteWidth) + " | " + repeat("-", totalWidth - 1) + ": | " + repeat("-", requiredWidth - 1) + ": | " + repeat("-", recommendedWidth - 1) + ": |");
     rows.forEach(function(row) {

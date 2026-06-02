@@ -31,9 +31,9 @@ if (generated.protobuf_test_messages.edition_unstable) {
 }
 
 TEST_TYPES.forEach(function(testCase) {
-    if (!testCase.type)
+    if (!testCase.staticType)
         throw Error("missing generated test type: " + testCase.name);
-    if (!testCase.textType)
+    if (!testCase.reflectType)
         throw Error("missing reflected test type: " + testCase.name);
     testTypes[testCase.name] = testCase;
 });
@@ -41,8 +41,8 @@ TEST_TYPES.forEach(function(testCase) {
 function makeTestType(name, type) {
     return {
         name: name,
-        type: type,
-        textType: reflectionRoot.lookupType(name)
+        staticType: type,
+        reflectType: reflectionRoot.lookupType(name)
     };
 }
 
@@ -94,7 +94,7 @@ try {
             if (!testCase) {
                 response = { runtimeError: "unknown message type: " + request.messageType };
             } else {
-                type = mode === "reflect" ? testCase.textType : testCase.type;
+                type = mode === "reflect" ? testCase.reflectType : testCase.staticType;
                 // Parse the request payload into the requested generated type.
                 try {
                     switch (request.payload) {

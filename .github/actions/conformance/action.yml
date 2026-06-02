@@ -18,7 +18,7 @@ inputs:
     default: "2024"
 outputs:
   exit-code:
-    description: "Exit code returned by the upstream conformance runner."
+    description: "Exit code returned by the conformance suites."
     value: ${{ steps.run-conformance.outputs.exit_code }}
 runs:
   using: "composite"
