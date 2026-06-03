@@ -263,7 +263,7 @@ $root.MyRequest = (function() {
             _depth = 0;
         if (_depth > $util.recursionLimit)
             return "max depth exceeded";
-        if (message.path != null && message.hasOwnProperty("path"))
+        if (message.path != null && Object.hasOwnProperty.call(message, "path"))
             if (!$util.isString(message.path))
                 return "path: string expected";
         return null;
@@ -280,6 +280,8 @@ $root.MyRequest = (function() {
     MyRequest.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.MyRequest)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".MyRequest: object expected");
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
@@ -310,7 +312,7 @@ $root.MyRequest = (function() {
         var object = {};
         if (options.defaults)
             object.path = "";
-        if (message.path != null && message.hasOwnProperty("path"))
+        if (message.path != null && Object.hasOwnProperty.call(message, "path"))
             object.path = message.path;
         return object;
     };
@@ -521,7 +523,7 @@ $root.MyResponse = (function() {
             _depth = 0;
         if (_depth > $util.recursionLimit)
             return "max depth exceeded";
-        if (message.status != null && message.hasOwnProperty("status"))
+        if (message.status != null && Object.hasOwnProperty.call(message, "status"))
             if (!$util.isInteger(message.status))
                 return "status: integer expected";
         return null;
@@ -538,6 +540,8 @@ $root.MyResponse = (function() {
     MyResponse.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.MyResponse)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".MyResponse: object expected");
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
@@ -568,7 +572,7 @@ $root.MyResponse = (function() {
         var object = {};
         if (options.defaults)
             object.status = 0;
-        if (message.status != null && message.hasOwnProperty("status"))
+        if (message.status != null && Object.hasOwnProperty.call(message, "status"))
             object.status = message.status;
         return object;
     };

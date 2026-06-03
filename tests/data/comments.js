@@ -230,13 +230,13 @@ $root.Test1 = (function() {
             _depth = 0;
         if (_depth > $util.recursionLimit)
             return "max depth exceeded";
-        if (message.field1 != null && message.hasOwnProperty("field1"))
+        if (message.field1 != null && Object.hasOwnProperty.call(message, "field1"))
             if (!$util.isString(message.field1))
                 return "field1: string expected";
-        if (message.field2 != null && message.hasOwnProperty("field2"))
+        if (message.field2 != null && Object.hasOwnProperty.call(message, "field2"))
             if (!$util.isInteger(message.field2))
                 return "field2: integer expected";
-        if (message.field3 != null && message.hasOwnProperty("field3"))
+        if (message.field3 != null && Object.hasOwnProperty.call(message, "field3"))
             if (typeof message.field3 !== "boolean")
                 return "field3: boolean expected";
         return null;
@@ -253,6 +253,8 @@ $root.Test1 = (function() {
     Test1.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.Test1)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".Test1: object expected");
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
@@ -292,11 +294,11 @@ $root.Test1 = (function() {
             object.field2 = 0;
             object.field3 = false;
         }
-        if (message.field1 != null && message.hasOwnProperty("field1"))
+        if (message.field1 != null && Object.hasOwnProperty.call(message, "field1"))
             object.field1 = message.field1;
-        if (message.field2 != null && message.hasOwnProperty("field2"))
+        if (message.field2 != null && Object.hasOwnProperty.call(message, "field2"))
             object.field2 = message.field2;
-        if (message.field3 != null && message.hasOwnProperty("field3"))
+        if (message.field3 != null && Object.hasOwnProperty.call(message, "field3"))
             object.field3 = message.field3;
         return object;
     };
@@ -498,6 +500,8 @@ $root.Test2 = (function() {
     Test2.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.Test2)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".Test2: object expected");
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)

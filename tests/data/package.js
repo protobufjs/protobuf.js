@@ -598,46 +598,46 @@ $root.Package = (function() {
             _depth = 0;
         if (_depth > $util.recursionLimit)
             return "max depth exceeded";
-        if (message.name != null && message.hasOwnProperty("name"))
+        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
-        if (message.version != null && message.hasOwnProperty("version"))
+        if (message.version != null && Object.hasOwnProperty.call(message, "version"))
             if (!$util.isString(message.version))
                 return "version: string expected";
-        if (message.versionScheme != null && message.hasOwnProperty("versionScheme"))
+        if (message.versionScheme != null && Object.hasOwnProperty.call(message, "versionScheme"))
             if (!$util.isString(message.versionScheme))
                 return "versionScheme: string expected";
-        if (message.description != null && message.hasOwnProperty("description"))
+        if (message.description != null && Object.hasOwnProperty.call(message, "description"))
             if (!$util.isString(message.description))
                 return "description: string expected";
-        if (message.author != null && message.hasOwnProperty("author"))
+        if (message.author != null && Object.hasOwnProperty.call(message, "author"))
             if (!$util.isString(message.author))
                 return "author: string expected";
-        if (message.license != null && message.hasOwnProperty("license"))
+        if (message.license != null && Object.hasOwnProperty.call(message, "license"))
             if (!$util.isString(message.license))
                 return "license: string expected";
-        if (message.repository != null && message.hasOwnProperty("repository")) {
+        if (message.repository != null && Object.hasOwnProperty.call(message, "repository")) {
             var error = $root.Package.Repository.verify(message.repository, _depth + 1);
             if (error)
                 return "repository." + error;
         }
-        if (message.bugs != null && message.hasOwnProperty("bugs"))
+        if (message.bugs != null && Object.hasOwnProperty.call(message, "bugs"))
             if (!$util.isString(message.bugs))
                 return "bugs: string expected";
-        if (message.homepage != null && message.hasOwnProperty("homepage"))
+        if (message.homepage != null && Object.hasOwnProperty.call(message, "homepage"))
             if (!$util.isString(message.homepage))
                 return "homepage: string expected";
-        if (message.keywords != null && message.hasOwnProperty("keywords")) {
+        if (message.keywords != null && Object.hasOwnProperty.call(message, "keywords")) {
             if (!Array.isArray(message.keywords))
                 return "keywords: array expected";
             for (var i = 0; i < message.keywords.length; ++i)
                 if (!$util.isString(message.keywords[i]))
                     return "keywords: string[] expected";
         }
-        if (message.main != null && message.hasOwnProperty("main"))
+        if (message.main != null && Object.hasOwnProperty.call(message, "main"))
             if (!$util.isString(message.main))
                 return "main: string expected";
-        if (message.bin != null && message.hasOwnProperty("bin")) {
+        if (message.bin != null && Object.hasOwnProperty.call(message, "bin")) {
             if (!$util.isObject(message.bin))
                 return "bin: object expected";
             var key = Object.keys(message.bin);
@@ -645,7 +645,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.bin[key[i]]))
                     return "bin: string{k:string} expected";
         }
-        if (message.scripts != null && message.hasOwnProperty("scripts")) {
+        if (message.scripts != null && Object.hasOwnProperty.call(message, "scripts")) {
             if (!$util.isObject(message.scripts))
                 return "scripts: object expected";
             var key = Object.keys(message.scripts);
@@ -653,7 +653,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.scripts[key[i]]))
                     return "scripts: string{k:string} expected";
         }
-        if (message.dependencies != null && message.hasOwnProperty("dependencies")) {
+        if (message.dependencies != null && Object.hasOwnProperty.call(message, "dependencies")) {
             if (!$util.isObject(message.dependencies))
                 return "dependencies: object expected";
             var key = Object.keys(message.dependencies);
@@ -661,7 +661,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.dependencies[key[i]]))
                     return "dependencies: string{k:string} expected";
         }
-        if (message.devDependencies != null && message.hasOwnProperty("devDependencies")) {
+        if (message.devDependencies != null && Object.hasOwnProperty.call(message, "devDependencies")) {
             if (!$util.isObject(message.devDependencies))
                 return "devDependencies: object expected";
             var key = Object.keys(message.devDependencies);
@@ -669,10 +669,10 @@ $root.Package = (function() {
                 if (!$util.isString(message.devDependencies[key[i]]))
                     return "devDependencies: string{k:string} expected";
         }
-        if (message.types != null && message.hasOwnProperty("types"))
+        if (message.types != null && Object.hasOwnProperty.call(message, "types"))
             if (!$util.isString(message.types))
                 return "types: string expected";
-        if (message.cliDependencies != null && message.hasOwnProperty("cliDependencies")) {
+        if (message.cliDependencies != null && Object.hasOwnProperty.call(message, "cliDependencies")) {
             if (!Array.isArray(message.cliDependencies))
                 return "cliDependencies: array expected";
             for (var i = 0; i < message.cliDependencies.length; ++i)
@@ -693,6 +693,8 @@ $root.Package = (function() {
     Package.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.Package)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".Package: object expected");
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
@@ -717,7 +719,7 @@ $root.Package = (function() {
             if (typeof object.license !== "string" || object.license.length)
                 message.license = String(object.license);
         if (object.repository != null) {
-            if (typeof object.repository !== "object")
+            if (!$util.isObject(object.repository))
                 throw TypeError(".Package.repository: object expected");
             message.repository = $root.Package.Repository.fromObject(object.repository, _depth + 1);
         }
@@ -738,7 +740,7 @@ $root.Package = (function() {
             if (typeof object.main !== "string" || object.main.length)
                 message.main = String(object.main);
         if (object.bin) {
-            if (typeof object.bin !== "object")
+            if (!$util.isObject(object.bin))
                 throw TypeError(".Package.bin: object expected");
             message.bin = {};
             for (var keys = Object.keys(object.bin), i = 0; i < keys.length; ++i) {
@@ -748,7 +750,7 @@ $root.Package = (function() {
             }
         }
         if (object.scripts) {
-            if (typeof object.scripts !== "object")
+            if (!$util.isObject(object.scripts))
                 throw TypeError(".Package.scripts: object expected");
             message.scripts = {};
             for (var keys = Object.keys(object.scripts), i = 0; i < keys.length; ++i) {
@@ -758,7 +760,7 @@ $root.Package = (function() {
             }
         }
         if (object.dependencies) {
-            if (typeof object.dependencies !== "object")
+            if (!$util.isObject(object.dependencies))
                 throw TypeError(".Package.dependencies: object expected");
             message.dependencies = {};
             for (var keys = Object.keys(object.dependencies), i = 0; i < keys.length; ++i) {
@@ -768,7 +770,7 @@ $root.Package = (function() {
             }
         }
         if (object.devDependencies) {
-            if (typeof object.devDependencies !== "object")
+            if (!$util.isObject(object.devDependencies))
                 throw TypeError(".Package.devDependencies: object expected");
             message.devDependencies = {};
             for (var keys = Object.keys(object.devDependencies), i = 0; i < keys.length; ++i) {
@@ -830,28 +832,28 @@ $root.Package = (function() {
             object.types = "";
             object.versionScheme = "";
         }
-        if (message.name != null && message.hasOwnProperty("name"))
+        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
             object.name = message.name;
-        if (message.version != null && message.hasOwnProperty("version"))
+        if (message.version != null && Object.hasOwnProperty.call(message, "version"))
             object.version = message.version;
-        if (message.description != null && message.hasOwnProperty("description"))
+        if (message.description != null && Object.hasOwnProperty.call(message, "description"))
             object.description = message.description;
-        if (message.author != null && message.hasOwnProperty("author"))
+        if (message.author != null && Object.hasOwnProperty.call(message, "author"))
             object.author = message.author;
-        if (message.license != null && message.hasOwnProperty("license"))
+        if (message.license != null && Object.hasOwnProperty.call(message, "license"))
             object.license = message.license;
-        if (message.repository != null && message.hasOwnProperty("repository"))
+        if (message.repository != null && Object.hasOwnProperty.call(message, "repository"))
             object.repository = $root.Package.Repository.toObject(message.repository, options, _depth + 1);
-        if (message.bugs != null && message.hasOwnProperty("bugs"))
+        if (message.bugs != null && Object.hasOwnProperty.call(message, "bugs"))
             object.bugs = message.bugs;
-        if (message.homepage != null && message.hasOwnProperty("homepage"))
+        if (message.homepage != null && Object.hasOwnProperty.call(message, "homepage"))
             object.homepage = message.homepage;
         if (message.keywords && message.keywords.length) {
             object.keywords = Array(message.keywords.length);
             for (var j = 0; j < message.keywords.length; ++j)
                 object.keywords[j] = message.keywords[j];
         }
-        if (message.main != null && message.hasOwnProperty("main"))
+        if (message.main != null && Object.hasOwnProperty.call(message, "main"))
             object.main = message.main;
         var keys2;
         if (message.bin && (keys2 = Object.keys(message.bin)).length) {
@@ -886,14 +888,14 @@ $root.Package = (function() {
                 object.devDependencies[keys2[j]] = message.devDependencies[keys2[j]];
             }
         }
-        if (message.types != null && message.hasOwnProperty("types"))
+        if (message.types != null && Object.hasOwnProperty.call(message, "types"))
             object.types = message.types;
         if (message.cliDependencies && message.cliDependencies.length) {
             object.cliDependencies = Array(message.cliDependencies.length);
             for (var j = 0; j < message.cliDependencies.length; ++j)
                 object.cliDependencies[j] = message.cliDependencies[j];
         }
-        if (message.versionScheme != null && message.hasOwnProperty("versionScheme"))
+        if (message.versionScheme != null && Object.hasOwnProperty.call(message, "versionScheme"))
             object.versionScheme = message.versionScheme;
         return object;
     };
@@ -1121,10 +1123,10 @@ $root.Package = (function() {
                 _depth = 0;
             if (_depth > $util.recursionLimit)
                 return "max depth exceeded";
-            if (message.type != null && message.hasOwnProperty("type"))
+            if (message.type != null && Object.hasOwnProperty.call(message, "type"))
                 if (!$util.isString(message.type))
                     return "type: string expected";
-            if (message.url != null && message.hasOwnProperty("url"))
+            if (message.url != null && Object.hasOwnProperty.call(message, "url"))
                 if (!$util.isString(message.url))
                     return "url: string expected";
             return null;
@@ -1141,6 +1143,8 @@ $root.Package = (function() {
         Repository.fromObject = function fromObject(object, _depth) {
             if (object instanceof $root.Package.Repository)
                 return object;
+            if (!$util.isObject(object))
+                throw TypeError(".Package.Repository: object expected");
             if (_depth === undefined)
                 _depth = 0;
             if (_depth > $util.recursionLimit)
@@ -1176,9 +1180,9 @@ $root.Package = (function() {
                 object.type = "";
                 object.url = "";
             }
-            if (message.type != null && message.hasOwnProperty("type"))
+            if (message.type != null && Object.hasOwnProperty.call(message, "type"))
                 object.type = message.type;
-            if (message.url != null && message.hasOwnProperty("url"))
+            if (message.url != null && Object.hasOwnProperty.call(message, "url"))
                 object.url = message.url;
             return object;
         };
