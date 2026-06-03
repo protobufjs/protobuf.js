@@ -189,6 +189,27 @@ tape.test("converters", function(test) {
 
         });
 
+        test.test(test.name + " - null-prototype objects", function(test) {
+            var userRoot = protobuf.parse("syntax = \"proto2\"; message User { optional string name = 1; optional int32 age = 2; }").root,
+                User = userRoot.lookupType("User"),
+                user = Object.create(null),
+                oneofRoot = protobuf.parse("syntax = \"proto3\"; message M { oneof kind { string a = 1; int32 b = 2; } }").root,
+                M = oneofRoot.lookupType("M"),
+                oneof = Object.create(null);
+
+            user.name = "attacker";
+            user.age = 99;
+            test.equal(User.verify(user), null, "verify accepts valid null-prototype objects");
+
+            user.age = "bad";
+            test.equal(User.verify(user), "age: integer expected", "verify returns errors for invalid null-prototype objects");
+
+            oneof.a = "x";
+            test.same(M.toObject(oneof, { oneofs: true }), { a: "x", kind: "a" }, "toObject converts null-prototype oneof objects");
+
+            test.end();
+        });
+
         test.test(test.name + " - Message.fromObject", function(test) {
 
             var obj = {

@@ -184,7 +184,7 @@ $root.TypeUrlTest = (function() {
             _depth = 0;
         if (_depth > $util.recursionLimit)
             return "max depth exceeded";
-        if (message.nested != null && message.hasOwnProperty("nested")) {
+        if (message.nested != null && Object.hasOwnProperty.call(message, "nested")) {
             var error = $root.TypeUrlTest.Nested.verify(message.nested, _depth + 1);
             if (error)
                 return "nested." + error;
@@ -203,13 +203,15 @@ $root.TypeUrlTest = (function() {
     TypeUrlTest.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.TypeUrlTest)
             return object;
+        if (!$util.isObject(object))
+            throw TypeError(".TypeUrlTest: object expected");
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
             throw Error("max depth exceeded");
         var message = new $root.TypeUrlTest();
         if (object.nested != null) {
-            if (typeof object.nested !== "object")
+            if (!$util.isObject(object.nested))
                 throw TypeError(".TypeUrlTest.nested: object expected");
             message.nested = $root.TypeUrlTest.Nested.fromObject(object.nested, _depth + 1);
         }
@@ -235,7 +237,7 @@ $root.TypeUrlTest = (function() {
         var object = {};
         if (options.defaults)
             object.nested = null;
-        if (message.nested != null && message.hasOwnProperty("nested"))
+        if (message.nested != null && Object.hasOwnProperty.call(message, "nested"))
             object.nested = $root.TypeUrlTest.Nested.toObject(message.nested, options, _depth + 1);
         return object;
     };
@@ -443,7 +445,7 @@ $root.TypeUrlTest = (function() {
                 _depth = 0;
             if (_depth > $util.recursionLimit)
                 return "max depth exceeded";
-            if (message.a != null && message.hasOwnProperty("a"))
+            if (message.a != null && Object.hasOwnProperty.call(message, "a"))
                 if (!$util.isString(message.a))
                     return "a: string expected";
             return null;
@@ -460,6 +462,8 @@ $root.TypeUrlTest = (function() {
         Nested.fromObject = function fromObject(object, _depth) {
             if (object instanceof $root.TypeUrlTest.Nested)
                 return object;
+            if (!$util.isObject(object))
+                throw TypeError(".TypeUrlTest.Nested: object expected");
             if (_depth === undefined)
                 _depth = 0;
             if (_depth > $util.recursionLimit)
@@ -490,7 +494,7 @@ $root.TypeUrlTest = (function() {
             var object = {};
             if (options.defaults)
                 object.a = "";
-            if (message.a != null && message.hasOwnProperty("a"))
+            if (message.a != null && Object.hasOwnProperty.call(message, "a"))
                 object.a = message.a;
             return object;
         };
