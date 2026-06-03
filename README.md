@@ -182,11 +182,11 @@ import { awesomepackage } from "./awesome.js";
 const message = awesomepackage.AwesomeMessage.create({ awesomeField: "hello" });
 ```
 
-In [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval, use generated static code instead of runtime code generation.
+While static code is verbose by design, its repeated patterns compress well with Brotli or gzip, and it works in [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval without sacrificing performance.
 
 ### Reflection bundles
 
-Bundling schemas avoids reparsing `.proto` files at runtime and can reduce browser requests when schemas would otherwise be loaded separately. While reflection requires at least `protobufjs/light.js`, large schemas often produce smaller bundles than equivalent static modules because most code is shared via reflection.
+Reflection bundles store schemas as compact JSON, avoiding `.proto` parsing at runtime and letting browsers load schema metadata in one request. While they require at least `protobufjs/light.js`, large schemas can produce smaller combined payloads than equivalent static modules because common code is shared through reflection.
 
 ```sh
 npx pbjs -t json -o awesome.json awesome1.proto awesome2.proto ...
