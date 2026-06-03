@@ -27,7 +27,7 @@ The [command line utility](./cli/#readme) for generating reflection bundles, sta
 npm install --save-dev protobufjs-cli
 ```
 
-The CLI is a JS-native protobuf.js toolchain. It does not require `protoc`, but optionally provides `protoc-gen-pbjs` for `protoc`-based workflows.
+The CLI is a JS-native protobuf.js toolchain that does not require setting up `protoc`. If you prefer a `protoc`-based workflow, it provides `protoc-gen-pbjs` as an option.
 
 #### Browser builds
 
@@ -316,11 +316,11 @@ See [examples/streaming-rpc.js](./examples/streaming-rpc.js) for a streaming exa
 
 ### Extensions
 
-Optional extensions provide descriptor conversion and text-based protobuf formats when reflection metadata is available. Most applications only need the binary APIs above.
+The following extensions provide descriptor conversion and text-based protobuf formats when reflection metadata is available. Most applications only need the binary APIs above.
 
 #### Descriptors
 
-For converting reflected roots and objects to and from `protoc` descriptor messages, see [ext/descriptor](./ext/README.md#descriptor).
+protobuf.js uses a compact JSON-based reflection representation internally that is easy to embed and fast to parse, so schemas can be loaded directly without first decoding binary descriptor blobs or postprocessing their full JSON representation. See [ext/descriptor](./ext/README.md#descriptor) for use cases that need conversion between reflected roots and `protoc` descriptor messages.
 
 #### ProtoJSON
 
