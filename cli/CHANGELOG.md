@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.5.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.5.0...protobufjs-cli-v2.5.1) (2026-06-04)
+
+
+### Bug Fixes
+
+* Avoid name collisions in generated code ([#2302](https://github.com/protobufjs/protobuf.js/issues/2302)) ([ce013ab](https://github.com/protobufjs/protobuf.js/commit/ce013abb069c0df02e261a1ea3019d6c3fbe069e))
+* **cli:** Vendor patched Catharsis for pbts ([#2304](https://github.com/protobufjs/protobuf.js/issues/2304)) ([29f7c96](https://github.com/protobufjs/protobuf.js/commit/29f7c96ede419baa2e5836f7a7b61d510e36693e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * protobufjs bumped from file:.. to 8.6.0
+  * peerDependencies
+    * protobufjs bumped from ^8.5.0 to ^8.6.0
+
 ## [2.5.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.4.2...protobufjs-cli-v2.5.0) (2026-05-29)
 
 
