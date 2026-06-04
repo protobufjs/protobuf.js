@@ -171,6 +171,136 @@ tape.test("pbjs static service methods expose rpc metadata", function(test) {
     });
 });
 
+tape.test("pbjs static toJSON handles runtime-significant field names", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.parse("syntax = \"proto3\"; message M { string constructor = 1; }").root;
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+        staticTarget(root, {
+            decode: true,
+            encode: true,
+            convert: true,
+            root: "staticFieldShadow"
+        }, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+
+            delete protobuf.roots.staticFieldShadow;
+            var $protobuf = protobuf;
+            eval(jsCode);
+
+            var M = protobuf.roots.staticFieldShadow.M,
+                message = M.decode(M.encode({ constructor: "x" }).finish());
+
+            test.equal(JSON.stringify(message), "{\"constructor\":\"x\"}", "should stringify a message with an own constructor field");
+            delete protobuf.roots.staticFieldShadow;
+            test.end();
+        });
+    });
+});
+
+tape.test("pbjs static services can call runtime-significant method names", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.parse("syntax = \"proto3\"; message Req {} message Res {} service S { rpc rpcCall(Req) returns (Res); }").root;
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+        staticTarget(root, {
+            decode: true,
+            encode: true,
+            convert: true,
+            service: true,
+            root: "staticServiceShadow"
+        }, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+
+            delete protobuf.roots.staticServiceShadow;
+            var $protobuf = protobuf;
+            eval(jsCode);
+
+            var S = protobuf.roots.staticServiceShadow.S,
+                Res = protobuf.roots.staticServiceShadow.Res,
+                service = new S(function(method, request, callback) {
+                    callback(null, Res.encode({}).finish());
+                });
+
+            service.rpcCall({}, function(callErr, response) {
+                test.error(callErr, "should call method named rpcCall");
+                test.ok(response instanceof Res, "should decode the response");
+                delete protobuf.roots.staticServiceShadow;
+                test.end();
+            });
+        });
+    });
+});
+
+tape.test("pbjs static code aliases globals shadowed by type names", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.parse([
+            "syntax = \"proto3\";",
+            "message Object { string value = 1; }",
+            "message Number { double value = 1; }",
+            "message Array { repeated string values = 1; }",
+            "message String { string value = 1; }",
+            "message Boolean { bool value = 1; }",
+            "message TypeError { Object nested = 1; }",
+            "message BigInt { int64 value = 1; }",
+            "message undefined { string value = 1; }"
+        ].join("\n")).root;
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+        staticTarget(root, {
+            create: true,
+            decode: true,
+            encode: true,
+            verify: true,
+            convert: true,
+            typeurl: true,
+            root: "staticGlobalShadow"
+        }, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+            if (err) {
+                test.end();
+                return;
+            }
+            test.ok(jsCode.indexOf("$Object = $util.global.Object") >= 0, "emits Object alias");
+            test.ok(jsCode.indexOf("$Number = $util.global.Number") >= 0, "emits Number alias");
+            test.ok(jsCode.indexOf("$Array = $util.global.Array") >= 0, "emits Array alias");
+            test.ok(jsCode.indexOf("$undefined = $util.global.undefined") >= 0, "emits undefined alias");
+
+            delete protobuf.roots.staticGlobalShadow;
+            var $protobuf = protobuf;
+            eval(jsCode);
+
+            var root = protobuf.roots.staticGlobalShadow,
+                ObjectMessage = root.Object,
+                NumberMessage = root.Number,
+                ArrayMessage = root.Array,
+                StringMessage = root.String,
+                BooleanMessage = root.Boolean,
+                TypeErrorMessage = root.TypeError,
+                BigIntMessage = root.BigInt,
+                UndefinedMessage = root.undefined;
+
+            test.equal(ObjectMessage.create({ value: "x" }).value, "x", "creates message named Object");
+            test.equal(ObjectMessage.verify({ value: "x" }), null, "verifies message named Object");
+            test.equal(NumberMessage.fromObject({ value: "1.5" }).value, 1.5, "converts message named Number");
+            test.same(ArrayMessage.fromObject({ values: ["a"] }).values, ["a"], "converts message named Array");
+            test.equal(StringMessage.fromObject({ value: 1 }).value, "1", "converts message named String");
+            test.equal(BooleanMessage.fromObject({ value: 1 }).value, true, "converts message named Boolean");
+            test.throws(function() {
+                TypeErrorMessage.fromObject({ nested: "x" });
+            }, TypeError, "throws TypeError when message named TypeError");
+            test.equal(typeof BigIntMessage.toObject(BigIntMessage.fromObject({ value: 1 }), { longs: globalThis.BigInt }).value, "bigint", "converts message named BigInt");
+            test.equal(UndefinedMessage.getTypeUrl(), "type.googleapis.com/undefined", "gets type url when message is named undefined");
+
+            delete protobuf.roots.staticGlobalShadow;
+            test.end();
+        });
+    });
+});
+
 tape.test("pbjs generates correct ES module static-module imports", function(test) {
     cliTest(test, function() {
         var root = protobuf.loadSync("tests/data/cli/test.proto");
@@ -254,6 +384,9 @@ tape.test("pbjs supports dictionary generated root names", function(test) {
                 }
             }
         });
+        root.options = Object.create(null);
+        root.options.__proto__ = { marker: true };
+        root.options.constructor = { marker: true };
 
         test.equal(Object.getPrototypeOf(protobuf.roots), null, "roots uses dictionary semantics");
 
@@ -277,6 +410,9 @@ tape.test("pbjs supports dictionary generated root names", function(test) {
             }, function(jsonErr, jsonCode) {
                 test.error(jsonErr, "json-module target accepts dictionary root name");
                 test.ok(jsonCode.indexOf("$protobuf.roots[\"constructor\"]") >= 0, "json-module target uses bracket root access");
+                test.ok(jsonCode.indexOf("\"__proto__\":") >= 0, "json-module keeps __proto__ option quoted");
+                test.ok(jsonCode.indexOf("\"constructor\":") >= 0, "json-module keeps constructor option quoted");
+                test.equal(jsonCode.indexOf("__proto__:"), -1, "json-module does not emit __proto__ object literal syntax");
 
                 var module = { exports: {} };
                 function localRequire(request) {

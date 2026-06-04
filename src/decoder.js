@@ -26,7 +26,7 @@ function decoder(mtype) {
         if (!pfield.repeated && !pfield.map && !pfield.hasPresence)
             hasImplicitPresenceField = true;
     }
-    var gen = util.codegen(["r", "l", "z", "q", "g"], mtype.name + "$decode")
+    var gen = util.codegen(["r", "l", "z", "q", "g"])
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
     ("if(q===undefined)q=0")
@@ -198,7 +198,7 @@ function decoder(mtype) {
     for (i = 0; i < mtype._fieldsArray.length; ++i) {
         var rfield = mtype._fieldsArray[i];
         if (rfield.required) gen
-    ("if(!m.hasOwnProperty(%j))", rfield.name)
+    ("if(!Object.hasOwnProperty.call(m,%j))", rfield.name)
         ("throw util.ProtocolError(%j,{instance:m})", missing(rfield));
     }
 

@@ -1,8 +1,7 @@
 "use strict";
 module.exports = static_target;
 
-var UglifyJS   = require("uglify-js"),
-    espree     = require("espree"),
+var espree     = require("espree"),
     escodegen  = require("escodegen"),
     estraverse = require("estraverse"),
     protobuf   = require("protobufjs");
@@ -16,6 +15,8 @@ var Type      = protobuf.Type,
 var out = [];
 var indent = 0;
 var config = {};
+var globalRefs = new Set();
+var globalAliasIndex = -1;
 
 static_target.description = "Static code without reflection (non-functional on its own)";
 
@@ -32,6 +33,7 @@ function static_target(root, options, callback) {
             if (config.comments)
                 push("// Common aliases");
             push((config.es6 ? "const " : "var ") + aliases.map(function(name) { return "$" + name + " = $protobuf." + name; }).join(", ") + ";");
+            globalAliasIndex = out.length;
             push("");
         }
         if (config.comments) {
@@ -44,6 +46,13 @@ function static_target(root, options, callback) {
         var rootProp = "[" + JSON.stringify(String(config.root || "default")) + "]";
         push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
         buildNamespace(null, root);
+        var globalAliases = Array.from(globalRefs);
+        if (globalAliases.length) {
+            var aliasDecl = (config.es6 ? "const " : "var ") + globalAliases.map(function(name) {
+                return "$" + name + " = $util.global." + name;
+            }).join(", ") + ";";
+            out.splice(globalAliasIndex, 0, aliasDecl);
+        }
         return callback(null, out.join("\n"));
     } catch (err) {
         return callback(err);
@@ -51,6 +60,8 @@ function static_target(root, options, callback) {
         out = [];
         indent = 0;
         config = {};
+        globalRefs = new Set();
+        globalAliasIndex = -1;
     }
 }
 
@@ -199,15 +210,7 @@ var shortVars = {
     "g": "_target"
 };
 
-function beautifyCode(code) {
-    // Add semicolons
-    code = UglifyJS.minify(code, {
-        compress: false,
-        mangle: false,
-        output: { beautify: true }
-    }).code;
-    // Properly beautify
-    var ast = espree.parse(code);
+function beautifyAst(ast) {
     estraverse.replace(ast, {
         enter: function(node, parent) {
             // rename short vars
@@ -227,12 +230,9 @@ function beautifyCode(code) {
             return undefined;
         }
     });
-    code = escodegen.generate(ast, {
-        format: {
-            newline: "\n",
-            quotes: "double"
-        }
-    });
+}
+
+function addWireComments(code) {
     // Add id, wireType comments
     if (config.comments)
         code = code.replace(/\.uint32\((\d+)\)/g, function($0, $1) {
@@ -249,9 +249,133 @@ var renameVars = {
     "util": "$util"
 };
 
+var globalVars = new Set([
+    "AbortController",
+    "AbortSignal",
+    "AggregateError",
+    "Array",
+    "ArrayBuffer",
+    "Atomics",
+    "BigInt",
+    "BigInt64Array",
+    "BigUint64Array",
+    "Blob",
+    "Boolean",
+    "Buffer",
+    "DataView",
+    "Date",
+    "DOMException",
+    "Error",
+    "Event",
+    "EventTarget",
+    "EvalError",
+    "File",
+    "FinalizationRegistry",
+    "Float32Array",
+    "Float64Array",
+    "FormData",
+    "Function",
+    "Headers",
+    "Infinity",
+    "Int8Array",
+    "Int16Array",
+    "Int32Array",
+    "Intl",
+    "JSON",
+    "Map",
+    "Math",
+    "MessageChannel",
+    "MessagePort",
+    "NaN",
+    "Number",
+    "Object",
+    "Promise",
+    "Proxy",
+    "RangeError",
+    "ReadableStream",
+    "ReferenceError",
+    "Reflect",
+    "RegExp",
+    "Request",
+    "Response",
+    "Set",
+    "SharedArrayBuffer",
+    "String",
+    "Symbol",
+    "SyntaxError",
+    "TextDecoder",
+    "TextEncoder",
+    "TransformStream",
+    "TypeError",
+    "URIError",
+    "Uint8Array",
+    "Uint8ClampedArray",
+    "Uint16Array",
+    "Uint32Array",
+    "URL",
+    "URLSearchParams",
+    "WebAssembly",
+    "WeakMap",
+    "WeakRef",
+    "WeakSet",
+    "WritableStream",
+    "clearInterval",
+    "clearTimeout",
+    "decodeURI",
+    "decodeURIComponent",
+    "encodeURI",
+    "encodeURIComponent",
+    "escape",
+    "fetch",
+    "globalThis",
+    "isFinite",
+    "isNaN",
+    "parseFloat",
+    "parseInt",
+    "queueMicrotask",
+    "setInterval",
+    "setTimeout",
+    "structuredClone",
+    "undefined",
+    "unescape"
+]);
+
+function globalRef(name) {
+    globalRefs.add(name);
+    return "$" + name;
+}
+
+function isIdentifierReference(node, parent) {
+    if (!parent)
+        return true;
+    switch (parent.type) {
+        case "MemberExpression":
+            return parent.object === node || parent.computed;
+        case "Property":
+            return parent.value === node || parent.computed;
+        case "VariableDeclarator":
+            return parent.id !== node;
+        case "FunctionDeclaration":
+        case "FunctionExpression":
+            return parent.id !== node && parent.params.indexOf(node) < 0;
+        case "CatchClause":
+            return parent.param !== node;
+        case "AssignmentExpression":
+        case "AssignmentPattern":
+            return parent.left !== node;
+        case "UpdateExpression":
+        case "BreakStatement":
+        case "ContinueStatement":
+        case "LabeledStatement":
+            return false;
+        default:
+            return true;
+    }
+}
+
 function buildFunction(type, functionName, gen, scope) {
-    var code = gen.toString(functionName);
-    var ast = espree.parse(code);
+    var code = gen.toString();
+    var ast = espree.parse("(" + code + ");");
 
     function rootMemberRef(object) {
         var ref = {
@@ -286,6 +410,11 @@ function buildFunction(type, functionName, gen, scope) {
                 return {
                     "type": "Identifier",
                     "name": renameVars[node.name]
+                };
+            if (node.type === "Identifier" && globalVars.has(node.name) && isIdentifierReference(node, parent))
+                return {
+                    "type": "Identifier",
+                    "name": globalRef(node.name)
                 };
             // replace generated constructor alias with the actual ctor
             if (
@@ -326,16 +455,17 @@ function buildFunction(type, functionName, gen, scope) {
         }
     });
     /* eslint-enable no-extra-parens */
+    if (config.beautify)
+        beautifyAst(ast);
+
+    ast = ast.body[0].expression;
     code = escodegen.generate(ast, {
         format: {
             newline: "\n",
             quotes: "double"
         }
     });
-
-    if (config.beautify)
-        code = beautifyCode(code);
-
+    code = addWireComments(code);
     code = code.replace(/ {4}/g, "\t");
 
     var hasScope = scope && Object.keys(scope).length,
@@ -349,7 +479,7 @@ function buildFunction(type, functionName, gen, scope) {
 
     var lines = code.split(/\n/g);
     if (isCtor) // constructor
-        push(lines[0]);
+        push((config.es6 ? "const " : "var ") + escapeName(type.name) + " = " + lines[0]);
     else if (hasScope) // enclose in an iife
         push(escapeName(type.name) + "." + escapeName(functionName) + " = (function(" + Object.keys(scope).map(escapeName).join(", ") + ") { return " + lines[0]);
     else
@@ -363,7 +493,7 @@ function buildFunction(type, functionName, gen, scope) {
         indent = prev;
     });
     if (isCtor)
-        push("}");
+        push("};");
     else if (hasScope)
         push("};})(" + Object.keys(scope).map(function(key) { return scope[key]; }).join(", ") + ");");
     else
@@ -685,7 +815,7 @@ function buildType(ref, type) {
                 "@instance"
             ]);
         }
-        push("Object.defineProperty(" + escapeName(type.name) + ".prototype, " + JSON.stringify(oneof.name) +", {");
+        push(globalRef("Object") + ".defineProperty(" + escapeName(type.name) + ".prototype, " + JSON.stringify(oneof.name) +", {");
         ++indent;
             push("get: $util.oneOfGetter($oneOfFields = [" + oneof.oneof.map(JSON.stringify).join(", ") + "]),");
             push("set: $util.oneOfSetter($oneOfFields)");
@@ -708,7 +838,7 @@ function buildType(ref, type) {
             "  (properties?: " + propertiesName(type) + "): " + exportName(type) + ";\n" +
             "}}"
         ]));
-        push(escapeName(type.name) + ".create = function create(properties) {");
+        push(escapeName(type.name) + ".create = function(properties) {");
             ++indent;
             push("return new " + escapeName(type.name) + "(properties);");
             --indent;
@@ -739,7 +869,7 @@ function buildType(ref, type) {
                 "@param {$protobuf.Writer} [writer] Writer to encode to",
                 "@returns {$protobuf.Writer} Writer"
             ]);
-            push(escapeName(type.name) + ".encodeDelimited = function encodeDelimited(message, writer) {");
+            push(escapeName(type.name) + ".encodeDelimited = function(message, writer) {");
             ++indent;
             push("return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();");
             --indent;
@@ -774,7 +904,7 @@ function buildType(ref, type) {
                 "@throws {Error} If the payload is not a reader or valid buffer",
                 "@throws {$protobuf.util.ProtocolError} If required fields are missing"
             ]));
-            push(escapeName(type.name) + ".decodeDelimited = function decodeDelimited(reader) {");
+            push(escapeName(type.name) + ".decodeDelimited = function(reader) {");
             ++indent;
                 push("if (!(reader instanceof $Reader))");
                 ++indent;
@@ -831,9 +961,9 @@ function buildType(ref, type) {
             "@instance",
             "@returns {Object.<string,*>} JSON object"
         ]);
-        push(escapeName(type.name) + ".prototype.toJSON = function toJSON() {");
+        push(escapeName(type.name) + ".prototype.toJSON = function() {");
         ++indent;
-            push("return this.constructor.toObject(this, $protobuf.util.toJSONOptions);");
+            push("return " + escapeName(type.name) + ".toObject(this, $protobuf.util.toJSONOptions);");
         --indent;
         push("};");
     }
@@ -849,9 +979,9 @@ function buildType(ref, type) {
             "@param {string} [prefix] Custom type url prefix, defaults to `\"type.googleapis.com\"`",
             "@returns {string} The type url"
         ]);
-        push(escapeName(type.name) + ".getTypeUrl = function getTypeUrl(prefix) {");
+        push(escapeName(type.name) + ".getTypeUrl = function(prefix) {");
         ++indent;
-            push("if (prefix === undefined)");
+            push("if (prefix === " + globalRef("undefined") + ")");
             ++indent;
                 push("prefix = \"type.googleapis.com\";");
             --indent;
@@ -874,13 +1004,13 @@ function buildService(ref, service) {
         "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
         "@param {boolean} [responseDelimited=false] Whether responses are length-delimited"
     ]);
-    push("function " + escapeName(service.name) + "(rpcImpl, requestDelimited, responseDelimited) {");
+    push((config.es6 ? "const " : "var ") + escapeName(service.name) + " = function(rpcImpl, requestDelimited, responseDelimited) {");
     ++indent;
     push("$protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);");
     --indent;
-    push("}");
+    push("};");
     push("");
-    push("(" + escapeName(service.name) + ".prototype = Object.create($protobuf.rpc.Service.prototype)).constructor = " + escapeName(service.name) + ";");
+    push("(" + escapeName(service.name) + ".prototype = " + globalRef("Object") + ".create($protobuf.rpc.Service.prototype)).constructor = " + escapeName(service.name) + ";");
 
     if (config.create) {
         push("");
@@ -894,7 +1024,7 @@ function buildService(ref, service) {
             "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
             "@returns {" + escapeName(service.name) + "} RPC service. Useful where requests and/or responses are streamed."
         ]);
-        push(escapeName(service.name) + ".create = function create(rpcImpl, requestDelimited, responseDelimited) {");
+        push(escapeName(service.name) + ".create = function(rpcImpl, requestDelimited, responseDelimited) {");
             ++indent;
             push("return new this(rpcImpl, requestDelimited, responseDelimited);");
             --indent;
@@ -938,9 +1068,9 @@ function buildService(ref, service) {
             "@name " + exportName(service) + "#" + lcName,
             "@type {" + exportName(service) + "." + methodTypeName + "}"
         ]);
-        push("Object.defineProperties(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
+        push(globalRef("Object") + ".defineProperties(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function(request, callback) {");
             ++indent;
-            push("return this.rpcCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request, callback);");
+            push("return $protobuf.rpc.Service.prototype.rpcCall.call(this, " + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request, callback);");
             --indent;
         push("}, {");
             ++indent;
@@ -948,8 +1078,8 @@ function buildService(ref, service) {
             push("path: { value: " + JSON.stringify(method.path) + " },");
             push("requestType: { value: " + JSON.stringify(method.requestType) + " },");
             push("responseType: { value: " + JSON.stringify(method.responseType) + " },");
-            push("requestStream: { value: " + (method.requestStream ? "true" : "undefined") + " },");
-            push("responseStream: { value: " + (method.responseStream ? "true" : "undefined") + " }");
+            push("requestStream: { value: " + (method.requestStream ? "true" : globalRef("undefined")) + " },");
+            push("responseStream: { value: " + (method.responseStream ? "true" : globalRef("undefined")) + " }");
             --indent;
         push("});");
     });
@@ -973,7 +1103,7 @@ function buildEnum(ref, enm) {
     else
         push(escapeName(ref) + "." + escapeName(enm.name) + " = (function() {");
     ++indent;
-        push((config.es6 ? "const" : "var") + " valuesById = {}, values = Object.create(valuesById);");
+        push((config.es6 ? "const" : "var") + " valuesById = {}, values = " + globalRef("Object") + ".create(valuesById);");
         var aliased = [];
         Object.keys(enm.values).forEach(function(key) {
             var valueId = enm.values[key];
