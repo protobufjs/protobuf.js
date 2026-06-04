@@ -18,7 +18,7 @@ exports.readText = readText;
 function readTests(file) {
     var log,
         tests = Object.create(null),
-        pattern = /SKIPPED, test=([^\r\n ]+)/g,
+        pattern = /SKIPPED,\s*test=([^\s]+)/g,
         match,
         name;
 
@@ -40,7 +40,7 @@ function readTests(file) {
 function readFailures(file) {
     var log,
         failures = Object.create(null),
-        pattern = /ERROR, test=([^\r\n :]+)/g,
+        pattern = /ERROR,\s*test=([^\s:]+)/g,
         match;
 
     if (!file || !fs.existsSync(file))
@@ -55,7 +55,7 @@ function readFailures(file) {
 function readSkips(file) {
     var log,
         skips = Object.create(null),
-        pattern = /SKIPPED, test=([^\r\n ]+)/g,
+        pattern = /SKIPPED,\s*test=([^\s]+)/g,
         match;
 
     if (!file || !fs.existsSync(file))
@@ -104,8 +104,7 @@ function summarize(tests, failures, skips) {
         byFormat: summarizeGroups(tests, failures, skips, "format", formatOrder()),
         byFormatRequirement: summarizeMatrix(tests, failures, skips, "format", "requirement", formatOrder(), requirementOrder()),
         byBinarySyntax: summarizeGroups(binaryTests, failures, skips, "syntax", syntaxOrder()),
-        byBinarySyntaxRequirement: summarizeMatrix(binaryTests, failures, skips, "syntax", "requirement", syntaxOrder(), requirementOrder()),
-        bySyntax: summarizeGroups(tests, failures, skips, "syntax", syntaxOrder())
+        byBinarySyntaxRequirement: summarizeMatrix(binaryTests, failures, skips, "syntax", "requirement", syntaxOrder(), requirementOrder())
     };
 }
 

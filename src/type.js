@@ -89,6 +89,13 @@ function Type(name, options) {
      * @private
      */
     this._ctor = null;
+
+    /**
+     * Cached fields by JSON name.
+     * @type {Object.<string,Field>|null}
+     * @private
+     */
+    this._fieldsByJsonName = null; // used by ext/protojson
 }
 
 Object.defineProperties(Type.prototype, {
@@ -215,7 +222,7 @@ Type.generateConstructor = function generateConstructor(mtype) {
 };
 
 function clearCache(type) {
-    type._fieldsById = type._fieldsArray = type._oneofsArray = null;
+    type._fieldsById = type._fieldsArray = type._oneofsArray = type._fieldsByJsonName = null;
     delete type.encode;
     delete type.decode;
     delete type.verify;

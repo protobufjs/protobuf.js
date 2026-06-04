@@ -482,10 +482,13 @@ function parse(source, root, options) {
         if (!nameRe.test(name))
             throw illegal(name, "name");
 
+        var protoName = name;
         name = applyCase(name);
         skip("=");
 
         var field = new Field(name, parseId(next()), type, rule === "proto3_optional" ? "optional" : rule, extend);
+        if (protoName !== name)
+            field.protoName = protoName;
 
         ifBlock(field, function parseField_block(token) {
 
@@ -627,7 +630,11 @@ function parse(source, root, options) {
             throw illegal(name, "name");
 
         skip("=");
-        var field = new MapField(applyCase(name), parseId(next()), keyType, valueType);
+        var protoName = name;
+        name = applyCase(name);
+        var field = new MapField(name, parseId(next()), keyType, valueType);
+        if (protoName !== name)
+            field.protoName = protoName;
         ifBlock(field, function parseMapField_block(token) {
 
             /* istanbul ignore else */
@@ -839,11 +846,18 @@ function parse(source, root, options) {
             topLevelOptions[name] = value;
             return;
         }
+        // lift json_name onto Field
+        if (name === "json_name" && parent instanceof Field) {
+            parent.jsonName = value;
+            return;
+        }
         if (parent.setOption)
             parent.setOption(name, value);
     }
 
     function setParsedOption(parent, name, value, propName) {
+        if (name === "json_name" && parent instanceof Field)
+            return; // lifted onto Field#jsonName above
         if (parent.setParsedOption)
             parent.setParsedOption(name, value, propName);
     }

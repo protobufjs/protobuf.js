@@ -26,7 +26,7 @@
     "build": "npm run build:bundle && npm run build:types",
     "build:bundle": "gulp --gulpfile scripts/gulpfile.js",
     "build:tests": "node ./scripts/gentests.js",
-    "build:types": "node cli/bin/pbts --main --global protobuf --out index.d.ts src/ && node cli/bin/pbts --main --import \"\\$protobuf=..\" --out ext/descriptor.generated.d.ts ext/descriptor.js && node cli/bin/pbts --main --out ext/textformat.generated.d.ts ext/textformat.js",
+    "build:types": "node cli/bin/pbts --main --global protobuf --out index.d.ts src/ && node cli/bin/pbts --main --import \"\\$protobuf=..\" --out ext/descriptor.generated.d.ts ext/descriptor.js && node cli/bin/pbts --main --import \"\\$protobuf=..\" --out ext/textformat.generated.d.ts ext/textformat.js && node cli/bin/pbts --main --import \"\\$protobuf=..\" --out ext/protojson.generated.d.ts ext/protojson.js",
     "coverage": "npm run coverage:test && npm run coverage:report",
     "coverage:test": "nyc --silent tape -r ./lib/tape-adapter tests/*.js tests/node/*.js",
     "coverage:report": "nyc report --reporter=lcov --reporter=text",

@@ -9,13 +9,9 @@
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://protobuf.dev/)).
 
-**protobuf.js** is a standalone JavaScript implementation of Protocol Buffers for Node.js and the browser. It works with `.proto` files out of the box, is optimized for fast binary I/O, and supports runtime reflection as well as reflection-free static code generation with strong TypeScript declarations.
+**protobuf.js** is a standalone JavaScript implementation of Protocol Buffers for Node.js and browsers. It is tuned for fast binary I/O, battle-tested at scale, can load `.proto` files directly, and supports runtime reflection as well as static code generation with strong TypeScript declarations.
 
-## About
-
-protobuf.js has grown from a personal project into a widely used JavaScript infrastructure library for Protocol Buffers. It is independently maintained, with participation from the upstream Protocol Buffers ecosystem, and is intentionally not tied to any specific vendor platform, commercial service, or schema registry.
-
-If protobuf.js is important to your project or organization, especially if you depend on it commercially, [consider supporting](https://github.com/sponsors/dcodeIO) its ongoing maintenance.
+If protobuf.js is important to your project or organization, especially if you depend on it commercially, [consider supporting its ongoing maintenance](https://github.com/sponsors/dcodeIO).
 
 ## Getting started
 
@@ -31,34 +27,11 @@ The [command line utility](./cli/#readme) for generating reflection bundles, sta
 npm install --save-dev protobufjs-cli
 ```
 
-The CLI is a small but capable standalone protobuf.js toolchain. It does not require `protoc`, but also provides `protoc-gen-pbjs` for standard `protoc` plugin workflows.
+The CLI is a JS-native protobuf.js toolchain that does not require setting up `protoc`. If you prefer a `protoc`-based workflow, it provides `protoc-gen-pbjs` as an option.
 
-### Choose a runtime
+#### Browser builds
 
-Pick the smallest runtime variant that supports how your application loads schemas and whether it needs reflection at runtime.
-
-| Import                  | Includes           | Use when
-| ----------------------- | ------------------ | --------
-| `protobufjs`            | Reflection, Parser | You load `.proto` files at runtime
-| `protobufjs/light.js`   | Reflection         | You load JSON bundles or build schemas programmatically
-| `protobufjs/minimal.js` | Static runtime     | You use generated static code
-
-The full build includes the light build, and the light build includes the minimal runtime.
-
-### Browser builds
-
-Pick the distribution matching your runtime variant and pin an exact version:
-
-```html
-<!-- Full -->
-<script src="https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/protobuf.min.js"></script>
-<!-- Light -->
-<script src="https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/light/protobuf.min.js"></script>
-<!-- Minimal -->
-<script src="https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/minimal/protobuf.min.js"></script>
-```
-
-Browser builds support CommonJS and AMD loaders and export globally as `window.protobuf`.
+Canonical browser builds for each runtime variant are [provided via the jsDelivr CDN](https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/), supporting CommonJS, AMD and global `window.protobuf`. Make sure to pin an exact version in production.
 
 ## Usage
 
@@ -92,10 +65,6 @@ Optionally use `load()` with a callback, or `loadSync()` for synchronous loading
 ```ts
 const payload = { awesomeField: "hello" };
 
-// Optionally verify if the payload is of uncertain shape
-const err = AwesomeMessage.verify(payload);
-if (err) throw Error(err);
-
 // Optionally create a message instance from already valid data
 const message = AwesomeMessage.create(payload);
 
@@ -103,11 +72,11 @@ const encoded = AwesomeMessage.encode(message).finish();
 const decoded = AwesomeMessage.decode(encoded);
 ```
 
-`encode` expects a message instance or equivalent plain object and does not verify input implicitly. Use `verify` for plain objects whose shape is not guaranteed, `create` to create a message instance from already valid data when useful, and `fromObject` when conversion from broader JavaScript objects is needed.
+`encode` expects a message instance or equivalent plain object and does not verify input implicitly. Use `create` to create a message instance from already valid data when useful, `verify` for plain objects whose shape is not guaranteed, and `fromObject` when conversion from broader JavaScript objects is needed.
 
-Plain objects can be encoded directly when they already use protobuf.js runtime types: numbers for 32-bit numeric fields, booleans for `bool`, strings for `string`, `Uint8Array` or `Buffer` for `bytes`, arrays for repeated fields, and plain objects for maps. Map keys are the string representation of the respective value or an 8-character hash string for 64-bit/`Long` keys. When exact 64-bit integer support is required, install [`long`](https://github.com/dcodeIO/long.js) with protobuf.js.
+Plain objects can be encoded directly when they already use protobuf.js runtime types: numbers for 32-bit numeric fields, booleans for `bool`, strings for `string`, `Uint8Array` or `Buffer` for `bytes`, arrays for repeated fields, and plain objects for maps. Map keys are the string representation of the respective value or an 8-character hash string for 64-bit keys.
 
-Unknown fields present on the wire are preserved by default in `message.$unknowns` and forwarded when the message is re-encoded. Unknown field data can be dropped from a decoded message with `delete message.$unknowns`, discarded during decode per reader with `reader.discardUnknown = true`, or disabled by default for subsequently created readers with `Reader.discardUnknown = true`.
+Unknown fields present on the wire are preserved by default in `message.$unknowns` and forwarded when the message is re-encoded. Unknown field data can be dropped from a decoded message with `delete message.$unknowns`, discarded during decode with `reader.discardUnknown = true` per reader, or disabled by default for subsequently created readers with `Reader.discardUnknown = true`.
 
 ### Convert plain objects
 
@@ -164,7 +133,7 @@ Message types expose focused methods for validation, conversion, and binary I/O.
 * **toObject**(message: `Message`, options?: `ConversionOptions`): `object`  
   Converts a message instance to a configurable plain JavaScript object.
 
-* **message#toJSON**(): `object`  
+* **message.toJSON**(): `object`  
   Converts a message instance to JSON-compatible output using default conversion options.
 
 Message instances provide runtime identity, so they can be tested with `instanceof`. Their `toJSON` method integrates them with `JSON.stringify`.
@@ -173,9 +142,21 @@ Length-delimited methods read and write a varint byte length before the message,
 
 If required fields are missing while decoding proto2 data, `decode` throws `protobuf.util.ProtocolError` with the partially decoded message available as `err.instance`.
 
+## Runtimes
+
+protobuf.js provides three runtime entry points, keeping parser and reflection support optional: Runtime `.proto` loading needs the parser, JSON/reflection bundles need reflection support, and generated static modules only need the minimal runtime.
+
+| Import                  | Includes           | Use when
+| ----------------------- | ------------------ | --------
+| `protobufjs`            | Reflection, Parser | You load `.proto` files at runtime
+| `protobufjs/light.js`   | Reflection         | You load JSON bundles or build schemas programmatically
+| `protobufjs/minimal.js` | Static runtime     | You use generated static code
+
+The full build includes the light build, and the light build includes the minimal runtime.
+
 ## Code generation
 
-Choose the integration style that fits your workflow and use [`protobufjs-cli`](./cli/#readme) to generate reflection bundles, static JavaScript code, and matching TypeScript declarations, either standalone with `pbjs` or through its `protoc-gen-pbjs` plugin for `protoc`.
+Use [`protobufjs-cli`](./cli/#readme) to generate reflection bundles, static JavaScript code, and matching TypeScript declarations, either directly with `pbjs` or through the optional `protoc-gen-pbjs` plugin for `protoc`.
 
 Reflection keeps schemas as JSON metadata and generates optimized functions at runtime. Static code emits schema-specific, reflection-free functions ahead of time. The main tradeoffs are how schemas are loaded, how bundle size scales with schema size, and whether reflection metadata should remain available at runtime.
 
@@ -201,9 +182,11 @@ import { awesomepackage } from "./awesome.js";
 const message = awesomepackage.AwesomeMessage.create({ awesomeField: "hello" });
 ```
 
+While static code is verbose by design, its repeated patterns compress well with Brotli or gzip, and it works in [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval without sacrificing performance.
+
 ### Reflection bundles
 
-Bundling schemas avoids reparsing `.proto` files at runtime and can reduce browser requests when schemas would otherwise be loaded separately. While reflection requires at least `protobufjs/light.js`, large schemas often produce smaller bundles than equivalent static modules because most code is shared via reflection.
+Reflection bundles store schemas as compact JSON metadata, avoiding `.proto` parsing at runtime and letting browsers load schema metadata in one request. While they require at least `protobufjs/light.js`, large schemas can produce smaller combined bundles than equivalent static modules because common code is shared through reflection.
 
 ```sh
 npx pbjs -t json -o awesome.json awesome1.proto awesome2.proto ...
@@ -331,33 +314,39 @@ const myService = MyService.create(myRpcImpl/*, requestDelimited?, responseDelim
 
 See [examples/streaming-rpc.js](./examples/streaming-rpc.js) for a streaming example.
 
-### Descriptors
+### Extensions
 
-For `google/protobuf/descriptor.proto` interoperability, see [ext/descriptor](./ext/README.md#descriptor). Note that because protobuf.js does not use `descriptor.proto` internally, options are parsed and presented literally.
+The following extensions provide descriptor conversion and text-based protobuf formats when reflection metadata is available. Most applications only need the binary APIs above.
 
-### Text format
+#### Descriptors
 
-Protocol Buffers Text Format is supported via [ext/textformat](./ext/README.md#textformat) and exercised by the conformance suite.
+protobuf.js uses a compact JSON-based reflection representation internally that is easy to embed and fast to parse, so schemas can be loaded directly without first decoding binary descriptor blobs or postprocessing their full JSON representation. See [ext/descriptor](./ext/README.md#descriptor) for use cases that need conversion between reflected roots and `protoc` descriptor messages.
 
-### Content Security Policy
+#### ProtoJSON
 
-In [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval, use generated static code instead of runtime code generation.
+Protocol Buffers support a special [ProtoJSON format](https://protobuf.dev/programming-guides/json/) to share data with systems that do not support the binary wire format, for example when implementing gateways. Spec-compliant ProtoJSON is supported via [ext/protojson](./ext/README.md#protojson).
+
+#### Text Format
+
+Protocol Buffers [Text Format](https://protobuf.dev/reference/protobuf/textformat-spec/) is a special syntax for representing protobuf data in text form, which can be useful for configurations or tests. Spec-compliant Text Format is supported via [ext/textformat](./ext/README.md#textformat).
 
 ## Conformance
 
-protobuf.js targets complete binary wire-format conformance for **Proto2**, **Proto3** and **Editions**. CI runs the official Protocol Buffers conformance suite, with logs [uploaded as artifacts](https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush).
+protobuf.js targets complete binary wire-format conformance for **Proto2**, **Proto3** and **Editions** in both static and reflection modes, plus complete **ProtoJSON** and **Text Format** conformance with reflection metadata present. CI runs the official Protocol Buffers conformance suite for validation, with logs [uploaded as artifacts](https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush).
 
-Wire format by syntax:
-
-| Syntax   |               Total |          Required |       Recommended |
-| -------- | ------------------: | ----------------: | ----------------: |
-| Proto2   |   100.00% (694/694) | 100.00% (485/485) | 100.00% (209/209) |
-| Proto3   |   100.00% (689/689) | 100.00% (482/482) | 100.00% (207/207) |
-| Editions | 100.00% (1176/1176) | 100.00% (926/926) | 100.00% (250/250) |
+| Category   |               Total |            Required |         Recommended |
+| ---------- | ------------------: | ------------------: | ------------------: |
+| Binary     | 100.00% (2805/2805) | 100.00% (1939/1939) |   100.00% (866/866) |
+| ↳ Proto2   |   100.00% (703/703) |   100.00% (485/485) |   100.00% (218/218) |
+| ↳ Proto3   |   100.00% (698/698) |   100.00% (482/482) |   100.00% (216/216) |
+| ↳ Editions | 100.00% (1404/1404) |   100.00% (972/972) |   100.00% (432/432) |
+| ProtoJSON  | 100.00% (2762/2762) | 100.00% (2328/2328) |   100.00% (434/434) |
+| TextFormat |   100.00% (883/883) |   100.00% (819/819) |     100.00% (64/64) |
+| Overall    | 100.00% (6450/6450) | 100.00% (5086/5086) | 100.00% (1364/1364) |
 
 ## Performance
 
-In both reflection and static modes, protobuf.js builds specialized encoders and decoders instead of interpreting descriptors at runtime.
+In both reflection and reflection-free modes, protobuf.js builds specialized encoders and decoders instead of interpreting descriptors at runtime.
 
 The repository includes a [small benchmark](./bench). It compares protobuf.js reflection and static code against JSON encode/decode, protoc-gen-js, and protoc-gen-es. Results depend on hardware, Node.js version, and message shape, so they should be treated as indicative rather than absolute.
 

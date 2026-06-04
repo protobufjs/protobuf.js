@@ -78,8 +78,11 @@ jobs:
       with:
         name: conformance-results
         path: |
-          tests/conformance/out/conformance.json
-          tests/conformance/out/conformance.log
           tests/conformance/out/conformance-tests.log
-          tests/conformance/out/failing_tests.txt
+          tests/conformance/out/static/conformance.json
+          tests/conformance/out/static/conformance.log
+          tests/conformance/out/static/failing_tests.txt
+          tests/conformance/out/reflect/conformance.json
+          tests/conformance/out/reflect/conformance.log
+          tests/conformance/out/reflect/failing_tests.txt
         if-no-files-found: ignore

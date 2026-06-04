@@ -314,6 +314,18 @@ export class Field extends FieldBase {
     readonly hasPresence: boolean;
 
     /**
+     * The field name as declared in the .proto source (snake_case). Populated on resolve,
+     * falling back to `name`. Mirrors `FieldDescriptorProto.name`.
+     */
+    readonly protoName: string;
+
+    /**
+     * The JSON name of this field (lowerCamelCase per protoc's `ToJsonName`, or an
+     * explicit `[json_name]`). Populated on resolve. This is the key used on ProtoJSON output.
+     */
+    readonly jsonName: string;
+
+    /**
      * Field decorator (TypeScript).
      * @param fieldId Field id
      * @param fieldType Field type
@@ -387,6 +399,12 @@ export class FieldBase extends ReflectionObject {
 
     /** Comment for this field. */
     comment: (string|null);
+
+    /** Field name as declared in the .proto source, if different from `name`. */
+    protoName?: string;
+
+    /** JSON name, if different from the derived default. */
+    jsonName?: string;
 
     /**
      * Converts this field to a field descriptor.
@@ -2675,8 +2693,16 @@ export namespace util {
      * Converts a string to camel case.
      * @param str String to convert
      * @returns Converted string
+     * @deprecated Use {@link util.jsonName} for protobuf field JSON names.
      */
     function camelCase(str: string): string;
+
+    /**
+     * Converts a proto field name to its protoc-compatible JSON name.
+     * @param str Proto field name
+     * @returns JSON name
+     */
+    function jsonName(str: string): string;
 
     /**
      * Compares reflected fields by id.
