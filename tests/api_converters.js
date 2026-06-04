@@ -210,6 +210,18 @@ tape.test("converters", function(test) {
             test.end();
         });
 
+        test.test(test.name + " - runtime-significant field names", function(test) {
+            var root = protobuf.parse("syntax = \"proto2\"; message M { required string hasOwnProperty = 1; }").root;
+            root.resolveAll();
+            var M = root.lookupType("M"),
+                message = M.decode(M.encode({ hasOwnProperty: "x" }).finish());
+
+            test.equal(message.hasOwnProperty, "x", "decode should not call a shadowed hasOwnProperty field");
+            test.equal(M.verify(message), null, "verify should not call a shadowed hasOwnProperty field");
+            test.same(M.toObject(message), { hasOwnProperty: "x" }, "toObject should not call a shadowed hasOwnProperty field");
+            test.end();
+        });
+
         test.test(test.name + " - Message.fromObject", function(test) {
 
             var obj = {

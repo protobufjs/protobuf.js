@@ -25,14 +25,12 @@
   "dependencies": {
     "chalk": "^4.0.0",
     "escodegen": "^1.13.0",
-    "espree": "^9.0.0",
+    "espree": "^9.6.1",
     "estraverse": "^5.1.0",
-    "glob": "^8.0.0",
-    "jsdoc": "^4.0.0",
+    "glob": "^8.1.0",
+    "jsdoc": "^4.0.5",
     "minimist": "^1.2.8",
-    "semver": "^7.1.2",
-    "tmp": "^0.2.1",
-    "uglify-js": "^3.7.7"
+    "tmp": "^0.2.7"
   },
   "devDependencies": {
     "protobufjs": "file:.."

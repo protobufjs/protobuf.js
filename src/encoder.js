@@ -27,7 +27,7 @@ function genTypePartial(gen, field, fieldIndex, ref) {
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
-    var gen = util.codegen(["m", "w", "q"], mtype.name + "$encode")
+    var gen = util.codegen(["m", "w", "q"])
     ("if(!w)")
         ("w=Writer.create()")
     ("if(q===undefined)q=0")

@@ -156,6 +156,37 @@ tape.test("generated message constructors", function(test) {
         test.equal(Type.create({ value: 1 }).value, 1, "should create messages with generated-safe type names");
     });
 
+    var ObjectMessage = protobuf.parse("syntax = \"proto3\"; message Object { string value = 1; }").root.lookupType("Object");
+    test.equal(ObjectMessage.create({ value: "x" }).value, "x", "should create messages with runtime-significant type names");
+
+    test.throws(function() {
+        protobuf.Root.fromJSON({
+            nested: {
+                TypeShadow: {
+                    fields: {
+                        $type: { type: "string", id: 1 }
+                    }
+                }
+            }
+        });
+    }, /name '\$type' is reserved/, "should reject runtime-reserved field names");
+
+    test.throws(function() {
+        protobuf.Root.fromJSON({
+            nested: {
+                TypeShadow: {
+                    oneofs: {
+                        $type: { oneof: [] }
+                    },
+                    fields: {}
+                }
+            }
+        });
+    }, /name '\$type' is reserved/, "should reject runtime-reserved oneof names");
+
+    var ConstructorShadow = protobuf.parse("syntax = \"proto3\"; message ConstructorShadow { string constructor = 1; }").root.lookupType("ConstructorShadow");
+    test.equal(JSON.stringify(ConstructorShadow.decode(ConstructorShadow.encode({ constructor: "x" }).finish())), "{\"constructor\":\"x\"}", "should stringify messages with an own constructor field");
+
     test.end();
 });
 

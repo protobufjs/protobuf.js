@@ -5,6 +5,7 @@ var $protobuf = require("../../minimal");
 
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
+var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $Array = $util.global.Array, $TypeError = $util.global.TypeError, $String = $util.global.String;
 
 // Exported root namespace
 var $root = $protobuf.roots["test_package"] || ($protobuf.roots["test_package"] = {});
@@ -55,7 +56,7 @@ $root.Package = (function() {
      * @param {Package.$Properties=} [properties] Properties to set
      * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
-    function Package(properties) {
+    var Package = function (properties) {
         this.keywords = [];
         this.bin = {};
         this.scripts = {};
@@ -63,10 +64,10 @@ $root.Package = (function() {
         this.devDependencies = {};
         this.cliDependencies = [];
         if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+            for (var keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null && keys[i] !== "__proto__")
                     this[keys[i]] = properties[keys[i]];
-    }
+    };
 
     /**
      * Package name.
@@ -216,7 +217,7 @@ $root.Package = (function() {
      *   (properties?: Package.$Properties): Package;
      * }}
      */
-    Package.create = function create(properties) {
+    Package.create = function(properties) {
         return new Package(properties);
     };
 
@@ -229,54 +230,54 @@ $root.Package = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Package.encode = function encode(message, writer, _depth) {
+    Package.encode = function (message, writer, _depth) {
         if (!writer)
             writer = $Writer.create();
-        if (_depth === undefined)
+        if (_depth === $undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
-            throw Error("max depth exceeded");
-        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+            throw $Error("max depth exceeded");
+        if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-        if (message.version != null && Object.hasOwnProperty.call(message, "version"))
+        if (message.version != null && $Object.hasOwnProperty.call(message, "version"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.version);
-        if (message.description != null && Object.hasOwnProperty.call(message, "description"))
+        if (message.description != null && $Object.hasOwnProperty.call(message, "description"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
-        if (message.author != null && Object.hasOwnProperty.call(message, "author"))
+        if (message.author != null && $Object.hasOwnProperty.call(message, "author"))
             writer.uint32(/* id 4, wireType 2 =*/34).string(message.author);
-        if (message.license != null && Object.hasOwnProperty.call(message, "license"))
+        if (message.license != null && $Object.hasOwnProperty.call(message, "license"))
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.license);
-        if (message.repository != null && Object.hasOwnProperty.call(message, "repository"))
+        if (message.repository != null && $Object.hasOwnProperty.call(message, "repository"))
             $root.Package.Repository.encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork(), _depth + 1).ldelim();
-        if (message.bugs != null && Object.hasOwnProperty.call(message, "bugs"))
+        if (message.bugs != null && $Object.hasOwnProperty.call(message, "bugs"))
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);
-        if (message.homepage != null && Object.hasOwnProperty.call(message, "homepage"))
+        if (message.homepage != null && $Object.hasOwnProperty.call(message, "homepage"))
             writer.uint32(/* id 8, wireType 2 =*/66).string(message.homepage);
         if (message.keywords != null && message.keywords.length)
             for (var i = 0; i < message.keywords.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).string(message.keywords[i]);
-        if (message.main != null && Object.hasOwnProperty.call(message, "main"))
+        if (message.main != null && $Object.hasOwnProperty.call(message, "main"))
             writer.uint32(/* id 10, wireType 2 =*/82).string(message.main);
-        if (message.bin != null && Object.hasOwnProperty.call(message, "bin"))
-            for (var keys = Object.keys(message.bin), i = 0; i < keys.length; ++i)
+        if (message.bin != null && $Object.hasOwnProperty.call(message, "bin"))
+            for (var keys = $Object.keys(message.bin), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 11, wireType 2 =*/90).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.bin[keys[i]]).ldelim();
-        if (message.scripts != null && Object.hasOwnProperty.call(message, "scripts"))
-            for (var keys = Object.keys(message.scripts), i = 0; i < keys.length; ++i)
+        if (message.scripts != null && $Object.hasOwnProperty.call(message, "scripts"))
+            for (var keys = $Object.keys(message.scripts), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 12, wireType 2 =*/98).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.scripts[keys[i]]).ldelim();
-        if (message.dependencies != null && Object.hasOwnProperty.call(message, "dependencies"))
-            for (var keys = Object.keys(message.dependencies), i = 0; i < keys.length; ++i)
+        if (message.dependencies != null && $Object.hasOwnProperty.call(message, "dependencies"))
+            for (var keys = $Object.keys(message.dependencies), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 13, wireType 2 =*/106).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.dependencies[keys[i]]).ldelim();
-        if (message.devDependencies != null && Object.hasOwnProperty.call(message, "devDependencies"))
-            for (var keys = Object.keys(message.devDependencies), i = 0; i < keys.length; ++i)
+        if (message.devDependencies != null && $Object.hasOwnProperty.call(message, "devDependencies"))
+            for (var keys = $Object.keys(message.devDependencies), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 15, wireType 2 =*/122).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.devDependencies[keys[i]]).ldelim();
-        if (message.types != null && Object.hasOwnProperty.call(message, "types"))
+        if (message.types != null && $Object.hasOwnProperty.call(message, "types"))
             writer.uint32(/* id 17, wireType 2 =*/138).string(message.types);
         if (message.cliDependencies != null && message.cliDependencies.length)
             for (var i = 0; i < message.cliDependencies.length; ++i)
                 writer.uint32(/* id 18, wireType 2 =*/146).string(message.cliDependencies[i]);
-        if (message.versionScheme != null && Object.hasOwnProperty.call(message, "versionScheme"))
+        if (message.versionScheme != null && $Object.hasOwnProperty.call(message, "versionScheme"))
             writer.uint32(/* id 19, wireType 2 =*/154).string(message.versionScheme);
-        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+        if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)
                 writer.raw(message.$unknowns[i]);
         return writer;
@@ -291,7 +292,7 @@ $root.Package = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Package.encodeDelimited = function encodeDelimited(message, writer) {
+    Package.encodeDelimited = function(message, writer) {
         return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
     };
 
@@ -306,19 +307,19 @@ $root.Package = (function() {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Package.decode = function decode(reader, length, _end, _depth, _target) {
+    Package.decode = function (reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        if (_depth === undefined)
+        if (_depth === $undefined)
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
-            throw Error("max depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package(), key, value;
+            throw $Error("max depth exceeded");
+        var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.Package(), key, value;
         while (reader.pos < end) {
             var start = reader.pos;
             var tag = reader.tag();
             if (tag === _end) {
-                _end = undefined;
+                _end = $undefined;
                 break;
             }
             var wireType = tag & 7;
@@ -380,7 +381,7 @@ $root.Package = (function() {
             case 6: {
                     if (wireType !== 2)
                         break;
-                    message.repository = $root.Package.Repository.decode(reader, reader.uint32(), undefined, _depth + 1, message.repository);
+                    message.repository = $root.Package.Repository.decode(reader, reader.uint32(), $undefined, _depth + 1, message.repository);
                     continue;
                 }
             case 7: {
@@ -562,8 +563,8 @@ $root.Package = (function() {
                 (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
         }
-        if (_end !== undefined)
-            throw Error("missing end group");
+        if (_end !== $undefined)
+            throw $Error("missing end group");
         return message;
     };
 
@@ -577,7 +578,7 @@ $root.Package = (function() {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Package.decodeDelimited = function decodeDelimited(reader) {
+    Package.decodeDelimited = function(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
@@ -591,89 +592,89 @@ $root.Package = (function() {
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    Package.verify = function verify(message, _depth) {
+    Package.verify = function (message, _depth) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (_depth === undefined)
+        if (_depth === $undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
             return "max depth exceeded";
-        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+        if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
-        if (message.version != null && Object.hasOwnProperty.call(message, "version"))
+        if (message.version != null && $Object.hasOwnProperty.call(message, "version"))
             if (!$util.isString(message.version))
                 return "version: string expected";
-        if (message.versionScheme != null && Object.hasOwnProperty.call(message, "versionScheme"))
+        if (message.versionScheme != null && $Object.hasOwnProperty.call(message, "versionScheme"))
             if (!$util.isString(message.versionScheme))
                 return "versionScheme: string expected";
-        if (message.description != null && Object.hasOwnProperty.call(message, "description"))
+        if (message.description != null && $Object.hasOwnProperty.call(message, "description"))
             if (!$util.isString(message.description))
                 return "description: string expected";
-        if (message.author != null && Object.hasOwnProperty.call(message, "author"))
+        if (message.author != null && $Object.hasOwnProperty.call(message, "author"))
             if (!$util.isString(message.author))
                 return "author: string expected";
-        if (message.license != null && Object.hasOwnProperty.call(message, "license"))
+        if (message.license != null && $Object.hasOwnProperty.call(message, "license"))
             if (!$util.isString(message.license))
                 return "license: string expected";
-        if (message.repository != null && Object.hasOwnProperty.call(message, "repository")) {
+        if (message.repository != null && $Object.hasOwnProperty.call(message, "repository")) {
             var error = $root.Package.Repository.verify(message.repository, _depth + 1);
             if (error)
                 return "repository." + error;
         }
-        if (message.bugs != null && Object.hasOwnProperty.call(message, "bugs"))
+        if (message.bugs != null && $Object.hasOwnProperty.call(message, "bugs"))
             if (!$util.isString(message.bugs))
                 return "bugs: string expected";
-        if (message.homepage != null && Object.hasOwnProperty.call(message, "homepage"))
+        if (message.homepage != null && $Object.hasOwnProperty.call(message, "homepage"))
             if (!$util.isString(message.homepage))
                 return "homepage: string expected";
-        if (message.keywords != null && Object.hasOwnProperty.call(message, "keywords")) {
-            if (!Array.isArray(message.keywords))
+        if (message.keywords != null && $Object.hasOwnProperty.call(message, "keywords")) {
+            if (!$Array.isArray(message.keywords))
                 return "keywords: array expected";
             for (var i = 0; i < message.keywords.length; ++i)
                 if (!$util.isString(message.keywords[i]))
                     return "keywords: string[] expected";
         }
-        if (message.main != null && Object.hasOwnProperty.call(message, "main"))
+        if (message.main != null && $Object.hasOwnProperty.call(message, "main"))
             if (!$util.isString(message.main))
                 return "main: string expected";
-        if (message.bin != null && Object.hasOwnProperty.call(message, "bin")) {
+        if (message.bin != null && $Object.hasOwnProperty.call(message, "bin")) {
             if (!$util.isObject(message.bin))
                 return "bin: object expected";
-            var key = Object.keys(message.bin);
+            var key = $Object.keys(message.bin);
             for (var i = 0; i < key.length; ++i)
                 if (!$util.isString(message.bin[key[i]]))
                     return "bin: string{k:string} expected";
         }
-        if (message.scripts != null && Object.hasOwnProperty.call(message, "scripts")) {
+        if (message.scripts != null && $Object.hasOwnProperty.call(message, "scripts")) {
             if (!$util.isObject(message.scripts))
                 return "scripts: object expected";
-            var key = Object.keys(message.scripts);
+            var key = $Object.keys(message.scripts);
             for (var i = 0; i < key.length; ++i)
                 if (!$util.isString(message.scripts[key[i]]))
                     return "scripts: string{k:string} expected";
         }
-        if (message.dependencies != null && Object.hasOwnProperty.call(message, "dependencies")) {
+        if (message.dependencies != null && $Object.hasOwnProperty.call(message, "dependencies")) {
             if (!$util.isObject(message.dependencies))
                 return "dependencies: object expected";
-            var key = Object.keys(message.dependencies);
+            var key = $Object.keys(message.dependencies);
             for (var i = 0; i < key.length; ++i)
                 if (!$util.isString(message.dependencies[key[i]]))
                     return "dependencies: string{k:string} expected";
         }
-        if (message.devDependencies != null && Object.hasOwnProperty.call(message, "devDependencies")) {
+        if (message.devDependencies != null && $Object.hasOwnProperty.call(message, "devDependencies")) {
             if (!$util.isObject(message.devDependencies))
                 return "devDependencies: object expected";
-            var key = Object.keys(message.devDependencies);
+            var key = $Object.keys(message.devDependencies);
             for (var i = 0; i < key.length; ++i)
                 if (!$util.isString(message.devDependencies[key[i]]))
                     return "devDependencies: string{k:string} expected";
         }
-        if (message.types != null && Object.hasOwnProperty.call(message, "types"))
+        if (message.types != null && $Object.hasOwnProperty.call(message, "types"))
             if (!$util.isString(message.types))
                 return "types: string expected";
-        if (message.cliDependencies != null && Object.hasOwnProperty.call(message, "cliDependencies")) {
-            if (!Array.isArray(message.cliDependencies))
+        if (message.cliDependencies != null && $Object.hasOwnProperty.call(message, "cliDependencies")) {
+            if (!$Array.isArray(message.cliDependencies))
                 return "cliDependencies: array expected";
             for (var i = 0; i < message.cliDependencies.length; ++i)
                 if (!$util.isString(message.cliDependencies[i]))
@@ -690,104 +691,104 @@ $root.Package = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {Package} Package
      */
-    Package.fromObject = function fromObject(object, _depth) {
+    Package.fromObject = function (object, _depth) {
         if (object instanceof $root.Package)
             return object;
         if (!$util.isObject(object))
-            throw TypeError(".Package: object expected");
-        if (_depth === undefined)
+            throw $TypeError(".Package: object expected");
+        if (_depth === $undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
-            throw Error("max depth exceeded");
+            throw $Error("max depth exceeded");
         var message = new $root.Package();
         if (object.name != null)
             if (typeof object.name !== "string" || object.name.length)
-                message.name = String(object.name);
+                message.name = $String(object.name);
         if (object.version != null)
             if (typeof object.version !== "string" || object.version.length)
-                message.version = String(object.version);
+                message.version = $String(object.version);
         if (object.versionScheme != null)
             if (typeof object.versionScheme !== "string" || object.versionScheme.length)
-                message.versionScheme = String(object.versionScheme);
+                message.versionScheme = $String(object.versionScheme);
         if (object.description != null)
             if (typeof object.description !== "string" || object.description.length)
-                message.description = String(object.description);
+                message.description = $String(object.description);
         if (object.author != null)
             if (typeof object.author !== "string" || object.author.length)
-                message.author = String(object.author);
+                message.author = $String(object.author);
         if (object.license != null)
             if (typeof object.license !== "string" || object.license.length)
-                message.license = String(object.license);
+                message.license = $String(object.license);
         if (object.repository != null) {
             if (!$util.isObject(object.repository))
-                throw TypeError(".Package.repository: object expected");
+                throw $TypeError(".Package.repository: object expected");
             message.repository = $root.Package.Repository.fromObject(object.repository, _depth + 1);
         }
         if (object.bugs != null)
             if (typeof object.bugs !== "string" || object.bugs.length)
-                message.bugs = String(object.bugs);
+                message.bugs = $String(object.bugs);
         if (object.homepage != null)
             if (typeof object.homepage !== "string" || object.homepage.length)
-                message.homepage = String(object.homepage);
+                message.homepage = $String(object.homepage);
         if (object.keywords) {
-            if (!Array.isArray(object.keywords))
-                throw TypeError(".Package.keywords: array expected");
-            message.keywords = Array(object.keywords.length);
+            if (!$Array.isArray(object.keywords))
+                throw $TypeError(".Package.keywords: array expected");
+            message.keywords = $Array(object.keywords.length);
             for (var i = 0; i < object.keywords.length; ++i)
-                message.keywords[i] = String(object.keywords[i]);
+                message.keywords[i] = $String(object.keywords[i]);
         }
         if (object.main != null)
             if (typeof object.main !== "string" || object.main.length)
-                message.main = String(object.main);
+                message.main = $String(object.main);
         if (object.bin) {
             if (!$util.isObject(object.bin))
-                throw TypeError(".Package.bin: object expected");
+                throw $TypeError(".Package.bin: object expected");
             message.bin = {};
-            for (var keys = Object.keys(object.bin), i = 0; i < keys.length; ++i) {
+            for (var keys = $Object.keys(object.bin), i = 0; i < keys.length; ++i) {
                 if (keys[i] === "__proto__")
                     $util.makeProp(message.bin, keys[i]);
-                message.bin[keys[i]] = String(object.bin[keys[i]]);
+                message.bin[keys[i]] = $String(object.bin[keys[i]]);
             }
         }
         if (object.scripts) {
             if (!$util.isObject(object.scripts))
-                throw TypeError(".Package.scripts: object expected");
+                throw $TypeError(".Package.scripts: object expected");
             message.scripts = {};
-            for (var keys = Object.keys(object.scripts), i = 0; i < keys.length; ++i) {
+            for (var keys = $Object.keys(object.scripts), i = 0; i < keys.length; ++i) {
                 if (keys[i] === "__proto__")
                     $util.makeProp(message.scripts, keys[i]);
-                message.scripts[keys[i]] = String(object.scripts[keys[i]]);
+                message.scripts[keys[i]] = $String(object.scripts[keys[i]]);
             }
         }
         if (object.dependencies) {
             if (!$util.isObject(object.dependencies))
-                throw TypeError(".Package.dependencies: object expected");
+                throw $TypeError(".Package.dependencies: object expected");
             message.dependencies = {};
-            for (var keys = Object.keys(object.dependencies), i = 0; i < keys.length; ++i) {
+            for (var keys = $Object.keys(object.dependencies), i = 0; i < keys.length; ++i) {
                 if (keys[i] === "__proto__")
                     $util.makeProp(message.dependencies, keys[i]);
-                message.dependencies[keys[i]] = String(object.dependencies[keys[i]]);
+                message.dependencies[keys[i]] = $String(object.dependencies[keys[i]]);
             }
         }
         if (object.devDependencies) {
             if (!$util.isObject(object.devDependencies))
-                throw TypeError(".Package.devDependencies: object expected");
+                throw $TypeError(".Package.devDependencies: object expected");
             message.devDependencies = {};
-            for (var keys = Object.keys(object.devDependencies), i = 0; i < keys.length; ++i) {
+            for (var keys = $Object.keys(object.devDependencies), i = 0; i < keys.length; ++i) {
                 if (keys[i] === "__proto__")
                     $util.makeProp(message.devDependencies, keys[i]);
-                message.devDependencies[keys[i]] = String(object.devDependencies[keys[i]]);
+                message.devDependencies[keys[i]] = $String(object.devDependencies[keys[i]]);
             }
         }
         if (object.types != null)
             if (typeof object.types !== "string" || object.types.length)
-                message.types = String(object.types);
+                message.types = $String(object.types);
         if (object.cliDependencies) {
-            if (!Array.isArray(object.cliDependencies))
-                throw TypeError(".Package.cliDependencies: array expected");
-            message.cliDependencies = Array(object.cliDependencies.length);
+            if (!$Array.isArray(object.cliDependencies))
+                throw $TypeError(".Package.cliDependencies: array expected");
+            message.cliDependencies = $Array(object.cliDependencies.length);
             for (var i = 0; i < object.cliDependencies.length; ++i)
-                message.cliDependencies[i] = String(object.cliDependencies[i]);
+                message.cliDependencies[i] = $String(object.cliDependencies[i]);
         }
         return message;
     };
@@ -801,13 +802,13 @@ $root.Package = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Package.toObject = function toObject(message, options, _depth) {
+    Package.toObject = function (message, options, _depth) {
         if (!options)
             options = {};
-        if (_depth === undefined)
+        if (_depth === $undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
-            throw Error("max depth exceeded");
+            throw $Error("max depth exceeded");
         var object = {};
         if (options.arrays || options.defaults) {
             object.keywords = [];
@@ -832,31 +833,31 @@ $root.Package = (function() {
             object.types = "";
             object.versionScheme = "";
         }
-        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+        if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
             object.name = message.name;
-        if (message.version != null && Object.hasOwnProperty.call(message, "version"))
+        if (message.version != null && $Object.hasOwnProperty.call(message, "version"))
             object.version = message.version;
-        if (message.description != null && Object.hasOwnProperty.call(message, "description"))
+        if (message.description != null && $Object.hasOwnProperty.call(message, "description"))
             object.description = message.description;
-        if (message.author != null && Object.hasOwnProperty.call(message, "author"))
+        if (message.author != null && $Object.hasOwnProperty.call(message, "author"))
             object.author = message.author;
-        if (message.license != null && Object.hasOwnProperty.call(message, "license"))
+        if (message.license != null && $Object.hasOwnProperty.call(message, "license"))
             object.license = message.license;
-        if (message.repository != null && Object.hasOwnProperty.call(message, "repository"))
+        if (message.repository != null && $Object.hasOwnProperty.call(message, "repository"))
             object.repository = $root.Package.Repository.toObject(message.repository, options, _depth + 1);
-        if (message.bugs != null && Object.hasOwnProperty.call(message, "bugs"))
+        if (message.bugs != null && $Object.hasOwnProperty.call(message, "bugs"))
             object.bugs = message.bugs;
-        if (message.homepage != null && Object.hasOwnProperty.call(message, "homepage"))
+        if (message.homepage != null && $Object.hasOwnProperty.call(message, "homepage"))
             object.homepage = message.homepage;
         if (message.keywords && message.keywords.length) {
-            object.keywords = Array(message.keywords.length);
+            object.keywords = $Array(message.keywords.length);
             for (var j = 0; j < message.keywords.length; ++j)
                 object.keywords[j] = message.keywords[j];
         }
-        if (message.main != null && Object.hasOwnProperty.call(message, "main"))
+        if (message.main != null && $Object.hasOwnProperty.call(message, "main"))
             object.main = message.main;
         var keys2;
-        if (message.bin && (keys2 = Object.keys(message.bin)).length) {
+        if (message.bin && (keys2 = $Object.keys(message.bin)).length) {
             object.bin = {};
             for (var j = 0; j < keys2.length; ++j) {
                 if (keys2[j] === "__proto__")
@@ -864,7 +865,7 @@ $root.Package = (function() {
                 object.bin[keys2[j]] = message.bin[keys2[j]];
             }
         }
-        if (message.scripts && (keys2 = Object.keys(message.scripts)).length) {
+        if (message.scripts && (keys2 = $Object.keys(message.scripts)).length) {
             object.scripts = {};
             for (var j = 0; j < keys2.length; ++j) {
                 if (keys2[j] === "__proto__")
@@ -872,7 +873,7 @@ $root.Package = (function() {
                 object.scripts[keys2[j]] = message.scripts[keys2[j]];
             }
         }
-        if (message.dependencies && (keys2 = Object.keys(message.dependencies)).length) {
+        if (message.dependencies && (keys2 = $Object.keys(message.dependencies)).length) {
             object.dependencies = {};
             for (var j = 0; j < keys2.length; ++j) {
                 if (keys2[j] === "__proto__")
@@ -880,7 +881,7 @@ $root.Package = (function() {
                 object.dependencies[keys2[j]] = message.dependencies[keys2[j]];
             }
         }
-        if (message.devDependencies && (keys2 = Object.keys(message.devDependencies)).length) {
+        if (message.devDependencies && (keys2 = $Object.keys(message.devDependencies)).length) {
             object.devDependencies = {};
             for (var j = 0; j < keys2.length; ++j) {
                 if (keys2[j] === "__proto__")
@@ -888,14 +889,14 @@ $root.Package = (function() {
                 object.devDependencies[keys2[j]] = message.devDependencies[keys2[j]];
             }
         }
-        if (message.types != null && Object.hasOwnProperty.call(message, "types"))
+        if (message.types != null && $Object.hasOwnProperty.call(message, "types"))
             object.types = message.types;
         if (message.cliDependencies && message.cliDependencies.length) {
-            object.cliDependencies = Array(message.cliDependencies.length);
+            object.cliDependencies = $Array(message.cliDependencies.length);
             for (var j = 0; j < message.cliDependencies.length; ++j)
                 object.cliDependencies[j] = message.cliDependencies[j];
         }
-        if (message.versionScheme != null && Object.hasOwnProperty.call(message, "versionScheme"))
+        if (message.versionScheme != null && $Object.hasOwnProperty.call(message, "versionScheme"))
             object.versionScheme = message.versionScheme;
         return object;
     };
@@ -907,8 +908,8 @@ $root.Package = (function() {
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    Package.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    Package.prototype.toJSON = function() {
+        return Package.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     /**
@@ -919,8 +920,8 @@ $root.Package = (function() {
      * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
      * @returns {string} The type url
      */
-    Package.getTypeUrl = function getTypeUrl(prefix) {
-        if (prefix === undefined)
+    Package.getTypeUrl = function(prefix) {
+        if (prefix === $undefined)
             prefix = "type.googleapis.com";
         return prefix + "/Package";
     };
@@ -956,12 +957,12 @@ $root.Package = (function() {
          * @param {Package.Repository.$Properties=} [properties] Properties to set
          * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
          */
-        function Repository(properties) {
+        var Repository = function (properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = $Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null && keys[i] !== "__proto__")
                         this[keys[i]] = properties[keys[i]];
-        }
+        };
 
         /**
          * Repository type.
@@ -991,7 +992,7 @@ $root.Package = (function() {
          *   (properties?: Package.Repository.$Properties): Package.Repository;
          * }}
          */
-        Repository.create = function create(properties) {
+        Repository.create = function(properties) {
             return new Repository(properties);
         };
 
@@ -1004,18 +1005,18 @@ $root.Package = (function() {
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        Repository.encode = function encode(message, writer, _depth) {
+        Repository.encode = function (message, writer, _depth) {
             if (!writer)
                 writer = $Writer.create();
-            if (_depth === undefined)
+            if (_depth === $undefined)
                 _depth = 0;
             if (_depth > $util.recursionLimit)
-                throw Error("max depth exceeded");
-            if (message.type != null && Object.hasOwnProperty.call(message, "type"))
+                throw $Error("max depth exceeded");
+            if (message.type != null && $Object.hasOwnProperty.call(message, "type"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
-            if (message.url != null && Object.hasOwnProperty.call(message, "url"))
+            if (message.url != null && $Object.hasOwnProperty.call(message, "url"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.url);
-            if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                 for (var i = 0; i < message.$unknowns.length; ++i)
                     writer.raw(message.$unknowns[i]);
             return writer;
@@ -1030,7 +1031,7 @@ $root.Package = (function() {
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        Repository.encodeDelimited = function encodeDelimited(message, writer) {
+        Repository.encodeDelimited = function(message, writer) {
             return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
         };
 
@@ -1045,19 +1046,19 @@ $root.Package = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Repository.decode = function decode(reader, length, _end, _depth, _target) {
+        Repository.decode = function (reader, length, _end, _depth, _target) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            if (_depth === undefined)
+            if (_depth === $undefined)
                 _depth = 0;
             if (_depth > $Reader.recursionLimit)
-                throw Error("max depth exceeded");
-            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package.Repository(), value;
+                throw $Error("max depth exceeded");
+            var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.Package.Repository(), value;
             while (reader.pos < end) {
                 var start = reader.pos;
                 var tag = reader.tag();
                 if (tag === _end) {
-                    _end = undefined;
+                    _end = $undefined;
                     break;
                 }
                 var wireType = tag & 7;
@@ -1087,8 +1088,8 @@ $root.Package = (function() {
                     (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
             }
-            if (_end !== undefined)
-                throw Error("missing end group");
+            if (_end !== $undefined)
+                throw $Error("missing end group");
             return message;
         };
 
@@ -1102,7 +1103,7 @@ $root.Package = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Repository.decodeDelimited = function decodeDelimited(reader) {
+        Repository.decodeDelimited = function(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
@@ -1116,17 +1117,17 @@ $root.Package = (function() {
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        Repository.verify = function verify(message, _depth) {
+        Repository.verify = function (message, _depth) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (_depth === undefined)
+            if (_depth === $undefined)
                 _depth = 0;
             if (_depth > $util.recursionLimit)
                 return "max depth exceeded";
-            if (message.type != null && Object.hasOwnProperty.call(message, "type"))
+            if (message.type != null && $Object.hasOwnProperty.call(message, "type"))
                 if (!$util.isString(message.type))
                     return "type: string expected";
-            if (message.url != null && Object.hasOwnProperty.call(message, "url"))
+            if (message.url != null && $Object.hasOwnProperty.call(message, "url"))
                 if (!$util.isString(message.url))
                     return "url: string expected";
             return null;
@@ -1140,22 +1141,22 @@ $root.Package = (function() {
          * @param {Object.<string,*>} object Plain object
          * @returns {Package.Repository} Repository
          */
-        Repository.fromObject = function fromObject(object, _depth) {
+        Repository.fromObject = function (object, _depth) {
             if (object instanceof $root.Package.Repository)
                 return object;
             if (!$util.isObject(object))
-                throw TypeError(".Package.Repository: object expected");
-            if (_depth === undefined)
+                throw $TypeError(".Package.Repository: object expected");
+            if (_depth === $undefined)
                 _depth = 0;
             if (_depth > $util.recursionLimit)
-                throw Error("max depth exceeded");
+                throw $Error("max depth exceeded");
             var message = new $root.Package.Repository();
             if (object.type != null)
                 if (typeof object.type !== "string" || object.type.length)
-                    message.type = String(object.type);
+                    message.type = $String(object.type);
             if (object.url != null)
                 if (typeof object.url !== "string" || object.url.length)
-                    message.url = String(object.url);
+                    message.url = $String(object.url);
             return message;
         };
 
@@ -1168,21 +1169,21 @@ $root.Package = (function() {
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        Repository.toObject = function toObject(message, options, _depth) {
+        Repository.toObject = function (message, options, _depth) {
             if (!options)
                 options = {};
-            if (_depth === undefined)
+            if (_depth === $undefined)
                 _depth = 0;
             if (_depth > $util.recursionLimit)
-                throw Error("max depth exceeded");
+                throw $Error("max depth exceeded");
             var object = {};
             if (options.defaults) {
                 object.type = "";
                 object.url = "";
             }
-            if (message.type != null && Object.hasOwnProperty.call(message, "type"))
+            if (message.type != null && $Object.hasOwnProperty.call(message, "type"))
                 object.type = message.type;
-            if (message.url != null && Object.hasOwnProperty.call(message, "url"))
+            if (message.url != null && $Object.hasOwnProperty.call(message, "url"))
                 object.url = message.url;
             return object;
         };
@@ -1194,8 +1195,8 @@ $root.Package = (function() {
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
-        Repository.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        Repository.prototype.toJSON = function() {
+            return Repository.toObject(this, $protobuf.util.toJSONOptions);
         };
 
         /**
@@ -1206,8 +1207,8 @@ $root.Package = (function() {
          * @param {string} [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
          * @returns {string} The type url
          */
-        Repository.getTypeUrl = function getTypeUrl(prefix) {
-            if (prefix === undefined)
+        Repository.getTypeUrl = function(prefix) {
+            if (prefix === $undefined)
                 prefix = "type.googleapis.com";
             return prefix + "/Package.Repository";
         };

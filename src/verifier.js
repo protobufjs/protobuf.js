@@ -122,7 +122,7 @@ function genVerifyKey(gen, field, ref) {
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
 
-    var gen = util.codegen(["m", "q"], mtype.name + "$verify")
+    var gen = util.codegen(["m", "q"])
     ("if(typeof m!==\"object\"||m===null)")
         ("return%j", "object expected")
     ("if(q===undefined)q=0")

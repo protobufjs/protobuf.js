@@ -208,7 +208,7 @@ Object.defineProperties(Type.prototype, {
  */
 Type.generateConstructor = function generateConstructor(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var gen = util.codegen(["p"], mtype.name);
+    var gen = util.codegen(["p"]);
     // explicitly initialize mutable object/array fields so that these aren't just inherited from the prototype
     for (var i = 0, field; i < mtype.fieldsArray.length; ++i)
         if ((field = mtype._fieldsArray[i]).map) gen
@@ -386,7 +386,7 @@ Type.prototype.add = function add(object) {
             throw Error("duplicate id " + object.id + " in " + this);
         if (this.isReservedId(object.id))
             throw Error("id " + object.id + " is reserved in " + this);
-        if (this.isReservedName(object.name))
+        if (this.isReservedName(object.name) || object.name.charAt(0) === "$")
             throw Error("name '" + object.name + "' is reserved in " + this);
         if (object.name === "__proto__")
             return this;
@@ -399,6 +399,8 @@ Type.prototype.add = function add(object) {
         return clearCache(this);
     }
     if (object instanceof OneOf) {
+        if (object.name.charAt(0) === "$")
+            throw Error("name '" + object.name + "' is reserved in " + this);
         if (object.name === "__proto__")
             return this;
         if (!this.oneofs)

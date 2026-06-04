@@ -17,14 +17,6 @@ json_module.defaultExportDoc =
     " * @type {$protobuf.Root}\n" +
     " */\n";
 
-function jsonSafeProp(json) {
-    return json.replace(/^( +)"(\w+)":/mg, function($0, $1, $2) {
-        return protobuf.util.safeProp($2).charAt(0) === "."
-            ? $1 + $2 + ":"
-            : $0;
-    });
-}
-
 function escapeName(name) {
     if (!name)
         return "$root";
@@ -43,10 +35,10 @@ function json_module(root, options, callback) {
             (options.es6 ? "const" : "var") + " $root = ($protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = new $protobuf.Root()))\n"
         ];
         if (root.options) {
-            var optionsJson = jsonSafeProp(JSON.stringify(root.options, null, 2));
+            var optionsJson = JSON.stringify(root.options, null, 2);
             output.push(".setOptions(" + optionsJson + ")\n");
         }
-        var json = jsonSafeProp(JSON.stringify(root.nested, null, 2).trim());
+        var json = JSON.stringify(root.nested, null, 2).trim();
         output.push(".addJSON(" + json + ");");
 
         // Add ES module named exports for top-level reflected symbols
