@@ -3,9 +3,40 @@
 var typeParserPatched = false;
 var typeLinkerPatched = false;
 var typeScriptTypePattern = /[&;]|\?:|=>|\bkeyof\b|\btypeof\b/;
+var typeNamePattern = /^[A-Za-z_$][0-9A-Za-z_$]*(?:\.[A-Za-z_$][0-9A-Za-z_$]*)*=?$/;
 
 function normalizeType(type) {
     return type.replace(/\r?\n|\r/g, "\n");
+}
+
+function parseTagName(text) {
+    text = text.trim();
+    if (!text)
+        return {};
+
+    var result = {};
+    if (text.charAt(0) === "[") {
+        var close = text.indexOf("]");
+        if (close >= 0) {
+            var name = text.substring(1, close),
+                equal = name.indexOf("=");
+            result.optional = true;
+            if (equal >= 0) {
+                result.defaultvalue = name.substring(equal + 1);
+                name = name.substring(0, equal);
+            }
+            result.name = name;
+            result.text = text.substring(close + 1).trim();
+            return result;
+        }
+    }
+
+    var match = /^(\S+)(?:\s+([\s\S]*))?$/.exec(text);
+    if (match) {
+        result.name = match[1];
+        result.text = match[2] || "";
+    }
+    return result;
 }
 
 function patchTypeExpressionParser(dictionary) {
@@ -57,15 +88,38 @@ function patchTypeExpressionParser(dictionary) {
                 throw e;
 
             var expression = normalizeType(text.substring(open + 1, close)).trim();
-            if (!typeScriptTypePattern.test(expression) && !/^\s*\{/.test(expression))
+            if (!typeScriptTypePattern.test(expression) && !/^\s*\{/.test(expression) && !typeNamePattern.test(expression))
                 throw e;
 
-            var name = canHaveName ? text.substring(close + 1).trim() : "";
-            return {
-                type: [ expression ],
-                typeExpression: expression,
-                name: name
+            var expressionType = expression,
+                typeOptional = false;
+            if (typeNamePattern.test(expression) && expression.charAt(expression.length - 1) === "=") {
+                expressionType = expression.substring(0, expression.length - 1);
+                typeOptional = true;
+            }
+
+            var tag = canHaveName ? parseTagName(text.substring(close + 1)) : {};
+            var parsed = {
+                type: [ expressionType ],
+                typeExpression: expression
             };
+            if (tag.name)
+                parsed.name = tag.name;
+            if (tag.text)
+                parsed.text = tag.text;
+            if (tag.optional || typeOptional)
+                parsed.optional = true;
+            if (tag.defaultvalue)
+                parsed.defaultvalue = tag.defaultvalue;
+            if (typeNamePattern.test(expression)) {
+                parsed.parsedType = {
+                    type: "NameExpression",
+                    name: expressionType
+                };
+                if (typeOptional)
+                    parsed.parsedType.optional = true;
+            }
+            return parsed;
         }
     };
 }

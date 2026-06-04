@@ -167,6 +167,25 @@ tape.test("pbts preserves qualified Object type names", function(test) {
     });
 });
 
+tape.test("pbts preserves generated type names starting with true", function(test) {
+    var pbts = require("../cli/pbts");
+
+    pbts.process([
+        "/** @class */",
+        "function trueWireless() {}",
+        "",
+        "/**",
+        " * @param {trueWireless.$Properties=} [properties] Properties to set",
+        " * @returns {trueWireless} trueWireless instance",
+        " */",
+        "trueWireless.create = function(properties) { return new trueWireless(properties); };"
+    ].join("\n"), [], function(err, tsCode) {
+        test.error(err, "definition generation worked");
+        test.ok(tsCode.indexOf("static create(properties?: trueWireless.$Properties): trueWireless;") >= 0, "keeps true-prefixed generated types");
+        test.end();
+    });
+});
+
 tape.test("pbts ignores unknown JSDoc tags", function(test) {
     var pbts = require("../cli/pbts");
 
