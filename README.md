@@ -144,7 +144,7 @@ If required fields are missing while decoding proto2 data, `decode` throws `prot
 
 ## Runtimes
 
-Pick the smallest runtime variant that supports how your application loads schemas and whether it needs reflection at runtime.
+protobuf.js provides three runtime entry points, keeping parser and reflection support optional: Runtime `.proto` loading needs the parser, JSON/reflection bundles need reflection support, and generated static modules only need the minimal runtime.
 
 | Import                  | Includes           | Use when
 | ----------------------- | ------------------ | --------
@@ -156,7 +156,7 @@ The full build includes the light build, and the light build includes the minima
 
 ## Code generation
 
-Choose the integration style that fits your workflow and use [`protobufjs-cli`](./cli/#readme) to generate reflection bundles, static JavaScript code, and matching TypeScript declarations, either standalone with `pbjs` or through its `protoc-gen-pbjs` plugin for `protoc`.
+Use [`protobufjs-cli`](./cli/#readme) to generate reflection bundles, static JavaScript code, and matching TypeScript declarations, either directly with `pbjs` or through the optional `protoc-gen-pbjs` plugin for `protoc`.
 
 Reflection keeps schemas as JSON metadata and generates optimized functions at runtime. Static code emits schema-specific, reflection-free functions ahead of time. The main tradeoffs are how schemas are loaded, how bundle size scales with schema size, and whether reflection metadata should remain available at runtime.
 
@@ -186,7 +186,7 @@ While static code is verbose by design, its repeated patterns compress well with
 
 ### Reflection bundles
 
-Reflection bundles store schemas as compact JSON, avoiding `.proto` parsing at runtime and letting browsers load schema metadata in one request. While they require at least `protobufjs/light.js`, large schemas can produce smaller combined payloads than equivalent static modules because common code is shared through reflection.
+Reflection bundles store schemas as compact JSON metadata, avoiding `.proto` parsing at runtime and letting browsers load schema metadata in one request. While they require at least `protobufjs/light.js`, large schemas can produce smaller combined bundles than equivalent static modules because common code is shared through reflection.
 
 ```sh
 npx pbjs -t json -o awesome.json awesome1.proto awesome2.proto ...
