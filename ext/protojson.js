@@ -456,7 +456,7 @@ function toJsonValue(type, message, options, depth) {
                 arr[j] = writeSingular(field, value[j], options, depth);
             setOwn(out, key, arr);
         } else {
-            if (!hasOwn(message, field.name))
+            if (!hasOwn(message, field.name) || isImplicitDefault(field, value))
                 continue;
             setOwn(out, key, writeSingular(field, value, options, depth));
         }

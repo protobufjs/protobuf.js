@@ -17,6 +17,11 @@ message Outer {\
   repeated Choice choices = 3;\
   map<string, Choice> choice_map = 4;\
 }\
+message OneofDefault {\
+  oneof kind {\
+    int32 value = 1;\
+  }\
+}\
 message MapMsg {\
   map<int32, string> int32_map = 1;\
   map<uint64, string> uint64_map = 2;\
@@ -27,6 +32,7 @@ message MapMsg {\
 var root = protobuf.parse(proto).root,
     Msg = root.lookupType("Msg"),
     Outer = root.lookupType("Outer"),
+    OneofDefault = root.lookupType("OneofDefault"),
     MapMsg = root.lookupType("MapMsg"),
     timestampRoot = protobuf.Root.fromJSON({
         nested: {
@@ -158,6 +164,12 @@ tape.test("protojson - rejects duplicate keys in string input", function(test) {
 tape.test("protojson - accepts already-parsed input", function(test) {
     var message = protojson.fromJson(Msg, { value: 1 });
     test.equal(message.value, 1, "parses object input");
+    test.end();
+});
+
+tape.test("protojson - omits implicit default values", function(test) {
+    test.deepEqual(protojson.toJson(Msg, Msg.create({ value: 0 })), {}, "omits owned implicit scalar defaults");
+    test.deepEqual(protojson.toJson(OneofDefault, OneofDefault.create({ value: 0 })), { value: 0 }, "emits explicit oneof defaults");
     test.end();
 });
 
@@ -490,6 +502,13 @@ tape.test("protojson - parses timestamp string shape strictly", function(test) {
 
     var leapDay = protojson.fromJson(WithTimestamp, { ts: "2020-02-29T00:00:00Z" });
     test.equal(leapDay.ts.seconds, 1582934400, "accepts valid leap day");
+
+    var offset = protojson.fromJson(WithTimestamp, { ts: "2026-06-03T09:19:00.000-07:00" });
+    test.deepEqual(protojson.toJson(WithTimestamp, offset), { ts: "2026-06-03T16:19:00Z" }, "accepts RFC 3339 timestamp offsets");
+
+    test.throws(function() {
+        protojson.fromJson(WithTimestamp, { ts: "2026-06-03T09:19:00.000-0700" });
+    }, /invalid timestamp/, "rejects timestamp offsets without an RFC 3339 colon");
 
     test.throws(function() {
         protojson.fromJson(WithTimestamp, { ts: "2019-02-29T00:00:00Z" });
