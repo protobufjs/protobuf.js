@@ -253,7 +253,7 @@ class Stringifier {
     }
 
     // Accept a map-like object or a dictionary-style object.
-    if (typeof links?.get === 'function') {
+    if (links && typeof links.get === 'function') {
       href = links.get(nameString);
     } else if ({}.hasOwnProperty.call(links, nameString)) {
       href = links[nameString];
