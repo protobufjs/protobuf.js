@@ -2,13 +2,34 @@
 
 var typeParserPatched = false;
 var typeLinkerPatched = false;
+var catharsisPatched = false;
 var typeScriptTypePattern = /[&;]|\?:|=>|\bkeyof\b|\btypeof\b/;
 
 function normalizeType(type) {
     return type.replace(/\r?\n|\r/g, "\n");
 }
 
+function patchCatharsis() {
+    if (catharsisPatched)
+        return;
+    catharsisPatched = true;
+
+    var path = require("path");
+    var typePath = require.resolve("jsdoc/tag/type");
+    var catharsisPath = require.resolve("catharsis", {
+        paths: [ path.dirname(typePath) ]
+    });
+    var catharsis = require(catharsisPath);
+    var vendored = require("../catharsis/catharsis");
+
+    catharsis.Types = vendored.Types;
+    catharsis.parse = vendored.parse;
+    catharsis.stringify = vendored.stringify;
+}
+
 function patchTypeExpressionParser(dictionary) {
+    patchCatharsis();
+
     var type = require("jsdoc/tag/type");
     var parse = type.parse,
         typeTag = dictionary.lookUp("type");

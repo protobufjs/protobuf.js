@@ -10,6 +10,7 @@ module.exports = [
             ".tmp/**",
             "**/node_modules/**",
             "bin/**",
+            "cli/lib/catharsis/**",
             "cli/wrappers/**",
             "coverage/**",
             "dist/**",

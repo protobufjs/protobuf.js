@@ -167,6 +167,44 @@ tape.test("pbts preserves qualified Object type names", function(test) {
     });
 });
 
+tape.test("pbts preserves type names starting with literal tokens", function(test) {
+    var pbts = require("../cli/pbts");
+
+    pbts.process([
+        "/**",
+        " * @name TruePrefixUser",
+        " * @type {trueWireless.$Properties}",
+        " * @const",
+        " */",
+        "",
+        "/**",
+        " * @name FalsePrefixUser",
+        " * @type {falseValue.$Properties}",
+        " * @const",
+        " */",
+        "",
+        "/**",
+        " * @name NullPrefixUser",
+        " * @type {nullable.$Properties}",
+        " * @const",
+        " */",
+        "",
+        "/**",
+        " * @name UndefinedPrefixUser",
+        " * @type {undefinedThing.$Properties}",
+        " * @const",
+        " */",
+        ""
+    ].join("\n"), [], function(err, tsCode) {
+        test.error(err, "definition generation worked");
+        test.ok(tsCode.indexOf("export const TruePrefixUser: trueWireless.$Properties;") >= 0, "preserves true-prefixed type names");
+        test.ok(tsCode.indexOf("export const FalsePrefixUser: falseValue.$Properties;") >= 0, "preserves false-prefixed type names");
+        test.ok(tsCode.indexOf("export const NullPrefixUser: nullable.$Properties;") >= 0, "preserves null-prefixed type names");
+        test.ok(tsCode.indexOf("export const UndefinedPrefixUser: undefinedThing.$Properties;") >= 0, "preserves undefined-prefixed type names");
+        test.end();
+    });
+});
+
 tape.test("pbts ignores unknown JSDoc tags", function(test) {
     var pbts = require("../cli/pbts");
 
