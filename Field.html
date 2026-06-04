@@ -227,6 +227,8 @@
                 
                     <li data-name="util.isset"><a href="util.html#.isset">isset</a></li>
                 
+                    <li data-name="util.jsonName"><a href="util.html#.jsonName">jsonName</a></li>
+                
                     <li data-name="util.lcFirst"><a href="util.html#.lcFirst">lcFirst</a></li>
                 
                     <li data-name="util.longFromHash"><a href="util.html#.longFromHash">longFromHash</a></li>
@@ -696,6 +698,8 @@
                 
                     <li data-name="Field#id"><a href="Field.html#id">id</a></li>
                 
+                    <li data-name="Field#jsonName"><a href="Field.html#jsonName">jsonName</a></li>
+                
                     <li data-name="Field#long"><a href="Field.html#long">long</a></li>
                 
                     <li data-name="Field#map"><a href="Field.html#map">map</a></li>
@@ -715,6 +719,8 @@
                     <li data-name="Field#parsedOptions"><a href="Field.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="Field#partOf"><a href="Field.html#partOf">partOf</a></li>
+                
+                    <li data-name="Field#protoName"><a href="Field.html#protoName">protoName</a></li>
                 
                     <li data-name="Field#repeated"><a href="Field.html#repeated">repeated</a></li>
                 
@@ -802,6 +808,8 @@
                 
                     <li data-name="FieldBase#id"><a href="FieldBase.html#id">id</a></li>
                 
+                    <li data-name="FieldBase#jsonName"><a href="FieldBase.html#jsonName">jsonName</a></li>
+                
                     <li data-name="FieldBase#long"><a href="FieldBase.html#long">long</a></li>
                 
                     <li data-name="FieldBase#map"><a href="FieldBase.html#map">map</a></li>
@@ -817,6 +825,8 @@
                     <li data-name="FieldBase#parsedOptions"><a href="FieldBase.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="FieldBase#partOf"><a href="FieldBase.html#partOf">partOf</a></li>
+                
+                    <li data-name="FieldBase#protoName"><a href="FieldBase.html#protoName">protoName</a></li>
                 
                     <li data-name="FieldBase#repeated"><a href="FieldBase.html#repeated">repeated</a></li>
                 
@@ -898,6 +908,8 @@
                 
                     <li data-name="MapField#id"><a href="MapField.html#id">id</a></li>
                 
+                    <li data-name="MapField#jsonName"><a href="MapField.html#jsonName">jsonName</a></li>
+                
                     <li data-name="MapField#keyType"><a href="MapField.html#keyType">keyType</a></li>
                 
                     <li data-name="MapField#long"><a href="MapField.html#long">long</a></li>
@@ -915,6 +927,8 @@
                     <li data-name="MapField#parsedOptions"><a href="MapField.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="MapField#partOf"><a href="MapField.html#partOf">partOf</a></li>
+                
+                    <li data-name="MapField#protoName"><a href="MapField.html#protoName">protoName</a></li>
                 
                     <li data-name="MapField#repeated"><a href="MapField.html#repeated">repeated</a></li>
                 
@@ -2317,7 +2331,7 @@
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -2357,7 +2371,7 @@
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -2392,7 +2406,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -2492,7 +2506,7 @@
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L155">line 155</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L161">line 161</a>
         </div>
         
     </div>
@@ -2541,7 +2555,7 @@
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L179">line 179</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L185">line 185</a>
         </div>
         
     </div>
@@ -2590,7 +2604,7 @@
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L173">line 173</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L179">line 179</a>
         </div>
         
     </div>
@@ -2639,7 +2653,7 @@
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L143">line 143</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L149">line 149</a>
         </div>
         
     </div>
@@ -2688,7 +2702,7 @@
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L206">line 206</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L224">line 224</a>
         </div>
         
     </div>
@@ -2738,7 +2752,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L107">line 107</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L113">line 113</a>
         </div>
         
     </div>
@@ -2787,7 +2801,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L167">line 167</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L173">line 173</a>
         </div>
         
     </div>
@@ -2934,7 +2948,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L232">line 232</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L250">line 250</a>
         </div>
         
     </div>
@@ -2983,7 +2997,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L101">line 101</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L107">line 107</a>
         </div>
         
     </div>
@@ -3028,11 +3042,61 @@ corresponded to group syntax.</p>
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="jsonName">jsonName <span class="type-signature ">readonly</span><span class="type-signature type">{ string }</span></h4>
+
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L275">line 275</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The JSON name of this field (lowerCamelCase per protoc's <code>ToJsonName</code>, or an<br>
+explicit <code>[json_name]</code>). Populated on resolve. This is the key used on ProtoJSON output.</p>
+    </div>
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="long">long <span class="type-signature type">{ boolean }</span></h4>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L149">line 149</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L155">line 155</a>
         </div>
         
     </div>
@@ -3081,7 +3145,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L119">line 119</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L125">line 125</a>
         </div>
         
     </div>
@@ -3130,7 +3194,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L125">line 125</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L131">line 131</a>
         </div>
         
     </div>
@@ -3228,7 +3292,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L194">line 194</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L212">line 212</a>
         </div>
         
     </div>
@@ -3273,7 +3337,7 @@ corresponded to group syntax.</p>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="options">options <span class="type-signature type">{ Object&lt;string, *> | undefined }</span></h4>
+        <h4 class="name" id="options">options <span class="type-signature type">{ Object&lt;string, *&gt; | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -3326,7 +3390,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L220">line 220</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L238">line 238</a>
         </div>
         
     </div>
@@ -3420,7 +3484,7 @@ corresponded to group syntax.</p>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="parsedOptions">parsedOptions <span class="type-signature type">{ Object&lt;string, *>[] | undefined }</span></h4>
+        <h4 class="name" id="parsedOptions">parsedOptions <span class="type-signature type">{ Array&lt;Object&lt;string, *&gt;&gt; | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -3473,7 +3537,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L131">line 131</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L137">line 137</a>
         </div>
         
     </div>
@@ -3518,11 +3582,61 @@ corresponded to group syntax.</p>
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="protoName">protoName <span class="type-signature ">readonly</span><span class="type-signature type">{ string }</span></h4>
+
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L267">line 267</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The field name as declared in the .proto source (snake_case). Populated on resolve,<br>
+falling back to <code>name</code>. Mirrors <code>FieldDescriptorProto.name</code>.</p>
+    </div>
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="repeated">repeated <span class="type-signature type">{ boolean }</span></h4>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L113">line 113</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L119">line 119</a>
         </div>
         
     </div>
@@ -3571,7 +3685,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L182">line 182</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L200">line 200</a>
         </div>
         
     </div>
@@ -3669,7 +3783,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L161">line 161</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L167">line 167</a>
         </div>
         
     </div>
@@ -3767,7 +3881,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L89">line 89</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L95">line 95</a>
         </div>
         
     </div>
@@ -3816,7 +3930,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L95">line 95</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L101">line 101</a>
         </div>
         
     </div>
@@ -3865,7 +3979,7 @@ corresponded to group syntax.</p>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L137">line 137</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L143">line 143</a>
         </div>
         
     </div>
@@ -4309,7 +4423,7 @@ corresponded to group syntax.</p>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L297">line 297</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L333">line 333</a>
         </div>
         
     </div>
@@ -4464,7 +4578,7 @@ corresponded to group syntax.</p>
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -4769,7 +4883,7 @@ corresponded to group syntax.</p>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L279">line 279</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L313">line 313</a>
         </div>
         
     </div>
@@ -4996,7 +5110,7 @@ corresponded to group syntax.</p>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L410">line 410</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L452">line 452</a>
         </div>
         
     </div>
@@ -5290,7 +5404,7 @@ corresponded to group syntax.</p>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L443">line 443</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L485">line 485</a>
         </div>
         
     </div>
@@ -5358,7 +5472,7 @@ corresponded to group syntax.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#Constructor">Constructor</a>.&lt;T></span>
+<span class="param-type"><a href="global.html#Constructor">Constructor</a>&lt;T&gt;</span>
 |
 
 <span class="param-type">string</span>

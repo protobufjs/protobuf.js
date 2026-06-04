@@ -227,6 +227,8 @@
                 
                     <li data-name="util.isset"><a href="util.html#.isset">isset</a></li>
                 
+                    <li data-name="util.jsonName"><a href="util.html#.jsonName">jsonName</a></li>
+                
                     <li data-name="util.lcFirst"><a href="util.html#.lcFirst">lcFirst</a></li>
                 
                     <li data-name="util.longFromHash"><a href="util.html#.longFromHash">longFromHash</a></li>
@@ -696,6 +698,8 @@
                 
                     <li data-name="Field#id"><a href="Field.html#id">id</a></li>
                 
+                    <li data-name="Field#jsonName"><a href="Field.html#jsonName">jsonName</a></li>
+                
                     <li data-name="Field#long"><a href="Field.html#long">long</a></li>
                 
                     <li data-name="Field#map"><a href="Field.html#map">map</a></li>
@@ -715,6 +719,8 @@
                     <li data-name="Field#parsedOptions"><a href="Field.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="Field#partOf"><a href="Field.html#partOf">partOf</a></li>
+                
+                    <li data-name="Field#protoName"><a href="Field.html#protoName">protoName</a></li>
                 
                     <li data-name="Field#repeated"><a href="Field.html#repeated">repeated</a></li>
                 
@@ -802,6 +808,8 @@
                 
                     <li data-name="FieldBase#id"><a href="FieldBase.html#id">id</a></li>
                 
+                    <li data-name="FieldBase#jsonName"><a href="FieldBase.html#jsonName">jsonName</a></li>
+                
                     <li data-name="FieldBase#long"><a href="FieldBase.html#long">long</a></li>
                 
                     <li data-name="FieldBase#map"><a href="FieldBase.html#map">map</a></li>
@@ -817,6 +825,8 @@
                     <li data-name="FieldBase#parsedOptions"><a href="FieldBase.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="FieldBase#partOf"><a href="FieldBase.html#partOf">partOf</a></li>
+                
+                    <li data-name="FieldBase#protoName"><a href="FieldBase.html#protoName">protoName</a></li>
                 
                     <li data-name="FieldBase#repeated"><a href="FieldBase.html#repeated">repeated</a></li>
                 
@@ -898,6 +908,8 @@
                 
                     <li data-name="MapField#id"><a href="MapField.html#id">id</a></li>
                 
+                    <li data-name="MapField#jsonName"><a href="MapField.html#jsonName">jsonName</a></li>
+                
                     <li data-name="MapField#keyType"><a href="MapField.html#keyType">keyType</a></li>
                 
                     <li data-name="MapField#long"><a href="MapField.html#long">long</a></li>
@@ -915,6 +927,8 @@
                     <li data-name="MapField#parsedOptions"><a href="MapField.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="MapField#partOf"><a href="MapField.html#partOf">partOf</a></li>
+                
+                    <li data-name="MapField#protoName"><a href="MapField.html#protoName">protoName</a></li>
                 
                     <li data-name="MapField#repeated"><a href="MapField.html#repeated">repeated</a></li>
                 
@@ -2244,7 +2258,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -2537,7 +2551,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="nested">nested <span class="type-signature type">{ Object&lt;string, <a href="ReflectionObject.html">ReflectionObject</a>> | undefined }</span></h4>
+        <h4 class="name" id="nested">nested <span class="type-signature type">{ Object&lt;string, <a href="ReflectionObject.html">ReflectionObject</a>&gt; | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -2586,7 +2600,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="nestedArray">nestedArray <span class="type-signature ">readonly</span><span class="type-signature type">{ <a href="ReflectionObject.html">ReflectionObject</a>[] }</span></h4>
+        <h4 class="name" id="nestedArray">nestedArray <span class="type-signature ">readonly</span><span class="type-signature type">{ Array&lt;<a href="ReflectionObject.html">ReflectionObject</a>&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2635,7 +2649,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="options">options <span class="type-signature type">{ Object&lt;string, *> | undefined }</span></h4>
+        <h4 class="name" id="options">options <span class="type-signature type">{ Object&lt;string, *&gt; | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -2733,7 +2747,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="parsedOptions">parsedOptions <span class="type-signature type">{ Object&lt;string, *>[] | undefined }</span></h4>
+        <h4 class="name" id="parsedOptions">parsedOptions <span class="type-signature type">{ Array&lt;Object&lt;string, *&gt;&gt; | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -3099,7 +3113,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, <a href="global.html#AnyNestedObject">AnyNestedObject</a>></span>
+<span class="param-type">Object&lt;string, <a href="global.html#AnyNestedObject">AnyNestedObject</a>&gt;</span>
 
 
 
@@ -3264,7 +3278,7 @@
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -3515,7 +3529,7 @@
     <div class="nameContainer">
         <h4 class="name" id="getEnum">
             
-            getEnum<span class="signature">(name)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, number> }</span>
+            getEnum<span class="signature">(name)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, number&gt; }</span>
         </h4>
     
         
@@ -3646,7 +3660,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
             
             <td class="type">
             
-                        Object.&lt;string, number>
+                        Object&lt;string, number&gt;
                         
                     
             </td>
@@ -3839,7 +3853,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -3875,7 +3889,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
 <span class="param-type">*</span>
 |
 
-<span class="param-type">Array.&lt;*></span>
+<span class="param-type">Array&lt;*&gt;</span>
 
 
 
@@ -4053,7 +4067,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -4232,7 +4246,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -4388,7 +4402,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -4544,7 +4558,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -4700,7 +4714,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -5663,7 +5677,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 

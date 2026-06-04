@@ -227,6 +227,8 @@
                 
                     <li data-name="util.isset"><a href="util.html#.isset">isset</a></li>
                 
+                    <li data-name="util.jsonName"><a href="util.html#.jsonName">jsonName</a></li>
+                
                     <li data-name="util.lcFirst"><a href="util.html#.lcFirst">lcFirst</a></li>
                 
                     <li data-name="util.longFromHash"><a href="util.html#.longFromHash">longFromHash</a></li>
@@ -696,6 +698,8 @@
                 
                     <li data-name="Field#id"><a href="Field.html#id">id</a></li>
                 
+                    <li data-name="Field#jsonName"><a href="Field.html#jsonName">jsonName</a></li>
+                
                     <li data-name="Field#long"><a href="Field.html#long">long</a></li>
                 
                     <li data-name="Field#map"><a href="Field.html#map">map</a></li>
@@ -715,6 +719,8 @@
                     <li data-name="Field#parsedOptions"><a href="Field.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="Field#partOf"><a href="Field.html#partOf">partOf</a></li>
+                
+                    <li data-name="Field#protoName"><a href="Field.html#protoName">protoName</a></li>
                 
                     <li data-name="Field#repeated"><a href="Field.html#repeated">repeated</a></li>
                 
@@ -802,6 +808,8 @@
                 
                     <li data-name="FieldBase#id"><a href="FieldBase.html#id">id</a></li>
                 
+                    <li data-name="FieldBase#jsonName"><a href="FieldBase.html#jsonName">jsonName</a></li>
+                
                     <li data-name="FieldBase#long"><a href="FieldBase.html#long">long</a></li>
                 
                     <li data-name="FieldBase#map"><a href="FieldBase.html#map">map</a></li>
@@ -817,6 +825,8 @@
                     <li data-name="FieldBase#parsedOptions"><a href="FieldBase.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="FieldBase#partOf"><a href="FieldBase.html#partOf">partOf</a></li>
+                
+                    <li data-name="FieldBase#protoName"><a href="FieldBase.html#protoName">protoName</a></li>
                 
                     <li data-name="FieldBase#repeated"><a href="FieldBase.html#repeated">repeated</a></li>
                 
@@ -898,6 +908,8 @@
                 
                     <li data-name="MapField#id"><a href="MapField.html#id">id</a></li>
                 
+                    <li data-name="MapField#jsonName"><a href="MapField.html#jsonName">jsonName</a></li>
+                
                     <li data-name="MapField#keyType"><a href="MapField.html#keyType">keyType</a></li>
                 
                     <li data-name="MapField#long"><a href="MapField.html#long">long</a></li>
@@ -915,6 +927,8 @@
                     <li data-name="MapField#parsedOptions"><a href="MapField.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="MapField#partOf"><a href="MapField.html#partOf">partOf</a></li>
+                
+                    <li data-name="MapField#protoName"><a href="MapField.html#protoName">protoName</a></li>
                 
                     <li data-name="MapField#repeated"><a href="MapField.html#repeated">repeated</a></li>
                 
@@ -2266,7 +2280,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="roots">roots <span class="type-signature type">{ Object&lt;string, <a href="Root.html">Root</a>> }</span></h4>
+        <h4 class="name" id="roots">roots <span class="type-signature type">{ Object&lt;string, <a href="Root.html">Root</a>&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2332,7 +2346,7 @@ var root = protobuf.roots["myroot"];</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="wrappers">wrappers <span class="type-signature ">constant</span><span class="type-signature type">{ Object&lt;string, <a href="IWrapper.html">IWrapper</a>> }</span></h4>
+        <h4 class="name" id="wrappers">wrappers <span class="type-signature ">constant</span><span class="type-signature type">{ Object&lt;string, <a href="IWrapper.html">IWrapper</a>&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2454,7 +2468,7 @@ Can also be used to provide additional google types or your own custom types.</p
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -3118,7 +3132,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -3300,7 +3314,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -3415,7 +3429,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     <div class="nameContainer">
         <h4 class="name" id="load3">
             
-            load<span class="signature">(filename, <span class="optional">root</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Promise&lt;<a href="Root.html">Root</a>> }</span>
+            load<span class="signature">(filename, <span class="optional">root</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Promise&lt;<a href="Root.html">Root</a>&gt; }</span>
         </h4>
     
         
@@ -3458,7 +3472,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -3563,7 +3577,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
             
             <td class="type">
             
-                        Promise.&lt;<a href="Root.html">Root</a>>
+                        Promise&lt;<a href="Root.html">Root</a>&gt;
                         
                     
             </td>
@@ -3628,7 +3642,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -4045,7 +4059,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/parse.js">parse.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/parse.js#L1044">line 1044</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/parse.js">parse.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/parse.js#L1058">line 1058</a>
         </div>
         
     </div>
@@ -4693,7 +4707,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -5199,7 +5213,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L400">line 400</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/field.js#L442">line 442</a>
         </div>
         
     </div>
@@ -6260,7 +6274,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
 <span class="param-type"><a href="Method.html">Method</a></span>
 |
 
-<span class="param-type"><a href="rpc.html#.ServiceMethod">rpc.ServiceMethod</a>.&lt;<a href="Message.html">Message</a>.&lt;{}>, <a href="Message.html">Message</a>.&lt;{}>></span>
+<span class="param-type"><a href="rpc.html#.ServiceMethod">rpc.ServiceMethod</a>&lt;<a href="Message.html">Message</a>&lt;{}&gt;, <a href="Message.html">Message</a>&lt;{}&gt;&gt;</span>
 
 
 
@@ -7281,7 +7295,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L625">line 625</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L634">line 634</a>
         </div>
         
     </div>
@@ -7316,7 +7330,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#Constructor">Constructor</a>.&lt;T></span>
+<span class="param-type"><a href="global.html#Constructor">Constructor</a>&lt;T&gt;</span>
 
 
 
@@ -7405,7 +7419,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     <div class="nameContainer">
         <h4 class="name" id="WrapperFromObjectConverter">
             
-            WrapperFromObjectConverter<span class="signature">(object)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ <a href="Message.html">Message</a>.&lt;{}> }</span>
+            WrapperFromObjectConverter<span class="signature">(object)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ <a href="Message.html">Message</a>&lt;{}&gt; }</span>
         </h4>
     
         
@@ -7448,7 +7462,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -7512,7 +7526,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
             
             <td class="type">
             
-                        <a href="Message.html">Message</a>.&lt;{}>
+                        <a href="Message.html">Message</a>&lt;{}&gt;
                         
                     
             </td>
@@ -7534,7 +7548,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
     <div class="nameContainer">
         <h4 class="name" id="WrapperToObjectConverter">
             
-            WrapperToObjectConverter<span class="signature">(message, <span class="optional">options</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, *> }</span>
+            WrapperToObjectConverter<span class="signature">(message, <span class="optional">options</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, *&gt; }</span>
         </h4>
     
         
@@ -7577,7 +7591,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
             <td class="type">
             
                 
-<span class="param-type"><a href="Message.html">Message</a>.&lt;{}></span>
+<span class="param-type"><a href="Message.html">Message</a>&lt;{}&gt;</span>
 
 
 
@@ -7677,7 +7691,7 @@ protobuf.common("my/foo/bar.proto", myFooBarJson);</code></pre>
             
             <td class="type">
             
-                        Object.&lt;string, *>
+                        Object&lt;string, *&gt;
                         
                     
             </td>

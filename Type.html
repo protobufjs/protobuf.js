@@ -227,6 +227,8 @@
                 
                     <li data-name="util.isset"><a href="util.html#.isset">isset</a></li>
                 
+                    <li data-name="util.jsonName"><a href="util.html#.jsonName">jsonName</a></li>
+                
                     <li data-name="util.lcFirst"><a href="util.html#.lcFirst">lcFirst</a></li>
                 
                     <li data-name="util.longFromHash"><a href="util.html#.longFromHash">longFromHash</a></li>
@@ -696,6 +698,8 @@
                 
                     <li data-name="Field#id"><a href="Field.html#id">id</a></li>
                 
+                    <li data-name="Field#jsonName"><a href="Field.html#jsonName">jsonName</a></li>
+                
                     <li data-name="Field#long"><a href="Field.html#long">long</a></li>
                 
                     <li data-name="Field#map"><a href="Field.html#map">map</a></li>
@@ -715,6 +719,8 @@
                     <li data-name="Field#parsedOptions"><a href="Field.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="Field#partOf"><a href="Field.html#partOf">partOf</a></li>
+                
+                    <li data-name="Field#protoName"><a href="Field.html#protoName">protoName</a></li>
                 
                     <li data-name="Field#repeated"><a href="Field.html#repeated">repeated</a></li>
                 
@@ -802,6 +808,8 @@
                 
                     <li data-name="FieldBase#id"><a href="FieldBase.html#id">id</a></li>
                 
+                    <li data-name="FieldBase#jsonName"><a href="FieldBase.html#jsonName">jsonName</a></li>
+                
                     <li data-name="FieldBase#long"><a href="FieldBase.html#long">long</a></li>
                 
                     <li data-name="FieldBase#map"><a href="FieldBase.html#map">map</a></li>
@@ -817,6 +825,8 @@
                     <li data-name="FieldBase#parsedOptions"><a href="FieldBase.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="FieldBase#partOf"><a href="FieldBase.html#partOf">partOf</a></li>
+                
+                    <li data-name="FieldBase#protoName"><a href="FieldBase.html#protoName">protoName</a></li>
                 
                     <li data-name="FieldBase#repeated"><a href="FieldBase.html#repeated">repeated</a></li>
                 
@@ -898,6 +908,8 @@
                 
                     <li data-name="MapField#id"><a href="MapField.html#id">id</a></li>
                 
+                    <li data-name="MapField#jsonName"><a href="MapField.html#jsonName">jsonName</a></li>
+                
                     <li data-name="MapField#keyType"><a href="MapField.html#keyType">keyType</a></li>
                 
                     <li data-name="MapField#long"><a href="MapField.html#long">long</a></li>
@@ -915,6 +927,8 @@
                     <li data-name="MapField#parsedOptions"><a href="MapField.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="MapField#partOf"><a href="MapField.html#partOf">partOf</a></li>
+                
+                    <li data-name="MapField#protoName"><a href="MapField.html#protoName">protoName</a></li>
                 
                     <li data-name="MapField#repeated"><a href="MapField.html#repeated">repeated</a></li>
                 
@@ -2244,7 +2258,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -2385,11 +2399,11 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="ctor">ctor <span class="type-signature type">{ <a href="global.html#Constructor">Constructor</a>.&lt;{}> }</span></h4>
+        <h4 class="name" id="ctor">ctor <span class="type-signature type">{ <a href="global.html#Constructor">Constructor</a>&lt;{}&gt; }</span></h4>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L148">line 148</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L155">line 155</a>
         </div>
         
     </div>
@@ -2435,7 +2449,7 @@ Assigning a function replaces the internal constructor. If the function does not
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="extensions">extensions <span class="type-signature type">{ number[][] }</span></h4>
+        <h4 class="name" id="extensions">extensions <span class="type-signature type">{ Array&lt;Array&lt;number&gt;&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2484,7 +2498,7 @@ Assigning a function replaces the internal constructor. If the function does not
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="fields">fields <span class="type-signature type">{ Object&lt;string, <a href="Field.html">Field</a>> }</span></h4>
+        <h4 class="name" id="fields">fields <span class="type-signature type">{ Object&lt;string, <a href="Field.html">Field</a>&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2533,11 +2547,11 @@ Assigning a function replaces the internal constructor. If the function does not
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="fieldsArray">fieldsArray <span class="type-signature ">readonly</span><span class="type-signature type">{ <a href="Field.html">Field</a>[] }</span></h4>
+        <h4 class="name" id="fieldsArray">fieldsArray <span class="type-signature ">readonly</span><span class="type-signature type">{ Array&lt;<a href="Field.html">Field</a>&gt; }</span></h4>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L124">line 124</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L131">line 131</a>
         </div>
         
     </div>
@@ -2582,11 +2596,11 @@ Assigning a function replaces the internal constructor. If the function does not
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="fieldsById">fieldsById <span class="type-signature ">readonly</span><span class="type-signature type">{ Object&lt;number, <a href="Field.html">Field</a>> }</span></h4>
+        <h4 class="name" id="fieldsById">fieldsById <span class="type-signature ">readonly</span><span class="type-signature type">{ Object&lt;number, <a href="Field.html">Field</a>&gt; }</span></h4>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L96">line 96</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L103">line 103</a>
         </div>
         
     </div>
@@ -2778,7 +2792,7 @@ Assigning a function replaces the internal constructor. If the function does not
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="nested">nested <span class="type-signature type">{ Object&lt;string, <a href="ReflectionObject.html">ReflectionObject</a>> | undefined }</span></h4>
+        <h4 class="name" id="nested">nested <span class="type-signature type">{ Object&lt;string, <a href="ReflectionObject.html">ReflectionObject</a>&gt; | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -2827,7 +2841,7 @@ Assigning a function replaces the internal constructor. If the function does not
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="nestedArray">nestedArray <span class="type-signature ">readonly</span><span class="type-signature type">{ <a href="ReflectionObject.html">ReflectionObject</a>[] }</span></h4>
+        <h4 class="name" id="nestedArray">nestedArray <span class="type-signature ">readonly</span><span class="type-signature type">{ Array&lt;<a href="ReflectionObject.html">ReflectionObject</a>&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2876,7 +2890,7 @@ Assigning a function replaces the internal constructor. If the function does not
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="oneofs">oneofs <span class="type-signature type">{ Object&lt;string, <a href="OneOf.html">OneOf</a>> }</span></h4>
+        <h4 class="name" id="oneofs">oneofs <span class="type-signature type">{ Object&lt;string, <a href="OneOf.html">OneOf</a>&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2925,11 +2939,11 @@ Assigning a function replaces the internal constructor. If the function does not
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="oneofsArray">oneofsArray <span class="type-signature ">readonly</span><span class="type-signature type">{ <a href="OneOf.html">OneOf</a>[] }</span></h4>
+        <h4 class="name" id="oneofsArray">oneofsArray <span class="type-signature ">readonly</span><span class="type-signature type">{ Array&lt;<a href="OneOf.html">OneOf</a>&gt; }</span></h4>
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L136">line 136</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L143">line 143</a>
         </div>
         
     </div>
@@ -2974,7 +2988,7 @@ Assigning a function replaces the internal constructor. If the function does not
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="options">options <span class="type-signature type">{ Object&lt;string, *> | undefined }</span></h4>
+        <h4 class="name" id="options">options <span class="type-signature type">{ Object&lt;string, *&gt; | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -3072,7 +3086,7 @@ Assigning a function replaces the internal constructor. If the function does not
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="parsedOptions">parsedOptions <span class="type-signature type">{ Object&lt;string, *>[] | undefined }</span></h4>
+        <h4 class="name" id="parsedOptions">parsedOptions <span class="type-signature type">{ Array&lt;Object&lt;string, *&gt;&gt; | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -3121,7 +3135,7 @@ Assigning a function replaces the internal constructor. If the function does not
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="reserved">reserved <span class="type-signature type">{ (number[]|string)[] }</span></h4>
+        <h4 class="name" id="reserved">reserved <span class="type-signature type">{ Array&lt;(Array&lt;number&gt;|string)&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -3281,7 +3295,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L368">line 368</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L375">line 375</a>
         </div>
         
     </div>
@@ -3489,7 +3503,7 @@ Assigning a function replaces the internal constructor. If the function does not
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, <a href="global.html#AnyNestedObject">AnyNestedObject</a>></span>
+<span class="param-type">Object&lt;string, <a href="global.html#AnyNestedObject">AnyNestedObject</a>&gt;</span>
 
 
 
@@ -3616,7 +3630,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L463">line 463</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L472">line 472</a>
         </div>
         
     </div>
@@ -3651,7 +3665,7 @@ Assigning a function replaces the internal constructor. If the function does not
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -3749,7 +3763,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L549">line 549</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L558">line 558</a>
         </div>
         
     </div>
@@ -3902,7 +3916,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         <td class="type">
             
-<span class="param-type"><a href="util.ProtocolError.html">util.ProtocolError</a>.&lt;{}></span>
+<span class="param-type"><a href="util.ProtocolError.html">util.ProtocolError</a>&lt;{}&gt;</span>
 
 
 
@@ -3959,7 +3973,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L560">line 560</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L569">line 569</a>
         </div>
         
     </div>
@@ -4173,7 +4187,7 @@ Assigning a function replaces the internal constructor. If the function does not
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -4300,7 +4314,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L527">line 527</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L536">line 536</a>
         </div>
         
     </div>
@@ -4335,10 +4349,10 @@ Assigning a function replaces the internal constructor. If the function does not
             <td class="type">
             
                 
-<span class="param-type"><a href="Message.html">Message</a>.&lt;{}></span>
+<span class="param-type"><a href="Message.html">Message</a>&lt;{}&gt;</span>
 |
 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -4465,7 +4479,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L537">line 537</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L546">line 546</a>
         </div>
         
     </div>
@@ -4500,10 +4514,10 @@ Assigning a function replaces the internal constructor. If the function does not
             <td class="type">
             
                 
-<span class="param-type"><a href="Message.html">Message</a>.&lt;{}></span>
+<span class="param-type"><a href="Message.html">Message</a>&lt;{}&gt;</span>
 |
 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -4630,7 +4644,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L580">line 580</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L589">line 589</a>
         </div>
         
     </div>
@@ -4665,7 +4679,7 @@ Assigning a function replaces the internal constructor. If the function does not
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -4758,7 +4772,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L351">line 351</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L358">line 358</a>
         </div>
         
     </div>
@@ -4884,7 +4898,7 @@ Assigning a function replaces the internal constructor. If the function does not
             
                 <span class="inherited"><a href="NamespaceBase.html#getEnum">inherited</a></span>
             
-            getEnum<span class="signature">(name)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, number> }</span>
+            getEnum<span class="signature">(name)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, number&gt; }</span>
         </h4>
     
         
@@ -5015,7 +5029,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
             
             <td class="type">
             
-                        Object.&lt;string, number>
+                        Object&lt;string, number&gt;
                         
                     
             </td>
@@ -5170,7 +5184,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L618">line 618</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L627">line 627</a>
         </div>
         
     </div>
@@ -5303,7 +5317,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L445">line 445</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L454">line 454</a>
         </div>
         
     </div>
@@ -5429,7 +5443,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L454">line 454</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L463">line 463</a>
         </div>
         
     </div>
@@ -5595,7 +5609,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -5631,7 +5645,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
 <span class="param-type">*</span>
 |
 
-<span class="param-type">Array.&lt;*></span>
+<span class="param-type">Array&lt;*&gt;</span>
 
 
 
@@ -5811,7 +5825,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -5992,7 +6006,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -6150,7 +6164,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -6308,7 +6322,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -6466,7 +6480,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -6839,7 +6853,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L413">line 413</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L422">line 422</a>
         </div>
         
     </div>
@@ -7106,7 +7120,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L317">line 317</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L324">line 324</a>
         </div>
         
     </div>
@@ -7431,7 +7445,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -7734,7 +7748,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L471">line 471</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L480">line 480</a>
         </div>
         
     </div>
@@ -7826,7 +7840,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L298">line 298</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L305">line 305</a>
         </div>
         
     </div>
@@ -7954,12 +7968,12 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     <div class="nameContainer">
         <h4 class="name" id="toObject">
             
-            toObject<span class="signature">(message, <span class="optional">options</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, *> }</span>
+            toObject<span class="signature">(message, <span class="optional">options</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, *&gt; }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L609">line 609</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L618">line 618</a>
         </div>
         
     </div>
@@ -7994,7 +8008,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
             <td class="type">
             
                 
-<span class="param-type"><a href="Message.html">Message</a>.&lt;{}></span>
+<span class="param-type"><a href="Message.html">Message</a>&lt;{}&gt;</span>
 
 
 
@@ -8094,7 +8108,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
             
             <td class="type">
             
-                        Object.&lt;string, *>
+                        Object&lt;string, *&gt;
                         
                     
             </td>
@@ -8215,7 +8229,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L571">line 571</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L580">line 580</a>
         </div>
         
     </div>
@@ -8250,7 +8264,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -8339,12 +8353,12 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     <div class="nameContainer">
         <h4 class="name" id=".d">
             
-            Type.d<span class="signature">(<span class="optional">typeName</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ <a href="global.html#TypeDecorator">TypeDecorator</a>.&lt;T> }</span>
+            Type.d<span class="signature">(<span class="optional">typeName</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ <a href="global.html#TypeDecorator">TypeDecorator</a>&lt;T&gt; }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L642">line 642</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L651">line 651</a>
         </div>
         
     </div>
@@ -8453,7 +8467,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
             
             <td class="type">
             
-                        <a href="global.html#TypeDecorator">TypeDecorator</a>.&lt;T>
+                        <a href="global.html#TypeDecorator">TypeDecorator</a>&lt;T&gt;
                         
                     
             </td>
@@ -8480,7 +8494,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L245">line 245</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L252">line 252</a>
         </div>
         
     </div>
@@ -8671,7 +8685,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L202">line 202</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L209">line 209</a>
         </div>
         
     </div>

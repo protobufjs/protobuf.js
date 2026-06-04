@@ -227,6 +227,8 @@
                 
                     <li data-name="util.isset"><a href="util.html#.isset">isset</a></li>
                 
+                    <li data-name="util.jsonName"><a href="util.html#.jsonName">jsonName</a></li>
+                
                     <li data-name="util.lcFirst"><a href="util.html#.lcFirst">lcFirst</a></li>
                 
                     <li data-name="util.longFromHash"><a href="util.html#.longFromHash">longFromHash</a></li>
@@ -696,6 +698,8 @@
                 
                     <li data-name="Field#id"><a href="Field.html#id">id</a></li>
                 
+                    <li data-name="Field#jsonName"><a href="Field.html#jsonName">jsonName</a></li>
+                
                     <li data-name="Field#long"><a href="Field.html#long">long</a></li>
                 
                     <li data-name="Field#map"><a href="Field.html#map">map</a></li>
@@ -715,6 +719,8 @@
                     <li data-name="Field#parsedOptions"><a href="Field.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="Field#partOf"><a href="Field.html#partOf">partOf</a></li>
+                
+                    <li data-name="Field#protoName"><a href="Field.html#protoName">protoName</a></li>
                 
                     <li data-name="Field#repeated"><a href="Field.html#repeated">repeated</a></li>
                 
@@ -802,6 +808,8 @@
                 
                     <li data-name="FieldBase#id"><a href="FieldBase.html#id">id</a></li>
                 
+                    <li data-name="FieldBase#jsonName"><a href="FieldBase.html#jsonName">jsonName</a></li>
+                
                     <li data-name="FieldBase#long"><a href="FieldBase.html#long">long</a></li>
                 
                     <li data-name="FieldBase#map"><a href="FieldBase.html#map">map</a></li>
@@ -817,6 +825,8 @@
                     <li data-name="FieldBase#parsedOptions"><a href="FieldBase.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="FieldBase#partOf"><a href="FieldBase.html#partOf">partOf</a></li>
+                
+                    <li data-name="FieldBase#protoName"><a href="FieldBase.html#protoName">protoName</a></li>
                 
                     <li data-name="FieldBase#repeated"><a href="FieldBase.html#repeated">repeated</a></li>
                 
@@ -898,6 +908,8 @@
                 
                     <li data-name="MapField#id"><a href="MapField.html#id">id</a></li>
                 
+                    <li data-name="MapField#jsonName"><a href="MapField.html#jsonName">jsonName</a></li>
+                
                     <li data-name="MapField#keyType"><a href="MapField.html#keyType">keyType</a></li>
                 
                     <li data-name="MapField#long"><a href="MapField.html#long">long</a></li>
@@ -915,6 +927,8 @@
                     <li data-name="MapField#parsedOptions"><a href="MapField.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="MapField#partOf"><a href="MapField.html#partOf">partOf</a></li>
+                
+                    <li data-name="MapField#protoName"><a href="MapField.html#protoName">protoName</a></li>
                 
                     <li data-name="MapField#repeated"><a href="MapField.html#repeated">repeated</a></li>
                 
@@ -2244,7 +2258,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, number></span>
+<span class="param-type">Object&lt;string, number&gt;</span>
 
 
 
@@ -2275,7 +2289,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -2337,7 +2351,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, (string|null)></span>
+<span class="param-type">Object&lt;string, (string|null)&gt;</span>
 
 
 
@@ -2368,7 +2382,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, Object.&lt;string, *>></span>
+<span class="param-type">Object&lt;string, Object&lt;string, *&gt;&gt;</span>
 |
 
 <span class="param-type">undefined</span>
@@ -2512,7 +2526,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="comments">comments <span class="type-signature type">{ Object&lt;string, (string|null)> }</span></h4>
+        <h4 class="name" id="comments">comments <span class="type-signature type">{ Object&lt;string, (string|null)&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2708,7 +2722,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="options">options <span class="type-signature type">{ Object&lt;string, *> | undefined }</span></h4>
+        <h4 class="name" id="options">options <span class="type-signature type">{ Object&lt;string, *&gt; | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -2806,7 +2820,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="parsedOptions">parsedOptions <span class="type-signature type">{ Object&lt;string, *>[] | undefined }</span></h4>
+        <h4 class="name" id="parsedOptions">parsedOptions <span class="type-signature type">{ Array&lt;Object&lt;string, *&gt;&gt; | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -2855,7 +2869,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="reserved">reserved <span class="type-signature type">{ (number[]|string)[] }</span></h4>
+        <h4 class="name" id="reserved">reserved <span class="type-signature type">{ Array&lt;(Array&lt;number&gt;|string)&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -3002,7 +3016,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="values">values <span class="type-signature type">{ Object&lt;string, number> }</span></h4>
+        <h4 class="name" id="values">values <span class="type-signature type">{ Object&lt;string, number&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -3051,7 +3065,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="valuesById">valuesById <span class="type-signature type">{ Object&lt;number, string> }</span></h4>
+        <h4 class="name" id="valuesById">valuesById <span class="type-signature type">{ Object&lt;number, string&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -3100,7 +3114,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="valuesOptions">valuesOptions <span class="type-signature type">{ Object&lt;string, Object&lt;string, *>> | undefined }</span></h4>
+        <h4 class="name" id="valuesOptions">valuesOptions <span class="type-signature type">{ Object&lt;string, Object&lt;string, *&gt;&gt; | undefined }</span></h4>
 
         
         <div class="tag-source">
@@ -3286,7 +3300,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 |
 
 <span class="param-type">undefined</span>
@@ -4566,7 +4580,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 

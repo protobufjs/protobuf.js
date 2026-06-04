@@ -227,6 +227,8 @@
                 
                     <li data-name="util.isset"><a href="util.html#.isset">isset</a></li>
                 
+                    <li data-name="util.jsonName"><a href="util.html#.jsonName">jsonName</a></li>
+                
                     <li data-name="util.lcFirst"><a href="util.html#.lcFirst">lcFirst</a></li>
                 
                     <li data-name="util.longFromHash"><a href="util.html#.longFromHash">longFromHash</a></li>
@@ -696,6 +698,8 @@
                 
                     <li data-name="Field#id"><a href="Field.html#id">id</a></li>
                 
+                    <li data-name="Field#jsonName"><a href="Field.html#jsonName">jsonName</a></li>
+                
                     <li data-name="Field#long"><a href="Field.html#long">long</a></li>
                 
                     <li data-name="Field#map"><a href="Field.html#map">map</a></li>
@@ -715,6 +719,8 @@
                     <li data-name="Field#parsedOptions"><a href="Field.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="Field#partOf"><a href="Field.html#partOf">partOf</a></li>
+                
+                    <li data-name="Field#protoName"><a href="Field.html#protoName">protoName</a></li>
                 
                     <li data-name="Field#repeated"><a href="Field.html#repeated">repeated</a></li>
                 
@@ -802,6 +808,8 @@
                 
                     <li data-name="FieldBase#id"><a href="FieldBase.html#id">id</a></li>
                 
+                    <li data-name="FieldBase#jsonName"><a href="FieldBase.html#jsonName">jsonName</a></li>
+                
                     <li data-name="FieldBase#long"><a href="FieldBase.html#long">long</a></li>
                 
                     <li data-name="FieldBase#map"><a href="FieldBase.html#map">map</a></li>
@@ -817,6 +825,8 @@
                     <li data-name="FieldBase#parsedOptions"><a href="FieldBase.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="FieldBase#partOf"><a href="FieldBase.html#partOf">partOf</a></li>
+                
+                    <li data-name="FieldBase#protoName"><a href="FieldBase.html#protoName">protoName</a></li>
                 
                     <li data-name="FieldBase#repeated"><a href="FieldBase.html#repeated">repeated</a></li>
                 
@@ -898,6 +908,8 @@
                 
                     <li data-name="MapField#id"><a href="MapField.html#id">id</a></li>
                 
+                    <li data-name="MapField#jsonName"><a href="MapField.html#jsonName">jsonName</a></li>
+                
                     <li data-name="MapField#keyType"><a href="MapField.html#keyType">keyType</a></li>
                 
                     <li data-name="MapField#long"><a href="MapField.html#long">long</a></li>
@@ -915,6 +927,8 @@
                     <li data-name="MapField#parsedOptions"><a href="MapField.html#parsedOptions">parsedOptions</a></li>
                 
                     <li data-name="MapField#partOf"><a href="MapField.html#partOf">partOf</a></li>
+                
+                    <li data-name="MapField#protoName"><a href="MapField.html#protoName">protoName</a></li>
                 
                     <li data-name="MapField#repeated"><a href="MapField.html#repeated">repeated</a></li>
                 
@@ -2266,7 +2280,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".Array">util.Array <span class="type-signature type">{ <a href="global.html#Constructor">Constructor</a>.&lt;Uint8Array> }</span></h4>
+        <h4 class="name" id=".Array">util.Array <span class="type-signature type">{ <a href="global.html#Constructor">Constructor</a>&lt;Uint8Array&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2315,7 +2329,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".Buffer">util.Buffer <span class="type-signature type">{ <a href="global.html#Constructor">Constructor</a>.&lt;<a href="Buffer.html">Buffer</a>> }</span></h4>
+        <h4 class="name" id=".Buffer">util.Buffer <span class="type-signature type">{ <a href="global.html#Constructor">Constructor</a>&lt;<a href="Buffer.html">Buffer</a>&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2364,7 +2378,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".Long">util.Long <span class="type-signature type">{ <a href="global.html#Constructor">Constructor</a>.&lt;<a href="Long.html">Long</a>> }</span></h4>
+        <h4 class="name" id=".Long">util.Long <span class="type-signature type">{ <a href="global.html#Constructor">Constructor</a>&lt;<a href="Long.html">Long</a>&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2417,7 +2431,7 @@
 
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L208">line 208</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L231">line 231</a>
         </div>
         
     </div>
@@ -2465,7 +2479,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".emptyArray">util.emptyArray <span class="type-signature ">constant</span><span class="type-signature type">{ *[] }</span></h4>
+        <h4 class="name" id=".emptyArray">util.emptyArray <span class="type-signature ">constant</span><span class="type-signature type">{ Array&lt;*&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -2563,7 +2577,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".fs">util.fs <span class="type-signature type">{ Object&lt;string, *> }</span></h4>
+        <h4 class="name" id=".fs">util.fs <span class="type-signature type">{ Object&lt;string, *&gt; }</span></h4>
 
         
         <div class="tag-source">
@@ -3027,7 +3041,7 @@
     <div class="nameContainer">
         <h4 class="name" id=".asPromise">
             
-            util.asPromise<span class="signature">(fn, ctx, params)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Promise&lt;*> }</span>
+            util.asPromise<span class="signature">(fn, ctx, params)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Promise&lt;*&gt; }</span>
         </h4>
     
         
@@ -3196,7 +3210,7 @@
             
             <td class="type">
             
-                        Promise.&lt;*>
+                        Promise&lt;*&gt;
                         
                     
             </td>
@@ -3349,7 +3363,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L97">line 97</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L98">line 98</a>
         </div>
         
     </div>
@@ -3411,6 +3425,9 @@
 
 
 
+
+<h5 class="subsection-title">Deprecated:</h5>
+<div class="tag-deprecated detail-message">Use <a href="util.html#.jsonName">util.jsonName</a> for protobuf field JSON names.</div>
 
 
 
@@ -3510,7 +3527,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -3770,7 +3787,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L109">line 109</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L132">line 132</a>
         </div>
         
     </div>
@@ -3920,7 +3937,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L154">line 154</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L177">line 177</a>
         </div>
         
     </div>
@@ -4049,7 +4066,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L122">line 122</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L145">line 145</a>
         </div>
         
     </div>
@@ -4084,7 +4101,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#Constructor">Constructor</a>.&lt;T></span>
+<span class="param-type"><a href="global.html#Constructor">Constructor</a>&lt;T&gt;</span>
 
 
 
@@ -4567,7 +4584,7 @@
     <div class="nameContainer">
         <h4 class="name" id=".fetch3">
             
-            util.fetch(3)<span class="signature">(path, <span class="optional">options</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Promise&lt;(string|Uint8Array)> }</span>
+            util.fetch(3)<span class="signature">(path, <span class="optional">options</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Promise&lt;(string|Uint8Array)&gt; }</span>
         </h4>
     
         
@@ -4707,7 +4724,7 @@
             
             <td class="type">
             
-                        Promise.&lt;(string|Uint8Array)>
+                        Promise&lt;(string|Uint8Array)&gt;
                         
                     
             </td>
@@ -5787,6 +5804,132 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id=".jsonName">
+            
+            util.jsonName<span class="signature">(str)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ string }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L109">line 109</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Converts a proto field name to its protoc-compatible JSON name.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5 class="subsection-title">Parameters:</h5>
+        
+
+<table class="params parameter-table">
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>str</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Proto field name</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5 class="subsection-title">Returns:</h5>
+    
+
+
+<table class="returns return-table">
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        string
+                        
+                    
+            </td>
+            <td class="description last">JSON name</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id=".lcFirst">
             
             util.lcFirst<span class="signature">(str)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ string }</span>
@@ -6437,7 +6580,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -6602,7 +6745,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
     <div class="nameContainer">
         <h4 class="name" id=".merge">
             
-            util.merge<span class="signature">(dst, src)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, *> }</span>
+            util.merge<span class="signature">(dst, src)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, *&gt; }</span>
         </h4>
     
         
@@ -6642,7 +6785,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -6671,7 +6814,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 |
 
 <span class="param-type">boolean</span>
@@ -6745,7 +6888,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             
             <td class="type">
             
-                        Object.&lt;string, *>
+                        Object&lt;string, *&gt;
                         
                     
             </td>
@@ -6810,7 +6953,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
 <span class="param-type">number</span>
 |
 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type">Array&lt;number&gt;</span>
 
 
 
@@ -6912,7 +7055,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
     <div class="nameContainer">
         <h4 class="name" id=".newError">
             
-            util.newError<span class="signature">(name)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ <a href="global.html#Constructor">Constructor</a>.&lt;Error> }</span>
+            util.newError<span class="signature">(name)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ <a href="global.html#Constructor">Constructor</a>&lt;Error&gt; }</span>
         </h4>
     
         
@@ -7016,7 +7159,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             
             <td class="type">
             
-                        <a href="global.html#Constructor">Constructor</a>.&lt;Error>
+                        <a href="global.html#Constructor">Constructor</a>&lt;Error&gt;
                         
                     
             </td>
@@ -7078,7 +7221,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -7204,7 +7347,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array&lt;string&gt;</span>
 
 
 
@@ -7621,12 +7764,12 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
     <div class="nameContainer">
         <h4 class="name" id=".setProperty">
             
-            util.setProperty<span class="signature">(dst, path, value, <span class="optional">ifNotSet</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, *> }</span>
+            util.setProperty<span class="signature">(dst, path, value, <span class="optional">ifNotSet</span>)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, *&gt; }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L179">line 179</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util.js#L202">line 202</a>
         </div>
         
     </div>
@@ -7661,7 +7804,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -7822,7 +7965,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             
             <td class="type">
             
-                        Object.&lt;string, *>
+                        Object&lt;string, *&gt;
                         
                     
             </td>
@@ -7844,7 +7987,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
     <div class="nameContainer">
         <h4 class="name" id=".toArray">
             
-            util.toArray<span class="signature">(object)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ *[] }</span>
+            util.toArray<span class="signature">(object)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Array&lt;*&gt; }</span>
         </h4>
     
         
@@ -7884,7 +8027,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, *></span>
+<span class="param-type">Object&lt;string, *&gt;</span>
 
 
 
@@ -7948,7 +8091,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             
             <td class="type">
             
-                        Array.&lt;*>
+                        Array&lt;*&gt;
                         
                     
             </td>
@@ -7970,7 +8113,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
     <div class="nameContainer">
         <h4 class="name" id=".toObject">
             
-            util.toObject<span class="signature">(array)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, *> }</span>
+            util.toObject<span class="signature">(array)</span><span class="return-arrow" aria-hidden="true">&rarr;</span><span class="type-signature returnType">{ Object&lt;string, *&gt; }</span>
         </h4>
     
         
@@ -8010,7 +8153,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;*></span>
+<span class="param-type">Array&lt;*&gt;</span>
 
 
 
@@ -8074,7 +8217,7 @@ This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
             
             <td class="type">
             
-                        Object.&lt;string, *>
+                        Object&lt;string, *&gt;
                         
                     
             </td>
