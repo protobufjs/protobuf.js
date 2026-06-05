@@ -81,7 +81,7 @@ exports.publish = function publish(taffy, opts) {
             writeln("}");
         }
 
-        // Let JSDoc wait for stdout to flush before exiting
+        // Let JSDoc wait for output to flush before exiting
         return new Promise(function(resolve, reject) {
             function done(err) {
                 if (err)
@@ -89,10 +89,9 @@ exports.publish = function publish(taffy, opts) {
                 else
                     resolve();
             }
-            if (options.destination)
-                fs.writeFile(options.destination, out.join(""), "utf8", done);
-            else
-                process.stdout.write(out.join(""), done);
+            // Use stdout fd 1 directly because uv_guess_handle can fail to classify
+            // sandboxed stdout handles when getsockname/getsockopt raises EPERM.
+            fs.writeFile(options.destination || 1, out.join(""), "utf8", done);
         });
 
     } finally {
