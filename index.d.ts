@@ -2303,14 +2303,6 @@ export namespace util {
         function readDoubleBE(buf: Uint8Array, pos: number): number;
     }
 
-    /**
-     * Requires a module only if available.
-     * @param moduleName Module to require
-     * @returns Required module if available and not empty, otherwise `null`
-     * @deprecated Legacy optional require helper. Will be removed in a future release.
-     */
-    function inquire(moduleName: string): object;
-
     /** Helper class for working with the low and high bits of a 64 bit value. */
     class LongBits {
 
