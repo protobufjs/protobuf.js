@@ -1,6 +1,7 @@
 import * as $protobuf from "..";
 import {
     IDescriptorProto,
+    IDescriptorContext,
     IEnumDescriptorProto,
     IFieldDescriptorProto,
     IFileDescriptorSet,
@@ -16,7 +17,7 @@ type DescriptorInput<T> = T | $protobuf.Reader | Uint8Array;
 declare module ".." {
     namespace Root {
         /** Creates a root from a descriptor set. */
-        function fromDescriptor(descriptor: DescriptorInput<IFileDescriptorSet>): $protobuf.Root;
+        function fromDescriptor(descriptor: DescriptorInput<IFileDescriptorSet>, options?: { keepCase?: boolean }): $protobuf.Root;
     }
 
     interface Root {
@@ -26,7 +27,7 @@ declare module ".." {
 
     namespace Type {
         /** Creates a type from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IDescriptorProto>, edition?: string, nested?: boolean): $protobuf.Type;
+        function fromDescriptor(descriptor: DescriptorInput<IDescriptorProto>, editionOrContext?: string | IDescriptorContext): $protobuf.Type;
     }
 
     interface Type {
@@ -36,7 +37,7 @@ declare module ".." {
 
     namespace Field {
         /** Creates a field from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IFieldDescriptorProto>, edition?: string, nested?: boolean): $protobuf.Field;
+        function fromDescriptor(descriptor: DescriptorInput<IFieldDescriptorProto>, editionOrContext?: string | IDescriptorContext): $protobuf.Field;
     }
 
     interface Field {
@@ -46,7 +47,7 @@ declare module ".." {
 
     namespace Enum {
         /** Creates an enum from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IEnumDescriptorProto>, edition?: string, nested?: boolean): $protobuf.Enum;
+        function fromDescriptor(descriptor: DescriptorInput<IEnumDescriptorProto>, editionOrContext?: string | IDescriptorContext): $protobuf.Enum;
     }
 
     interface Enum {
@@ -56,7 +57,7 @@ declare module ".." {
 
     namespace OneOf {
         /** Creates a oneof from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IOneofDescriptorProto>): $protobuf.OneOf;
+        function fromDescriptor(descriptor: DescriptorInput<IOneofDescriptorProto>, editionOrContext?: string | IDescriptorContext): $protobuf.OneOf;
     }
 
     interface OneOf {
@@ -66,7 +67,7 @@ declare module ".." {
 
     namespace Service {
         /** Creates a service from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IServiceDescriptorProto>, edition?: string, nested?: boolean): $protobuf.Service;
+        function fromDescriptor(descriptor: DescriptorInput<IServiceDescriptorProto>, editionOrContext?: string | IDescriptorContext): $protobuf.Service;
     }
 
     interface Service {
@@ -76,7 +77,7 @@ declare module ".." {
 
     namespace Method {
         /** Creates a method from a descriptor. */
-        function fromDescriptor(descriptor: DescriptorInput<IMethodDescriptorProto>): $protobuf.Method;
+        function fromDescriptor(descriptor: DescriptorInput<IMethodDescriptorProto>, editionOrContext?: string | IDescriptorContext): $protobuf.Method;
     }
 
     interface Method {

@@ -1,6 +1,7 @@
 "use strict";
 
 var fs = require("fs"),
+    path = require("path"),
     protobuf = require("../.."),
     generated = require("./generated/messages.js"),
     reflectionRoot = protobuf.Root.fromJSON(require("./generated/messages.json")).resolveAll(),
@@ -11,42 +12,64 @@ var fs = require("fs"),
     mode = process.env.PROTOBUFJS_CONFORMANCE_MODE || "reflect",
     testTypes = Object.create(null);
 
-if (mode !== "static" && mode !== "reflect")
-    throw Error("unsupported PROTOBUFJS_CONFORMANCE_MODE: " + mode);
+var config;
+switch (mode) {
+    case "static":
+        config = { generated: generated, binaryOnly: true };
+        break;
+    case "reflect":
+        config = { root: reflectionRoot, binaryOnly: false };
+        break;
+    case "static-plugin":
+        config = { generated: pluginGenerated(mode), binaryOnly: true };
+        break;
+    case "reflect-plugin":
+        config = { root: pluginGenerated(mode).resolveAll(), binaryOnly: false };
+        break;
+    default:
+        throw Error("unsupported PROTOBUFJS_CONFORMANCE_MODE: " + mode);
+}
 
-var TEST_TYPES = [
-    makeTestType("protobuf_test_messages.proto2.TestAllTypesProto2", generated.protobuf_test_messages.proto2.TestAllTypesProto2),
-    makeTestType("protobuf_test_messages.proto3.TestAllTypesProto3", generated.protobuf_test_messages.proto3.TestAllTypesProto3),
-    makeTestType("protobuf_test_messages.editions.proto2.TestAllTypesProto2", generated.protobuf_test_messages.editions.proto2.TestAllTypesProto2),
-    makeTestType("protobuf_test_messages.editions.proto3.TestAllTypesProto3", generated.protobuf_test_messages.editions.proto3.TestAllTypesProto3),
-    makeTestType("protobuf_test_messages.editions.TestAllTypesEdition2023", generated.protobuf_test_messages.editions.TestAllTypesEdition2023)
+var TEST_TYPE_NAMES = [
+    "protobuf_test_messages.proto2.TestAllTypesProto2",
+    "protobuf_test_messages.proto3.TestAllTypesProto3",
+    "protobuf_test_messages.editions.proto2.TestAllTypesProto2",
+    "protobuf_test_messages.editions.proto3.TestAllTypesProto3",
+    "protobuf_test_messages.editions.TestAllTypesEdition2023"
 ];
 
 // Register the local stable-edition copy of UNSTABLE if included by generate.js.
-if (generated.protobuf_test_messages.edition_unstable) {
-    TEST_TYPES.push(makeTestType(
-        "protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable",
-        generated.protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable
-    ));
-}
+if (lookupGenerated(generated, "protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable"))
+    TEST_TYPE_NAMES.push("protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable");
 
-TEST_TYPES.forEach(function(testCase) {
-    if (!testCase.staticType)
-        throw Error("missing generated test type: " + testCase.name);
-    if (!testCase.reflectType)
-        throw Error("missing reflected test type: " + testCase.name);
-    testTypes[testCase.name] = testCase;
+TEST_TYPE_NAMES.forEach(function(name) {
+    var type = config.root
+        ? config.root.lookupType(name)
+        : lookupGenerated(config.generated, name);
+    if (!type)
+        throw Error("missing " + mode + " test type: " + name);
+    testTypes[name] = type;
 });
 
-function makeTestType(name, type) {
-    return {
-        name: name,
-        staticType: type,
-        reflectType: reflectionRoot.lookupType(name)
-    };
+function lookupGenerated(root, name) {
+    var parts = name.split("."),
+        ptr = root;
+    for (var i = 0; i < parts.length; ++i) {
+        ptr = ptr && ptr[parts[i]];
+        if (!ptr)
+            return null;
+    }
+    return ptr;
 }
 
-function isStaticSupported(request) {
+function pluginGenerated(mode) {
+    var file = path.join(__dirname, "generated", mode, "messages.js");
+    if (!fs.existsSync(file))
+        throw Error("missing " + mode + " conformance artifact; run tests/conformance/generate.js with PROTOC set");
+    return require(file);
+}
+
+function isBinaryOnlySupported(request) {
     return request.payload === "protobufPayload"
         && request.requestedOutputFormat === conformance.WireFormat.PROTOBUF;
 }
@@ -62,7 +85,6 @@ var count = 0,
     requestBuffer,
     response,
     sizeBuffer,
-    testCase,
     type;
 
 try {
@@ -87,14 +109,13 @@ try {
             };
         } else if (list) {
             response = { skipped: "list mode" };
-        } else if (mode === "static" && !isStaticSupported(request)) {
-            response = { skipped: "static mode supports protobuf input/output only" };
+        } else if (config.binaryOnly && !isBinaryOnlySupported(request)) {
+            response = { skipped: mode + " mode supports protobuf input/output only" };
         } else {
-            testCase = testTypes[request.messageType];
-            if (!testCase) {
+            type = testTypes[request.messageType];
+            if (!type) {
                 response = { runtimeError: "unknown message type: " + request.messageType };
             } else {
-                type = mode === "reflect" ? testCase.reflectType : testCase.staticType;
                 // Parse the request payload into the requested generated type.
                 try {
                     switch (request.payload) {

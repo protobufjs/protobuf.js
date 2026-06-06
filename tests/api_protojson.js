@@ -273,7 +273,7 @@ tape.test("protojson - passes ignoreUnknownFields through options", function(tes
     test.equal(message.inner.value, 1, "ignores nested unknown fields");
     test.equal(Object.prototype.hasOwnProperty.call(message, "choice"), false, "ignores unknown singular enum strings");
     test.deepEqual(message.choices, [0, 1], "drops unknown repeated enum strings");
-    test.deepEqual(message.choiceMap, { keep: 1 }, "drops map entries with unknown enum strings");
+    test.deepEqual(Object.assign({}, message.choiceMap), { keep: 1 }, "drops map entries with unknown enum strings");
 
     test.throws(function() {
         protojson.fromJson(Outer, { nope: 1 });

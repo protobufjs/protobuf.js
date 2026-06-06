@@ -24,5 +24,6 @@ protobuf.Root.fromDescriptor(descriptorSet);
 protobuf.Root.fromDescriptor(descriptorBytes);
 protobuf.Root.fromDescriptor(protobuf.Reader.create(descriptorBytes));
 protobuf.Field.fromDescriptor(fieldDescriptor, "proto3");
+protobuf.Field.fromDescriptor(fieldDescriptor, { edition: "2023", keepCase: true });
 descriptor.EnumValueDescriptorProto.create(enumValueDescriptor);
 descriptor.FeatureSet.create(enumValueDescriptor.options!.features);

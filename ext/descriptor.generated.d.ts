@@ -170,6 +170,19 @@ export interface IFileOptions {
 /** Values of he FileOptions.OptimizeMode enum. */
 export type IFileOptionsOptimizeMode = number;
 
+/** Descriptor context. */
+export interface IDescriptorContext {
+
+    /** Syntax or edition to use for direct object descriptor imports */
+    edition?: string;
+
+    /** File-level features to apply for direct object descriptor imports */
+    features?: IFeatureSet;
+
+    /** Uses proto field names as reflected field names */
+    keepCase?: boolean;
+}
+
 /** Properties of a DescriptorProto message. */
 export interface IDescriptorProto {
 
@@ -398,12 +411,7 @@ export interface IMethodDescriptorProto {
     serverStreaming?: boolean;
 }
 
-/**
- * Properties of a MethodOptions message.
- *
- * Warning: this is not safe to use with editions protos, since it discards relevant file context.
- *
- */
+/** Properties of a MethodOptions message. */
 export interface IMethodOptions {
     deprecated?: boolean;
 }

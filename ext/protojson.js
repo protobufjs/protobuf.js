@@ -393,6 +393,24 @@ function setOwn(o, k, v) {
     o[k] = v;
 }
 
+function wktFieldName(type, name) {
+    var field = fieldsByJsonName(type)[name];
+    return field ? field.name : name;
+}
+
+function wktFieldValue(type, message, name) {
+    var field = fieldsByJsonName(type)[name];
+    if (!field)
+        return message && message[name];
+    if (hasOwn(message, field.name))
+        return message[field.name];
+    if (hasOwn(message, field.protoName))
+        return message[field.protoName];
+    if (hasOwn(message, field.jsonName))
+        return message[field.jsonName];
+    return undefined;
+}
+
 function writeScalar(type, value) {
     switch (type) {
         case "int64": case "sint64": case "sfixed64":
@@ -713,23 +731,27 @@ WKT_FROM[".google.protobuf.Any"] = function (type, value, options, depth) {
                 setOwn(body, k, value[k]);
     }
     var inner = readMessage(msgType, body, options, depth + 1);
-    var url = typeUrl.charAt(0) === "." ? typeUrl.slice(1) : typeUrl;
+    var url = typeUrl.charAt(0) === "." ? typeUrl.slice(1) : typeUrl,
+        out = {};
     if (url.indexOf("/") === -1)
         url = "/" + url;
-    return { type_url: url, value: msgType.encode(inner).finish() };
+    out[wktFieldName(type, "type_url")] = url;
+    out[wktFieldName(type, "value")] = msgType.encode(inner).finish();
+    return out;
 };
 WKT_TO[".google.protobuf.Any"] = function (type, message, options, depth) {
-    if (!message.type_url)
+    var typeUrl = wktFieldValue(type, message, "type_url");
+    if (!typeUrl)
         return {};
-    var name = message.type_url.substring(message.type_url.lastIndexOf("/") + 1),
+    var name = typeUrl.substring(typeUrl.lastIndexOf("/") + 1),
         msgType = type.root.lookupType(name),
-        decoded = msgType.decode(message.value),
+        decoded = msgType.decode(wktFieldValue(type, message, "value")),
         body = toJsonValue(msgType, decoded, options, depth + 1),
         result;
     if (WKT_TO[msgType.fullName])
-        result = { "@type": message.type_url, "value": body };
+        result = { "@type": typeUrl, "value": body };
     else {
-        result = { "@type": message.type_url };
+        result = { "@type": typeUrl };
         for (var k in body)
             if (hasOwn(body, k))
                 setOwn(result, k, body[k]);
