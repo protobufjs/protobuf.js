@@ -88,7 +88,7 @@ tape.test("descriptor - ranges use descriptor end semantics at boundary", functi
     }), [[-2, -1], [2, 2], [40, 2147483647]], "enum reserved descriptors keep inclusive end");
     test.same(descriptorEnum.reservedName, ["OLD"], "enum reserved names are emitted");
 
-    test.same(protobuf.Root.fromDescriptor(descriptorSet).toJSON(), root.toJSON(), "JSON should roundtrip");
+    test.same(JSON.parse(JSON.stringify(protobuf.Root.fromDescriptor(descriptorSet).toJSON())), JSON.parse(JSON.stringify(root.toJSON())), "JSON should roundtrip");
 
     test.end();
 });
@@ -197,6 +197,48 @@ tape.test("descriptor - edition 2023 file roundtrip", function (test) {
 
     test.ok(Nested.fields.explicit.hasPresence, "nested should have explicit presence");
     test.notOk(Nested.fields.implicit.hasPresence, "nested should have implicit presence");
+
+    test.end();
+});
+
+tape.test("descriptor - imports file-level edition features", function(test) {
+    var root = protobuf.parse(`edition = "2023";
+        option features.repeated_field_encoding = EXPANDED;
+        message Message {
+            repeated int32 expanded = 1;
+            repeated int32 packed = 2 [features.repeated_field_encoding = PACKED];
+            message Nested {
+                repeated int32 expanded = 1;
+            }
+        }
+    `).root.resolveAll();
+
+    var root2 = protobuf.Root.fromDescriptor(root.toDescriptor("2023")),
+        Message = root2.lookupType("Message"),
+        Nested = root2.lookupType("Message.Nested");
+
+    test.notOk(Message.fields.expanded.packed, "uses file-level expanded default");
+    test.ok(Message.fields.packed.packed, "keeps field-level packed override");
+    test.notOk(Nested.fields.expanded.packed, "nested field inherits file-level default");
+
+    test.end();
+});
+
+tape.test("descriptor - imports legacy group metadata", function(test) {
+    var root = protobuf.parse(`syntax = "proto2";
+        message WithGroup {
+            optional group MyGroup = 1 {
+                optional int32 value = 2;
+            }
+        }
+    `).root.resolveAll();
+
+    var root2 = protobuf.Root.fromDescriptor(root.toDescriptor("proto2")),
+        Group = root2.lookupType("WithGroup.MyGroup"),
+        field = root2.lookupType("WithGroup").fields.myGroup;
+
+    test.ok(Group.group, "marks group type");
+    test.ok(field.delimited, "infers delimited field encoding");
 
     test.end();
 });

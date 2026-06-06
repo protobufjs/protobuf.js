@@ -177,7 +177,7 @@ function rootFromRequest(request, keepCase) {
     });
     return protobuf.Root.fromDescriptor(descriptor.FileDescriptorSet.create({
         file: files
-    }));
+    }), { keepCase: keepCase });
 }
 
 function cloneDescriptor(file, keepCase) {
@@ -187,25 +187,25 @@ function cloneDescriptor(file, keepCase) {
         objects: true
     });
     if (!keepCase) {
-        (object.messageType || []).forEach(camelCaseMembers);
-        (object.extension || []).forEach(camelCaseField);
+        (object.messageType || []).forEach(normalizeMemberNames);
+        (object.extension || []).forEach(ensureJsonName);
     }
     return object;
 }
 
-function camelCaseMembers(message) {
-    (message.field || []).forEach(camelCaseField);
-    (message.extension || []).forEach(camelCaseField);
-    (message.nestedType || []).forEach(camelCaseMembers);
+function normalizeMemberNames(message) {
+    (message.field || []).forEach(ensureJsonName);
+    (message.extension || []).forEach(ensureJsonName);
+    (message.nestedType || []).forEach(normalizeMemberNames);
     (message.oneofDecl || []).forEach(function(oneof) {
         if (oneof.name)
             oneof.name = protobuf.util.camelCase(oneof.name);
     });
 }
 
-function camelCaseField(field) {
-    if (field.name)
-        field.name = protobuf.util.camelCase(field.name);
+function ensureJsonName(field) {
+    if (field.name && !field.jsonName)
+        field.jsonName = protobuf.util.jsonName(field.name);
 }
 
 function response(files, error) {

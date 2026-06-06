@@ -738,6 +738,8 @@ tape.test("pbjs --dts writes module declarations", function(test) {
                     var jsonEsmTypes = fs.readFileSync(jsonEsmDts, "utf8");
                     test.ok(jsonEsmTypes.indexOf("declare const _default: $protobuf.Root;") >= 0, "declares the default root export");
                     test.ok(jsonEsmTypes.indexOf("export default _default;") >= 0, "exports the default root declaration");
+                    test.ok(jsonEsmTypes.indexOf("export class Package") >= 0, "emits message declarations");
+                    test.ok(jsonEsmTypes.indexOf("class Repository") >= 0, "emits nested message declarations");
 
                     pbjs.main([
                         "--target", "json-module",

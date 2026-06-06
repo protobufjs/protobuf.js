@@ -31,7 +31,7 @@ runs:
       id: conformance-runner-cache
       with:
         path: ${{ inputs.runner-cache }}
-        key: protobuf-conformance-runner-${{ runner.os }}-${{ inputs.upstream-version }}
+        key: protobuf-conformance-runner-protoc-${{ runner.os }}-${{ inputs.upstream-version }}
 
     - name: "Check out upstream protobuf"
       shell: bash
@@ -55,12 +55,13 @@ runs:
           -Dprotobuf_BUILD_EXAMPLES=OFF \
           -Dprotobuf_INSTALL=OFF \
           -Dprotobuf_FORCE_FETCH_DEPENDENCIES=ON
-        cmake --build "${{ inputs.runner-cache }}/build" --target conformance_test_runner --parallel 2
+        cmake --build "${{ inputs.runner-cache }}/build" --target conformance_test_runner protoc --parallel 2
 
     - name: "Generate protobuf.js conformance target"
       shell: bash
       env:
         PROTOBUF_UPSTREAM: ${{ inputs.upstream-dir }}
+        PROTOC: ${{ inputs.runner-cache }}/build/protoc
       run: node tests/conformance/generate.js
 
     - name: "Locate Node.js"
@@ -124,8 +125,21 @@ runs:
           fi
         }
 
+        run_optional_mode() {
+          local mode="$1"
+          local artifact="tests/conformance/generated/${mode}/messages.js"
+          if [ -f "$artifact" ]; then
+            run_mode "$mode"
+          else
+            echo ""
+            echo "Skipping ${mode} mode because ${artifact} was not generated."
+          fi
+        }
+
         run_mode static
+        run_optional_mode static-plugin
         run_mode reflect
+        run_optional_mode reflect-plugin
 
         echo "exit_code=$status" >> "$GITHUB_OUTPUT"
 
@@ -139,6 +153,20 @@ runs:
           node tests/conformance/report.js "${{ inputs.output-dir }}/static/conformance.log" "${{ inputs.output-dir }}/conformance-tests.log" --binary-only --json "${{ inputs.output-dir }}/static/conformance.json"
         } | tee -a "$GITHUB_STEP_SUMMARY"
 
+    - name: "Summarize static-plugin conformance results"
+      if: always()
+      shell: bash
+      run: |
+        {
+          echo "## Static Plugin"
+          echo ""
+          if [ -f "${{ inputs.output-dir }}/static-plugin/conformance.log" ]; then
+            node tests/conformance/report.js "${{ inputs.output-dir }}/static-plugin/conformance.log" "${{ inputs.output-dir }}/conformance-tests.log" --binary-only --json "${{ inputs.output-dir }}/static-plugin/conformance.json"
+          else
+            echo "No conformance log found."
+          fi
+        } | tee -a "$GITHUB_STEP_SUMMARY"
+
     - name: "Summarize reflect conformance results"
       if: always()
       shell: bash
@@ -147,4 +175,18 @@ runs:
           echo "## Reflect"
           echo ""
           node tests/conformance/report.js "${{ inputs.output-dir }}/reflect/conformance.log" "${{ inputs.output-dir }}/conformance-tests.log" --json "${{ inputs.output-dir }}/reflect/conformance.json"
+        } | tee -a "$GITHUB_STEP_SUMMARY"
+
+    - name: "Summarize reflect-plugin conformance results"
+      if: always()
+      shell: bash
+      run: |
+        {
+          echo "## Reflect Plugin"
+          echo ""
+          if [ -f "${{ inputs.output-dir }}/reflect-plugin/conformance.log" ]; then
+            node tests/conformance/report.js "${{ inputs.output-dir }}/reflect-plugin/conformance.log" "${{ inputs.output-dir }}/conformance-tests.log" --json "${{ inputs.output-dir }}/reflect-plugin/conformance.json"
+          else
+            echo "No conformance log found."
+          fi
         } | tee -a "$GITHUB_STEP_SUMMARY"

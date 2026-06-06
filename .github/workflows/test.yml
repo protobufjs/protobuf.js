@@ -82,7 +82,13 @@ jobs:
           tests/conformance/out/static/conformance.json
           tests/conformance/out/static/conformance.log
           tests/conformance/out/static/failing_tests.txt
+          tests/conformance/out/static-plugin/conformance.json
+          tests/conformance/out/static-plugin/conformance.log
+          tests/conformance/out/static-plugin/failing_tests.txt
           tests/conformance/out/reflect/conformance.json
           tests/conformance/out/reflect/conformance.log
           tests/conformance/out/reflect/failing_tests.txt
+          tests/conformance/out/reflect-plugin/conformance.json
+          tests/conformance/out/reflect-plugin/conformance.log
+          tests/conformance/out/reflect-plugin/failing_tests.txt
         if-no-files-found: ignore
