@@ -2,7 +2,7 @@
 
 var fs = require("fs");
 
-// output stream
+// output chunks
 var out = null;
 
 // documentation data
@@ -53,13 +53,9 @@ exports.publish = function publish(taffy, opts) {
     if (!options.private)
         taffy({ access: "private" }).remove();
 
-    // setup output
-    out = options.destination
-        ? fs.createWriteStream(options.destination)
-        : process.stdout;
-
     try {
         // setup environment
+        out = [];
         data = taffy().get();
         indent = 0;
         indentWritten = false;
@@ -85,9 +81,18 @@ exports.publish = function publish(taffy, opts) {
             writeln("}");
         }
 
-        // close file output
-        if (out !== process.stdout)
-            out.end();
+        // Let JSDoc wait for output to flush before exiting
+        return new Promise(function(resolve, reject) {
+            function done(err) {
+                if (err)
+                    reject(err);
+                else
+                    resolve();
+            }
+            // Use stdout fd 1 directly because uv_guess_handle can fail to classify
+            // sandboxed stdout handles when getsockname/getsockopt raises EPERM.
+            fs.writeFile(options.destination || 1, out.join(""), "utf8", done);
+        });
 
     } finally {
         // gc environment objects
@@ -108,7 +113,7 @@ function write() {
             s = "    " + s;
         indentWritten = true;
     }
-    out.write(s);
+    out.push(s);
     firstLine = false;
 }
 
@@ -118,7 +123,7 @@ function writeln() {
     if (s.length)
         write(s, "\n");
     else if (!firstLine)
-        out.write("\n");
+        out.push("\n");
     indentWritten = false;
 }
 
