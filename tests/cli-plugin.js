@@ -91,6 +91,100 @@ tape.test("protoc-gen-pbjs generates json-module responses", function(test) {
     });
 });
 
+tape.test("protoc-gen-pbjs preserves descriptor field names", function(test) {
+    cliTest(test, function() {
+        var descriptor = require("../ext/descriptor");
+        var plugin = require("../cli/protoc-gen-pbjs");
+        var set = descriptor.FileDescriptorSet.create({
+            file: [ {
+                name: "names.proto",
+                syntax: "proto3",
+                package: "pkg",
+                messageType: [ {
+                    name: "Names",
+                    field: [
+                        {
+                            name: "field_name17__",
+                            number: 1,
+                            label: 1,
+                            type: 5
+                        },
+                        {
+                            name: "custom_json",
+                            jsonName: "customOutput",
+                            number: 2,
+                            label: 1,
+                            type: 9
+                        },
+                        {
+                            name: "map_field17__",
+                            number: 3,
+                            label: 3,
+                            type: 11,
+                            typeName: ".pkg.Names.MapField17Entry"
+                        }
+                    ],
+                    nestedType: [ {
+                        name: "MapField17Entry",
+                        field: [
+                            {
+                                name: "key",
+                                number: 1,
+                                label: 1,
+                                type: 9
+                            },
+                            {
+                                name: "value",
+                                number: 2,
+                                label: 1,
+                                type: 5
+                            }
+                        ],
+                        options: {
+                            mapEntry: true
+                        }
+                    } ]
+                } ]
+            } ]
+        });
+
+        function request(parameter) {
+            return plugin.CodeGeneratorRequest.encode({
+                fileToGenerate: [ "names.proto" ],
+                parameter: parameter,
+                protoFile: set.file
+            }).finish();
+        }
+
+        plugin.run(request("file=names.js,target=json-module,wrap=commonjs,dts"), function(defaultErr, defaultResponse) {
+            test.error(defaultErr, "default request decoded");
+            test.notOk(defaultResponse.error, "default response has no error");
+            var defaultJs = defaultResponse.file[0].content;
+            var defaultDts = defaultResponse.file[1].content;
+            test.ok(defaultDts.indexOf("fieldName17?:") >= 0, "uses synthesized json_name by default");
+            test.ok(defaultDts.indexOf("customOutput?:") >= 0, "uses custom descriptor json_name by default");
+            test.ok(defaultDts.indexOf("mapField17?:") >= 0, "uses synthesized map field json_name by default");
+            test.ok(defaultDts.indexOf("field_name17__?:") < 0, "does not keep proto names by default");
+            test.ok(defaultJs.indexOf("\"protoName\": \"field_name17__\"") >= 0, "keeps original field proto name");
+            test.ok(defaultJs.indexOf("\"protoName\": \"map_field17__\"") >= 0, "keeps original map proto name");
+            test.ok(defaultJs.indexOf("\"jsonName\": \"customOutput\"") >= 0, "keeps custom JSON name");
+
+            plugin.run(request("file=names.js,target=json-module,wrap=commonjs,dts,keep-case"), function(keepErr, keepResponse) {
+                test.error(keepErr, "keep-case request decoded");
+                test.notOk(keepResponse.error, "keep-case response has no error");
+                var keepJs = keepResponse.file[0].content;
+                var keepDts = keepResponse.file[1].content;
+                test.ok(keepDts.indexOf("field_name17__?:") >= 0, "keeps field proto names when requested");
+                test.ok(keepDts.indexOf("custom_json?:") >= 0, "keeps custom field proto names when requested");
+                test.ok(keepDts.indexOf("map_field17__?:") >= 0, "keeps map field proto names when requested");
+                test.ok(keepDts.indexOf("fieldName17?:") < 0, "does not use json_name when keep-case is requested");
+                test.ok(keepJs.indexOf("\"jsonName\": \"customOutput\"") >= 0, "still keeps custom JSON name");
+                test.end();
+            });
+        });
+    });
+});
+
 tape.test("protoc-gen-pbjs validates options", function(test) {
     cliTest(test, function() {
         var plugin = require("../cli/protoc-gen-pbjs");

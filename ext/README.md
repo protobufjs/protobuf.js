@@ -21,7 +21,7 @@ const decodedRoot = protobuf.Root.fromDescriptor(buffer);
 
 The extension requires reflection metadata and also works with `protobufjs/light.js` when schemas are loaded from JSON or otherwise provided as reflection objects.
 
-Importing the extension adds `.fromDescriptor(descriptor[, syntaxOrEdition])` and `#toDescriptor([syntaxOrEdition])` methods to reflection objects and exports the bundled descriptor types from `google.protobuf`. Descriptor inputs can be decoded messages, readers, or buffers of the corresponding descriptor messages.
+Importing the extension adds `.fromDescriptor(descriptor[, editionOrContext])` and `#toDescriptor([syntaxOrEdition])` methods to reflection objects and exports the bundled descriptor types from `google.protobuf`. Descriptor inputs can be decoded messages, readers, or buffers of the corresponding descriptor messages. Direct object descriptor imports accept either an edition string or a descriptor context with `edition`, `features` and `keepCase`.
 
 The conversion covers descriptor messages that correspond to protobuf.js reflection objects: files and file sets, messages, fields and map fields, oneofs, enums, services and methods. Descriptor-only metadata such as source locations, generated-code annotations and uninterpreted options remains available through the exported descriptor message types, but is not mapped onto reflection objects. File names are inferred when generating descriptors because roots do not retain exact file/package boundaries.
 
