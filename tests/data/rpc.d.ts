@@ -10,15 +10,15 @@ export class MyService extends $protobuf.rpc.Service {
 export namespace MyService {
     type MyMethodCallback = (error: (Error|null), response?: MyResponse) => void;
     type MyMethod = {
-  (request: IMyRequest, callback: MyService.MyMethodCallback): void;
-  (request: IMyRequest): Promise<MyResponse>;
-  readonly name: "MyMethod";
-  readonly path: "/MyService/MyMethod";
-  readonly requestType: "MyRequest";
-  readonly responseType: "MyResponse";
-  readonly requestStream: undefined;
-  readonly responseStream: undefined;
-};
+      (request: IMyRequest, callback: MyService.MyMethodCallback): void;
+      (request: IMyRequest): Promise<MyResponse>;
+      readonly name: "MyMethod";
+      readonly path: "/MyService/MyMethod";
+      readonly requestType: "MyRequest";
+      readonly responseType: "MyResponse";
+      readonly requestStream: undefined;
+      readonly responseStream: undefined;
+    };
 }
 
 export interface IMyRequest extends MyRequest.$Properties {

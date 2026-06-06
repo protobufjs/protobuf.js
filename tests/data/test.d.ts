@@ -944,26 +944,26 @@ export namespace jspb {
                 $unknowns?: Uint8Array[];
             }
             type $Shape = {
-  pone?: string|null;
-  pthree?: string|null;
-  rone?: jspb.test.TestMessageWithOneof.$Shape|null;
-  rtwo?: string|null;
-  normalField?: boolean|null;
-  repeatedField?: string[]|null;
-  aone?: number|null;
-  atwo?: number|null;
-  bone?: number|null;
-  btwo?: number|null;
-  $unknowns?: Uint8Array[];
-} & (
-  ({ partialOneof?: undefined; pone?: null; pthree?: null }|{ partialOneof?: "pone"; pone: string; pthree?: null }|{ partialOneof?: "pthree"; pone?: null; pthree: string })
-) & (
-  ({ recursiveOneof?: undefined; rone?: null; rtwo?: null }|{ recursiveOneof?: "rone"; rone: jspb.test.TestMessageWithOneof.$Shape; rtwo?: null }|{ recursiveOneof?: "rtwo"; rone?: null; rtwo: string })
-) & (
-  ({ defaultOneofA?: undefined; aone?: null; atwo?: null }|{ defaultOneofA?: "aone"; aone: number; atwo?: null }|{ defaultOneofA?: "atwo"; aone?: null; atwo: number })
-) & (
-  ({ defaultOneofB?: undefined; bone?: null; btwo?: null }|{ defaultOneofB?: "bone"; bone: number; btwo?: null }|{ defaultOneofB?: "btwo"; bone?: null; btwo: number })
-);
+              pone?: string|null;
+              pthree?: string|null;
+              rone?: jspb.test.TestMessageWithOneof.$Shape|null;
+              rtwo?: string|null;
+              normalField?: boolean|null;
+              repeatedField?: string[]|null;
+              aone?: number|null;
+              atwo?: number|null;
+              bone?: number|null;
+              btwo?: number|null;
+              $unknowns?: Uint8Array[];
+            } & (
+              ({ partialOneof?: undefined; pone?: null; pthree?: null }|{ partialOneof?: "pone"; pone: string; pthree?: null }|{ partialOneof?: "pthree"; pone?: null; pthree: string })
+            ) & (
+              ({ recursiveOneof?: undefined; rone?: null; rtwo?: null }|{ recursiveOneof?: "rone"; rone: jspb.test.TestMessageWithOneof.$Shape; rtwo?: null }|{ recursiveOneof?: "rtwo"; rone?: null; rtwo: string })
+            ) & (
+              ({ defaultOneofA?: undefined; aone?: null; atwo?: null }|{ defaultOneofA?: "aone"; aone: number; atwo?: null }|{ defaultOneofA?: "atwo"; aone?: null; atwo: number })
+            ) & (
+              ({ defaultOneofB?: undefined; bone?: null; btwo?: null }|{ defaultOneofB?: "bone"; bone: number; btwo?: null }|{ defaultOneofB?: "btwo"; bone?: null; btwo: number })
+            );
         }
 
         interface ITestEndsWithBytes extends jspb.test.TestEndsWithBytes.$Properties {
