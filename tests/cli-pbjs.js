@@ -776,36 +776,15 @@ tape.test("pbjs --dts writes module declarations", function(test) {
 tape.test("pbjs --dts narrows oneof interfaces", function(test) {
     cliTest(test, function() {
         var pbjs = require("../cli/pbjs");
-        var prefix = path.join(".tmp", "pbjs-dts-oneof-test-" + process.pid + "-" + Date.now());
-        var staticOut = prefix + ".js";
-        var staticDts = prefix + ".d.ts";
+        var root = protobuf.loadSync("tests/data/cli/test.proto").resolveAll();
 
-        if (!fs.existsSync(".tmp"))
-            fs.mkdirSync(".tmp");
-
-        function cleanup() {
-            [ staticOut, staticDts ].forEach(function(file) {
-                try {
-                    fs.unlinkSync(file);
-                } catch (e) {
-                    // best effort cleanup
-                }
-            });
-        }
-
-        cleanup();
-        pbjs.main([
-            "--target", "static-module",
-            "--wrap", "commonjs",
-            "--out", staticOut,
-            "--dts",
-            "tests/data/cli/test.proto"
-        ], function(err) {
+        pbjs.generate(root, {
+            target: "static-module",
+            wrap: "commonjs",
+            dts: true
+        }, function(err, staticCode, staticTypes) {
             test.error(err, "static-module --dts generation worked");
-            test.ok(fs.existsSync(staticDts), "writes static-module declarations");
 
-            var staticCode = fs.readFileSync(staticOut, "utf8");
-            var staticTypes = fs.readFileSync(staticDts, "utf8");
             test.ok(staticCode.indexOf("@type {{") >= 0, "documents create overloads with TypeScript JSDoc");
             test.equal(staticCode.indexOf("@tstype"), -1, "uses standard JSDoc return types");
             test.ok(staticTypes.indexOf("export interface IOneofContainer extends OneofContainer.$Properties") >= 0, "keeps a legacy properties interface");
@@ -817,12 +796,33 @@ tape.test("pbjs --dts narrows oneof interfaces", function(test) {
             test.ok(staticTypes.indexOf("static encode(message: OneofContainer.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;") >= 0, "uses the scoped properties type for encoding");
             test.ok(staticTypes.indexOf("static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): OneofContainer & OneofContainer.$Shape;") >= 0, "narrows decoded oneof messages");
             test.equal(staticTypes.indexOf("$Oneofs"), -1, "does not expose an intermediate oneof type");
-            test.ok(staticTypes.indexOf("type $Shape = {\n  stringInOneof?: string|null;\n  messageInOneof?: Message.$Shape|null;") >= 0, "emits multiline recursive shape fields");
+            test.ok(staticTypes.indexOf("    type $Shape = {\n      stringInOneof?: string|null;\n      messageInOneof?: Message.$Shape|null;") >= 0, "emits multiline recursive shape fields");
             test.ok(staticTypes.indexOf("{ someOneof?: \"messageInOneof\"; stringInOneof?: null; messageInOneof: Message.$Shape }") >= 0, "emits oneof refinement union");
             test.ok(staticTypes.indexOf("type $Shape = Message.$Properties;") >= 0, "aliases plain shape type for non-oneof message");
 
-            cleanup();
-            test.end();
+            var packagedRoot = protobuf.parse([
+                "syntax = \"proto3\";",
+                "package pkg;",
+                "message OneofContainer {",
+                "  oneof choice {",
+                "    string name = 1;",
+                "    int32 count = 2;",
+                "  }",
+                "}"
+            ].join("\n")).root.resolveAll();
+            pbjs.generate(packagedRoot, {
+                target: "static-module",
+                wrap: "commonjs",
+                dts: true
+            }, function(packagedErr, packagedCode, packagedTypes) {
+                test.error(packagedErr, "packaged static-module --dts generation worked");
+
+                test.ok(packagedCode.indexOf("pkg.OneofContainer") >= 0, "generates packaged static module");
+                test.ok(packagedTypes.indexOf("        type $Shape = {\n          name?: string|null;\n          count?: number|null;") >= 0, "indents multiline shape fields in namespaces");
+                test.ok(packagedTypes.indexOf("        } & (\n          ({ choice?: undefined; name?: null; count?: null }") >= 0, "indents multiline shape unions in namespaces");
+
+                test.end();
+            });
         });
     });
 });

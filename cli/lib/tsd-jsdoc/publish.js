@@ -102,13 +102,22 @@ exports.publish = function publish(taffy, opts) {
 
 // writes one or multiple strings
 function write() {
-    var s = Array.prototype.slice.call(arguments).join("");
-    if (!indentWritten) {
-        for (var i = 0; i < indent; ++i)
-            s = "    " + s;
-        indentWritten = true;
+    var lines = Array.prototype.slice.call(arguments).join("").replace(/\r?\n|\r/g, "\n").split("\n");
+    for (var i = 0; i < lines.length; ++i) {
+        var s = lines[i];
+        if (i) {
+            out.write("\n");
+            indentWritten = false;
+        }
+        if (s.length) {
+            if (!indentWritten) {
+                for (var j = 0; j < indent; ++j)
+                    s = "    " + s;
+                indentWritten = true;
+            }
+            out.write(s);
+        }
     }
-    out.write(s);
     firstLine = false;
 }
 
