@@ -1,5 +1,15 @@
 # Changelog
 
+## [8.6.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.0...protobufjs-v8.6.1) (2026-06-07)
+
+
+### Bug Fixes
+
+* **cli:** Consistently wait for pbts output before JSDoc exit ([#2306](https://github.com/protobufjs/protobuf.js/issues/2306)) ([87ff02f](https://github.com/protobufjs/protobuf.js/commit/87ff02fbae6b118f7d9f03bf5ba2cf3eb5c5f774))
+* **cli:** Preserve indentation in multiline declarations ([#2307](https://github.com/protobufjs/protobuf.js/issues/2307)) ([b38748d](https://github.com/protobufjs/protobuf.js/commit/b38748de9de4e38c7c3fa0b4962fc9ef77cc3669))
+* Preserve descriptor metadata needed by protoc-gen-pbjs ([#2308](https://github.com/protobufjs/protobuf.js/issues/2308)) ([a3b8dc7](https://github.com/protobufjs/protobuf.js/commit/a3b8dc7d55ff575baf0485a4467535d60d68c9e6))
+* Remove inquire submodule ([#2305](https://github.com/protobufjs/protobuf.js/issues/2305)) ([cc42616](https://github.com/protobufjs/protobuf.js/commit/cc426169dc70c8fb6ba2550a67c6fb65b9b28c3b))
+
 ## [8.6.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.5.0...protobufjs-v8.6.0) (2026-06-04)
 
 
