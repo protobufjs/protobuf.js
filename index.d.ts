@@ -1482,15 +1482,15 @@ export namespace rpc {
 
     /** A service method part of a {@link rpc.Service} as created by {@link Service.create}. */
     type ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> = {
-  (request: TReq|Properties<TReq>, callback: rpc.ServiceMethodCallback<TRes>): void;
-  (request: TReq|Properties<TReq>): Promise<TRes>;
-  readonly name: string;
-  readonly path: string;
-  readonly requestType: string;
-  readonly responseType: string;
-  readonly requestStream: true|undefined;
-  readonly responseStream: true|undefined;
-};
+      (request: TReq|Properties<TReq>, callback: rpc.ServiceMethodCallback<TRes>): void;
+      (request: TReq|Properties<TReq>): Promise<TRes>;
+      readonly name: string;
+      readonly path: string;
+      readonly requestType: string;
+      readonly responseType: string;
+      readonly requestStream: true|undefined;
+      readonly responseStream: true|undefined;
+    };
 
     /** An RPC service as returned by {@link Service#create}. */
     class Service extends util.EventEmitter {

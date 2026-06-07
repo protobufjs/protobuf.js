@@ -10,15 +10,15 @@ export class MyService extends $protobuf.rpc.Service {
 export namespace MyService {
     type DeleteCallback = (error: (Error|null), response?: MyResponse) => void;
     type Delete = {
-  (request: IMyRequest, callback: MyService.DeleteCallback): void;
-  (request: IMyRequest): Promise<MyResponse>;
-  readonly name: "Delete";
-  readonly path: "/MyService/Delete";
-  readonly requestType: "MyRequest";
-  readonly responseType: "MyResponse";
-  readonly requestStream: undefined;
-  readonly responseStream: undefined;
-};
+      (request: IMyRequest, callback: MyService.DeleteCallback): void;
+      (request: IMyRequest): Promise<MyResponse>;
+      readonly name: "Delete";
+      readonly path: "/MyService/Delete";
+      readonly requestType: "MyRequest";
+      readonly responseType: "MyResponse";
+      readonly requestStream: undefined;
+      readonly responseStream: undefined;
+    };
 }
 
 export interface IMyRequest extends MyRequest.$Properties {
