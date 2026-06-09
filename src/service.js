@@ -9,8 +9,6 @@ var Method = require("./method"),
     util   = require("./util"),
     rpc    = require("./rpc");
 
-var reservedRe = util.patterns.reservedRe;
-
 /**
  * Constructs a new service instance.
  * @classdesc Reflected service.
