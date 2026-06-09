@@ -33,7 +33,7 @@ $root.jspb = (function() {
             /**
              * Properties of an Empty.
              * @typedef {Object} jspb.test.Empty.$Properties
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -55,7 +55,7 @@ $root.jspb = (function() {
              * @classdesc Represents an Empty.
              * @constructor
              * @param {jspb.test.Empty.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var Empty = function (properties) {
                 if (properties)
@@ -267,7 +267,7 @@ $root.jspb = (function() {
              * Properties of an EnumContainer.
              * @typedef {Object} jspb.test.EnumContainer.$Properties
              * @property {jspb.test.OuterEnum|null} [outerEnum] EnumContainer outerEnum
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -289,7 +289,7 @@ $root.jspb = (function() {
              * @classdesc Represents an EnumContainer.
              * @constructor
              * @param {jspb.test.EnumContainer.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var EnumContainer = function (properties) {
                 if (properties)
@@ -544,7 +544,7 @@ $root.jspb = (function() {
              * @property {string} aString Simple1 aString
              * @property {Array.<string>|null} [aRepeatedString] Simple1 aRepeatedString
              * @property {boolean|null} [aBoolean] Simple1 aBoolean
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -566,7 +566,7 @@ $root.jspb = (function() {
              * @classdesc Represents a Simple1.
              * @constructor
              * @param {jspb.test.Simple1.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var Simple1 = function (properties) {
                 this.aRepeatedString = [];
@@ -867,7 +867,7 @@ $root.jspb = (function() {
              * @typedef {Object} jspb.test.Simple2.$Properties
              * @property {string} aString Simple2 aString
              * @property {Array.<string>|null} [aRepeatedString] Simple2 aRepeatedString
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -889,7 +889,7 @@ $root.jspb = (function() {
              * @classdesc Represents a Simple2.
              * @constructor
              * @param {jspb.test.Simple2.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var Simple2 = function (properties) {
                 this.aRepeatedString = [];
@@ -1167,7 +1167,7 @@ $root.jspb = (function() {
              * @property {string} "default" SpecialCases default
              * @property {string} "function" SpecialCases function
              * @property {string} "var" SpecialCases var
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -1189,7 +1189,7 @@ $root.jspb = (function() {
              * @classdesc Represents a SpecialCases.
              * @constructor
              * @param {jspb.test.SpecialCases.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var SpecialCases = function (properties) {
                 if (properties)
@@ -1500,7 +1500,7 @@ $root.jspb = (function() {
              * @property {jspb.test.OptionalFields.Nested.$Properties|null} [aNestedMessage] OptionalFields aNestedMessage
              * @property {Array.<jspb.test.OptionalFields.Nested.$Properties>|null} [aRepeatedMessage] OptionalFields aRepeatedMessage
              * @property {Array.<string>|null} [aRepeatedString] OptionalFields aRepeatedString
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -1522,7 +1522,7 @@ $root.jspb = (function() {
              * @classdesc Represents an OptionalFields.
              * @constructor
              * @param {jspb.test.OptionalFields.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var OptionalFields = function (properties) {
                 this.aRepeatedMessage = [];
@@ -1894,7 +1894,7 @@ $root.jspb = (function() {
                  * Properties of a Nested.
                  * @typedef {Object} jspb.test.OptionalFields.Nested.$Properties
                  * @property {number|null} [anInt] Nested anInt
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -1916,7 +1916,7 @@ $root.jspb = (function() {
                  * @classdesc Represents a Nested.
                  * @constructor
                  * @param {jspb.test.OptionalFields.Nested.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var Nested = function (properties) {
                     if (properties)
@@ -2161,7 +2161,7 @@ $root.jspb = (function() {
              * @property {Array.<string>|null} [".jspb.test.IndirectExtension.repeatedStr"] HasExtensions .jspb.test.IndirectExtension.repeatedStr
              * @property {Array.<jspb.test.Simple1.$Properties>|null} [".jspb.test.IndirectExtension.repeatedSimple"] HasExtensions .jspb.test.IndirectExtension.repeatedSimple
              * @property {jspb.test.Simple1.$Properties|null} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -2189,7 +2189,7 @@ $root.jspb = (function() {
              * @property {Array.<string>} ".jspb.test.IndirectExtension.repeatedStr" HasExtensions .jspb.test.IndirectExtension.repeatedStr
              * @property {Array.<jspb.test.Simple1.$Properties>} ".jspb.test.IndirectExtension.repeatedSimple" HasExtensions .jspb.test.IndirectExtension.repeatedSimple
              * @property {jspb.test.Simple1.$Properties|null} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var HasExtensions = function (properties) {
                 this[".jspb.test.IndirectExtension.repeatedStr"] = [];
@@ -2633,7 +2633,7 @@ $root.jspb = (function() {
              * @property {jspb.test.Complex.Nested.$Properties|null} [aNestedMessage] Complex aNestedMessage
              * @property {Array.<jspb.test.Complex.Nested.$Properties>|null} [aRepeatedMessage] Complex aRepeatedMessage
              * @property {Array.<string>|null} [aRepeatedString] Complex aRepeatedString
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -2655,7 +2655,7 @@ $root.jspb = (function() {
              * @classdesc Represents a Complex.
              * @constructor
              * @param {jspb.test.Complex.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var Complex = function (properties) {
                 this.aRepeatedMessage = [];
@@ -3027,7 +3027,7 @@ $root.jspb = (function() {
                  * Properties of a Nested.
                  * @typedef {Object} jspb.test.Complex.Nested.$Properties
                  * @property {number} anInt Nested anInt
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -3049,7 +3049,7 @@ $root.jspb = (function() {
                  * @classdesc Represents a Nested.
                  * @constructor
                  * @param {jspb.test.Complex.Nested.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var Nested = function (properties) {
                     if (properties)
@@ -3285,7 +3285,7 @@ $root.jspb = (function() {
             /**
              * Properties of an OuterMessage.
              * @typedef {Object} jspb.test.OuterMessage.$Properties
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -3307,7 +3307,7 @@ $root.jspb = (function() {
              * @classdesc Represents an OuterMessage.
              * @constructor
              * @param {jspb.test.OuterMessage.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var OuterMessage = function (properties) {
                 if (properties)
@@ -3502,7 +3502,7 @@ $root.jspb = (function() {
                  * Properties of a Complex.
                  * @typedef {Object} jspb.test.OuterMessage.Complex.$Properties
                  * @property {number|null} [innerComplexField] Complex innerComplexField
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -3524,7 +3524,7 @@ $root.jspb = (function() {
                  * @classdesc Represents a Complex.
                  * @constructor
                  * @param {jspb.test.OuterMessage.Complex.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var Complex = function (properties) {
                     if (properties)
@@ -3761,7 +3761,7 @@ $root.jspb = (function() {
              * Properties of an IsExtension.
              * @typedef {Object} jspb.test.IsExtension.$Properties
              * @property {string|null} [ext1] IsExtension ext1
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -3783,7 +3783,7 @@ $root.jspb = (function() {
              * @classdesc Represents an IsExtension.
              * @constructor
              * @param {jspb.test.IsExtension.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var IsExtension = function (properties) {
                 if (properties)
@@ -4016,7 +4016,7 @@ $root.jspb = (function() {
             /**
              * Properties of an IndirectExtension.
              * @typedef {Object} jspb.test.IndirectExtension.$Properties
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -4038,7 +4038,7 @@ $root.jspb = (function() {
              * @classdesc Represents an IndirectExtension.
              * @constructor
              * @param {jspb.test.IndirectExtension.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var IndirectExtension = function (properties) {
                 if (properties)
@@ -4241,7 +4241,7 @@ $root.jspb = (function() {
              * @property {jspb.test.DefaultValues.Enum|null} [enumField] DefaultValues enumField
              * @property {string|null} [emptyField] DefaultValues emptyField
              * @property {Uint8Array|null} [bytesField] DefaultValues bytesField
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -4263,7 +4263,7 @@ $root.jspb = (function() {
              * @classdesc Represents a DefaultValues.
              * @constructor
              * @param {jspb.test.DefaultValues.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var DefaultValues = function (properties) {
                 if (properties)
@@ -4687,7 +4687,7 @@ $root.jspb = (function() {
              * @property {number} requiredDoubleField FloatingPointFields requiredDoubleField
              * @property {Array.<number>|null} [repeatedDoubleField] FloatingPointFields repeatedDoubleField
              * @property {number|null} [defaultDoubleField] FloatingPointFields defaultDoubleField
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -4709,7 +4709,7 @@ $root.jspb = (function() {
              * @classdesc Represents a FloatingPointFields.
              * @constructor
              * @param {jspb.test.FloatingPointFields.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var FloatingPointFields = function (properties) {
                 this.repeatedFloatField = [];
@@ -5167,7 +5167,7 @@ $root.jspb = (function() {
              * @property {Uint8Array|null} [bytesField] TestClone bytesField
              * @property {string|null} [unused] TestClone unused
              * @property {jspb.test.CloneExtension.$Properties|null} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -5190,7 +5190,7 @@ $root.jspb = (function() {
              * @constructor
              * @param {jspb.test.TestClone.$Properties=} [properties] Properties to set
              * @property {jspb.test.CloneExtension.$Properties|null} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var TestClone = function (properties) {
                 this.simple2 = [];
@@ -5580,7 +5580,7 @@ $root.jspb = (function() {
              * Properties of a CloneExtension.
              * @typedef {Object} jspb.test.CloneExtension.$Properties
              * @property {string|null} [ext] CloneExtension ext
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -5602,7 +5602,7 @@ $root.jspb = (function() {
              * @classdesc Represents a CloneExtension.
              * @constructor
              * @param {jspb.test.CloneExtension.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var CloneExtension = function (properties) {
                 if (properties)
@@ -5843,7 +5843,7 @@ $root.jspb = (function() {
              * @property {string|null} [id] TestGroup id
              * @property {jspb.test.Simple2.$Properties} requiredSimple TestGroup requiredSimple
              * @property {jspb.test.Simple2.$Properties|null} [optionalSimple] TestGroup optionalSimple
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -5865,7 +5865,7 @@ $root.jspb = (function() {
              * @classdesc Represents a TestGroup.
              * @constructor
              * @param {jspb.test.TestGroup.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var TestGroup = function (properties) {
                 this.repeatedGroup = [];
@@ -6320,7 +6320,7 @@ $root.jspb = (function() {
                  * @typedef {Object} jspb.test.TestGroup.RepeatedGroup.$Properties
                  * @property {string} id RepeatedGroup id
                  * @property {Array.<boolean>|null} [someBool] RepeatedGroup someBool
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -6342,7 +6342,7 @@ $root.jspb = (function() {
                  * @classdesc Represents a RepeatedGroup.
                  * @constructor
                  * @param {jspb.test.TestGroup.RepeatedGroup.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var RepeatedGroup = function (properties) {
                     this.someBool = [];
@@ -6625,7 +6625,7 @@ $root.jspb = (function() {
                  * Properties of a RequiredGroup.
                  * @typedef {Object} jspb.test.TestGroup.RequiredGroup.$Properties
                  * @property {string} id RequiredGroup id
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -6647,7 +6647,7 @@ $root.jspb = (function() {
                  * @classdesc Represents a RequiredGroup.
                  * @constructor
                  * @param {jspb.test.TestGroup.RequiredGroup.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var RequiredGroup = function (properties) {
                     if (properties)
@@ -6881,7 +6881,7 @@ $root.jspb = (function() {
                  * Properties of an OptionalGroup.
                  * @typedef {Object} jspb.test.TestGroup.OptionalGroup.$Properties
                  * @property {string} id OptionalGroup id
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -6903,7 +6903,7 @@ $root.jspb = (function() {
                  * @classdesc Represents an OptionalGroup.
                  * @constructor
                  * @param {jspb.test.TestGroup.OptionalGroup.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var OptionalGroup = function (properties) {
                     if (properties)
@@ -7137,7 +7137,7 @@ $root.jspb = (function() {
                  * Properties of a MessageInGroup.
                  * @typedef {Object} jspb.test.TestGroup.MessageInGroup.$Properties
                  * @property {jspb.test.TestGroup.MessageInGroup.NestedMessage.$Properties} id MessageInGroup id
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -7159,7 +7159,7 @@ $root.jspb = (function() {
                  * @classdesc Represents a MessageInGroup.
                  * @constructor
                  * @param {jspb.test.TestGroup.MessageInGroup.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var MessageInGroup = function (properties) {
                     if (properties)
@@ -7396,7 +7396,7 @@ $root.jspb = (function() {
                      * Properties of a NestedMessage.
                      * @typedef {Object} jspb.test.TestGroup.MessageInGroup.NestedMessage.$Properties
                      * @property {string|null} [id] NestedMessage id
-                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                      */
 
                     /**
@@ -7418,7 +7418,7 @@ $root.jspb = (function() {
                      * @classdesc Represents a NestedMessage.
                      * @constructor
                      * @param {jspb.test.TestGroup.MessageInGroup.NestedMessage.$Properties=} [properties] Properties to set
-                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                      */
                     var NestedMessage = function (properties) {
                         if (properties)
@@ -7655,7 +7655,7 @@ $root.jspb = (function() {
                  * Properties of an EnumInGroup.
                  * @typedef {Object} jspb.test.TestGroup.EnumInGroup.$Properties
                  * @property {jspb.test.TestGroup.EnumInGroup.NestedEnum} id EnumInGroup id
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -7677,7 +7677,7 @@ $root.jspb = (function() {
                  * @classdesc Represents an EnumInGroup.
                  * @constructor
                  * @param {jspb.test.TestGroup.EnumInGroup.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var EnumInGroup = function (properties) {
                     if (properties)
@@ -7947,7 +7947,7 @@ $root.jspb = (function() {
              * Properties of a TestGroup1.
              * @typedef {Object} jspb.test.TestGroup1.$Properties
              * @property {jspb.test.TestGroup.RepeatedGroup.$Properties|null} [group] TestGroup1 group
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -7969,7 +7969,7 @@ $root.jspb = (function() {
              * @classdesc Represents a TestGroup1.
              * @constructor
              * @param {jspb.test.TestGroup1.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var TestGroup1 = function (properties) {
                 if (properties)
@@ -8209,7 +8209,7 @@ $root.jspb = (function() {
              * @typedef {Object} jspb.test.TestReservedNames.$Properties
              * @property {number|null} [extension] TestReservedNames extension
              * @property {number|null} [".jspb.test.TestReservedNamesExtension.foo"] TestReservedNames .jspb.test.TestReservedNamesExtension.foo
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -8232,7 +8232,7 @@ $root.jspb = (function() {
              * @constructor
              * @param {jspb.test.TestReservedNames.$Properties=} [properties] Properties to set
              * @property {number} ".jspb.test.TestReservedNamesExtension.foo" TestReservedNames .jspb.test.TestReservedNamesExtension.foo
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var TestReservedNames = function (properties) {
                 if (properties)
@@ -8484,7 +8484,7 @@ $root.jspb = (function() {
             /**
              * Properties of a TestReservedNamesExtension.
              * @typedef {Object} jspb.test.TestReservedNamesExtension.$Properties
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -8506,7 +8506,7 @@ $root.jspb = (function() {
              * @classdesc Represents a TestReservedNamesExtension.
              * @constructor
              * @param {jspb.test.TestReservedNamesExtension.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var TestReservedNamesExtension = function (properties) {
                 if (properties)
@@ -8717,7 +8717,7 @@ $root.jspb = (function() {
              * @property {"rone"|"rtwo"} [recursiveOneof] TestMessageWithOneof recursiveOneof
              * @property {"aone"|"atwo"} [defaultOneofA] TestMessageWithOneof defaultOneofA
              * @property {"bone"|"btwo"} [defaultOneofB] TestMessageWithOneof defaultOneofB
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -8759,7 +8759,7 @@ $root.jspb = (function() {
              * @classdesc Represents a TestMessageWithOneof.
              * @constructor
              * @param {jspb.test.TestMessageWithOneof.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var TestMessageWithOneof = function (properties) {
                 this.repeatedField = [];
@@ -9329,7 +9329,7 @@ $root.jspb = (function() {
              * @typedef {Object} jspb.test.TestEndsWithBytes.$Properties
              * @property {number|null} [value] TestEndsWithBytes value
              * @property {Uint8Array|null} [data] TestEndsWithBytes data
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -9351,7 +9351,7 @@ $root.jspb = (function() {
              * @classdesc Represents a TestEndsWithBytes.
              * @constructor
              * @param {jspb.test.TestEndsWithBytes.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var TestEndsWithBytes = function (properties) {
                 if (properties)
@@ -9630,7 +9630,7 @@ $root.jspb = (function() {
              * @property {Object.<string,string>|null} [mapBoolString] TestMapFieldsNoBinary mapBoolString
              * @property {jspb.test.TestMapFieldsNoBinary.$Properties|null} [testMapFields] TestMapFieldsNoBinary testMapFields
              * @property {Object.<string,jspb.test.TestMapFieldsNoBinary.$Properties>|null} [mapStringTestmapfields] TestMapFieldsNoBinary mapStringTestmapfields
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -9652,7 +9652,7 @@ $root.jspb = (function() {
              * @classdesc Represents a TestMapFieldsNoBinary.
              * @constructor
              * @param {jspb.test.TestMapFieldsNoBinary.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var TestMapFieldsNoBinary = function (properties) {
                 this.mapStringString = {};
@@ -10722,7 +10722,7 @@ $root.jspb = (function() {
              * Properties of a MapValueMessageNoBinary.
              * @typedef {Object} jspb.test.MapValueMessageNoBinary.$Properties
              * @property {number|null} [foo] MapValueMessageNoBinary foo
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -10744,7 +10744,7 @@ $root.jspb = (function() {
              * @classdesc Represents a MapValueMessageNoBinary.
              * @constructor
              * @param {jspb.test.MapValueMessageNoBinary.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var MapValueMessageNoBinary = function (properties) {
                 if (properties)
@@ -10977,7 +10977,7 @@ $root.jspb = (function() {
             /**
              * Properties of a Deeply.
              * @typedef {Object} jspb.test.Deeply.$Properties
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -10999,7 +10999,7 @@ $root.jspb = (function() {
              * @classdesc Represents a Deeply.
              * @constructor
              * @param {jspb.test.Deeply.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var Deeply = function (properties) {
                 if (properties)
@@ -11193,7 +11193,7 @@ $root.jspb = (function() {
                 /**
                  * Properties of a Nested.
                  * @typedef {Object} jspb.test.Deeply.Nested.$Properties
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -11215,7 +11215,7 @@ $root.jspb = (function() {
                  * @classdesc Represents a Nested.
                  * @constructor
                  * @param {jspb.test.Deeply.Nested.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var Nested = function (properties) {
                     if (properties)
@@ -11410,7 +11410,7 @@ $root.jspb = (function() {
                      * Properties of a Message.
                      * @typedef {Object} jspb.test.Deeply.Nested.Message.$Properties
                      * @property {number|null} [count] Message count
-                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                      */
 
                     /**
@@ -11432,7 +11432,7 @@ $root.jspb = (function() {
                      * @classdesc Represents a Message.
                      * @constructor
                      * @param {jspb.test.Deeply.Nested.Message.$Properties=} [properties] Properties to set
-                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                      */
                     var Message = function (properties) {
                         if (properties)
@@ -11696,7 +11696,7 @@ $root.google = (function() {
              * Properties of a FileDescriptorSet.
              * @typedef {Object} google.protobuf.FileDescriptorSet.$Properties
              * @property {Array.<google.protobuf.FileDescriptorProto.$Properties>|null} [file] FileDescriptorSet file
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -11718,7 +11718,7 @@ $root.google = (function() {
              * @classdesc Represents a FileDescriptorSet.
              * @constructor
              * @param {google.protobuf.FileDescriptorSet.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var FileDescriptorSet = function (properties) {
                 this.file = [];
@@ -12020,7 +12020,7 @@ $root.google = (function() {
              * @property {google.protobuf.SourceCodeInfo.$Properties|null} [sourceCodeInfo] FileDescriptorProto sourceCodeInfo
              * @property {string|null} [syntax] FileDescriptorProto syntax
              * @property {google.protobuf.Edition|null} [edition] FileDescriptorProto edition
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -12042,7 +12042,7 @@ $root.google = (function() {
              * @classdesc Represents a FileDescriptorProto.
              * @constructor
              * @param {google.protobuf.FileDescriptorProto.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var FileDescriptorProto = function (properties) {
                 this.dependency = [];
@@ -12844,7 +12844,7 @@ $root.google = (function() {
              * @property {Array.<google.protobuf.DescriptorProto.ReservedRange.$Properties>|null} [reservedRange] DescriptorProto reservedRange
              * @property {Array.<string>|null} [reservedName] DescriptorProto reservedName
              * @property {google.protobuf.SymbolVisibility|null} [visibility] DescriptorProto visibility
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -12866,7 +12866,7 @@ $root.google = (function() {
              * @classdesc Represents a DescriptorProto.
              * @constructor
              * @param {google.protobuf.DescriptorProto.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var DescriptorProto = function (properties) {
                 this.field = [];
@@ -13534,7 +13534,7 @@ $root.google = (function() {
                  * @property {number|null} [start] ExtensionRange start
                  * @property {number|null} [end] ExtensionRange end
                  * @property {google.protobuf.ExtensionRangeOptions.$Properties|null} [options] ExtensionRange options
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -13556,7 +13556,7 @@ $root.google = (function() {
                  * @classdesc Represents an ExtensionRange.
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.ExtensionRange.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var ExtensionRange = function (properties) {
                     if (properties)
@@ -13845,7 +13845,7 @@ $root.google = (function() {
                  * @typedef {Object} google.protobuf.DescriptorProto.ReservedRange.$Properties
                  * @property {number|null} [start] ReservedRange start
                  * @property {number|null} [end] ReservedRange end
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -13867,7 +13867,7 @@ $root.google = (function() {
                  * @classdesc Represents a ReservedRange.
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.ReservedRange.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var ReservedRange = function (properties) {
                     if (properties)
@@ -14132,7 +14132,7 @@ $root.google = (function() {
              * @property {Array.<google.protobuf.ExtensionRangeOptions.Declaration.$Properties>|null} [declaration] ExtensionRangeOptions declaration
              * @property {google.protobuf.FeatureSet.$Properties|null} [features] ExtensionRangeOptions features
              * @property {google.protobuf.ExtensionRangeOptions.VerificationState|null} [verification] ExtensionRangeOptions verification
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -14154,7 +14154,7 @@ $root.google = (function() {
              * @classdesc Represents an ExtensionRangeOptions.
              * @constructor
              * @param {google.protobuf.ExtensionRangeOptions.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var ExtensionRangeOptions = function (properties) {
                 this.uninterpretedOption = [];
@@ -14530,7 +14530,7 @@ $root.google = (function() {
                  * @property {string|null} [type] Declaration type
                  * @property {boolean|null} [reserved] Declaration reserved
                  * @property {boolean|null} [repeated] Declaration repeated
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -14552,7 +14552,7 @@ $root.google = (function() {
                  * @classdesc Represents a Declaration.
                  * @constructor
                  * @param {google.protobuf.ExtensionRangeOptions.Declaration.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var Declaration = function (properties) {
                     if (properties)
@@ -14910,7 +14910,7 @@ $root.google = (function() {
              * @property {string|null} [jsonName] FieldDescriptorProto jsonName
              * @property {google.protobuf.FieldOptions.$Properties|null} [options] FieldDescriptorProto options
              * @property {boolean|null} [proto3Optional] FieldDescriptorProto proto3Optional
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -14932,7 +14932,7 @@ $root.google = (function() {
              * @classdesc Represents a FieldDescriptorProto.
              * @constructor
              * @param {google.protobuf.FieldDescriptorProto.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var FieldDescriptorProto = function (properties) {
                 if (properties)
@@ -15598,7 +15598,7 @@ $root.google = (function() {
              * @typedef {Object} google.protobuf.OneofDescriptorProto.$Properties
              * @property {string|null} [name] OneofDescriptorProto name
              * @property {google.protobuf.OneofOptions.$Properties|null} [options] OneofDescriptorProto options
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -15620,7 +15620,7 @@ $root.google = (function() {
              * @classdesc Represents a OneofDescriptorProto.
              * @constructor
              * @param {google.protobuf.OneofDescriptorProto.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var OneofDescriptorProto = function (properties) {
                 if (properties)
@@ -15889,7 +15889,7 @@ $root.google = (function() {
              * @property {Array.<google.protobuf.EnumDescriptorProto.EnumReservedRange.$Properties>|null} [reservedRange] EnumDescriptorProto reservedRange
              * @property {Array.<string>|null} [reservedName] EnumDescriptorProto reservedName
              * @property {google.protobuf.SymbolVisibility|null} [visibility] EnumDescriptorProto visibility
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -15911,7 +15911,7 @@ $root.google = (function() {
              * @classdesc Represents an EnumDescriptorProto.
              * @constructor
              * @param {google.protobuf.EnumDescriptorProto.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var EnumDescriptorProto = function (properties) {
                 this.value = [];
@@ -16353,7 +16353,7 @@ $root.google = (function() {
                  * @typedef {Object} google.protobuf.EnumDescriptorProto.EnumReservedRange.$Properties
                  * @property {number|null} [start] EnumReservedRange start
                  * @property {number|null} [end] EnumReservedRange end
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -16375,7 +16375,7 @@ $root.google = (function() {
                  * @classdesc Represents an EnumReservedRange.
                  * @constructor
                  * @param {google.protobuf.EnumDescriptorProto.EnumReservedRange.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var EnumReservedRange = function (properties) {
                     if (properties)
@@ -16639,7 +16639,7 @@ $root.google = (function() {
              * @property {string|null} [name] EnumValueDescriptorProto name
              * @property {number|null} [number] EnumValueDescriptorProto number
              * @property {google.protobuf.EnumValueOptions.$Properties|null} [options] EnumValueDescriptorProto options
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -16661,7 +16661,7 @@ $root.google = (function() {
              * @classdesc Represents an EnumValueDescriptorProto.
              * @constructor
              * @param {google.protobuf.EnumValueDescriptorProto.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var EnumValueDescriptorProto = function (properties) {
                 if (properties)
@@ -16951,7 +16951,7 @@ $root.google = (function() {
              * @property {string|null} [name] ServiceDescriptorProto name
              * @property {Array.<google.protobuf.MethodDescriptorProto.$Properties>|null} [method] ServiceDescriptorProto method
              * @property {google.protobuf.ServiceOptions.$Properties|null} [options] ServiceDescriptorProto options
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -16973,7 +16973,7 @@ $root.google = (function() {
              * @classdesc Represents a ServiceDescriptorProto.
              * @constructor
              * @param {google.protobuf.ServiceDescriptorProto.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var ServiceDescriptorProto = function (properties) {
                 this.method = [];
@@ -17288,7 +17288,7 @@ $root.google = (function() {
              * @property {google.protobuf.MethodOptions.$Properties|null} [options] MethodDescriptorProto options
              * @property {boolean|null} [clientStreaming] MethodDescriptorProto clientStreaming
              * @property {boolean|null} [serverStreaming] MethodDescriptorProto serverStreaming
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -17310,7 +17310,7 @@ $root.google = (function() {
              * @classdesc Represents a MethodDescriptorProto.
              * @constructor
              * @param {google.protobuf.MethodDescriptorProto.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var MethodDescriptorProto = function (properties) {
                 if (properties)
@@ -17690,7 +17690,7 @@ $root.google = (function() {
              * @property {string|null} [rubyPackage] FileOptions rubyPackage
              * @property {google.protobuf.FeatureSet.$Properties|null} [features] FileOptions features
              * @property {Array.<google.protobuf.UninterpretedOption.$Properties>|null} [uninterpretedOption] FileOptions uninterpretedOption
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -17712,7 +17712,7 @@ $root.google = (function() {
              * @classdesc Represents a FileOptions.
              * @constructor
              * @param {google.protobuf.FileOptions.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var FileOptions = function (properties) {
                 this.uninterpretedOption = [];
@@ -18500,7 +18500,7 @@ $root.google = (function() {
              * @property {boolean|null} [deprecatedLegacyJsonFieldConflicts] MessageOptions deprecatedLegacyJsonFieldConflicts
              * @property {google.protobuf.FeatureSet.$Properties|null} [features] MessageOptions features
              * @property {Array.<google.protobuf.UninterpretedOption.$Properties>|null} [uninterpretedOption] MessageOptions uninterpretedOption
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -18522,7 +18522,7 @@ $root.google = (function() {
              * @classdesc Represents a MessageOptions.
              * @constructor
              * @param {google.protobuf.MessageOptions.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var MessageOptions = function (properties) {
                 this.uninterpretedOption = [];
@@ -18941,7 +18941,7 @@ $root.google = (function() {
              * @property {google.protobuf.FeatureSet.$Properties|null} [features] FieldOptions features
              * @property {google.protobuf.FieldOptions.FeatureSupport.$Properties|null} [featureSupport] FieldOptions featureSupport
              * @property {Array.<google.protobuf.UninterpretedOption.$Properties>|null} [uninterpretedOption] FieldOptions uninterpretedOption
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -18963,7 +18963,7 @@ $root.google = (function() {
              * @classdesc Represents a FieldOptions.
              * @constructor
              * @param {google.protobuf.FieldOptions.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var FieldOptions = function (properties) {
                 this.targets = [];
@@ -19795,7 +19795,7 @@ $root.google = (function() {
                  * @typedef {Object} google.protobuf.FieldOptions.EditionDefault.$Properties
                  * @property {google.protobuf.Edition|null} [edition] EditionDefault edition
                  * @property {string|null} [value] EditionDefault value
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -19817,7 +19817,7 @@ $root.google = (function() {
                  * @classdesc Represents an EditionDefault.
                  * @constructor
                  * @param {google.protobuf.FieldOptions.EditionDefault.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var EditionDefault = function (properties) {
                     if (properties)
@@ -20148,7 +20148,7 @@ $root.google = (function() {
                  * @property {google.protobuf.Edition|null} [editionDeprecated] FeatureSupport editionDeprecated
                  * @property {string|null} [deprecationWarning] FeatureSupport deprecationWarning
                  * @property {google.protobuf.Edition|null} [editionRemoved] FeatureSupport editionRemoved
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -20170,7 +20170,7 @@ $root.google = (function() {
                  * @classdesc Represents a FeatureSupport.
                  * @constructor
                  * @param {google.protobuf.FieldOptions.FeatureSupport.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var FeatureSupport = function (properties) {
                     if (properties)
@@ -20688,7 +20688,7 @@ $root.google = (function() {
              * @typedef {Object} google.protobuf.OneofOptions.$Properties
              * @property {google.protobuf.FeatureSet.$Properties|null} [features] OneofOptions features
              * @property {Array.<google.protobuf.UninterpretedOption.$Properties>|null} [uninterpretedOption] OneofOptions uninterpretedOption
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -20710,7 +20710,7 @@ $root.google = (function() {
              * @classdesc Represents a OneofOptions.
              * @constructor
              * @param {google.protobuf.OneofOptions.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var OneofOptions = function (properties) {
                 this.uninterpretedOption = [];
@@ -21000,7 +21000,7 @@ $root.google = (function() {
              * @property {google.protobuf.FeatureSet.$Properties|null} [features] EnumOptions features
              * @property {Array.<google.protobuf.UninterpretedOption.$Properties>|null} [uninterpretedOption] EnumOptions uninterpretedOption
              * @property {string|null} [".jspb.test.IsExtension.simpleOption"] EnumOptions .jspb.test.IsExtension.simpleOption
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -21023,7 +21023,7 @@ $root.google = (function() {
              * @constructor
              * @param {google.protobuf.EnumOptions.$Properties=} [properties] Properties to set
              * @property {string} ".jspb.test.IsExtension.simpleOption" EnumOptions .jspb.test.IsExtension.simpleOption
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var EnumOptions = function (properties) {
                 this.uninterpretedOption = [];
@@ -21403,7 +21403,7 @@ $root.google = (function() {
              * @property {boolean|null} [debugRedact] EnumValueOptions debugRedact
              * @property {google.protobuf.FieldOptions.FeatureSupport.$Properties|null} [featureSupport] EnumValueOptions featureSupport
              * @property {Array.<google.protobuf.UninterpretedOption.$Properties>|null} [uninterpretedOption] EnumValueOptions uninterpretedOption
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -21425,7 +21425,7 @@ $root.google = (function() {
              * @classdesc Represents an EnumValueOptions.
              * @constructor
              * @param {google.protobuf.EnumValueOptions.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var EnumValueOptions = function (properties) {
                 this.uninterpretedOption = [];
@@ -21790,7 +21790,7 @@ $root.google = (function() {
              * @property {google.protobuf.FeatureSet.$Properties|null} [features] ServiceOptions features
              * @property {boolean|null} [deprecated] ServiceOptions deprecated
              * @property {Array.<google.protobuf.UninterpretedOption.$Properties>|null} [uninterpretedOption] ServiceOptions uninterpretedOption
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -21812,7 +21812,7 @@ $root.google = (function() {
              * @classdesc Represents a ServiceOptions.
              * @constructor
              * @param {google.protobuf.ServiceOptions.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var ServiceOptions = function (properties) {
                 this.uninterpretedOption = [];
@@ -22125,7 +22125,7 @@ $root.google = (function() {
              * @property {google.protobuf.MethodOptions.IdempotencyLevel|null} [idempotencyLevel] MethodOptions idempotencyLevel
              * @property {google.protobuf.FeatureSet.$Properties|null} [features] MethodOptions features
              * @property {Array.<google.protobuf.UninterpretedOption.$Properties>|null} [uninterpretedOption] MethodOptions uninterpretedOption
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -22147,7 +22147,7 @@ $root.google = (function() {
              * @classdesc Represents a MethodOptions.
              * @constructor
              * @param {google.protobuf.MethodOptions.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var MethodOptions = function (properties) {
                 this.uninterpretedOption = [];
@@ -22527,7 +22527,7 @@ $root.google = (function() {
              * @property {number|null} [doubleValue] UninterpretedOption doubleValue
              * @property {Uint8Array|null} [stringValue] UninterpretedOption stringValue
              * @property {string|null} [aggregateValue] UninterpretedOption aggregateValue
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -22549,7 +22549,7 @@ $root.google = (function() {
              * @classdesc Represents an UninterpretedOption.
              * @constructor
              * @param {google.protobuf.UninterpretedOption.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var UninterpretedOption = function (properties) {
                 this.name = [];
@@ -22989,7 +22989,7 @@ $root.google = (function() {
                  * @typedef {Object} google.protobuf.UninterpretedOption.NamePart.$Properties
                  * @property {string} namePart NamePart namePart
                  * @property {boolean} isExtension NamePart isExtension
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -23011,7 +23011,7 @@ $root.google = (function() {
                  * @classdesc Represents a NamePart.
                  * @constructor
                  * @param {google.protobuf.UninterpretedOption.NamePart.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var NamePart = function (properties) {
                     if (properties)
@@ -23280,7 +23280,7 @@ $root.google = (function() {
              * @property {google.protobuf.FeatureSet.JsonFormat|null} [jsonFormat] FeatureSet jsonFormat
              * @property {google.protobuf.FeatureSet.EnforceNamingStyle|null} [enforceNamingStyle] FeatureSet enforceNamingStyle
              * @property {google.protobuf.FeatureSet.VisibilityFeature.DefaultSymbolVisibility|null} [defaultSymbolVisibility] FeatureSet defaultSymbolVisibility
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -23302,7 +23302,7 @@ $root.google = (function() {
              * @classdesc Represents a FeatureSet.
              * @constructor
              * @param {google.protobuf.FeatureSet.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var FeatureSet = function (properties) {
                 if (properties)
@@ -24022,7 +24022,7 @@ $root.google = (function() {
                 /**
                  * Properties of a VisibilityFeature.
                  * @typedef {Object} google.protobuf.FeatureSet.VisibilityFeature.$Properties
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -24044,7 +24044,7 @@ $root.google = (function() {
                  * @classdesc Represents a VisibilityFeature.
                  * @constructor
                  * @param {google.protobuf.FeatureSet.VisibilityFeature.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var VisibilityFeature = function (properties) {
                     if (properties)
@@ -24267,7 +24267,7 @@ $root.google = (function() {
              * @property {Array.<google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.$Properties>|null} [defaults] FeatureSetDefaults defaults
              * @property {google.protobuf.Edition|null} [minimumEdition] FeatureSetDefaults minimumEdition
              * @property {google.protobuf.Edition|null} [maximumEdition] FeatureSetDefaults maximumEdition
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -24289,7 +24289,7 @@ $root.google = (function() {
              * @classdesc Represents a FeatureSetDefaults.
              * @constructor
              * @param {google.protobuf.FeatureSetDefaults.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var FeatureSetDefaults = function (properties) {
                 this.defaults = [];
@@ -24731,7 +24731,7 @@ $root.google = (function() {
                  * @property {google.protobuf.Edition|null} [edition] FeatureSetEditionDefault edition
                  * @property {google.protobuf.FeatureSet.$Properties|null} [overridableFeatures] FeatureSetEditionDefault overridableFeatures
                  * @property {google.protobuf.FeatureSet.$Properties|null} [fixedFeatures] FeatureSetEditionDefault fixedFeatures
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -24753,7 +24753,7 @@ $root.google = (function() {
                  * @classdesc Represents a FeatureSetEditionDefault.
                  * @constructor
                  * @param {google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var FeatureSetEditionDefault = function (properties) {
                     if (properties)
@@ -25118,7 +25118,7 @@ $root.google = (function() {
              * Properties of a SourceCodeInfo.
              * @typedef {Object} google.protobuf.SourceCodeInfo.$Properties
              * @property {Array.<google.protobuf.SourceCodeInfo.Location.$Properties>|null} [location] SourceCodeInfo location
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -25140,7 +25140,7 @@ $root.google = (function() {
              * @classdesc Represents a SourceCodeInfo.
              * @constructor
              * @param {google.protobuf.SourceCodeInfo.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var SourceCodeInfo = function (properties) {
                 this.location = [];
@@ -25396,7 +25396,7 @@ $root.google = (function() {
                  * @property {string|null} [leadingComments] Location leadingComments
                  * @property {string|null} [trailingComments] Location trailingComments
                  * @property {Array.<string>|null} [leadingDetachedComments] Location leadingDetachedComments
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -25418,7 +25418,7 @@ $root.google = (function() {
                  * @classdesc Represents a Location.
                  * @constructor
                  * @param {google.protobuf.SourceCodeInfo.Location.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var Location = function (properties) {
                     this.path = [];
@@ -25824,7 +25824,7 @@ $root.google = (function() {
              * Properties of a GeneratedCodeInfo.
              * @typedef {Object} google.protobuf.GeneratedCodeInfo.$Properties
              * @property {Array.<google.protobuf.GeneratedCodeInfo.Annotation.$Properties>|null} [annotation] GeneratedCodeInfo annotation
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -25846,7 +25846,7 @@ $root.google = (function() {
              * @classdesc Represents a GeneratedCodeInfo.
              * @constructor
              * @param {google.protobuf.GeneratedCodeInfo.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var GeneratedCodeInfo = function (properties) {
                 this.annotation = [];
@@ -26102,7 +26102,7 @@ $root.google = (function() {
                  * @property {number|null} [begin] Annotation begin
                  * @property {number|null} [end] Annotation end
                  * @property {google.protobuf.GeneratedCodeInfo.Annotation.Semantic|null} [semantic] Annotation semantic
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
 
                 /**
@@ -26124,7 +26124,7 @@ $root.google = (function() {
                  * @classdesc Represents an Annotation.
                  * @constructor
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation.$Properties=} [properties] Properties to set
-                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
                  */
                 var Annotation = function (properties) {
                     this.path = [];

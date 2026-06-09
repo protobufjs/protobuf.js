@@ -14,6 +14,33 @@ var proto = "syntax = \"proto3\";\n"
     + "  string future_string = 3;\n"
     + "}\n";
 
+function decodePreserving(type, buffer) {
+    var reader = protobuf.Reader.create(buffer);
+    reader.discardUnknown = false;
+    return type.decode(reader);
+}
+
+tape.test("unknown fields - discard by default", function(test) {
+    var root = protobuf.parse(proto).root,
+        SimpleV1 = root.lookupType("SimpleV1"),
+        SimpleV2 = root.lookupType("SimpleV2");
+
+    var decoded = SimpleV1.decode(SimpleV2.encode({
+        known: 1,
+        futureBool: true,
+        futureString: "hello"
+    }).finish());
+
+    test.equal(decoded.known, 1, "should decode known fields");
+    test.equal(Object.hasOwnProperty.call(decoded, "$unknowns"), false, "should not retain unknown fields");
+
+    var restored = SimpleV2.decode(SimpleV1.encode(decoded).finish());
+    test.equal(restored.known, 1, "should preserve known fields");
+    test.equal(Object.hasOwnProperty.call(restored, "futureBool"), false, "should discard unknown bool field");
+    test.equal(Object.hasOwnProperty.call(restored, "futureString"), false, "should discard unknown string field");
+    test.end();
+});
+
 tape.test("unknown fields - preserve through decode and encode", function(test) {
     var root = protobuf.parse(proto).root,
         SimpleV1 = root.lookupType("SimpleV1"),
@@ -24,7 +51,7 @@ tape.test("unknown fields - preserve through decode and encode", function(test) 
         futureBool: true,
         futureString: "hello"
     };
-    var decoded = SimpleV1.decode(SimpleV2.encode(original).finish());
+    var decoded = decodePreserving(SimpleV1, SimpleV2.encode(original).finish());
 
     test.equal(decoded.known, 1, "should decode known fields");
     test.deepEqual(Object.keys(decoded), [ "known" ], "should keep unknown fields non-enumerable");
@@ -46,7 +73,7 @@ tape.test("unknown fields - preserve unknown field order", function(test) {
         .uint32(16).bool(true)
         .uint32(26).string("def")
         .finish();
-    var decoded = SimpleV1.decode(original);
+    var decoded = decodePreserving(SimpleV1, original);
 
     test.deepEqual(SimpleV1.encode(decoded).finish(), original, "should preserve relative unknown field order");
     test.end();
@@ -57,7 +84,7 @@ tape.test("unknown fields - can be discarded", function(test) {
         SimpleV1 = root.lookupType("SimpleV1"),
         SimpleV2 = root.lookupType("SimpleV2");
 
-    var decoded = SimpleV1.decode(SimpleV2.encode({
+    var decoded = decodePreserving(SimpleV1, SimpleV2.encode({
         known: 1,
         futureBool: true,
         futureString: "hello"
@@ -162,11 +189,11 @@ tape.test("unknown fields - Reader.discardUnknown default", function(test) {
         }).finish();
 
     try {
-        protobuf.Reader.discardUnknown = true;
+        protobuf.Reader.discardUnknown = false;
 
         var decoded = SimpleV1.decode(encoded);
         test.equal(decoded.known, 1, "should decode known fields");
-        test.equal(Object.hasOwnProperty.call(decoded, "$unknowns"), false, "should use the reader default");
+        test.equal(decoded.$unknowns.length, 1, "should use the reader default");
     } finally {
         protobuf.Reader.discardUnknown = discardUnknown;
     }

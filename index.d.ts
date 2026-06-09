@@ -585,7 +585,7 @@ export class Message<T extends object = object> {
      */
     constructor(properties?: Properties<T>);
 
-    /** Unknown fields preserved while decoding */
+    /** Unknown fields preserved while decoding when enabled */
     $unknowns?: Uint8Array[];
 
     /** Reference to the reflected type. */
