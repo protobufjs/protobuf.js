@@ -187,13 +187,13 @@ $root.Test1 = (function() {
             long = 0;
         if (long > $util.recursionLimit)
             return "maximum nesting depth exceeded";
-        if (message.field1 != null && message.hasOwnProperty("field1"))
+        if (message.field1 != null && Object.hasOwnProperty.call(message, "field1"))
             if (!$util.isString(message.field1))
                 return "field1: string expected";
-        if (message.field2 != null && message.hasOwnProperty("field2"))
+        if (message.field2 != null && Object.hasOwnProperty.call(message, "field2"))
             if (!$util.isInteger(message.field2))
                 return "field2: integer expected";
-        if (message.field3 != null && message.hasOwnProperty("field3"))
+        if (message.field3 != null && Object.hasOwnProperty.call(message, "field3"))
             if (typeof message.field3 !== "boolean")
                 return "field3: boolean expected";
         return null;
@@ -248,11 +248,11 @@ $root.Test1 = (function() {
             object.field2 = 0;
             object.field3 = false;
         }
-        if (message.field1 != null && message.hasOwnProperty("field1"))
+        if (message.field1 != null && Object.hasOwnProperty.call(message, "field1"))
             object.field1 = message.field1;
-        if (message.field2 != null && message.hasOwnProperty("field2"))
+        if (message.field2 != null && Object.hasOwnProperty.call(message, "field2"))
             object.field2 = message.field2;
-        if (message.field3 != null && message.hasOwnProperty("field3"))
+        if (message.field3 != null && Object.hasOwnProperty.call(message, "field3"))
             object.field3 = message.field3;
         return object;
     };

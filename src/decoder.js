@@ -125,7 +125,7 @@ function decoder(mtype) {
     for (i = 0; i < mtype._fieldsArray.length; ++i) {
         var rfield = mtype._fieldsArray[i];
         if (rfield.required) gen
-    ("if(!m.hasOwnProperty(%j))", rfield.name)
+            ("if(!Object.hasOwnProperty.call(m,%j))", rfield.name)
         ("throw util.ProtocolError(%j,{instance:m})", missing(rfield));
     }
 

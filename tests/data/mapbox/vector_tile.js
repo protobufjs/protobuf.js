@@ -167,7 +167,7 @@ $root.vector_tile = (function() {
                 long = 0;
             if (long > $util.recursionLimit)
                 return "maximum nesting depth exceeded";
-            if (message.layers != null && message.hasOwnProperty("layers")) {
+            if (message.layers != null && Object.hasOwnProperty.call(message, "layers")) {
                 if (!Array.isArray(message.layers))
                     return "layers: array expected";
                 for (var i = 0; i < message.layers.length; ++i) {
@@ -516,25 +516,25 @@ $root.vector_tile = (function() {
                     long = 0;
                 if (long > $util.recursionLimit)
                     return "maximum nesting depth exceeded";
-                if (message.stringValue != null && message.hasOwnProperty("stringValue"))
+                if (message.stringValue != null && Object.hasOwnProperty.call(message, "stringValue"))
                     if (!$util.isString(message.stringValue))
                         return "stringValue: string expected";
-                if (message.floatValue != null && message.hasOwnProperty("floatValue"))
+                if (message.floatValue != null && Object.hasOwnProperty.call(message, "floatValue"))
                     if (typeof message.floatValue !== "number")
                         return "floatValue: number expected";
-                if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
+                if (message.doubleValue != null && Object.hasOwnProperty.call(message, "doubleValue"))
                     if (typeof message.doubleValue !== "number")
                         return "doubleValue: number expected";
-                if (message.intValue != null && message.hasOwnProperty("intValue"))
+                if (message.intValue != null && Object.hasOwnProperty.call(message, "intValue"))
                     if (!$util.isInteger(message.intValue) && !(message.intValue && $util.isInteger(message.intValue.low) && $util.isInteger(message.intValue.high)))
                         return "intValue: integer|Long expected";
-                if (message.uintValue != null && message.hasOwnProperty("uintValue"))
+                if (message.uintValue != null && Object.hasOwnProperty.call(message, "uintValue"))
                     if (!$util.isInteger(message.uintValue) && !(message.uintValue && $util.isInteger(message.uintValue.low) && $util.isInteger(message.uintValue.high)))
                         return "uintValue: integer|Long expected";
-                if (message.sintValue != null && message.hasOwnProperty("sintValue"))
+                if (message.sintValue != null && Object.hasOwnProperty.call(message, "sintValue"))
                     if (!$util.isInteger(message.sintValue) && !(message.sintValue && $util.isInteger(message.sintValue.low) && $util.isInteger(message.sintValue.high)))
                         return "sintValue: integer|Long expected";
-                if (message.boolValue != null && message.hasOwnProperty("boolValue"))
+                if (message.boolValue != null && Object.hasOwnProperty.call(message, "boolValue"))
                     if (typeof message.boolValue !== "boolean")
                         return "boolValue: boolean expected";
                 return null;
@@ -634,34 +634,34 @@ $root.vector_tile = (function() {
                         object.sintValue = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
                     object.boolValue = false;
                 }
-                if (message.stringValue != null && message.hasOwnProperty("stringValue"))
+                if (message.stringValue != null && Object.hasOwnProperty.call(message, "stringValue"))
                     object.stringValue = message.stringValue;
-                if (message.floatValue != null && message.hasOwnProperty("floatValue"))
+                if (message.floatValue != null && Object.hasOwnProperty.call(message, "floatValue"))
                     object.floatValue = options.json && !isFinite(message.floatValue) ? String(message.floatValue) : message.floatValue;
-                if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
+                if (message.doubleValue != null && Object.hasOwnProperty.call(message, "doubleValue"))
                     object.doubleValue = options.json && !isFinite(message.doubleValue) ? String(message.doubleValue) : message.doubleValue;
-                if (message.intValue != null && message.hasOwnProperty("intValue"))
+                if (message.intValue != null && Object.hasOwnProperty.call(message, "intValue"))
                     if (typeof BigInt !== "undefined" && options.longs === BigInt)
                         object.intValue = typeof message.intValue === "number" ? BigInt(message.intValue) : $util.Long.fromBits(message.intValue.low >>> 0, message.intValue.high >>> 0, false).toBigInt();
                     else if (typeof message.intValue === "number")
                         object.intValue = options.longs === String ? String(message.intValue) : message.intValue;
                     else
                         object.intValue = options.longs === String ? $util.Long.prototype.toString.call(message.intValue) : options.longs === Number ? new $util.LongBits(message.intValue.low >>> 0, message.intValue.high >>> 0).toNumber() : message.intValue;
-                if (message.uintValue != null && message.hasOwnProperty("uintValue"))
+                if (message.uintValue != null && Object.hasOwnProperty.call(message, "uintValue"))
                     if (typeof BigInt !== "undefined" && options.longs === BigInt)
                         object.uintValue = typeof message.uintValue === "number" ? BigInt(message.uintValue) : $util.Long.fromBits(message.uintValue.low >>> 0, message.uintValue.high >>> 0, true).toBigInt();
                     else if (typeof message.uintValue === "number")
                         object.uintValue = options.longs === String ? String(message.uintValue) : message.uintValue;
                     else
                         object.uintValue = options.longs === String ? $util.Long.prototype.toString.call(message.uintValue) : options.longs === Number ? new $util.LongBits(message.uintValue.low >>> 0, message.uintValue.high >>> 0).toNumber(true) : message.uintValue;
-                if (message.sintValue != null && message.hasOwnProperty("sintValue"))
+                if (message.sintValue != null && Object.hasOwnProperty.call(message, "sintValue"))
                     if (typeof BigInt !== "undefined" && options.longs === BigInt)
                         object.sintValue = typeof message.sintValue === "number" ? BigInt(message.sintValue) : $util.Long.fromBits(message.sintValue.low >>> 0, message.sintValue.high >>> 0, false).toBigInt();
                     else if (typeof message.sintValue === "number")
                         object.sintValue = options.longs === String ? String(message.sintValue) : message.sintValue;
                     else
                         object.sintValue = options.longs === String ? $util.Long.prototype.toString.call(message.sintValue) : options.longs === Number ? new $util.LongBits(message.sintValue.low >>> 0, message.sintValue.high >>> 0).toNumber() : message.sintValue;
-                if (message.boolValue != null && message.hasOwnProperty("boolValue"))
+                if (message.boolValue != null && Object.hasOwnProperty.call(message, "boolValue"))
                     object.boolValue = message.boolValue;
                 return object;
             };
@@ -909,17 +909,17 @@ $root.vector_tile = (function() {
                     long = 0;
                 if (long > $util.recursionLimit)
                     return "maximum nesting depth exceeded";
-                if (message.id != null && message.hasOwnProperty("id"))
+                if (message.id != null && Object.hasOwnProperty.call(message, "id"))
                     if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
                         return "id: integer|Long expected";
-                if (message.tags != null && message.hasOwnProperty("tags")) {
+                if (message.tags != null && Object.hasOwnProperty.call(message, "tags")) {
                     if (!Array.isArray(message.tags))
                         return "tags: array expected";
                     for (var i = 0; i < message.tags.length; ++i)
                         if (!$util.isInteger(message.tags[i]))
                             return "tags: integer[] expected";
                 }
-                if (message.type != null && message.hasOwnProperty("type"))
+                if (message.type != null && Object.hasOwnProperty.call(message, "type"))
                     switch (message.type) {
                     default:
                         return "type: enum value expected";
@@ -929,7 +929,7 @@ $root.vector_tile = (function() {
                     case 3:
                         break;
                     }
-                if (message.geometry != null && message.hasOwnProperty("geometry")) {
+                if (message.geometry != null && Object.hasOwnProperty.call(message, "geometry")) {
                     if (!Array.isArray(message.geometry))
                         return "geometry: array expected";
                     for (var i = 0; i < message.geometry.length; ++i)
@@ -1036,7 +1036,7 @@ $root.vector_tile = (function() {
                         object.id = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
                     object.type = options.enums === String ? "UNKNOWN" : 0;
                 }
-                if (message.id != null && message.hasOwnProperty("id"))
+                if (message.id != null && Object.hasOwnProperty.call(message, "id"))
                     if (typeof BigInt !== "undefined" && options.longs === BigInt)
                         object.id = typeof message.id === "number" ? BigInt(message.id) : $util.Long.fromBits(message.id.low >>> 0, message.id.high >>> 0, true).toBigInt();
                     else if (typeof message.id === "number")
@@ -1048,7 +1048,7 @@ $root.vector_tile = (function() {
                     for (var j = 0; j < message.tags.length; ++j)
                         object.tags[j] = message.tags[j];
                 }
-                if (message.type != null && message.hasOwnProperty("type"))
+                if (message.type != null && Object.hasOwnProperty.call(message, "type"))
                     object.type = options.enums === String ? $root.vector_tile.Tile.GeomType[message.type] === undefined ? message.type : $root.vector_tile.Tile.GeomType[message.type] : message.type;
                 if (message.geometry && message.geometry.length) {
                     object.geometry = [];
@@ -1283,9 +1283,9 @@ $root.vector_tile = (function() {
                         break;
                     }
                 }
-                if (!message.hasOwnProperty("version"))
+                if (!Object.hasOwnProperty.call(message, "version"))
                     throw $util.ProtocolError("missing required 'version'", { instance: message });
-                if (!message.hasOwnProperty("name"))
+                if (!Object.hasOwnProperty.call(message, "name"))
                     throw $util.ProtocolError("missing required 'name'", { instance: message });
                 return message;
             };
@@ -1325,7 +1325,7 @@ $root.vector_tile = (function() {
                     return "version: integer expected";
                 if (!$util.isString(message.name))
                     return "name: string expected";
-                if (message.features != null && message.hasOwnProperty("features")) {
+                if (message.features != null && Object.hasOwnProperty.call(message, "features")) {
                     if (!Array.isArray(message.features))
                         return "features: array expected";
                     for (var i = 0; i < message.features.length; ++i) {
@@ -1334,14 +1334,14 @@ $root.vector_tile = (function() {
                             return "features." + error;
                     }
                 }
-                if (message.keys != null && message.hasOwnProperty("keys")) {
+                if (message.keys != null && Object.hasOwnProperty.call(message, "keys")) {
                     if (!Array.isArray(message.keys))
                         return "keys: array expected";
                     for (var i = 0; i < message.keys.length; ++i)
                         if (!$util.isString(message.keys[i]))
                             return "keys: string[] expected";
                 }
-                if (message.values != null && message.hasOwnProperty("values")) {
+                if (message.values != null && Object.hasOwnProperty.call(message, "values")) {
                     if (!Array.isArray(message.values))
                         return "values: array expected";
                     for (var i = 0; i < message.values.length; ++i) {
@@ -1350,7 +1350,7 @@ $root.vector_tile = (function() {
                             return "values." + error;
                     }
                 }
-                if (message.extent != null && message.hasOwnProperty("extent"))
+                if (message.extent != null && Object.hasOwnProperty.call(message, "extent"))
                     if (!$util.isInteger(message.extent))
                         return "extent: integer expected";
                 return null;
@@ -1437,7 +1437,7 @@ $root.vector_tile = (function() {
                     object.extent = 4096;
                     object.version = 1;
                 }
-                if (message.name != null && message.hasOwnProperty("name"))
+                if (message.name != null && Object.hasOwnProperty.call(message, "name"))
                     object.name = message.name;
                 if (message.features && message.features.length) {
                     object.features = [];
@@ -1454,9 +1454,9 @@ $root.vector_tile = (function() {
                     for (var j = 0; j < message.values.length; ++j)
                         object.values[j] = $root.vector_tile.Tile.Value.toObject(message.values[j], options, q + 1);
                 }
-                if (message.extent != null && message.hasOwnProperty("extent"))
+                if (message.extent != null && Object.hasOwnProperty.call(message, "extent"))
                     object.extent = message.extent;
-                if (message.version != null && message.hasOwnProperty("version"))
+                if (message.version != null && Object.hasOwnProperty.call(message, "version"))
                     object.version = message.version;
                 return object;
             };

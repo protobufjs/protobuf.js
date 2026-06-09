@@ -494,46 +494,46 @@ $root.Package = (function() {
             long = 0;
         if (long > $util.recursionLimit)
             return "maximum nesting depth exceeded";
-        if (message.name != null && message.hasOwnProperty("name"))
+        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
-        if (message.version != null && message.hasOwnProperty("version"))
+        if (message.version != null && Object.hasOwnProperty.call(message, "version"))
             if (!$util.isString(message.version))
                 return "version: string expected";
-        if (message.versionScheme != null && message.hasOwnProperty("versionScheme"))
+        if (message.versionScheme != null && Object.hasOwnProperty.call(message, "versionScheme"))
             if (!$util.isString(message.versionScheme))
                 return "versionScheme: string expected";
-        if (message.description != null && message.hasOwnProperty("description"))
+        if (message.description != null && Object.hasOwnProperty.call(message, "description"))
             if (!$util.isString(message.description))
                 return "description: string expected";
-        if (message.author != null && message.hasOwnProperty("author"))
+        if (message.author != null && Object.hasOwnProperty.call(message, "author"))
             if (!$util.isString(message.author))
                 return "author: string expected";
-        if (message.license != null && message.hasOwnProperty("license"))
+        if (message.license != null && Object.hasOwnProperty.call(message, "license"))
             if (!$util.isString(message.license))
                 return "license: string expected";
-        if (message.repository != null && message.hasOwnProperty("repository")) {
+        if (message.repository != null && Object.hasOwnProperty.call(message, "repository")) {
             var error = $root.Package.Repository.verify(message.repository, long + 1);
             if (error)
                 return "repository." + error;
         }
-        if (message.bugs != null && message.hasOwnProperty("bugs"))
+        if (message.bugs != null && Object.hasOwnProperty.call(message, "bugs"))
             if (!$util.isString(message.bugs))
                 return "bugs: string expected";
-        if (message.homepage != null && message.hasOwnProperty("homepage"))
+        if (message.homepage != null && Object.hasOwnProperty.call(message, "homepage"))
             if (!$util.isString(message.homepage))
                 return "homepage: string expected";
-        if (message.keywords != null && message.hasOwnProperty("keywords")) {
+        if (message.keywords != null && Object.hasOwnProperty.call(message, "keywords")) {
             if (!Array.isArray(message.keywords))
                 return "keywords: array expected";
             for (var i = 0; i < message.keywords.length; ++i)
                 if (!$util.isString(message.keywords[i]))
                     return "keywords: string[] expected";
         }
-        if (message.main != null && message.hasOwnProperty("main"))
+        if (message.main != null && Object.hasOwnProperty.call(message, "main"))
             if (!$util.isString(message.main))
                 return "main: string expected";
-        if (message.bin != null && message.hasOwnProperty("bin")) {
+        if (message.bin != null && Object.hasOwnProperty.call(message, "bin")) {
             if (!$util.isObject(message.bin))
                 return "bin: object expected";
             var key = Object.keys(message.bin);
@@ -541,7 +541,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.bin[key[i]]))
                     return "bin: string{k:string} expected";
         }
-        if (message.scripts != null && message.hasOwnProperty("scripts")) {
+        if (message.scripts != null && Object.hasOwnProperty.call(message, "scripts")) {
             if (!$util.isObject(message.scripts))
                 return "scripts: object expected";
             var key = Object.keys(message.scripts);
@@ -549,7 +549,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.scripts[key[i]]))
                     return "scripts: string{k:string} expected";
         }
-        if (message.dependencies != null && message.hasOwnProperty("dependencies")) {
+        if (message.dependencies != null && Object.hasOwnProperty.call(message, "dependencies")) {
             if (!$util.isObject(message.dependencies))
                 return "dependencies: object expected";
             var key = Object.keys(message.dependencies);
@@ -557,7 +557,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.dependencies[key[i]]))
                     return "dependencies: string{k:string} expected";
         }
-        if (message.devDependencies != null && message.hasOwnProperty("devDependencies")) {
+        if (message.devDependencies != null && Object.hasOwnProperty.call(message, "devDependencies")) {
             if (!$util.isObject(message.devDependencies))
                 return "devDependencies: object expected";
             var key = Object.keys(message.devDependencies);
@@ -565,10 +565,10 @@ $root.Package = (function() {
                 if (!$util.isString(message.devDependencies[key[i]]))
                     return "devDependencies: string{k:string} expected";
         }
-        if (message.types != null && message.hasOwnProperty("types"))
+        if (message.types != null && Object.hasOwnProperty.call(message, "types"))
             if (!$util.isString(message.types))
                 return "types: string expected";
-        if (message.cliDependencies != null && message.hasOwnProperty("cliDependencies")) {
+        if (message.cliDependencies != null && Object.hasOwnProperty.call(message, "cliDependencies")) {
             if (!Array.isArray(message.cliDependencies))
                 return "cliDependencies: array expected";
             for (var i = 0; i < message.cliDependencies.length; ++i)
@@ -718,28 +718,28 @@ $root.Package = (function() {
             object.types = "";
             object.versionScheme = "";
         }
-        if (message.name != null && message.hasOwnProperty("name"))
+        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
             object.name = message.name;
-        if (message.version != null && message.hasOwnProperty("version"))
+        if (message.version != null && Object.hasOwnProperty.call(message, "version"))
             object.version = message.version;
-        if (message.description != null && message.hasOwnProperty("description"))
+        if (message.description != null && Object.hasOwnProperty.call(message, "description"))
             object.description = message.description;
-        if (message.author != null && message.hasOwnProperty("author"))
+        if (message.author != null && Object.hasOwnProperty.call(message, "author"))
             object.author = message.author;
-        if (message.license != null && message.hasOwnProperty("license"))
+        if (message.license != null && Object.hasOwnProperty.call(message, "license"))
             object.license = message.license;
-        if (message.repository != null && message.hasOwnProperty("repository"))
+        if (message.repository != null && Object.hasOwnProperty.call(message, "repository"))
             object.repository = $root.Package.Repository.toObject(message.repository, options, q + 1);
-        if (message.bugs != null && message.hasOwnProperty("bugs"))
+        if (message.bugs != null && Object.hasOwnProperty.call(message, "bugs"))
             object.bugs = message.bugs;
-        if (message.homepage != null && message.hasOwnProperty("homepage"))
+        if (message.homepage != null && Object.hasOwnProperty.call(message, "homepage"))
             object.homepage = message.homepage;
         if (message.keywords && message.keywords.length) {
             object.keywords = [];
             for (var j = 0; j < message.keywords.length; ++j)
                 object.keywords[j] = message.keywords[j];
         }
-        if (message.main != null && message.hasOwnProperty("main"))
+        if (message.main != null && Object.hasOwnProperty.call(message, "main"))
             object.main = message.main;
         var keys2;
         if (message.bin && (keys2 = Object.keys(message.bin)).length) {
@@ -774,14 +774,14 @@ $root.Package = (function() {
                 object.devDependencies[keys2[j]] = message.devDependencies[keys2[j]];
             }
         }
-        if (message.types != null && message.hasOwnProperty("types"))
+        if (message.types != null && Object.hasOwnProperty.call(message, "types"))
             object.types = message.types;
         if (message.cliDependencies && message.cliDependencies.length) {
             object.cliDependencies = [];
             for (var j = 0; j < message.cliDependencies.length; ++j)
                 object.cliDependencies[j] = message.cliDependencies[j];
         }
-        if (message.versionScheme != null && message.hasOwnProperty("versionScheme"))
+        if (message.versionScheme != null && Object.hasOwnProperty.call(message, "versionScheme"))
             object.versionScheme = message.versionScheme;
         return object;
     };
@@ -972,10 +972,10 @@ $root.Package = (function() {
                 long = 0;
             if (long > $util.recursionLimit)
                 return "maximum nesting depth exceeded";
-            if (message.type != null && message.hasOwnProperty("type"))
+            if (message.type != null && Object.hasOwnProperty.call(message, "type"))
                 if (!$util.isString(message.type))
                     return "type: string expected";
-            if (message.url != null && message.hasOwnProperty("url"))
+            if (message.url != null && Object.hasOwnProperty.call(message, "url"))
                 if (!$util.isString(message.url))
                     return "url: string expected";
             return null;
@@ -1027,9 +1027,9 @@ $root.Package = (function() {
                 object.type = "";
                 object.url = "";
             }
-            if (message.type != null && message.hasOwnProperty("type"))
+            if (message.type != null && Object.hasOwnProperty.call(message, "type"))
                 object.type = message.type;
-            if (message.url != null && message.hasOwnProperty("url"))
+            if (message.url != null && Object.hasOwnProperty.call(message, "url"))
                 object.url = message.url;
             return object;
         };

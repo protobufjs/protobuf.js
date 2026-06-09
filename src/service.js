@@ -9,8 +9,6 @@ var Method = require("./method"),
     util   = require("./util"),
     rpc    = require("./rpc");
 
-var reservedRe = util.patterns.reservedRe;
-
 /**
  * Constructs a new service instance.
  * @classdesc Reflected service.
@@ -185,11 +183,11 @@ Service.prototype.create = function create(rpcImpl, requestDelimited, responseDe
     var rpcService = new rpc.Service(rpcImpl, requestDelimited, responseDelimited);
     for (var i = 0, method; i < /* initializes */ this.methodsArray.length; ++i) {
         var methodName = util.lcFirst((method = this._methodsArray[i]).resolve().name).replace(/[^$\w_]/g, "");
-        rpcService[methodName] = util.codegen(["r","c"], reservedRe.test(methodName) ? methodName + "_" : methodName)("return this.rpcCall(m,q,s,r,c)")({
-            m: method,
-            q: method.resolvedRequestType.ctor,
-            s: method.resolvedResponseType.ctor
-        });
+        rpcService[methodName] = (function(method, requestType, responseType) {
+            return function rpcMethod(request, callback) {
+                return rpc.Service.prototype.rpcCall.call(this, method, requestType, responseType, request, callback);
+            };
+        })(method, method.resolvedRequestType.ctor, method.resolvedResponseType.ctor);
     }
     return rpcService;
 };

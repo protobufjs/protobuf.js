@@ -119,7 +119,7 @@ util.isset =
  */
 util.isSet = function isSet(obj, prop) {
     var value = obj[prop];
-    if (value != null && obj.hasOwnProperty(prop)) // eslint-disable-line eqeqeq, no-prototype-builtins
+    if (value != null && Object.hasOwnProperty.call(obj, prop)) // eslint-disable-line eqeqeq
         return typeof value !== "object" || (Array.isArray(value) ? value.length : Object.keys(value).length) > 0;
     return false;
 };

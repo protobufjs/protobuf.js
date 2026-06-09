@@ -86,6 +86,9 @@ tape.test("util", function(test) {
             test.notOk(util.isSet(instance, "p"), "should return that " + name + " on the prototype are not present");
             test.ok(util.isSet(instance, "i"), "should return that " + name + " on the instance ARE present");
         });
+        var nullProto = Object.create(null);
+        nullProto.i = "value";
+        test.ok(util.isSet(nullProto, "i"), "should support null-prototype objects");
 
          test.end();
     });
