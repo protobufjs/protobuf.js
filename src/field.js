@@ -3,7 +3,15 @@ module.exports = Field;
 
 // extends ReflectionObject
 var ReflectionObject = require("./object");
-((Field.prototype = Object.create(ReflectionObject.prototype)).constructor = Field).className = "Field";
+Field.prototype = Object.create(ReflectionObject.prototype, {
+    constructor: {
+        value: Field,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
+Field.className = "Field";
 
 var Enum  = require("./enum"),
     types = require("./types"),

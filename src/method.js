@@ -3,7 +3,15 @@ module.exports = Method;
 
 // extends ReflectionObject
 var ReflectionObject = require("./object");
-((Method.prototype = Object.create(ReflectionObject.prototype)).constructor = Method).className = "Method";
+Method.prototype = Object.create(ReflectionObject.prototype, {
+    constructor: {
+        value: Method,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
+Method.className = "Method";
 
 var util = require("./util");
 

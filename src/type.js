@@ -3,7 +3,15 @@ module.exports = Type;
 
 // extends Namespace
 var Namespace = require("./namespace");
-((Type.prototype = Object.create(Namespace.prototype)).constructor = Type).className = "Type";
+Type.prototype = Object.create(Namespace.prototype, {
+    constructor: {
+        value: Type,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
+Type.className = "Type";
 
 var Enum      = require("./enum"),
     OneOf     = require("./oneof"),
@@ -167,7 +175,13 @@ Object.defineProperties(Type.prototype, {
             // Ensure proper prototype
             var prototype = ctor.prototype;
             if (!(prototype instanceof Message)) {
-                (ctor.prototype = new Message()).constructor = ctor;
+                ctor.prototype = new Message();
+                Object.defineProperty(ctor.prototype, "constructor", {
+                    value: ctor,
+                    writable: true,
+                    enumerable: false,
+                    configurable: true
+                });
                 util.merge(ctor.prototype, prototype);
             }
 

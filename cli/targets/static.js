@@ -1010,7 +1010,7 @@ function buildService(ref, service) {
     --indent;
     push("};");
     push("");
-    push("(" + escapeName(service.name) + ".prototype = " + globalRef("Object") + ".create($protobuf.rpc.Service.prototype)).constructor = " + escapeName(service.name) + ";");
+    push(globalRef("Object") + ".defineProperty(" + escapeName(service.name) + ".prototype = " + globalRef("Object") + ".create($protobuf.rpc.Service.prototype), \"constructor\", { value: " + escapeName(service.name) + ", writable: true, enumerable: false, configurable: true });");
 
     if (config.create) {
         push("");

@@ -4,7 +4,14 @@ module.exports = Service;
 var util = require("../util/minimal");
 
 // Extends EventEmitter
-(Service.prototype = Object.create(util.EventEmitter.prototype)).constructor = Service;
+Service.prototype = Object.create(util.EventEmitter.prototype, {
+    constructor: {
+        value: Service,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
 
 /**
  * A service method callback as used by {@link rpc.ServiceMethod|ServiceMethod}.

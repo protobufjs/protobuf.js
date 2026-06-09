@@ -3,7 +3,15 @@ module.exports = Root;
 
 // extends Namespace
 var Namespace = require("./namespace");
-((Root.prototype = Object.create(Namespace.prototype)).constructor = Root).className = "Root";
+Root.prototype = Object.create(Namespace.prototype, {
+    constructor: {
+        value: Root,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
+Root.className = "Root";
 
 var Field   = require("./field"),
     Enum    = require("./enum"),

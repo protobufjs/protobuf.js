@@ -1,4 +1,5 @@
 "use strict";
+/* global globalThis */
 var util = exports;
 
 // used to return a Promise where callback is omitted
@@ -53,6 +54,7 @@ util.isNode = Boolean(typeof global !== "undefined"
 util.global = util.isNode && global
            || typeof window !== "undefined" && window
            || typeof self   !== "undefined" && self
+           || typeof globalThis !== "undefined" && globalThis
            || this; // eslint-disable-line no-invalid-this
 
 /**
