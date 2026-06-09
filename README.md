@@ -76,7 +76,7 @@ const decoded = AwesomeMessage.decode(encoded);
 
 Plain objects can be encoded directly when they already use protobuf.js runtime types: numbers for 32-bit numeric fields, booleans for `bool`, strings for `string`, `Uint8Array` or `Buffer` for `bytes`, arrays for repeated fields, and plain objects for maps. Map keys are the string representation of the respective value or an 8-character hash string for 64-bit keys.
 
-Unknown fields present on the wire are preserved by default in `message.$unknowns` and forwarded when the message is re-encoded. Unknown field data can be dropped from a decoded message with `delete message.$unknowns`, discarded during decode with `reader.discardUnknown = true` per reader, or disabled by default for subsequently created readers with `Reader.discardUnknown = true`.
+Unknown fields present on the wire are discarded by default. To preserve and forward unknown fields, set `reader.discardUnknown = false` before decoding with that reader, or make this the default for subsequently created readers with `Reader.discardUnknown = false`. Preserved unknown field data can be dropped from a decoded message with `delete message.$unknowns`.
 
 ### Convert plain objects
 

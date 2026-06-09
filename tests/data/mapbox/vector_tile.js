@@ -25,7 +25,7 @@ $root.vector_tile = (function() {
          * Properties of a Tile.
          * @typedef {Object} vector_tile.Tile.$Properties
          * @property {Array.<vector_tile.Tile.Layer.$Properties>|null} [layers] Tile layers
-         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
 
         /**
@@ -47,7 +47,7 @@ $root.vector_tile = (function() {
          * @classdesc Represents a Tile.
          * @constructor
          * @param {vector_tile.Tile.$Properties=} [properties] Properties to set
-         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
         var Tile = function (properties) {
             this.layers = [];
@@ -323,7 +323,7 @@ $root.vector_tile = (function() {
              * @property {number|Long|null} [uintValue] Value uintValue
              * @property {number|Long|null} [sintValue] Value sintValue
              * @property {boolean|null} [boolValue] Value boolValue
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -345,7 +345,7 @@ $root.vector_tile = (function() {
              * @classdesc Represents a Value.
              * @constructor
              * @param {vector_tile.Tile.Value.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var Value = function (properties) {
                 if (properties)
@@ -775,7 +775,7 @@ $root.vector_tile = (function() {
              * @property {Array.<number>|null} [tags] Feature tags
              * @property {vector_tile.Tile.GeomType|null} [type] Feature type
              * @property {Array.<number>|null} [geometry] Feature geometry
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -797,7 +797,7 @@ $root.vector_tile = (function() {
              * @classdesc Represents a Feature.
              * @constructor
              * @param {vector_tile.Tile.Feature.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var Feature = function (properties) {
                 this.tags = [];
@@ -1210,7 +1210,7 @@ $root.vector_tile = (function() {
              * @property {Array.<string>|null} [keys] Layer keys
              * @property {Array.<vector_tile.Tile.Value.$Properties>|null} [values] Layer values
              * @property {number|null} [extent] Layer extent
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
 
             /**
@@ -1232,7 +1232,7 @@ $root.vector_tile = (function() {
              * @classdesc Represents a Layer.
              * @constructor
              * @param {vector_tile.Tile.Layer.$Properties=} [properties] Properties to set
-             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
              */
             var Layer = function (properties) {
                 this.features = [];

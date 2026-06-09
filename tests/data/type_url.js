@@ -16,7 +16,7 @@ $root.TypeUrlTest = (function() {
      * Properties of a TypeUrlTest.
      * @typedef {Object} TypeUrlTest.$Properties
      * @property {TypeUrlTest.Nested.$Properties|null} [nested] TypeUrlTest nested
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
 
     /**
@@ -38,7 +38,7 @@ $root.TypeUrlTest = (function() {
      * @classdesc Represents a TypeUrlTest.
      * @constructor
      * @param {TypeUrlTest.$Properties=} [properties] Properties to set
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
     var TypeUrlTest = function (properties) {
         if (properties)
@@ -274,7 +274,7 @@ $root.TypeUrlTest = (function() {
          * Properties of a Nested.
          * @typedef {Object} TypeUrlTest.Nested.$Properties
          * @property {string|null} [a] Nested a
-         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
 
         /**
@@ -296,7 +296,7 @@ $root.TypeUrlTest = (function() {
          * @classdesc Represents a Nested.
          * @constructor
          * @param {TypeUrlTest.Nested.$Properties=} [properties] Properties to set
-         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
         var Nested = function (properties) {
             if (properties)

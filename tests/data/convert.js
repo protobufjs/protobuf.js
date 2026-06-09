@@ -24,7 +24,7 @@ $root.Message = (function() {
      * @property {Message.SomeEnum|null} [enumVal] Message enumVal
      * @property {Array.<Message.SomeEnum>|null} [enumRepeated] Message enumRepeated
      * @property {Object.<string,number|Long>|null} [int64Map] Message int64Map
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
 
     /**
@@ -46,7 +46,7 @@ $root.Message = (function() {
      * @classdesc Represents a Message.
      * @constructor
      * @param {Message.$Properties=} [properties] Properties to set
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
     var Message = function (properties) {
         this.stringRepeated = [];
