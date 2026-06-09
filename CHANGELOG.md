@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.6.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.6.2...protobufjs-v7.6.3) (2026-06-09)
+
+
+### Bug Fixes
+
+* Avoid name collisions in generated code ([#2311](https://github.com/protobufjs/protobuf.js/issues/2311)) ([78a9576](https://github.com/protobufjs/protobuf.js/commit/78a9576269a5b590c54686a8122e78e28135cd50))
+* Preserve null conversion behavior for fieldless messages ([#2312](https://github.com/protobufjs/protobuf.js/issues/2312)) ([df91652](https://github.com/protobufjs/protobuf.js/commit/df91652aa5cb1ee0204566252df85cbe752298a6))
+
 ## [7.6.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.6.1...protobufjs-v7.6.2) (2026-05-30)
 
 

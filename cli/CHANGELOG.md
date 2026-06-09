@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.3.2...protobufjs-cli-v1.3.3) (2026-06-09)
+
+
+### Bug Fixes
+
+* Avoid name collisions in generated code ([#2311](https://github.com/protobufjs/protobuf.js/issues/2311)) ([78a9576](https://github.com/protobufjs/protobuf.js/commit/78a9576269a5b590c54686a8122e78e28135cd50))
+
 ## [1.3.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.3.1...protobufjs-cli-v1.3.2) (2026-05-30)
 
 
