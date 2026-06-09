@@ -430,12 +430,6 @@ $root.Test2 = (function() {
     Test2.fromObject = function fromObject(object, long) {
         if (object instanceof $root.Test2)
             return object;
-        if (!$util.isObject(object))
-            throw TypeError(".Test2: object expected");
-        if (long === undefined)
-            long = 0;
-        if (long > $util.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
         return new $root.Test2();
     };
 

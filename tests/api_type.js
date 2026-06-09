@@ -327,11 +327,17 @@ tape.test("object conversion rejects null message values", function(test) {
                     key: { type: "string", id: 1 },
                     value: { type: "string", id: 2 }
                 }
+            },
+            Empty: {
+                fields: {}
             }
         }
     });
     var Document = root.lookupType("Document");
     var Metadata = root.lookupType("Metadata");
+    var Empty = root.lookupType("Empty");
+
+    test.ok(Empty.fromObject(null) instanceof Empty.ctor, "should allow null top-level fieldless messages");
 
     test.throws(function() {
         Metadata.fromObject(null);

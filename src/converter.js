@@ -107,14 +107,15 @@ converter.fromObject = function fromObject(mtype) {
     var fields = mtype.fieldsArray;
     var gen = util.codegen(["d", "n"], mtype.name + "$fromObject")
     ("if(d instanceof this.ctor)")
-        ("return d")
+        ("return d");
+    if (!fields.length) return gen
+    ("return new this.ctor");
+    gen
     ("if(!util.isObject(d))")
         ("throw TypeError(%j)", mtype.fullName + ": object expected")
     ("if(n===undefined)n=0")
     ("if(n>util.recursionLimit)")
         ("throw Error(\"maximum nesting depth exceeded\")");
-    if (!fields.length) return gen
-    ("return new this.ctor");
     gen
     ("var m=new this.ctor");
     for (var i = 0; i < fields.length; ++i) {
