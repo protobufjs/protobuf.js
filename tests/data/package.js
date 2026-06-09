@@ -32,7 +32,7 @@ $root.Package = (function() {
      * @property {Object.<string,string>|null} [devDependencies] Package devDependencies
      * @property {string|null} [types] Package types
      * @property {Array.<string>|null} [cliDependencies] Package cliDependencies
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
 
     /**
@@ -54,7 +54,7 @@ $root.Package = (function() {
      * @classdesc Represents a Package.
      * @constructor
      * @param {Package.$Properties=} [properties] Properties to set
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
     var Package = function (properties) {
         this.keywords = [];
@@ -933,7 +933,7 @@ $root.Package = (function() {
          * @typedef {Object} Package.Repository.$Properties
          * @property {string|null} [type] Repository type
          * @property {string|null} [url] Repository url
-         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
 
         /**
@@ -955,7 +955,7 @@ $root.Package = (function() {
          * @classdesc Represents a Repository.
          * @constructor
          * @param {Package.Repository.$Properties=} [properties] Properties to set
-         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
          */
         var Repository = function (properties) {
             if (properties)

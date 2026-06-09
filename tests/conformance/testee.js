@@ -30,6 +30,9 @@ switch (mode) {
         throw Error("unsupported PROTOBUFJS_CONFORMANCE_MODE: " + mode);
 }
 
+// Conformance tests assert protobuf binary round-tripping, including unknown fields.
+protobuf.Reader.discardUnknown = false;
+
 var TEST_TYPE_NAMES = [
     "protobuf_test_messages.proto2.TestAllTypesProto2",
     "protobuf_test_messages.proto3.TestAllTypesProto3",

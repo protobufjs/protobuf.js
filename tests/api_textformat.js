@@ -226,7 +226,10 @@ tape.test("textformat - optionally formats unknown fields", function(test) {
             .uint32(1005 << 3 | 1).raw([0xf0, 0xde, 0xbc, 0x9a, 0x78, 0x56, 0x34, 0x12])
             .uint32(1006 << 3 | 3).uint32(8).uint32(321).uint32(1006 << 3 | 4)
             .finish(),
-        msg = M.decode(encoded);
+        reader = protobuf.Reader.create(encoded);
+
+    reader.discardUnknown = false;
+    var msg = M.decode(reader);
 
     test.equal(M.toText(msg), "", "omits unknown fields by default");
     test.equal(M.toText(msg, { unknowns: true }), [
@@ -243,7 +246,9 @@ tape.test("textformat - optionally formats unknown fields", function(test) {
     ].join("\n"), "formats unknown fields with numeric text format syntax");
 
     var unknownLimit = protobuf.textformat.unknownRecursionLimit,
-        nestedOnly = M.decode(protobuf.Writer.create().uint32(1002 << 3 | 2).bytes(nested).finish());
+        nestedReader = protobuf.Reader.create(protobuf.Writer.create().uint32(1002 << 3 | 2).bytes(nested).finish());
+    nestedReader.discardUnknown = false;
+    var nestedOnly = M.decode(nestedReader);
     protobuf.textformat.unknownRecursionLimit = 0;
     try {
         test.equal(M.toText(nestedOnly, { unknowns: true }), "1002: \"\\010o\"", "unknown recursion limit disables nested heuristic");

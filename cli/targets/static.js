@@ -710,7 +710,7 @@ function buildType(ref, type) {
                 typeDef.push("@property {" + oneof.oneof.map(JSON.stringify).join("|") + "} [" + oneof.name + "] " + (oneof.comment || type.name + " " + oneof.name));
             });
         }
-        typeDef.push("@property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding");
+        typeDef.push("@property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled");
         push("");
         pushComment(typeDef);
         push("");
@@ -746,7 +746,7 @@ function buildType(ref, type) {
             var propType = optional ? jsType.replace(/\|undefined\b/g, "") : jsType;
             classDef.push("@property {" + propType + "} " + toPropName(field, optional) + " " + (field.comment || type.name + " " + field.name));
         });
-        classDef.push("@property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding");
+        classDef.push("@property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled");
     }
     pushComment(classDef);
     buildFunction(type, type.name, Type.generateConstructor(type));

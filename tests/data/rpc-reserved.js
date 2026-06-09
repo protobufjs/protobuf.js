@@ -92,7 +92,7 @@ $root.MyRequest = (function() {
      * Properties of a MyRequest.
      * @typedef {Object} MyRequest.$Properties
      * @property {string|null} [path] MyRequest path
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
 
     /**
@@ -114,7 +114,7 @@ $root.MyRequest = (function() {
      * @classdesc Represents a MyRequest.
      * @constructor
      * @param {MyRequest.$Properties=} [properties] Properties to set
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
     var MyRequest = function (properties) {
         if (properties)
@@ -352,7 +352,7 @@ $root.MyResponse = (function() {
      * Properties of a MyResponse.
      * @typedef {Object} MyResponse.$Properties
      * @property {number|null} [status] MyResponse status
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
 
     /**
@@ -374,7 +374,7 @@ $root.MyResponse = (function() {
      * @classdesc Represents a MyResponse.
      * @constructor
      * @param {MyResponse.$Properties=} [properties] Properties to set
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
     var MyResponse = function (properties) {
         if (properties)

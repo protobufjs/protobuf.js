@@ -460,7 +460,7 @@ Reader.recursionLimit = util.recursionLimit;
  * Whether readers discard unknown fields while decoding.
  * @type {boolean}
  */
-Reader.discardUnknown = false;
+Reader.discardUnknown = true;
 
 /**
  * Skips the next element of the specified wire type.

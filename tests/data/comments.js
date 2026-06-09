@@ -18,7 +18,7 @@ $root.Test1 = (function() {
      * @property {string|null} [field1] Field with a comment.
      * @property {number|null} [field2] Test1 field2
      * @property {boolean|null} [field3] Field with a comment and a <a href="http://example.com/foo/">link</a>
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
 
     /**
@@ -43,7 +43,7 @@ $root.Test1 = (function() {
      * comment.
      * @constructor
      * @param {Test1.$Properties=} [properties] Properties to set
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
     var Test1 = function (properties) {
         if (properties)
@@ -337,7 +337,7 @@ $root.Test2 = (function() {
     /**
      * Properties of a Test2.
      * @typedef {Object} Test2.$Properties
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
 
     /**
@@ -359,7 +359,7 @@ $root.Test2 = (function() {
      * @classdesc Represents a Test2.
      * @constructor
      * @param {Test2.$Properties=} [properties] Properties to set
-     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
     var Test2 = function (properties) {
         if (properties)
