@@ -1,5 +1,4 @@
 "use strict";
-var protobuf = exports;
 
 /**
  * Build type, one of `"full"`, `"light"` or `"minimal"`.
@@ -7,19 +6,19 @@ var protobuf = exports;
  * @type {string}
  * @const
  */
-protobuf.build = "minimal";
+exports.build = "minimal";
 
 // Serialization
-protobuf.Writer       = require("./writer");
-protobuf.BufferWriter = require("./writer_buffer");
-protobuf.Reader       = require("./reader");
-protobuf.BufferReader = require("./reader_buffer");
+exports.Writer       = require("./writer");
+exports.BufferWriter = require("./writer_buffer");
+exports.Reader       = require("./reader");
+exports.BufferReader = require("./reader_buffer");
 
 // Utility
-protobuf.util         = require("./util/minimal");
-protobuf.rpc          = require("./rpc");
-protobuf.roots        = require("./roots");
-protobuf.configure    = configure;
+exports.util         = require("./util/minimal");
+exports.rpc          = require("./rpc");
+exports.roots        = require("./roots");
+exports.configure    = configure;
 
 /* istanbul ignore next */
 /**
@@ -27,9 +26,9 @@ protobuf.configure    = configure;
  * @returns {undefined}
  */
 function configure() {
-    protobuf.util._configure();
-    protobuf.Writer._configure(protobuf.BufferWriter);
-    protobuf.Reader._configure(protobuf.BufferReader);
+    exports.util._configure();
+    exports.Writer._configure(exports.BufferWriter);
+    exports.Reader._configure(exports.BufferReader);
 }
 
 // Set up buffer utility according to the environment
