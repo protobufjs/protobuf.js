@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.5.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.5.2...protobufjs-cli-v2.5.3) (2026-06-09)
+
+
+### Bug Fixes
+
+* Discard unknown fields by default ([#2310](https://github.com/protobufjs/protobuf.js/issues/2310)) ([bf12d56](https://github.com/protobufjs/protobuf.js/commit/bf12d566c5ba1e1bc24af5882c127bbfd1e2e1d6))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * protobufjs bumped from file:.. to 8.6.2
+  * peerDependencies
+    * protobufjs bumped from ^8.6.1 to ^8.6.2
+
 ## [2.5.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.5.1...protobufjs-cli-v2.5.2) (2026-06-07)
 
 
