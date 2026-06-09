@@ -22,6 +22,9 @@
         },
         "applicationName": "protobuf.js",
         "applicationSubtitle": "API documentation",
+        "meta": {
+            "title": "protobuf.js API documentation"
+        },
         "linenums"      : true
     },
     "markdown"  : {

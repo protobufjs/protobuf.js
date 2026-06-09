@@ -100,6 +100,11 @@ export namespace common {
         value?: Uint8Array;
     }
 
+    /** Properties of a google.protobuf.FieldMask message. */
+    interface IFieldMask {
+        paths?: string[];
+    }
+
     /**
      * Gets the root definition of the specified common proto file.
      *
