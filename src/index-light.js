@@ -1,7 +1,7 @@
 "use strict";
-module.exports = require("./index-minimal");
+exports = module.exports = require("./index-minimal");
 
-module.exports.build = "light";
+exports.build = "light";
 
 /**
  * A node-style callback as used by {@link load} and {@link Root#load}.
@@ -23,9 +23,9 @@ module.exports.build = "light";
 function load(filename, root, callback) {
     if (typeof root === "function") {
         callback = root;
-        root = new module.exports.Root();
+        root = new exports.Root();
     } else if (!root)
-        root = new module.exports.Root();
+        root = new exports.Root();
     return root.load(filename, callback);
 }
 
@@ -53,7 +53,7 @@ function load(filename, root, callback) {
  */
 // function load(filename:string, [root:Root]):Promise<Root>
 
-module.exports.load = load;
+exports.load = load;
 
 /**
  * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).
@@ -65,40 +65,40 @@ module.exports.load = load;
  */
 function loadSync(filename, root) {
     if (!root)
-        root = new module.exports.Root();
+        root = new exports.Root();
     return root.loadSync(filename);
 }
 
-module.exports.loadSync = loadSync;
+exports.loadSync = loadSync;
 
 // Serialization
-module.exports.encoder          = require("./encoder");
-module.exports.decoder          = require("./decoder");
-module.exports.verifier         = require("./verifier");
-module.exports.converter        = require("./converter");
+exports.encoder          = require("./encoder");
+exports.decoder          = require("./decoder");
+exports.verifier         = require("./verifier");
+exports.converter        = require("./converter");
 
 // Reflection
-module.exports.ReflectionObject = require("./object");
-module.exports.Namespace        = require("./namespace");
-module.exports.Root             = require("./root");
-module.exports.Enum             = require("./enum");
-module.exports.Type             = require("./type");
-module.exports.Field            = require("./field");
-module.exports.OneOf            = require("./oneof");
-module.exports.MapField         = require("./mapfield");
-module.exports.Service          = require("./service");
-module.exports.Method           = require("./method");
+exports.ReflectionObject = require("./object");
+exports.Namespace        = require("./namespace");
+exports.Root             = require("./root");
+exports.Enum             = require("./enum");
+exports.Type             = require("./type");
+exports.Field            = require("./field");
+exports.OneOf            = require("./oneof");
+exports.MapField         = require("./mapfield");
+exports.Service          = require("./service");
+exports.Method           = require("./method");
 
 // Runtime
-module.exports.Message          = require("./message");
-module.exports.wrappers         = require("./wrappers");
+exports.Message          = require("./message");
+exports.wrappers         = require("./wrappers");
 
 // Utility
-module.exports.types            = require("./types");
-module.exports.util             = require("./util");
+exports.types            = require("./types");
+exports.util             = require("./util");
 
 // Set up possibly cyclic reflection dependencies
-module.exports.ReflectionObject._configure(module.exports.Root);
-module.exports.Namespace._configure(module.exports.Type, module.exports.Service, module.exports.Enum);
-module.exports.Root._configure(module.exports.Type, undefined, {});
-module.exports.Field._configure(module.exports.Type);
+exports.ReflectionObject._configure(exports.Root);
+exports.Namespace._configure(exports.Type, exports.Service, exports.Enum);
+exports.Root._configure(exports.Type, undefined, {});
+exports.Field._configure(exports.Type);

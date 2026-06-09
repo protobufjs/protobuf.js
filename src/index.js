@@ -1,12 +1,12 @@
 "use strict";
-module.exports = require("./index-light");
+exports = module.exports = require("./index-light");
 
-module.exports.build = "full";
+exports.build = "full";
 
 // Parser
-module.exports.tokenize         = require("./tokenize");
-module.exports.parse            = require("./parse");
-module.exports.common           = require("./common");
+exports.tokenize         = require("./tokenize");
+exports.parse            = require("./parse");
+exports.common           = require("./common");
 
 // Configure parser
-module.exports.Root._configure(module.exports.Type, module.exports.parse, module.exports.common);
+exports.Root._configure(exports.Type, exports.parse, exports.common);
