@@ -171,12 +171,6 @@ $root.jspb = (function() {
             Empty.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.Empty)
                     return object;
-                if (!$util.isObject(object))
-                    throw TypeError(".jspb.test.Empty: object expected");
-                if (long === undefined)
-                    long = 0;
-                if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
                 return new $root.jspb.test.Empty();
             };
 
@@ -3129,12 +3123,6 @@ $root.jspb = (function() {
             OuterMessage.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.OuterMessage)
                     return object;
-                if (!$util.isObject(object))
-                    throw TypeError(".jspb.test.OuterMessage: object expected");
-                if (long === undefined)
-                    long = 0;
-                if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
                 return new $root.jspb.test.OuterMessage();
             };
 
@@ -3778,12 +3766,6 @@ $root.jspb = (function() {
             IndirectExtension.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.IndirectExtension)
                     return object;
-                if (!$util.isObject(object))
-                    throw TypeError(".jspb.test.IndirectExtension: object expected");
-                if (long === undefined)
-                    long = 0;
-                if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
                 return new $root.jspb.test.IndirectExtension();
             };
 
@@ -7794,12 +7776,6 @@ $root.jspb = (function() {
             TestReservedNamesExtension.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.TestReservedNamesExtension)
                     return object;
-                if (!$util.isObject(object))
-                    throw TypeError(".jspb.test.TestReservedNamesExtension: object expected");
-                if (long === undefined)
-                    long = 0;
-                if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
                 return new $root.jspb.test.TestReservedNamesExtension();
             };
 
@@ -10039,12 +10015,6 @@ $root.jspb = (function() {
             Deeply.fromObject = function fromObject(object, long) {
                 if (object instanceof $root.jspb.test.Deeply)
                     return object;
-                if (!$util.isObject(object))
-                    throw TypeError(".jspb.test.Deeply: object expected");
-                if (long === undefined)
-                    long = 0;
-                if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
                 return new $root.jspb.test.Deeply();
             };
 
@@ -10231,12 +10201,6 @@ $root.jspb = (function() {
                 Nested.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.jspb.test.Deeply.Nested)
                         return object;
-                    if (!$util.isObject(object))
-                        throw TypeError(".jspb.test.Deeply.Nested: object expected");
-                    if (long === undefined)
-                        long = 0;
-                    if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
                     return new $root.jspb.test.Deeply.Nested();
                 };
 
@@ -21958,12 +21922,6 @@ $root.google = (function() {
                 VisibilityFeature.fromObject = function fromObject(object, long) {
                     if (object instanceof $root.google.protobuf.FeatureSet.VisibilityFeature)
                         return object;
-                    if (!$util.isObject(object))
-                        throw TypeError(".google.protobuf.FeatureSet.VisibilityFeature: object expected");
-                    if (long === undefined)
-                        long = 0;
-                    if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
                     return new $root.google.protobuf.FeatureSet.VisibilityFeature();
                 };
 
