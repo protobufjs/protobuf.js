@@ -337,3 +337,19 @@ tape.test("converters", function(test) {
     });
 
 });
+
+tape.test("converters - runtime-significant field names", function(test) {
+    var root = protobuf.parse("syntax = \"proto3\";\n"
+        + "message Singular { string hasOwnProperty = 1; }\n"
+        + "message Repeated { repeated string hasOwnProperty = 1; }\n").root;
+
+    var Singular = root.lookupType("Singular"),
+        Repeated = root.lookupType("Repeated"),
+        singular = Singular.create({ hasOwnProperty: "value" }),
+        repeated = Repeated.decode(Repeated.encode({ hasOwnProperty: [ "a", "b" ] }).finish());
+
+    test.equal(Singular.verify({ hasOwnProperty: "value" }), null, "verify should not call a shadowed hasOwnProperty field");
+    test.same(Singular.toObject(singular), { hasOwnProperty: "value" }, "toObject should not call a shadowed hasOwnProperty field");
+    test.same(repeated.hasOwnProperty, [ "a", "b" ], "decode should not call a shadowed hasOwnProperty field");
+    test.end();
+});

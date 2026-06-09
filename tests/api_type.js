@@ -97,6 +97,13 @@ tape.test("reflected types", function(test) {
         type.add(new protobuf.Field("b", 2, "uint32"));
     }, Error, "should throw when trying to add reserved names");
 
+    test.throws(function() {
+        type.add(new protobuf.Field("$type", 2, "uint32"));
+    }, Error, "should throw when trying to add fields with runtime-reserved names");
+
+    test.throws(function() {
+        type.add(new protobuf.OneOf("$kind", [ "a" ]));
+    }, Error, "should throw when trying to add oneofs with runtime-reserved names");
 
     test.end();
 });

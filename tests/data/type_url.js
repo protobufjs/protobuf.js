@@ -154,7 +154,7 @@ $root.TypeUrlTest = (function() {
             long = 0;
         if (long > $util.recursionLimit)
             return "maximum nesting depth exceeded";
-        if (message.nested != null && message.hasOwnProperty("nested")) {
+        if (message.nested != null && Object.hasOwnProperty.call(message, "nested")) {
             var error = $root.TypeUrlTest.Nested.verify(message.nested, long + 1);
             if (error)
                 return "nested." + error;
@@ -207,7 +207,7 @@ $root.TypeUrlTest = (function() {
         var object = {};
         if (options.defaults)
             object.nested = null;
-        if (message.nested != null && message.hasOwnProperty("nested"))
+        if (message.nested != null && Object.hasOwnProperty.call(message, "nested"))
             object.nested = $root.TypeUrlTest.Nested.toObject(message.nested, options, q + 1);
         return object;
     };
@@ -383,7 +383,7 @@ $root.TypeUrlTest = (function() {
                 long = 0;
             if (long > $util.recursionLimit)
                 return "maximum nesting depth exceeded";
-            if (message.a != null && message.hasOwnProperty("a"))
+            if (message.a != null && Object.hasOwnProperty.call(message, "a"))
                 if (!$util.isString(message.a))
                     return "a: string expected";
             return null;
@@ -431,7 +431,7 @@ $root.TypeUrlTest = (function() {
             var object = {};
             if (options.defaults)
                 object.a = "";
-            if (message.a != null && message.hasOwnProperty("a"))
+            if (message.a != null && Object.hasOwnProperty.call(message, "a"))
                 object.a = message.a;
             return object;
         };

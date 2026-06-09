@@ -48,6 +48,22 @@ tape.test("reflected services", function(test) {
     test.end();
 });
 
+tape.test("reflected services can call runtime-significant method names", function(test) {
+    var root = protobuf.parse("syntax = \"proto3\"; message Req {} message Res {} service S { rpc rpcCall(Req) returns (Res); }").root;
+    root.resolveAll();
+
+    var Res = root.lookupType("Res"),
+        service = root.lookupService("S").create(function(method, request, callback) {
+            callback(null, Res.encode({}).finish());
+        });
+
+    service.rpcCall({}, function(err, response) {
+        test.error(err, "should call method named rpcCall");
+        test.ok(response instanceof Res.ctor, "should decode the response");
+        test.end();
+    });
+});
+
 tape.test("feature resolution legacy proto3", function(test) {
     var json = {
         methods: {

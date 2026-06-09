@@ -266,6 +266,41 @@ tape.test("pbjs supports dictionary generated root names", function(test) {
     });
 });
 
+tape.test("pbjs static services can call runtime-significant method names", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.parse("syntax = \"proto3\"; message Req {} message Res {} service S { rpc rpcCall(Req) returns (Res); }").root;
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+        staticTarget(root, {
+            decode: true,
+            encode: true,
+            convert: true,
+            service: true,
+            root: "staticServiceShadow"
+        }, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+
+            delete protobuf.roots.staticServiceShadow;
+            var $protobuf = protobuf;
+            eval(jsCode);
+
+            var S = protobuf.roots.staticServiceShadow.S,
+                Res = protobuf.roots.staticServiceShadow.Res,
+                service = new S(function(method, request, callback) {
+                    callback(null, Res.encode({}).finish());
+                });
+
+            service.rpcCall({}, function(callErr, response) {
+                test.error(callErr, "should call method named rpcCall");
+                test.ok(response instanceof Res, "should decode the response");
+                delete protobuf.roots.staticServiceShadow;
+                test.end();
+            });
+        });
+    });
+});
+
 tape.test("pbjs rejects static target escaped name collisions", function(test) {
     cliTest(test, function() {
         var root = protobuf.Root.fromJSON({

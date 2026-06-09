@@ -61,7 +61,7 @@ $root.MyService = (function() {
      * @variation 1
      */
     Object.defineProperty(MyService.prototype["delete"] = function delete_(request, callback) {
-        return this.rpcCall(delete_, $root.MyRequest, $root.MyResponse, request, callback);
+        return $protobuf.rpc.Service.prototype.rpcCall.call(this, delete_, $root.MyRequest, $root.MyResponse, request, callback);
     }, "name", { value: "Delete" });
 
     /**
@@ -222,7 +222,7 @@ $root.MyRequest = (function() {
             long = 0;
         if (long > $util.recursionLimit)
             return "maximum nesting depth exceeded";
-        if (message.path != null && message.hasOwnProperty("path"))
+        if (message.path != null && Object.hasOwnProperty.call(message, "path"))
             if (!$util.isString(message.path))
                 return "path: string expected";
         return null;
@@ -270,7 +270,7 @@ $root.MyRequest = (function() {
         var object = {};
         if (options.defaults)
             object.path = "";
-        if (message.path != null && message.hasOwnProperty("path"))
+        if (message.path != null && Object.hasOwnProperty.call(message, "path"))
             object.path = message.path;
         return object;
     };
@@ -449,7 +449,7 @@ $root.MyResponse = (function() {
             long = 0;
         if (long > $util.recursionLimit)
             return "maximum nesting depth exceeded";
-        if (message.status != null && message.hasOwnProperty("status"))
+        if (message.status != null && Object.hasOwnProperty.call(message, "status"))
             if (!$util.isInteger(message.status))
                 return "status: integer expected";
         return null;
@@ -497,7 +497,7 @@ $root.MyResponse = (function() {
         var object = {};
         if (options.defaults)
             object.status = 0;
-        if (message.status != null && message.hasOwnProperty("status"))
+        if (message.status != null && Object.hasOwnProperty.call(message, "status"))
             object.status = message.status;
         return object;
     };

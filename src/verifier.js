@@ -138,7 +138,7 @@ function verifier(mtype) {
             ref   = "m" + util.safeProp(field.name);
 
         if (field.optional) gen
-        ("if(%s!=null&&m.hasOwnProperty(%j)){", ref, field.name); // !== undefined && !== null
+        ("if(%s!=null&&Object.hasOwnProperty.call(m,%j)){", ref, field.name); // !== undefined && !== null
 
         // map fields
         if (field.map) { gen
