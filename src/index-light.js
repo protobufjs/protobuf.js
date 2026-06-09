@@ -1,7 +1,7 @@
 "use strict";
-var protobuf = module.exports = require("./index-minimal");
+exports = module.exports = require("./index-minimal");
 
-protobuf.build = "light";
+exports.build = "light";
 
 /**
  * A node-style callback as used by {@link load} and {@link Root#load}.
@@ -23,9 +23,9 @@ protobuf.build = "light";
 function load(filename, root, callback) {
     if (typeof root === "function") {
         callback = root;
-        root = new protobuf.Root();
+        root = new exports.Root();
     } else if (!root)
-        root = new protobuf.Root();
+        root = new exports.Root();
     return root.load(filename, callback);
 }
 
@@ -53,7 +53,7 @@ function load(filename, root, callback) {
  */
 // function load(filename:string, [root:Root]):Promise<Root>
 
-protobuf.load = load;
+exports.load = load;
 
 /**
  * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).
@@ -65,40 +65,40 @@ protobuf.load = load;
  */
 function loadSync(filename, root) {
     if (!root)
-        root = new protobuf.Root();
+        root = new exports.Root();
     return root.loadSync(filename);
 }
 
-protobuf.loadSync = loadSync;
+exports.loadSync = loadSync;
 
 // Serialization
-protobuf.encoder          = require("./encoder");
-protobuf.decoder          = require("./decoder");
-protobuf.verifier         = require("./verifier");
-protobuf.converter        = require("./converter");
+exports.encoder          = require("./encoder");
+exports.decoder          = require("./decoder");
+exports.verifier         = require("./verifier");
+exports.converter        = require("./converter");
 
 // Reflection
-protobuf.ReflectionObject = require("./object");
-protobuf.Namespace        = require("./namespace");
-protobuf.Root             = require("./root");
-protobuf.Enum             = require("./enum");
-protobuf.Type             = require("./type");
-protobuf.Field            = require("./field");
-protobuf.OneOf            = require("./oneof");
-protobuf.MapField         = require("./mapfield");
-protobuf.Service          = require("./service");
-protobuf.Method           = require("./method");
+exports.ReflectionObject = require("./object");
+exports.Namespace        = require("./namespace");
+exports.Root             = require("./root");
+exports.Enum             = require("./enum");
+exports.Type             = require("./type");
+exports.Field            = require("./field");
+exports.OneOf            = require("./oneof");
+exports.MapField         = require("./mapfield");
+exports.Service          = require("./service");
+exports.Method           = require("./method");
 
 // Runtime
-protobuf.Message          = require("./message");
-protobuf.wrappers         = require("./wrappers");
+exports.Message          = require("./message");
+exports.wrappers         = require("./wrappers");
 
 // Utility
-protobuf.types            = require("./types");
-protobuf.util             = require("./util");
+exports.types            = require("./types");
+exports.util             = require("./util");
 
 // Set up possibly cyclic reflection dependencies
-protobuf.ReflectionObject._configure(protobuf.Root);
-protobuf.Namespace._configure(protobuf.Type, protobuf.Service, protobuf.Enum);
-protobuf.Root._configure(protobuf.Type, undefined, {});
-protobuf.Field._configure(protobuf.Type);
+exports.ReflectionObject._configure(exports.Root);
+exports.Namespace._configure(exports.Type, exports.Service, exports.Enum);
+exports.Root._configure(exports.Type, undefined, {});
+exports.Field._configure(exports.Type);
