@@ -48,7 +48,6 @@
     "long": "^5.3.2"
   },
   "devDependencies": {
-    "@endo/init": "^1.1.13",
     "@eslint/js": "^10.0.0",
     "@types/node": ">=13.7.0",
     "browserify": "^17.0.0",
