@@ -3,7 +3,7 @@ description: "Build and run the upstream Protocol Buffers conformance suite for 
 inputs:
   upstream-version:
     description: "Upstream protocolbuffers/protobuf tag or branch to test against."
-    default: "v33.0"
+    default: "v35.0"
   upstream-dir:
     description: "Directory where upstream protobuf is checked out."
     default: "tests/conformance/upstream"
@@ -189,4 +189,25 @@ runs:
           else
             echo "No conformance log found."
           fi
+        } | tee -a "$GITHUB_STEP_SUMMARY"
+
+    - name: "Summarize conformance runner"
+      if: always()
+      shell: bash
+      run: |
+        {
+          echo ""
+          echo "---"
+          echo ""
+          if [ -d "${{ inputs.upstream-dir }}/.git" ]; then
+            echo "Conformance runner: protocolbuffers/protobuf \`${{ inputs.upstream-version }}\` (\`$(git -C "${{ inputs.upstream-dir }}" rev-parse --short HEAD)\`)"
+          else
+            echo "Conformance runner: protocolbuffers/protobuf \`${{ inputs.upstream-version }}\`"
+          fi
+          if [ -x "${{ inputs.runner-cache }}/build/protoc" ]; then
+            echo "Protoc: \`$("${{ inputs.runner-cache }}/build/protoc" --version)\`"
+          else
+            echo "Protoc: unavailable"
+          fi
+          echo "Options: \`--maximum_edition ${{ inputs.maximum-edition }} --enforce_recommended\`"
         } | tee -a "$GITHUB_STEP_SUMMARY"

@@ -397,7 +397,7 @@ $root.TypeUrlTest = (function() {
                 case 1: {
                         if (wireType !== 2)
                             break;
-                        if ((value = reader.string()).length)
+                        if ((value = reader.stringVerify()).length)
                             message.a = value;
                         else
                             delete message.a;

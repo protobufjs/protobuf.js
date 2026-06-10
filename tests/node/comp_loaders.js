@@ -33,7 +33,8 @@ var distPath = path.join(__dirname, "..", "..", "dist");
                 window: {
                     dcodeIO: dcodeIO
                 },
-                dcodeIO: dcodeIO
+                dcodeIO: dcodeIO,
+                TextDecoder: TextDecoder
             });
 
             test.ok(sandbox.window.protobuf, "should load the library as a global");
@@ -50,7 +51,8 @@ var distPath = path.join(__dirname, "..", "..", "dist");
                 self: {
                     dcodeIO: dcodeIO
                 },
-                dcodeIO: dcodeIO
+                dcodeIO: dcodeIO,
+                TextDecoder: TextDecoder
             });
 
             test.ok(sandbox.self.protobuf, "should load the library as a global");
@@ -73,7 +75,8 @@ var distPath = path.join(__dirname, "..", "..", "dist");
                 define: fakeDefine,
                 window: {},
                 require: undefined,
-                console: console
+                console: console,
+                TextDecoder: TextDecoder
             });
 
             test.ok(sandbox.window.protobuf, "should load the library as a global");

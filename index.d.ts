@@ -1346,6 +1346,12 @@ export class Reader {
     string(): string;
 
     /**
+     * Reads a string preceeded by its byte length as a varint, rejecting invalid UTF8.
+     * @returns Value read
+     */
+    stringVerify(): string;
+
+    /**
      * Skips the specified number of bytes if specified, otherwise skips a varint.
      * @param [length] Length if known, otherwise a varint is assumed
      * @returns `this`
@@ -2638,6 +2644,15 @@ export namespace util {
          * @returns String read
          */
         function read(buffer: Uint8Array, start: number, end: number): string;
+
+        /**
+         * Reads UTF8 bytes as a string, rejecting invalid UTF8.
+         * @param buffer Source buffer
+         * @param start Source start
+         * @param end Source end
+         * @returns String read
+         */
+        function readStrict(buffer: Uint8Array, start: number, end: number): string;
 
         /**
          * Writes a string as UTF8 bytes.

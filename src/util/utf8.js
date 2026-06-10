@@ -6,7 +6,8 @@
  * @namespace
  */
 var utf8 = exports,
-    replacementChar = "\ufffd";
+    replacementChar = "\ufffd",
+    strictDecoder = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
 
 /**
  * Calculates the UTF8 byte length of a string.
@@ -89,6 +90,56 @@ utf8.read = function utf8_read_ascii(buffer, start, end) {
         c1 = buffer[i];
         if (c1 & 0x80)
             return utf8_read_js(buffer, i, end, str);
+        str += String.fromCharCode(c1);
+    }
+
+    return str;
+};
+
+function utf8_read_strict(buffer, start, end) {
+    var source = start === 0 && end === buffer.length
+        ? buffer
+        : buffer.subarray
+            ? buffer.subarray(start, end)
+            : buffer.slice(start, end);
+    if (Array.isArray(source))
+        source = Uint8Array.from(source);
+    return strictDecoder.decode(source);
+}
+
+/**
+ * Reads UTF8 bytes as a string, rejecting invalid UTF8.
+ * @param {Uint8Array} buffer Source buffer
+ * @param {number} start Source start
+ * @param {number} end Source end
+ * @returns {string} String read
+ */
+utf8.readStrict = function utf8_read_strict_ascii(buffer, start, end) {
+    if (end - start < 1)
+        return "";
+
+    var str = "",
+        i = start,
+        c1, c2, c3, c4, c5, c6, c7, c8;
+
+    for (; i + 7 < end; i += 8) {
+        c1 = buffer[i];
+        c2 = buffer[i + 1];
+        c3 = buffer[i + 2];
+        c4 = buffer[i + 3];
+        c5 = buffer[i + 4];
+        c6 = buffer[i + 5];
+        c7 = buffer[i + 6];
+        c8 = buffer[i + 7];
+        if ((c1 | c2 | c3 | c4 | c5 | c6 | c7 | c8) & 0x80)
+            return str + utf8_read_strict(buffer, i, end);
+        str += String.fromCharCode(c1, c2, c3, c4, c5, c6, c7, c8);
+    }
+
+    for (; i < end; ++i) {
+        c1 = buffer[i];
+        if (c1 & 0x80)
+            return str + utf8_read_strict(buffer, i, end);
         str += String.fromCharCode(c1);
     }
 
