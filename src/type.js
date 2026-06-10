@@ -155,6 +155,7 @@ Object.defineProperties(Type.prototype, {
     /**
      * The registered constructor, if any registered, otherwise a generic constructor.
      * Assigning a function replaces the internal constructor. If the function does not extend {@link Message} yet, its prototype will be setup accordingly and static methods will be populated. If it already extends {@link Message}, it will just replace the internal constructor.
+     * When assigning manually, add the type to its parent namespace/root first if fields reference other reflected types, because constructor setup resolves field defaults.
      * @name Type#ctor
      * @type {Constructor<{}>}
      */

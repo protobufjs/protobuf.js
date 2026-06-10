@@ -292,7 +292,7 @@ const decoded = AwesomeMessage.decode(bytes);
 decoded.customInstanceMethod(); // string
 ```
 
-protobuf.js will populate the constructor with the usual static runtime methods and use it for decoded messages. In TypeScript, custom members are visible when using the custom class type in consuming code.
+protobuf.js will populate the constructor with the usual static runtime methods and use it for decoded messages. When assigning constructors manually, add the type to its parent namespace/root first if fields reference other reflected types. In TypeScript, custom members are visible when using the custom class type in consuming code.
 
 ### Services
 
