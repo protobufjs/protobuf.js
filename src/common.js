@@ -363,9 +363,9 @@ common("field_mask", {
 
     /**
      * Properties of a google.protobuf.FieldMask message.
-     * @interface IDoubleValue
+     * @interface IFieldMask
      * @type {Object}
-     * @property {number} [value]
+     * @property {string[]} [paths]
      * @memberof common
      */
     FieldMask: {
