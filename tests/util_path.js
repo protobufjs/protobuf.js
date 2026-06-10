@@ -72,5 +72,9 @@ tape.test("path", function(test) {
         }
     });
 
+    test.equal(path.normalize("http://example.com/protos/../file.proto"), "http://example.com/file.proto", "should normalize http urls");
+    test.equal(path.resolve("https://example.com/protos/origin.proto", "file.proto"), "https://example.com/protos/file.proto", "should resolve relative paths against urls");
+    test.equal(path.resolve("https://example.com/protos/origin.proto", "/file.proto"), "https://example.com/file.proto", "should resolve root-relative paths against urls");
+
     test.end();
 });
