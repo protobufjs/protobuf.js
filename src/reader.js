@@ -430,6 +430,23 @@ Reader.prototype.string = function read_string() {
 };
 
 /**
+ * Reads a string preceeded by its byte length as a varint, rejecting invalid UTF8.
+ * @returns {string} Value read
+ */
+Reader.prototype.stringVerify = function read_string_verify() {
+    var length = this.uint32(),
+        start  = this.pos,
+        end    = this.pos + length;
+
+    /* istanbul ignore if */
+    if (end > this.len)
+        throw indexOutOfRange(this, length);
+
+    this.pos = end;
+    return utf8.readStrict(this.buf, start, end);
+};
+
+/**
  * Skips the specified number of bytes if specified, otherwise skips a varint.
  * @param {number} [length] Length if known, otherwise a varint is assumed
  * @returns {Reader} `this`
