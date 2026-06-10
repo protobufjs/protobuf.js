@@ -321,7 +321,8 @@ Namespace.prototype.remove = function remove(object) {
     if (object.parent !== this)
         throw Error(object + " is not a member of " + this);
 
-    delete this.nested[object.name];
+    if (!util.remove(this.nested, object, object.name))
+        throw Error(object + " is not a member of " + this);
     if (!Object.keys(this.nested).length)
         this.nested = undefined;
 

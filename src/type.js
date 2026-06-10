@@ -424,10 +424,9 @@ Type.prototype.remove = function remove(object) {
         // See Type#add for the reason why extension fields are excluded here.
 
         /* istanbul ignore if */
-        if (!this.fields || this.fields[object.name] !== object)
+        if (!util.remove(this.fields, object, object.name))
             throw Error(object + " is not a member of " + this);
 
-        delete this.fields[object.name];
         object.parent = null;
         object.onRemove(this);
         return clearCache(this);
@@ -435,10 +434,9 @@ Type.prototype.remove = function remove(object) {
     if (object instanceof OneOf) {
 
         /* istanbul ignore if */
-        if (!this.oneofs || this.oneofs[object.name] !== object)
+        if (!util.remove(this.oneofs, object, object.name))
             throw Error(object + " is not a member of " + this);
 
-        delete this.oneofs[object.name];
         object.parent = null;
         object.onRemove(this);
         return clearCache(this);

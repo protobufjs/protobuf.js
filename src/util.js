@@ -59,6 +59,28 @@ util.toObject = function toObject(array) {
 };
 
 /**
+ * Removes a value from an object.
+ * @param {Object.<string,*>|undefined} object Object to remove from
+ * @param {*} value Value to remove
+ * @param {string} [key] Optional key for fast path removal
+ * @returns {boolean} `true` if removed, otherwise `false`
+ */
+util.remove = function remove(object, value, key) {
+    if (!object)
+        return false;
+    if (key !== undefined && Object.prototype.hasOwnProperty.call(object, key) && object[key] === value) {
+        delete object[key];
+        return true;
+    }
+    for (var names = Object.keys(object), i = 0; i < names.length; ++i)
+        if (object[names[i]] === value) {
+            delete object[names[i]];
+            return true;
+        }
+    return false;
+};
+
+/**
  * Tests whether the specified name is a reserved word in JS.
  * @param {string} name Name to test
  * @returns {boolean} `true` if reserved, otherwise `false`

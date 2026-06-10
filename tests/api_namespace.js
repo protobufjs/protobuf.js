@@ -131,6 +131,13 @@ message TestMessage {\
         ns.remove(new protobuf.Enum("Enm"));
     }, Error, "should throw when trying to remove non-children");
 
+    var renamed = new protobuf.Type("RenamedBefore");
+    ns.add(renamed);
+    renamed.name = "RenamedAfter";
+    ns.remove(renamed);
+    test.equal(renamed.parent, null, "should remove renamed nested objects");
+    test.equal(ns.get("RenamedBefore"), null, "should remove renamed nested objects from the original key");
+
     test.throws(function() {
         ns.add(new protobuf.Enum("MyEnum", {}));
         ns.define("MyEnum");
