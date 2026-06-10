@@ -2661,7 +2661,7 @@ export namespace util {
     function toObject(array: any[]): { [k: string]: any };
 
     /**
-     * Removes a value from an object.
+     * Removes the first matching value from an object.
      * @param object Object to remove from
      * @param value Value to remove
      * @param [key] Optional key for fast path removal
