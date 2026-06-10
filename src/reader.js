@@ -224,18 +224,16 @@ function readLongVarint() {
             return bits;
         i = 0;
     } else {
-        for (; i < 3; ++i) {
+        for (; i < 4; ++i) {
             /* istanbul ignore if */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            // 1st..3th
+            // 1st..4th
             bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
             if (this.buf[this.pos++] < 128)
                 return bits;
         }
-        // 4th
-        bits.lo = (bits.lo | (this.buf[this.pos++] & 127) << i * 7) >>> 0;
-        return bits;
+        throw indexOutOfRange(this);
     }
     if (this.len - this.pos > 4) { // fast route (hi)
         for (; i < 5; ++i) {
