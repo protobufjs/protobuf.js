@@ -7,6 +7,28 @@
  */
 var path = exports;
 
+var urlRe = /^[a-zA-Z][a-zA-Z0-9+.-]+:\/\//;
+
+function normalizeUrl(path) {
+    if (typeof URL === "undefined" || !urlRe.test(path))
+        return null;
+    try {
+        return new URL(path).href;
+    } catch (e) {
+        return null;
+    }
+}
+
+function resolveUrl(originPath, includePath) {
+    if (typeof URL === "undefined" || !urlRe.test(originPath) || urlRe.test(includePath))
+        return null;
+    try {
+        return new URL(includePath, originPath).href;
+    } catch (e) {
+        return null;
+    }
+}
+
 var isAbsolute =
 /**
  * Tests if the specified path is absolute.
@@ -24,6 +46,9 @@ var normalize =
  * @returns {string} Normalized path
  */
 path.normalize = function normalize(path) {
+    var normalizedUrl = normalizeUrl(path);
+    if (normalizedUrl)
+        return normalizedUrl;
     var firstTwoCharacters = path.substring(0,2);
     var uncPrefix = "";
     if (firstTwoCharacters === "\\\\") {
@@ -62,8 +87,11 @@ path.normalize = function normalize(path) {
  * @returns {string} Path to the include file
  */
 path.resolve = function resolve(originPath, includePath, alreadyNormalized) {
+    var resolvedUrl = resolveUrl(originPath, includePath);
+    if (resolvedUrl)
+        return resolvedUrl;
     if (!alreadyNormalized)
-        includePath = normalize(includePath);
+        includePath = normalize(includePath); // path or absolute url
     if (isAbsolute(includePath))
         return includePath;
     if (!alreadyNormalized)
