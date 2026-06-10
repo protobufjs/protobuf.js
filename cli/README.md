@@ -74,6 +74,8 @@ Translates between file formats and generates static code.
   --no-beautify    Does not beautify generated code.
   --no-comments    Does not output any JSDoc comments.
   --no-service     Does not output service classes.
+  --preserve-unknown
+                  Preserves unknown fields when generated decoders create readers.
 
   --force-long     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.
   --force-number   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.

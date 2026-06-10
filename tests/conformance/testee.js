@@ -31,7 +31,7 @@ switch (mode) {
 }
 
 // Conformance tests assert protobuf binary round-tripping, including unknown fields.
-protobuf.Reader.discardUnknown = false;
+protobuf.Reader.preserveUnknown = true;
 
 var TEST_TYPE_NAMES = [
     "protobuf_test_messages.proto2.TestAllTypesProto2",

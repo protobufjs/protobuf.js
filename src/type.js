@@ -494,6 +494,7 @@ Type.prototype.setup = function setup() {
     });
     this.decode = decoder(this)({
         Reader : Reader,
+        policy : {},
         types  : types,
         util   : util,
         C      : this.ctor

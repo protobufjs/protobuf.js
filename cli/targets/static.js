@@ -36,6 +36,12 @@ function static_target(root, options, callback) {
             globalAliasIndex = out.length;
             push("");
         }
+        if (config.decode) {
+            if (config.comments)
+                push("// Runtime policy");
+            push((config.es6 ? "const " : "var ") + "$policy = " + JSON.stringify(runtimePolicy()) + ";");
+            push("");
+        }
         if (config.comments) {
             if (root.comment) {
                 pushComment([ "@fileoverview " + root.comment ]);
@@ -126,6 +132,13 @@ function aOrAn(name) {
     return ((/^[hH](?:ou|on|ei)/.test(name) || /^[aeiouAEIOU][a-z]/.test(name)) && !/^(?:use?|uni([^nmd]|mo)|one|once)/i.test(name)
         ? "an "
         : "a ") + name;
+}
+
+function runtimePolicy() {
+    var policy = {};
+    if (Object.prototype.hasOwnProperty.call(config, "preserveUnknown"))
+        policy.preserveUnknown = config.preserveUnknown;
+    return policy;
 }
 
 function buildNamespace(ref, ns) {
@@ -246,6 +259,7 @@ function addWireComments(code) {
 var renameVars = {
     "Writer": "$Writer",
     "Reader": "$Reader",
+    "policy": "$policy",
     "util": "$util"
 };
 
@@ -906,10 +920,15 @@ function buildType(ref, type) {
             ]));
             push(escapeName(type.name) + ".decodeDelimited = function(reader) {");
             ++indent;
-                push("if (!(reader instanceof $Reader))");
+                push("if (!(reader instanceof $Reader)) {");
                 ++indent;
-                    push("reader = new $Reader(reader);");
+                    push("reader = $Reader.create(reader);");
+                    push("if ($policy.preserveUnknown !== $undefined)");
+                    ++indent;
+                        push("reader.preserveUnknown = $policy.preserveUnknown;");
+                    --indent;
                 --indent;
+                push("}");
                 push("return this.decode(reader, reader.uint32());");
             --indent;
             push("};");

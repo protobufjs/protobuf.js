@@ -22,6 +22,7 @@ tape.test("pbjs generates static code", function(test) {
             typeurl: true,
         }, function(err, jsCode) {
             test.error(err, 'static code generation worked');
+            test.ok(jsCode.indexOf("var $policy = {};") >= 0, "emits empty runtime policy by default");
 
             // jsCode is the generated code; we'll eval it
             // (since this is what we normally do with the code, right?)
@@ -105,6 +106,45 @@ tape.test("pbjs generates unsigned fixed64 defaults", function(test) {
                 /M\.prototype\.s = \$util\.Long \? \$util\.Long\.fromBits\([^)]*,false\) : -9000000000000000000;/.test(jsCode),
                 "sfixed64 default is emitted as signed"
             );
+            test.end();
+        });
+    });
+});
+
+tape.test("pbjs static preserve-unknown policy", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.parse("syntax = \"proto3\"; message M { int32 known = 1; }").root.resolveAll();
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {
+            decode: true,
+            encode: true,
+            preserveUnknown: true,
+            root: "staticPreserveUnknown"
+        }, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+            test.ok(jsCode.indexOf("var $policy = {\"preserveUnknown\":true};") >= 0, "emits preserve unknown policy");
+
+            delete protobuf.roots.staticPreserveUnknown;
+            var $protobuf = protobuf;
+            eval(jsCode);
+
+            var M = protobuf.roots.staticPreserveUnknown.M;
+            var encoded = protobuf.Writer.create()
+                .uint32(8).int32(1)
+                .uint32(16).bool(true)
+                .finish();
+
+            var decoded = M.decode(encoded);
+            test.equal(decoded.known, 1, "decodes known fields");
+            test.equal(decoded.$unknowns.length, 1, "preserves unknown fields when creating readers");
+
+            var reader = protobuf.Reader.create(encoded);
+            reader.preserveUnknown = false;
+            decoded = M.decode(reader);
+            test.equal(Object.hasOwnProperty.call(decoded, "$unknowns"), false, "caller-provided reader keeps its own policy");
+
+            delete protobuf.roots.staticPreserveUnknown;
             test.end();
         });
     });

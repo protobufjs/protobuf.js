@@ -1225,8 +1225,8 @@ export class Reader {
     /** Read buffer length. */
     len: number;
 
-    /** Whether to discard unknown fields while decoding. */
-    discardUnknown: boolean;
+    /** Whether to preserve unknown fields while decoding. */
+    preserveUnknown: boolean;
 
     /**
      * Creates a new reader using the specified buffer.
@@ -1350,8 +1350,20 @@ export class Reader {
     /** Recursion limit. */
     static recursionLimit: number;
 
-    /** Whether readers discard unknown fields while decoding. */
+    /** Whether readers preserve unknown fields while decoding. */
+    static preserveUnknown: boolean;
+
+    /**
+     * Whether readers discard unknown fields while decoding.
+     * @deprecated Use {@link Reader.preserveUnknown} instead
+     */
     static discardUnknown: boolean;
+
+    /**
+     * Whether this reader discards unknown fields while decoding.
+     * @deprecated Use {@link Reader#preserveUnknown} instead
+     */
+    discardUnknown: boolean;
 
     /**
      * Skips the next element of the specified wire type.

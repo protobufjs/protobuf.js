@@ -26,9 +26,12 @@ type ReflectedTypeIsType = Assert<typeof reflectedCreated.$type extends Type ? t
 const reflectedCreatedValue: string = reflectedCreated.value;
 const reflectedDecodedValue: string = HelloReflected.decode(HelloReflected.encode({ value: "hi" }).finish()).value;
 const reflectedReader = Reader.create(HelloReflected.encode({ value: "hi" }).finish());
+reflectedReader.preserveUnknown = false;
 reflectedReader.discardUnknown = true;
 const reflectedDecodedWithReader: ReflectedMessage = HelloReflected.decode(reflectedReader);
+const readerPreserveUnknownDefault: boolean = Reader.preserveUnknown;
 const readerDiscardUnknownDefault: boolean = Reader.discardUnknown;
+Reader.preserveUnknown = readerPreserveUnknownDefault;
 Reader.discardUnknown = readerDiscardUnknownDefault;
 const reflectedConvertedValue: string = HelloReflected.fromObject({ value: "hi" }).value;
 
@@ -99,6 +102,7 @@ let helloMessage = new Hello({ value: "hi" });
 let helloBuffer  = Hello.encode(helloMessage.foo()).finish();
 let helloDecoded = Hello.decode(helloBuffer);
 let helloReader = Reader.create(helloBuffer);
+helloReader.preserveUnknown = false;
 helloReader.discardUnknown = true;
 let helloDecodedWithReader = Hello.decode(helloReader);
 

@@ -16,7 +16,7 @@ var proto = "syntax = \"proto3\";\n"
 
 function decodePreserving(type, buffer) {
     var reader = protobuf.Reader.create(buffer);
-    reader.discardUnknown = false;
+    reader.preserveUnknown = true;
     return type.decode(reader);
 }
 
@@ -99,7 +99,7 @@ tape.test("unknown fields - can be discarded", function(test) {
     test.end();
 });
 
-tape.test("unknown fields - reader discardUnknown option", function(test) {
+tape.test("unknown fields - reader preserveUnknown option", function(test) {
     var root = protobuf.parse(proto).root,
         SimpleV1 = root.lookupType("SimpleV1"),
         SimpleV2 = root.lookupType("SimpleV2"),
@@ -110,7 +110,7 @@ tape.test("unknown fields - reader discardUnknown option", function(test) {
         }).finish(),
         reader = protobuf.Reader.create(encoded);
 
-    reader.discardUnknown = true;
+    reader.preserveUnknown = false;
     var decoded = SimpleV1.decode(reader);
 
     test.equal(decoded.known, 1, "should decode known fields");
@@ -123,7 +123,16 @@ tape.test("unknown fields - reader discardUnknown option", function(test) {
     test.end();
 });
 
-tape.test("unknown fields - reader discardUnknown option propagates to nested messages", function(test) {
+tape.test("unknown fields - reader discardUnknown compatibility option", function(test) {
+    var reader = protobuf.Reader.create([]);
+    reader.discardUnknown = false;
+    test.equal(reader.preserveUnknown, true, "should invert discardUnknown on reader instances");
+    reader.discardUnknown = true;
+    test.equal(reader.preserveUnknown, false, "should keep discardUnknown compatibility setter");
+    test.end();
+});
+
+tape.test("unknown fields - reader preserveUnknown option propagates to nested messages", function(test) {
     var nestedProto = "syntax = \"proto3\";\n"
         + "message InnerV1 {\n"
         + "  int32 known = 1;\n"
@@ -151,7 +160,7 @@ tape.test("unknown fields - reader discardUnknown option propagates to nested me
         }).finish(),
         reader = protobuf.Reader.create(encoded);
 
-    reader.discardUnknown = true;
+    reader.preserveUnknown = false;
     var decoded = OuterV1.decode(reader);
 
     test.equal(decoded.inner.known, 1, "should decode known nested fields");
@@ -160,7 +169,7 @@ tape.test("unknown fields - reader discardUnknown option propagates to nested me
     test.end();
 });
 
-tape.test("unknown fields - reader discardUnknown option applies to decodeDelimited", function(test) {
+tape.test("unknown fields - reader preserveUnknown option applies to decodeDelimited", function(test) {
     var root = protobuf.parse(proto).root,
         SimpleV1 = root.lookupType("SimpleV1"),
         SimpleV2 = root.lookupType("SimpleV2"),
@@ -170,7 +179,7 @@ tape.test("unknown fields - reader discardUnknown option applies to decodeDelimi
         }).finish(),
         reader = protobuf.Reader.create(encoded);
 
-    reader.discardUnknown = true;
+    reader.preserveUnknown = false;
     var decoded = SimpleV1.decodeDelimited(reader);
 
     test.equal(decoded.known, 1, "should decode known fields");
@@ -178,24 +187,27 @@ tape.test("unknown fields - reader discardUnknown option applies to decodeDelimi
     test.end();
 });
 
-tape.test("unknown fields - Reader.discardUnknown default", function(test) {
+tape.test("unknown fields - Reader.preserveUnknown default", function(test) {
     var root = protobuf.parse(proto).root,
         SimpleV1 = root.lookupType("SimpleV1"),
         SimpleV2 = root.lookupType("SimpleV2"),
-        discardUnknown = protobuf.Reader.discardUnknown,
+        preserveUnknown = protobuf.Reader.preserveUnknown,
         encoded = SimpleV2.encode({
             known: 1,
             futureBool: true
         }).finish();
 
     try {
-        protobuf.Reader.discardUnknown = false;
+        protobuf.Reader.preserveUnknown = true;
 
         var decoded = SimpleV1.decode(encoded);
         test.equal(decoded.known, 1, "should decode known fields");
         test.equal(decoded.$unknowns.length, 1, "should use the reader default");
+
+        protobuf.Reader.discardUnknown = true;
+        test.equal(protobuf.Reader.preserveUnknown, false, "should invert discardUnknown on Reader");
     } finally {
-        protobuf.Reader.discardUnknown = discardUnknown;
+        protobuf.Reader.preserveUnknown = preserveUnknown;
     }
     test.end();
 });

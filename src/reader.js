@@ -40,10 +40,10 @@ function Reader(buffer) {
     this.len = buffer.length;
 
     /**
-     * Whether to discard unknown fields while decoding.
+     * Whether to preserve unknown fields while decoding.
      * @type {boolean}
      */
-    this.discardUnknown = Reader.discardUnknown;
+    this.preserveUnknown = Reader.preserveUnknown;
 }
 
 var create_array = typeof Uint8Array !== "undefined"
@@ -457,10 +457,40 @@ Reader.prototype.skip = function skip(length) {
 Reader.recursionLimit = util.recursionLimit;
 
 /**
- * Whether readers discard unknown fields while decoding.
+ * Whether readers preserve unknown fields while decoding.
  * @type {boolean}
  */
-Reader.discardUnknown = true;
+Reader.preserveUnknown = false;
+
+/**
+ * Whether readers discard unknown fields while decoding.
+ * @name Reader.discardUnknown
+ * @type {boolean}
+ * @deprecated Use {@link Reader.preserveUnknown} instead
+ */
+Object.defineProperty(Reader, "discardUnknown", {
+    get: function() {
+        return !Reader.preserveUnknown;
+    },
+    set: function(value) {
+        Reader.preserveUnknown = !value;
+    }
+});
+
+/**
+ * Whether this reader discards unknown fields while decoding.
+ * @name Reader#discardUnknown
+ * @type {boolean}
+ * @deprecated Use {@link Reader#preserveUnknown} instead
+ */
+Object.defineProperty(Reader.prototype, "discardUnknown", {
+    get: function() {
+        return !this.preserveUnknown;
+    },
+    set: function(value) {
+        this.preserveUnknown = !value;
+    }
+});
 
 /**
  * Skips the next element of the specified wire type.

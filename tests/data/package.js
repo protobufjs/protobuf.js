@@ -7,6 +7,9 @@ var $protobuf = require("../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $Array = $util.global.Array, $TypeError = $util.global.TypeError, $String = $util.global.String;
 
+// Runtime policy
+var $policy = {};
+
 // Exported root namespace
 var $root = $protobuf.roots["test_package"] || ($protobuf.roots["test_package"] = {});
 
@@ -308,8 +311,11 @@ $root.Package = (function() {
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
     Package.decode = function (reader, length, _end, _depth, _target) {
-        if (!(reader instanceof $Reader))
+        if (!(reader instanceof $Reader)) {
             reader = $Reader.create(reader);
+            if ($policy.preserveUnknown !== $undefined)
+                reader.preserveUnknown = $policy.preserveUnknown;
+        }
         if (_depth === $undefined)
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
@@ -558,7 +564,7 @@ $root.Package = (function() {
                 }
             }
             reader.skipType(wireType, _depth, tag);
-            if (!reader.discardUnknown) {
+            if (reader.preserveUnknown) {
                 $util.makeProp(message, "$unknowns", false);
                 (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
@@ -579,8 +585,11 @@ $root.Package = (function() {
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
     Package.decodeDelimited = function(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
+        if (!(reader instanceof $Reader)) {
+            reader = $Reader.create(reader);
+            if ($policy.preserveUnknown !== $undefined)
+                reader.preserveUnknown = $policy.preserveUnknown;
+        }
         return this.decode(reader, reader.uint32());
     };
 
@@ -1047,8 +1056,11 @@ $root.Package = (function() {
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         Repository.decode = function (reader, length, _end, _depth, _target) {
-            if (!(reader instanceof $Reader))
+            if (!(reader instanceof $Reader)) {
                 reader = $Reader.create(reader);
+                if ($policy.preserveUnknown !== $undefined)
+                    reader.preserveUnknown = $policy.preserveUnknown;
+            }
             if (_depth === $undefined)
                 _depth = 0;
             if (_depth > $Reader.recursionLimit)
@@ -1083,7 +1095,7 @@ $root.Package = (function() {
                     }
                 }
                 reader.skipType(wireType, _depth, tag);
-                if (!reader.discardUnknown) {
+                if (reader.preserveUnknown) {
                     $util.makeProp(message, "$unknowns", false);
                     (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
@@ -1104,8 +1116,11 @@ $root.Package = (function() {
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         Repository.decodeDelimited = function(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
+            if (!(reader instanceof $Reader)) {
+                reader = $Reader.create(reader);
+                if ($policy.preserveUnknown !== $undefined)
+                    reader.preserveUnknown = $policy.preserveUnknown;
+            }
             return this.decode(reader, reader.uint32());
         };
 

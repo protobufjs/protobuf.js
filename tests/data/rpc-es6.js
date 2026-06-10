@@ -5,6 +5,9 @@ import $protobuf from "protobufjs/minimal.js";
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 const $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $TypeError = $util.global.TypeError, $String = $util.global.String, $Number = $util.global.Number;
 
+// Runtime policy
+const $policy = {};
+
 // Exported root namespace
 const $root = $protobuf.roots["test_rpc"] || ($protobuf.roots["test_rpc"] = {});
 
@@ -194,8 +197,11 @@ export const MyRequest = $root.MyRequest = (() => {
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
     MyRequest.decode = function (reader, length, _end, _depth, _target) {
-        if (!(reader instanceof $Reader))
+        if (!(reader instanceof $Reader)) {
             reader = $Reader.create(reader);
+            if ($policy.preserveUnknown !== $undefined)
+                reader.preserveUnknown = $policy.preserveUnknown;
+        }
         if (_depth === $undefined)
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
@@ -221,7 +227,7 @@ export const MyRequest = $root.MyRequest = (() => {
                 }
             }
             reader.skipType(wireType, _depth, tag);
-            if (!reader.discardUnknown) {
+            if (reader.preserveUnknown) {
                 $util.makeProp(message, "$unknowns", false);
                 (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
@@ -242,8 +248,11 @@ export const MyRequest = $root.MyRequest = (() => {
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
     MyRequest.decodeDelimited = function(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
+        if (!(reader instanceof $Reader)) {
+            reader = $Reader.create(reader);
+            if ($policy.preserveUnknown !== $undefined)
+                reader.preserveUnknown = $policy.preserveUnknown;
+        }
         return this.decode(reader, reader.uint32());
     };
 
@@ -454,8 +463,11 @@ export const MyResponse = $root.MyResponse = (() => {
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
     MyResponse.decode = function (reader, length, _end, _depth, _target) {
-        if (!(reader instanceof $Reader))
+        if (!(reader instanceof $Reader)) {
             reader = $Reader.create(reader);
+            if ($policy.preserveUnknown !== $undefined)
+                reader.preserveUnknown = $policy.preserveUnknown;
+        }
         if (_depth === $undefined)
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
@@ -481,7 +493,7 @@ export const MyResponse = $root.MyResponse = (() => {
                 }
             }
             reader.skipType(wireType, _depth, tag);
-            if (!reader.discardUnknown) {
+            if (reader.preserveUnknown) {
                 $util.makeProp(message, "$unknowns", false);
                 (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
@@ -502,8 +514,11 @@ export const MyResponse = $root.MyResponse = (() => {
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
     MyResponse.decodeDelimited = function(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
+        if (!(reader instanceof $Reader)) {
+            reader = $Reader.create(reader);
+            if ($policy.preserveUnknown !== $undefined)
+                reader.preserveUnknown = $policy.preserveUnknown;
+        }
         return this.decode(reader, reader.uint32());
     };
 

@@ -7,6 +7,9 @@ var $protobuf = require("../../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $Array = $util.global.Array, $TypeError = $util.global.TypeError, $String = $util.global.String, $Number = $util.global.Number, $parseInt = $util.global.parseInt, $Boolean = $util.global.Boolean, $BigInt = $util.global.BigInt, $isFinite = $util.global.isFinite;
 
+// Runtime policy
+var $policy = {};
+
 // Exported root namespace
 var $root = $protobuf.roots["test_vector_tile"] || ($protobuf.roots["test_vector_tile"] = {});
 
@@ -131,8 +134,11 @@ $root.vector_tile = (function() {
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         Tile.decode = function (reader, length, _end, _depth, _target) {
-            if (!(reader instanceof $Reader))
+            if (!(reader instanceof $Reader)) {
                 reader = $Reader.create(reader);
+                if ($policy.preserveUnknown !== $undefined)
+                    reader.preserveUnknown = $policy.preserveUnknown;
+            }
             if (_depth === $undefined)
                 _depth = 0;
             if (_depth > $Reader.recursionLimit)
@@ -157,7 +163,7 @@ $root.vector_tile = (function() {
                     }
                 }
                 reader.skipType(wireType, _depth, tag);
-                if (!reader.discardUnknown) {
+                if (reader.preserveUnknown) {
                     $util.makeProp(message, "$unknowns", false);
                     (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
@@ -178,8 +184,11 @@ $root.vector_tile = (function() {
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         Tile.decodeDelimited = function(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
+            if (!(reader instanceof $Reader)) {
+                reader = $Reader.create(reader);
+                if ($policy.preserveUnknown !== $undefined)
+                    reader.preserveUnknown = $policy.preserveUnknown;
+            }
             return this.decode(reader, reader.uint32());
         };
 
@@ -487,8 +496,11 @@ $root.vector_tile = (function() {
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Value.decode = function (reader, length, _end, _depth, _target) {
-                if (!(reader instanceof $Reader))
+                if (!(reader instanceof $Reader)) {
                     reader = $Reader.create(reader);
+                    if ($policy.preserveUnknown !== $undefined)
+                        reader.preserveUnknown = $policy.preserveUnknown;
+                }
                 if (_depth === $undefined)
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
@@ -547,7 +559,7 @@ $root.vector_tile = (function() {
                         }
                     }
                     reader.skipType(wireType, _depth, tag);
-                    if (!reader.discardUnknown) {
+                    if (reader.preserveUnknown) {
                         $util.makeProp(message, "$unknowns", false);
                         (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
@@ -568,8 +580,11 @@ $root.vector_tile = (function() {
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Value.decodeDelimited = function(reader) {
-                if (!(reader instanceof $Reader))
-                    reader = new $Reader(reader);
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
+                    if ($policy.preserveUnknown !== $undefined)
+                        reader.preserveUnknown = $policy.preserveUnknown;
+                }
                 return this.decode(reader, reader.uint32());
             };
 
@@ -919,8 +934,11 @@ $root.vector_tile = (function() {
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Feature.decode = function (reader, length, _end, _depth, _target) {
-                if (!(reader instanceof $Reader))
+                if (!(reader instanceof $Reader)) {
                     reader = $Reader.create(reader);
+                    if ($policy.preserveUnknown !== $undefined)
+                        reader.preserveUnknown = $policy.preserveUnknown;
+                }
                 if (_depth === $undefined)
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
@@ -981,7 +999,7 @@ $root.vector_tile = (function() {
                         }
                     }
                     reader.skipType(wireType, _depth, tag);
-                    if (!reader.discardUnknown) {
+                    if (reader.preserveUnknown) {
                         $util.makeProp(message, "$unknowns", false);
                         (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
@@ -1002,8 +1020,11 @@ $root.vector_tile = (function() {
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Feature.decodeDelimited = function(reader) {
-                if (!(reader instanceof $Reader))
-                    reader = new $Reader(reader);
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
+                    if ($policy.preserveUnknown !== $undefined)
+                        reader.preserveUnknown = $policy.preserveUnknown;
+                }
                 return this.decode(reader, reader.uint32());
             };
 
@@ -1368,8 +1389,11 @@ $root.vector_tile = (function() {
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Layer.decode = function (reader, length, _end, _depth, _target) {
-                if (!(reader instanceof $Reader))
+                if (!(reader instanceof $Reader)) {
                     reader = $Reader.create(reader);
+                    if ($policy.preserveUnknown !== $undefined)
+                        reader.preserveUnknown = $policy.preserveUnknown;
+                }
                 if (_depth === $undefined)
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
@@ -1428,7 +1452,7 @@ $root.vector_tile = (function() {
                         }
                     }
                     reader.skipType(wireType, _depth, tag);
-                    if (!reader.discardUnknown) {
+                    if (reader.preserveUnknown) {
                         $util.makeProp(message, "$unknowns", false);
                         (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
@@ -1453,8 +1477,11 @@ $root.vector_tile = (function() {
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Layer.decodeDelimited = function(reader) {
-                if (!(reader instanceof $Reader))
-                    reader = new $Reader(reader);
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
+                    if ($policy.preserveUnknown !== $undefined)
+                        reader.preserveUnknown = $policy.preserveUnknown;
+                }
                 return this.decode(reader, reader.uint32());
             };
 

@@ -27,8 +27,11 @@ function decoder(mtype) {
             hasImplicitPresenceField = true;
     }
     var gen = util.codegen(["r", "l", "z", "q", "g"])
-    ("if(!(r instanceof Reader))")
+    ("if(!(r instanceof Reader)){")
         ("r=Reader.create(r)")
+        ("if(policy.preserveUnknown!==undefined)")
+            ("r.preserveUnknown=policy.preserveUnknown")
+    ("}")
     ("if(q===undefined)q=0")
     ("if(q>Reader.recursionLimit)")
         ("throw Error(\"max depth exceeded\")")
@@ -186,7 +189,7 @@ function decoder(mtype) {
     // Unknown fields
     gen
         ("r.skipType(%s,q,t)", i ? "u" : "t&7")
-        ("if(!r.discardUnknown){")
+        ("if(r.preserveUnknown){")
             ("util.makeProp(m,\"$unknowns\",false);")
             ("(m.$unknowns||(m.$unknowns=[])).push(r.raw(s,r.pos))")
         ("}")

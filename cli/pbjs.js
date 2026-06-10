@@ -64,7 +64,7 @@ var opts = {
         "force-message": "strict-message"
     },
     string: [ "target", "out", "path", "wrap", "dependency", "root", "lint", "filter" ],
-    boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "dts", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults", "null-semantics"],
+    boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "dts", "sparse", "keep-case", "alt-comment", "preserve-unknown", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults", "null-semantics"],
     default: defaults
 };
 
@@ -84,6 +84,16 @@ function normalizeOptions(options) {
         options.es6 = true;
 
     return options;
+}
+
+function hasBooleanOption(args, name) {
+    for (var i = 0; i < args.length; ++i) {
+        if (args[i] === "--" + name || args[i] === "--no-" + name
+            || args[i].indexOf("--" + name + "=") === 0
+            || args[i].indexOf("--no-" + name + "=") === 0)
+            return true;
+    }
+    return false;
 }
 
 /**
@@ -216,7 +226,10 @@ function sparsify(root, mainFiles) {
  * @returns {number|undefined} Exit code, if known
  */
 exports.main = function main(args, callback) {
-    var argv = normalizeOptions(minimist(args, opts));
+    var argv = minimist(args, opts);
+    if (!hasBooleanOption(args, "preserve-unknown"))
+        delete argv["preserve-unknown"];
+    argv = normalizeOptions(argv);
 
     var files  = argv._,
         paths  = typeof argv.path === "string" ? [ argv.path ] : argv.path || [];
@@ -288,6 +301,8 @@ exports.main = function main(args, callback) {
                 "  --no-beautify    Does not beautify generated code.",
                 "  --no-comments    Does not output any JSDoc comments.",
                 "  --no-service     Does not output service classes.",
+                "  --preserve-unknown",
+                "                  Preserves unknown fields when generated decoders create readers.",
                 "",
                 "  --force-long     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
                 "  --force-number   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.",
