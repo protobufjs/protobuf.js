@@ -84,6 +84,12 @@ tape.test("writer & reader", function(test) {
         var zzBaseVal = longVal.shru(1).xor(longVal.and(1).negate());
         test.ok(expect("sint64", zzBaseVal, val[1]), "should write " + zzBaseVal + " as a signed zig-zag encoded varint of length " + val[1].length + " and read it back equally");
     });
+    test.throws(function() {
+        Reader.create([ 128, 128, 128 ]).uint64();
+    }, /index out of range/, "should throw on truncated 64 bit varints with 3 bytes");
+    test.throws(function() {
+        Reader.create([ 128, 128, 128, 128 ]).uint64();
+    }, /index out of range/, "should throw on truncated 64 bit varints with 4 bytes");
 
     // fixed64, sfixed64 -> see also see comp_fixed/sfixed64 (grpc)
 
