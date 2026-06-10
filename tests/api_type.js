@@ -116,6 +116,19 @@ tape.test("reflected types", function(test) {
         type.add(new protobuf.Field("b", 2, "uint32"));
     }, Error, "should throw when trying to add reserved names");
 
+    var renameType = new protobuf.Type("Rename");
+    var field = new protobuf.Field("before", 1, "string");
+    var oneof = new protobuf.OneOf("choice");
+    renameType.add(field);
+    renameType.add(oneof);
+    field.name = "after";
+    oneof.name = "selection";
+    renameType.remove(field);
+    renameType.remove(oneof);
+    test.equal(field.parent, null, "should remove renamed fields");
+    test.equal(oneof.parent, null, "should remove renamed oneofs");
+    test.same(renameType.fields, {}, "should remove renamed fields from the original key");
+    test.same(renameType.oneofs, {}, "should remove renamed oneofs from the original key");
 
     test.end();
 });
