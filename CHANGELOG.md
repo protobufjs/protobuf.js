@@ -1,5 +1,17 @@
 # Changelog
 
+## [8.6.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.2...protobufjs-v8.6.3) (2026-06-10)
+
+
+### Bug Fixes
+
+* Consistently reject truncated 64-bit varints ([#2322](https://github.com/protobufjs/protobuf.js/issues/2322)) ([ec868f3](https://github.com/protobufjs/protobuf.js/commit/ec868f3c1c38e92fb131fcf1e64e38574bb526b3))
+* Include interfaces in API docs and fix FieldMask doc comment ([#2319](https://github.com/protobufjs/protobuf.js/issues/2319)) ([c98a4e5](https://github.com/protobufjs/protobuf.js/commit/c98a4e5f33c2d4014843c951226e019f1a60b47c))
+* Preserve explicit URLs in path resolution ([#2320](https://github.com/protobufjs/protobuf.js/issues/2320)) ([c97cdbe](https://github.com/protobufjs/protobuf.js/commit/c97cdbe627bf1be5d97847bf1046b4ca991449d3))
+* Remove renamed reflection objects by identity ([#2324](https://github.com/protobufjs/protobuf.js/issues/2324)) ([9c9f8ee](https://github.com/protobufjs/protobuf.js/commit/9c9f8ee79c78b91ca9a46da503a8cc84b0c16f77))
+* Support Node ESM named imports from CommonJS entrypoints ([#2315](https://github.com/protobufjs/protobuf.js/issues/2315)) ([3359e64](https://github.com/protobufjs/protobuf.js/commit/3359e64e8a29aea995a8aaba86623d1b6376cd5b))
+* Support utf8_validation during decode ([#2325](https://github.com/protobufjs/protobuf.js/issues/2325)) ([4dff8e4](https://github.com/protobufjs/protobuf.js/commit/4dff8e46bf1c35351c15065349446774605d6c51))
+
 ## [8.6.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.1...protobufjs-v8.6.2) (2026-06-09)
 
 
