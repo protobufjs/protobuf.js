@@ -4,7 +4,7 @@
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Class: Type</title>
+    <title>protobuf.js API documentation</title>
     
     
     
@@ -26,9 +26,13 @@
     <ul class="list">
         <li class="item" data-name="global">
             <span class="title">
-                <a href="global.html">[ top level ]</a>
+                <a href="global.html">Top Level</a>
                 <span class="static">static</span>
             </span>
+        </li>
+    
+        <li class="item nav-section">
+            <span class="subtitle">Namespaces</span>
         </li>
     
         <li class="item" data-name="converter">
@@ -249,6 +253,8 @@
                 
                     <li data-name="util.pool"><a href="util.html#.pool">pool</a></li>
                 
+                    <li data-name="util.remove"><a href="util.html#.remove">remove</a></li>
+                
                     <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
                 
                     <li data-name="util.setProperty"><a href="util.html#.setProperty">setProperty</a></li>
@@ -409,6 +415,8 @@
                 
                     <li data-name="util.utf8.read"><a href="util.utf8.html#.read">read</a></li>
                 
+                    <li data-name="util.utf8.readStrict"><a href="util.utf8.html#.readStrict">readStrict</a></li>
+                
                     <li data-name="util.utf8.write"><a href="util.utf8.html#.write">write</a></li>
                 
                 
@@ -418,6 +426,10 @@
                 
             </ul>
             
+        </li>
+    
+        <li class="item nav-section">
+            <span class="subtitle">Classes</span>
         </li>
     
         <li class="item" data-name="BufferReader">
@@ -480,6 +492,8 @@
                     <li data-name="BufferReader#skipType"><a href="BufferReader.html#skipType">skipType</a></li>
                 
                     <li data-name="BufferReader#string"><a href="BufferReader.html#string">string</a></li>
+                
+                    <li data-name="BufferReader#stringVerify"><a href="BufferReader.html#stringVerify">stringVerify</a></li>
                 
                     <li data-name="BufferReader#tag"><a href="BufferReader.html#tag">tag</a></li>
                 
@@ -1465,6 +1479,8 @@
                 
                     <li data-name="Reader#string"><a href="Reader.html#string">string</a></li>
                 
+                    <li data-name="Reader#stringVerify"><a href="Reader.html#stringVerify">stringVerify</a></li>
+                
                     <li data-name="Reader#tag"><a href="Reader.html#tag">tag</a></li>
                 
                     <li data-name="Reader#uint32"><a href="Reader.html#uint32">uint32</a></li>
@@ -2156,6 +2172,874 @@
             
         </li>
     
+        <li class="item nav-section">
+            <span class="subtitle">Interfaces</span>
+        </li>
+    
+        <li class="item" data-name="Buffer">
+            <span class="title">
+                <a href="Buffer.html">Buffer</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IConversionOptions">
+            <span class="title">
+                <a href="IConversionOptions.html">IConversionOptions</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IEnum">
+            <span class="title">
+                <a href="IEnum.html">IEnum</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IExtensionField">
+            <span class="title">
+                <a href="IExtensionField.html">IExtensionField</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IExtensionMapField">
+            <span class="title">
+                <a href="IExtensionMapField.html">IExtensionMapField</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IFetchOptions">
+            <span class="title">
+                <a href="IFetchOptions.html">IFetchOptions</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IField">
+            <span class="title">
+                <a href="IField.html">IField</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IMapField">
+            <span class="title">
+                <a href="IMapField.html">IMapField</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IMethod">
+            <span class="title">
+                <a href="IMethod.html">IMethod</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="INamespace">
+            <span class="title">
+                <a href="INamespace.html">INamespace</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IOneOf">
+            <span class="title">
+                <a href="IOneOf.html">IOneOf</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IParseOptions">
+            <span class="title">
+                <a href="IParseOptions.html">IParseOptions</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IParserResult">
+            <span class="title">
+                <a href="IParserResult.html">IParserResult</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IService">
+            <span class="title">
+                <a href="IService.html">IService</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IToJSONOptions">
+            <span class="title">
+                <a href="IToJSONOptions.html">IToJSONOptions</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="ITokenizerHandle">
+            <span class="title">
+                <a href="ITokenizerHandle.html">ITokenizerHandle</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IType">
+            <span class="title">
+                <a href="IType.html">IType</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IWrapper">
+            <span class="title">
+                <a href="IWrapper.html">IWrapper</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="Long">
+            <span class="title">
+                <a href="Long.html">Long</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IAny">
+            <span class="title">
+                <a href="common.IAny.html">common.IAny</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IBoolValue">
+            <span class="title">
+                <a href="common.IBoolValue.html">common.IBoolValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IBytesValue">
+            <span class="title">
+                <a href="common.IBytesValue.html">common.IBytesValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IDoubleValue">
+            <span class="title">
+                <a href="common.IDoubleValue.html">common.IDoubleValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IDuration">
+            <span class="title">
+                <a href="common.IDuration.html">common.IDuration</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IEmpty">
+            <span class="title">
+                <a href="common.IEmpty.html">common.IEmpty</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IFieldMask">
+            <span class="title">
+                <a href="common.IFieldMask.html">common.IFieldMask</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IFloatValue">
+            <span class="title">
+                <a href="common.IFloatValue.html">common.IFloatValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IInt32Value">
+            <span class="title">
+                <a href="common.IInt32Value.html">common.IInt32Value</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IInt64Value">
+            <span class="title">
+                <a href="common.IInt64Value.html">common.IInt64Value</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IListValue">
+            <span class="title">
+                <a href="common.IListValue.html">common.IListValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IStringValue">
+            <span class="title">
+                <a href="common.IStringValue.html">common.IStringValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IStruct">
+            <span class="title">
+                <a href="common.IStruct.html">common.IStruct</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.ITimestamp">
+            <span class="title">
+                <a href="common.ITimestamp.html">common.ITimestamp</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IUInt32Value">
+            <span class="title">
+                <a href="common.IUInt32Value.html">common.IUInt32Value</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IUInt64Value">
+            <span class="title">
+                <a href="common.IUInt64Value.html">common.IUInt64Value</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IValue">
+            <span class="title">
+                <a href="common.IValue.html">common.IValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
     </ul>
 </div>
 
@@ -2412,7 +3296,8 @@
     
     <div class="description">
         <p>The registered constructor, if any registered, otherwise a generic constructor.<br>
-Assigning a function replaces the internal constructor. If the function does not extend <a href="Message.html">Message</a> yet, its prototype will be setup accordingly and static methods will be populated. If it already extends <a href="Message.html">Message</a>, it will just replace the internal constructor.</p>
+Assigning a function replaces the internal constructor. If the function does not extend <a href="Message.html">Message</a> yet, its prototype will be setup accordingly and static methods will be populated. If it already extends <a href="Message.html">Message</a>, it will just replace the internal constructor.<br>
+When assigning manually, add the type to its parent namespace/root first if fields reference other reflected types, because constructor setup resolves field defaults.</p>
     </div>
     
     
@@ -3293,7 +4178,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L375">line 375</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L376">line 376</a>
         </div>
         
     </div>
@@ -3628,7 +4513,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L472">line 472</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L471">line 471</a>
         </div>
         
     </div>
@@ -3761,7 +4646,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L558">line 558</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L557">line 557</a>
         </div>
         
     </div>
@@ -3971,7 +4856,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L569">line 569</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L568">line 568</a>
         </div>
         
     </div>
@@ -4147,7 +5032,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L338">line 338</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L339">line 339</a>
         </div>
         
     </div>
@@ -4312,7 +5197,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L536">line 536</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L535">line 535</a>
         </div>
         
     </div>
@@ -4477,7 +5362,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L546">line 546</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L545">line 545</a>
         </div>
         
     </div>
@@ -4642,7 +5527,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L589">line 589</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L588">line 588</a>
         </div>
         
     </div>
@@ -4770,7 +5655,7 @@ Assigning a function replaces the internal constructor. If the function does not
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L358">line 358</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L359">line 359</a>
         </div>
         
     </div>
@@ -5182,7 +6067,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L627">line 627</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L626">line 626</a>
         </div>
         
     </div>
@@ -5315,7 +6200,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L454">line 454</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L453">line 453</a>
         </div>
         
     </div>
@@ -5441,7 +6326,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L463">line 463</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L462">line 462</a>
         </div>
         
     </div>
@@ -5569,7 +6454,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L408">line 408</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L409">line 409</a>
         </div>
         
     </div>
@@ -5785,7 +6670,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L493">line 493</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L494">line 494</a>
         </div>
         
     </div>
@@ -5965,7 +6850,7 @@ This methods differs from <a href="Namespace.html#get">get</a> in that it return
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L525">line 525</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L526">line 526</a>
         </div>
         
     </div>
@@ -6123,7 +7008,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L553">line 553</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L554">line 554</a>
         </div>
         
     </div>
@@ -6281,7 +7166,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L511">line 511</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L512">line 512</a>
         </div>
         
     </div>
@@ -6439,7 +7324,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L539">line 539</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/namespace.js#L540">line 540</a>
         </div>
         
     </div>
@@ -6851,7 +7736,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L422">line 422</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L423">line 423</a>
         </div>
         
     </div>
@@ -7118,7 +8003,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L324">line 324</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L325">line 325</a>
         </div>
         
     </div>
@@ -7746,7 +8631,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L480">line 480</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L479">line 479</a>
         </div>
         
     </div>
@@ -7838,7 +8723,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L305">line 305</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L306">line 306</a>
         </div>
         
     </div>
@@ -7971,7 +8856,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L618">line 618</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L617">line 617</a>
         </div>
         
     </div>
@@ -8227,7 +9112,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L580">line 580</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L579">line 579</a>
         </div>
         
     </div>
@@ -8356,7 +9241,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L651">line 651</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L650">line 650</a>
         </div>
         
     </div>
@@ -8492,7 +9377,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L252">line 252</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L253">line 253</a>
         </div>
         
     </div>
@@ -8683,7 +9568,7 @@ Besides its signature, this methods differs from <a href="Namespace.html#lookup"
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L209">line 209</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/type.js#L210">line 210</a>
         </div>
         
     </div>

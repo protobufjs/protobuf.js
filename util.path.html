@@ -4,7 +4,7 @@
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Namespace: path</title>
+    <title>protobuf.js API documentation</title>
     
     
     
@@ -26,9 +26,13 @@
     <ul class="list">
         <li class="item" data-name="global">
             <span class="title">
-                <a href="global.html">[ top level ]</a>
+                <a href="global.html">Top Level</a>
                 <span class="static">static</span>
             </span>
+        </li>
+    
+        <li class="item nav-section">
+            <span class="subtitle">Namespaces</span>
         </li>
     
         <li class="item" data-name="converter">
@@ -249,6 +253,8 @@
                 
                     <li data-name="util.pool"><a href="util.html#.pool">pool</a></li>
                 
+                    <li data-name="util.remove"><a href="util.html#.remove">remove</a></li>
+                
                     <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
                 
                     <li data-name="util.setProperty"><a href="util.html#.setProperty">setProperty</a></li>
@@ -409,6 +415,8 @@
                 
                     <li data-name="util.utf8.read"><a href="util.utf8.html#.read">read</a></li>
                 
+                    <li data-name="util.utf8.readStrict"><a href="util.utf8.html#.readStrict">readStrict</a></li>
+                
                     <li data-name="util.utf8.write"><a href="util.utf8.html#.write">write</a></li>
                 
                 
@@ -418,6 +426,10 @@
                 
             </ul>
             
+        </li>
+    
+        <li class="item nav-section">
+            <span class="subtitle">Classes</span>
         </li>
     
         <li class="item" data-name="BufferReader">
@@ -480,6 +492,8 @@
                     <li data-name="BufferReader#skipType"><a href="BufferReader.html#skipType">skipType</a></li>
                 
                     <li data-name="BufferReader#string"><a href="BufferReader.html#string">string</a></li>
+                
+                    <li data-name="BufferReader#stringVerify"><a href="BufferReader.html#stringVerify">stringVerify</a></li>
                 
                     <li data-name="BufferReader#tag"><a href="BufferReader.html#tag">tag</a></li>
                 
@@ -1465,6 +1479,8 @@
                 
                     <li data-name="Reader#string"><a href="Reader.html#string">string</a></li>
                 
+                    <li data-name="Reader#stringVerify"><a href="Reader.html#stringVerify">stringVerify</a></li>
+                
                     <li data-name="Reader#tag"><a href="Reader.html#tag">tag</a></li>
                 
                     <li data-name="Reader#uint32"><a href="Reader.html#uint32">uint32</a></li>
@@ -2156,6 +2172,874 @@
             
         </li>
     
+        <li class="item nav-section">
+            <span class="subtitle">Interfaces</span>
+        </li>
+    
+        <li class="item" data-name="Buffer">
+            <span class="title">
+                <a href="Buffer.html">Buffer</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IConversionOptions">
+            <span class="title">
+                <a href="IConversionOptions.html">IConversionOptions</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IEnum">
+            <span class="title">
+                <a href="IEnum.html">IEnum</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IExtensionField">
+            <span class="title">
+                <a href="IExtensionField.html">IExtensionField</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IExtensionMapField">
+            <span class="title">
+                <a href="IExtensionMapField.html">IExtensionMapField</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IFetchOptions">
+            <span class="title">
+                <a href="IFetchOptions.html">IFetchOptions</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IField">
+            <span class="title">
+                <a href="IField.html">IField</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IMapField">
+            <span class="title">
+                <a href="IMapField.html">IMapField</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IMethod">
+            <span class="title">
+                <a href="IMethod.html">IMethod</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="INamespace">
+            <span class="title">
+                <a href="INamespace.html">INamespace</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IOneOf">
+            <span class="title">
+                <a href="IOneOf.html">IOneOf</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IParseOptions">
+            <span class="title">
+                <a href="IParseOptions.html">IParseOptions</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IParserResult">
+            <span class="title">
+                <a href="IParserResult.html">IParserResult</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IService">
+            <span class="title">
+                <a href="IService.html">IService</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IToJSONOptions">
+            <span class="title">
+                <a href="IToJSONOptions.html">IToJSONOptions</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="ITokenizerHandle">
+            <span class="title">
+                <a href="ITokenizerHandle.html">ITokenizerHandle</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IType">
+            <span class="title">
+                <a href="IType.html">IType</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="IWrapper">
+            <span class="title">
+                <a href="IWrapper.html">IWrapper</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="Long">
+            <span class="title">
+                <a href="Long.html">Long</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IAny">
+            <span class="title">
+                <a href="common.IAny.html">common.IAny</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IBoolValue">
+            <span class="title">
+                <a href="common.IBoolValue.html">common.IBoolValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IBytesValue">
+            <span class="title">
+                <a href="common.IBytesValue.html">common.IBytesValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IDoubleValue">
+            <span class="title">
+                <a href="common.IDoubleValue.html">common.IDoubleValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IDuration">
+            <span class="title">
+                <a href="common.IDuration.html">common.IDuration</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IEmpty">
+            <span class="title">
+                <a href="common.IEmpty.html">common.IEmpty</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IFieldMask">
+            <span class="title">
+                <a href="common.IFieldMask.html">common.IFieldMask</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IFloatValue">
+            <span class="title">
+                <a href="common.IFloatValue.html">common.IFloatValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IInt32Value">
+            <span class="title">
+                <a href="common.IInt32Value.html">common.IInt32Value</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IInt64Value">
+            <span class="title">
+                <a href="common.IInt64Value.html">common.IInt64Value</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IListValue">
+            <span class="title">
+                <a href="common.IListValue.html">common.IListValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IStringValue">
+            <span class="title">
+                <a href="common.IStringValue.html">common.IStringValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IStruct">
+            <span class="title">
+                <a href="common.IStruct.html">common.IStruct</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.ITimestamp">
+            <span class="title">
+                <a href="common.ITimestamp.html">common.ITimestamp</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IUInt32Value">
+            <span class="title">
+                <a href="common.IUInt32Value.html">common.IUInt32Value</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IUInt64Value">
+            <span class="title">
+                <a href="common.IUInt64Value.html">common.IUInt64Value</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
+        <li class="item" data-name="common.IValue">
+            <span class="title">
+                <a href="common.IValue.html">common.IValue</a>
+                
+            </span>
+            
+            <ul class="members itemMembers">
+                
+            </ul>
+            
+            <ul class="typedefs itemMembers">
+                
+            </ul>
+            
+            <ul class="methods itemMembers">
+                
+            </ul>
+            
+            <ul class="events itemMembers">
+                
+            </ul>
+            
+        </li>
+    
     </ul>
 </div>
 
@@ -2244,7 +3128,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js">util/path.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js#L16">line 16</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js">util/path.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js#L38">line 38</a>
         </div>
         
     </div>
@@ -2370,7 +3254,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js">util/path.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js#L26">line 26</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js">util/path.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js#L48">line 48</a>
         </div>
         
     </div>
@@ -2496,7 +3380,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js">util/path.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js#L64">line 64</a>
+            <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js">util/path.js</a>, <a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/src/util/path.js#L89">line 89</a>
         </div>
         
     </div>

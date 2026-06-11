@@ -167,6 +167,27 @@ pre,
   font-weight: 600;
   text-transform: uppercase;
 }
+.navigation li.nav-section {
+  margin: 14px 0 4px;
+}
+.navigation li.nav-section .subtitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0;
+}
+.navigation li.nav-section .subtitle::before,
+.navigation li.nav-section .subtitle::after {
+  content: "";
+  height: 1px;
+  background: #d0d7de;
+}
+.navigation li.nav-section .subtitle::before {
+  flex: 0 0 12px;
+}
+.navigation li.nav-section .subtitle::after {
+  flex: 1;
+}
 .navigation li.item ul > li {
   margin: 1px 0;
   padding: 3px 8px 3px 18px;
