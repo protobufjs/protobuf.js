@@ -2489,14 +2489,6 @@ export namespace util {
      */
     function fetch(path: string, options?: IFetchOptions): Promise<(string|Uint8Array)>;
 
-    /**
-     * Requires a module only if available.
-     * @param moduleName Module to require
-     * @returns Required module if available and not empty, otherwise `null`
-     * @deprecated Legacy optional require helper. Will be removed in a future release.
-     */
-    function inquire(moduleName: string): object;
-
     /** A minimal path module to resolve Unix, Windows and URL paths alike. */
     namespace path {
 
