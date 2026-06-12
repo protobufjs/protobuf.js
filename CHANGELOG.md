@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.6.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.6.3...protobufjs-v7.6.4) (2026-06-12)
+
+
+### Bug Fixes
+
+* Reconfigure and speed up CI ([#2329](https://github.com/protobufjs/protobuf.js/issues/2329)) ([574f761](https://github.com/protobufjs/protobuf.js/commit/574f761c05b007dab6595ca1eaed86436579ba3f))
+* Remove inquire submodule ([#2327](https://github.com/protobufjs/protobuf.js/issues/2327)) ([06ddd07](https://github.com/protobufjs/protobuf.js/commit/06ddd07064329032aae6db586e2d54938b591792))
+
 ## [7.6.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.6.2...protobufjs-v7.6.3) (2026-06-09)
 
 
