@@ -11,7 +11,6 @@
         "lib/eventemitter",
         "lib/fetch",
         "lib/float",
-        "lib/inquire",
         "lib/path",
         "lib/pool",
         "lib/utf8"
@@ -23,7 +22,6 @@
     "lib/eventemitter": {},
     "lib/fetch": {},
     "lib/float": {},
-    "lib/inquire": {},
     "lib/path": {},
     "lib/pool": {},
     "lib/utf8": {}

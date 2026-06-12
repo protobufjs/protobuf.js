@@ -80,11 +80,6 @@ jobs:
         working-directory: lib/float
         run: npm publish --ignore-scripts --access public
 
-      - name: Publish @protobufjs/inquire
-        if: ${{ steps.release.outputs['lib/inquire--release_created'] == 'true' }}
-        working-directory: lib/inquire
-        run: npm publish --ignore-scripts --access public
-
       - name: Publish @protobufjs/path
         if: ${{ steps.release.outputs['lib/path--release_created'] == 'true' }}
         working-directory: lib/path
