@@ -13,9 +13,6 @@ util.EventEmitter = require("@protobufjs/eventemitter");
 // float handling accross browsers
 util.float = require("@protobufjs/float");
 
-// requires modules optionally and hides the call from bundlers
-util.inquire = require("@protobufjs/inquire");
-
 // converts to / from utf8 encoded strings
 util.utf8 = require("@protobufjs/utf8");
 
