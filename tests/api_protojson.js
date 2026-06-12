@@ -7,6 +7,10 @@ function owns(obj, key) {
     return Object.prototype.hasOwnProperty.call(obj, key);
 }
 
+function bytes(buf) {
+    return Array.prototype.slice.call(buf);
+}
+
 var proto = "syntax = \"proto3\";\
 message Msg { int32 value = 1; }\
 enum Choice { A = 0; B = 1; }\
@@ -80,8 +84,14 @@ message Empty {}\
 message Duration { int64 seconds = 1; int32 nanos = 2; }\
 message Timestamp { int64 seconds = 1; int32 nanos = 2; }\
 message FieldMask { repeated string paths = 1; }\
+message DoubleValue { double value = 1; }\
+message FloatValue { float value = 1; }\
 message StringValue { string value = 1; }\
 message Int64Value { int64 value = 1; }\
+message UInt64Value { uint64 value = 1; }\
+message Int32Value { int32 value = 1; }\
+message UInt32Value { uint32 value = 1; }\
+message BoolValue { bool value = 1; }\
 message BytesValue { bytes value = 1; }\
 enum NullValue { NULL_VALUE = 0; }\
 message Struct { map<string, Value> fields = 1; }\
@@ -113,6 +123,17 @@ message WktMsg {\
   google.protobuf.Duration duration = 11;\
   google.protobuf.Timestamp timestamp = 12;\
   bytes bytes_field = 13;\
+}\
+message WrapperDefaults {\
+  google.protobuf.DoubleValue double_wrapper = 1;\
+  google.protobuf.FloatValue float_wrapper = 2;\
+  google.protobuf.Int64Value int64_wrapper = 3;\
+  google.protobuf.UInt64Value uint64_wrapper = 4;\
+  google.protobuf.Int32Value int32_wrapper = 5;\
+  google.protobuf.UInt32Value uint32_wrapper = 6;\
+  google.protobuf.BoolValue bool_wrapper = 7;\
+  google.protobuf.StringValue string_wrapper = 8;\
+  google.protobuf.BytesValue bytes_wrapper = 9;\
 }\
 message NullMsg {\
   int32 value = 1;\
@@ -415,6 +436,59 @@ tape.test("protojson - round trips well-known types", function(test) {
     test.end();
 });
 
+tape.test("protojson - omits default well-known scalar fields when parsing", function(test) {
+    var wrapperDefaults = [
+        [ "DoubleValue", 0 ],
+        [ "FloatValue", 0 ],
+        [ "Int64Value", "0" ],
+        [ "UInt64Value", "0" ],
+        [ "Int32Value", 0 ],
+        [ "UInt32Value", 0 ],
+        [ "BoolValue", false ],
+        [ "StringValue", "" ],
+        [ "BytesValue", "" ]
+    ];
+    for (var i = 0; i < wktRoots.length; ++i) {
+        var root = wktRoots[i].root,
+            label = wktRoots[i].name,
+            Timestamp = root.lookupType("google.protobuf.Timestamp"),
+            Duration = root.lookupType("google.protobuf.Duration"),
+            Any = root.lookupType("google.protobuf.Any"),
+            WrapperDefaults = root.lookupType("test.WrapperDefaults");
+
+        test.same(bytes(Timestamp.encode(protojson.fromJson(Timestamp, "1970-01-01T00:00:00Z")).finish()), [], label + ": omits default timestamp fields");
+        test.same(bytes(Timestamp.encode(protojson.fromJson(Timestamp, "1970-01-01T00:00:01Z")).finish()), [ 8, 1 ], label + ": omits zero timestamp nanos");
+        test.same(bytes(Timestamp.encode(protojson.fromJson(Timestamp, "1970-01-01T00:00:00.000000001Z")).finish()), [ 16, 1 ], label + ": omits zero timestamp seconds");
+        test.same(bytes(Duration.encode(protojson.fromJson(Duration, "0s")).finish()), [], label + ": omits default duration fields");
+        test.same(bytes(Duration.encode(protojson.fromJson(Duration, "1s")).finish()), [ 8, 1 ], label + ": omits zero duration nanos");
+        test.same(bytes(Duration.encode(protojson.fromJson(Duration, "0.000000001s")).finish()), [ 16, 1 ], label + ": omits zero duration seconds");
+        for (var j = 0; j < wrapperDefaults.length; ++j) {
+            var Wrapper = root.lookupType("google.protobuf." + wrapperDefaults[j][0]);
+            test.same(bytes(Wrapper.encode(protojson.fromJson(Wrapper, wrapperDefaults[j][1])).finish()), [], label + ": omits default " + wrapperDefaults[j][0] + " value");
+        }
+        var any = protojson.fromJson(Any, { "@type": "type.googleapis.com/google.protobuf.Empty" }),
+            anyExpected = {};
+        anyExpected[Any.fieldsArray[0].name] = "type.googleapis.com/google.protobuf.Empty";
+        test.same(bytes(Any.encode(any).finish()), bytes(Any.encode(anyExpected).finish()), label + ": omits empty Any value");
+        test.deepEqual(protojson.toJson(Any, Any.decode(Any.encode(any).finish())), { "@type": "type.googleapis.com/google.protobuf.Empty" }, label + ": treats missing Any value as empty bytes");
+
+        var wrapperJson = {
+            doubleWrapper: 0,
+            floatWrapper: 0,
+            int64Wrapper: "0",
+            uint64Wrapper: "0",
+            int32Wrapper: 0,
+            uint32Wrapper: 0,
+            boolWrapper: false,
+            stringWrapper: "",
+            bytesWrapper: ""
+        };
+        test.deepEqual(protojson.toJson(WrapperDefaults, protojson.fromJson(WrapperDefaults, wrapperJson)), wrapperJson, label + ": emits nested wrapper defaults");
+    }
+
+    test.end();
+});
+
 tape.test("protojson - accepts null fields as absent", function(test) {
     var message = protojson.fromJson(Msg, { value: null });
     test.equal(owns(message, "value"), false, "singular scalar null is absent");
@@ -485,7 +559,7 @@ tape.test("protojson - parses timestamp string shape strictly", function(test) {
     var message = protojson.fromJson(WithTimestamp, {
         ts: "1970-01-01T00:00:00.000000001Z"
     });
-    test.equal(message.ts.seconds, 0, "parses timestamp seconds");
+    test.equal(message.ts.seconds || 0, 0, "parses timestamp seconds");
     test.equal(message.ts.nanos, 1, "parses timestamp nanos");
 
     test.throws(function() {
@@ -527,7 +601,7 @@ tape.test("protojson - parses duration string shape strictly", function(test) {
     var negative = protojson.fromJson(WithDuration, {
         duration: "-0.5s"
     });
-    test.equal(negative.duration.seconds, 0, "parses negative zero duration seconds");
+    test.equal(negative.duration.seconds || 0, 0, "parses negative zero duration seconds");
     test.equal(negative.duration.nanos, -500000000, "parses negative duration nanos");
 
     test.throws(function() {
