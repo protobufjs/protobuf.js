@@ -3,7 +3,15 @@ module.exports = Namespace;
 
 // extends ReflectionObject
 var ReflectionObject = require("./object");
-((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
+Namespace.prototype = Object.create(ReflectionObject.prototype, {
+    constructor: {
+        value: Namespace,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
+Namespace.className = "Namespace";
 
 var Field    = require("./field"),
     util     = require("./util"),

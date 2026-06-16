@@ -3,7 +3,15 @@ module.exports = Service;
 
 // extends Namespace
 var Namespace = require("./namespace");
-((Service.prototype = Object.create(Namespace.prototype)).constructor = Service).className = "Service";
+Service.prototype = Object.create(Namespace.prototype, {
+    constructor: {
+        value: Service,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
+Service.className = "Service";
 
 var Method = require("./method"),
     util   = require("./util"),

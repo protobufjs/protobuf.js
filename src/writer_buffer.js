@@ -3,7 +3,14 @@ module.exports = BufferWriter;
 
 // extends Writer
 var Writer = require("./writer");
-(BufferWriter.prototype = Object.create(Writer.prototype)).constructor = BufferWriter;
+BufferWriter.prototype = Object.create(Writer.prototype, {
+    constructor: {
+        value: BufferWriter,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
 
 var util = require("./util/minimal");
 

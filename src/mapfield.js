@@ -3,7 +3,15 @@ module.exports = MapField;
 
 // extends Field
 var Field = require("./field");
-((MapField.prototype = Object.create(Field.prototype)).constructor = MapField).className = "MapField";
+MapField.prototype = Object.create(Field.prototype, {
+    constructor: {
+        value: MapField,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
+MapField.className = "MapField";
 
 var types   = require("./types"),
     util    = require("./util");

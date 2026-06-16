@@ -3,7 +3,15 @@ module.exports = OneOf;
 
 // extends ReflectionObject
 var ReflectionObject = require("./object");
-((OneOf.prototype = Object.create(ReflectionObject.prototype)).constructor = OneOf).className = "OneOf";
+OneOf.prototype = Object.create(ReflectionObject.prototype, {
+    constructor: {
+        value: OneOf,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
+OneOf.className = "OneOf";
 
 var Field = require("./field"),
     util  = require("./util");

@@ -23,7 +23,8 @@ module.exports = [
             "lib/tape-adapter.js",
             "sandbox/**",
             "scripts/**",
-            "tests/**"
+            "tests/**",
+            "!tests/data/rpc*.js"
         ]
     },
     {
@@ -61,6 +62,20 @@ module.exports = [
             // Possible errors
             "no-extra-parens": 1,               // turned on as the daily lecture
             "no-prototype-builtins": 1,
+            "no-restricted-syntax": [ 1,
+                {
+                    selector: "AssignmentExpression[left.property.name='toString']",
+                    message: "Define toString with Object.defineProperty to avoid the override mistake"
+                },
+                {
+                    selector: "AssignmentExpression[left.object.property.name='prototype'][left.property.name='constructor']",
+                    message: "Define prototype.constructor with a descriptor to avoid the override mistake"
+                },
+                {
+                    selector: "AssignmentExpression[left.object.type='AssignmentExpression'][left.object.left.property.name='prototype'][left.property.name='constructor']",
+                    message: "Define prototype.constructor with a descriptor to avoid the override mistake"
+                }
+            ],
             "no-template-curly-in-string": 1,
             "no-unsafe-negation": 1,
             "jsdoc/check-param-names": [ 1, { "allowExtraTrailingParamDocs": true } ],

@@ -3,7 +3,15 @@ module.exports = Enum;
 
 // extends ReflectionObject
 var ReflectionObject = require("./object");
-((Enum.prototype = Object.create(ReflectionObject.prototype)).constructor = Enum).className = "Enum";
+Enum.prototype = Object.create(ReflectionObject.prototype, {
+    constructor: {
+        value: Enum,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
+Enum.className = "Enum";
 
 var Namespace = require("./namespace"),
     util = require("./util");

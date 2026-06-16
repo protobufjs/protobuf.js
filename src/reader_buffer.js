@@ -3,7 +3,14 @@ module.exports = BufferReader;
 
 // extends Reader
 var Reader = require("./reader");
-(BufferReader.prototype = Object.create(Reader.prototype)).constructor = BufferReader;
+BufferReader.prototype = Object.create(Reader.prototype, {
+    constructor: {
+        value: BufferReader,
+        writable: true,
+        enumerable: false,
+        configurable: true
+    }
+});
 
 var util = require("./util/minimal");
 

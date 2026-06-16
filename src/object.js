@@ -355,13 +355,18 @@ ReflectionObject.prototype.setOptions = function setOptions(options, ifNotSet) {
  * Converts this instance to its string representation.
  * @returns {string} Class name[, space, full name]
  */
-ReflectionObject.prototype.toString = function toString() {
-    var className = this.constructor.className,
-        fullName  = this.fullName;
-    if (fullName.length)
-        return className + " " + fullName;
-    return className;
-};
+Object.defineProperty(ReflectionObject.prototype, "toString", {
+    value: function toString() {
+        var className = this.constructor.className,
+            fullName  = this.fullName;
+        if (fullName.length)
+            return className + " " + fullName;
+        return className;
+    },
+    writable: true,
+    enumerable: false,
+    configurable: true
+});
 
 /**
  * Converts the edition this object is pinned to for JSON format.
