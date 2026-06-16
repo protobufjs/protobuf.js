@@ -7,11 +7,12 @@
  */
 var utf8 = exports,
     replacementChar = "\ufffd",
-    strictDecoder
+    strictDecoder;
 
 try {
     strictDecoder = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
 } catch (error) {
+    // "fatal" option is not supported on Node.js compiled without ICU
     strictDecoder = new TextDecoder("utf-8", { ignoreBOM: true });
 }
 
