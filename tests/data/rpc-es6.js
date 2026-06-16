@@ -24,7 +24,7 @@ export const MyService = $root.MyService = (() => {
         $protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);
     };
 
-    (MyService.prototype = $Object.create($protobuf.rpc.Service.prototype)).constructor = MyService;
+    $Object.defineProperty(MyService.prototype = $Object.create($protobuf.rpc.Service.prototype), "constructor", { value: MyService, writable: true, enumerable: false, configurable: true });
 
     /**
      * Creates new MyService service using the specified rpc implementation.
