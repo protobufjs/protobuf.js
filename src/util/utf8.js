@@ -11,7 +11,7 @@ var utf8 = exports,
 
 try {
     strictDecoder = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
-} catch (error) {
+} catch {
     // "fatal" option is not supported on Node.js compiled without ICU
     strictDecoder = new TextDecoder("utf-8", { ignoreBOM: true });
 }
