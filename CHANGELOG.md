@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.6.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.3...protobufjs-v8.6.4) (2026-06-16)
+
+
+### Bug Fixes
+
+* Avoid materializing ProtoJSON WKT defaults ([#2326](https://github.com/protobufjs/protobuf.js/issues/2326)) ([6aaee14](https://github.com/protobufjs/protobuf.js/commit/6aaee148e76d18faf86621637cc6e5e7bf267cb9))
+* Support runtimes without ICU ([#2331](https://github.com/protobufjs/protobuf.js/issues/2331)) ([cd6e2e2](https://github.com/protobufjs/protobuf.js/commit/cd6e2e2b6d59a65dc9104cc0058d1878e61992b0))
+
 ## [8.6.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.2...protobufjs-v8.6.3) (2026-06-10)
 
 
