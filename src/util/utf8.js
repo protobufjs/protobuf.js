@@ -7,7 +7,13 @@
  */
 var utf8 = exports,
     replacementChar = "\ufffd",
+    strictDecoder
+
+try {
     strictDecoder = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
+} catch (error) {
+    strictDecoder = new TextDecoder("utf-8", { ignoreBOM: true });
+}
 
 /**
  * Calculates the UTF8 byte length of a string.
