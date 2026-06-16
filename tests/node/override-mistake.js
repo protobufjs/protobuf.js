@@ -8,14 +8,16 @@ var rootDir = path.join(__dirname, "..", "..");
 // https://github.com/tc39/how-we-work/blob/main/terminology.md#override-mistake
 //
 // In strict mode, assignment cannot create an own property when the same key
-// is inherited as non-writable. Freezing the base prototypes models this
-// condition for properties protobuf.js intentionally shadows, such as
+// is inherited as non-writable. Freezing the relevant base prototypes models
+// this condition for properties protobuf.js intentionally shadows, such as
 // "constructor" or "toString".
 tape.test("loads and runs when base prototypes are frozen", function(test) {
     var script = [
         "\"use strict\";",
+        "// Do not freeze Error.prototype here: Node 12's warning internals assign",
+        "// warning.name while emitting the deprecated root/global warning during require.",
         "Object.freeze(Object.prototype);",
-        "Object.freeze(Error.prototype);",
+        "Object.freeze(Function.prototype);",
         "var protobuf = require(process.cwd());",
         "var root = protobuf.Root.fromJSON({ nested: { Example: { fields: { value: { type: \"string\", id: 1 } } } } });",
         "var Example = root.lookupType(\"Example\");",

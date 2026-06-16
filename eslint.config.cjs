@@ -64,8 +64,8 @@ module.exports = [
             "no-prototype-builtins": 1,
             "no-restricted-syntax": [ 1,
                 {
-                    selector: "AssignmentExpression[left.object.property.name='prototype'][left.property.name='toString']",
-                    message: "Define prototype.toString with Object.defineProperty to avoid the override mistake"
+                    selector: "AssignmentExpression[left.property.name='toString']",
+                    message: "Define toString with Object.defineProperty to avoid the override mistake"
                 },
                 {
                     selector: "AssignmentExpression[left.object.property.name='prototype'][left.property.name='constructor']",

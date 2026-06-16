@@ -81,7 +81,12 @@ function codegen(functionParams, functionName) {
         return "function " + safeFunctionName(functionNameOverride || functionName) + "(" + (functionParams && functionParams.join(",") || "") + "){\n  " + body.join("\n  ") + "\n}";
     }
 
-    Codegen.toString = toString;
+    Object.defineProperty(Codegen, "toString", {
+        value: toString,
+        writable: true,
+        enumerable: true,
+        configurable: true
+    });
     return Codegen;
 }
 
