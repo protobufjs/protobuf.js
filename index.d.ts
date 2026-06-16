@@ -1,5 +1,7 @@
 // DO NOT EDIT! This is a generated file. Edit the source file instead and regenerate.
 
+import * as Long from "long";
+
 export as namespace protobuf;
 
 /**
@@ -2070,13 +2072,6 @@ export interface IFetchOptions {
 
     /** If `true`, forces the use of XMLHttpRequest */
     xhr?: boolean;
-}
-
-/**
- * Any compatible Buffer instance.
- * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
- */
-export interface Buffer extends Uint8Array {
 }
 
 /**
