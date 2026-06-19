@@ -36,6 +36,8 @@ tape.test("util", function(test) {
         util.merge(guarded, { constructor: 1, safe: 2 });
         test.notOk(accessed, "should skip reserved keys before checking target values");
         test.equal(guarded.safe, 2, "should still merge regular keys");
+        util.merge(guarded, { toString: "custom" }, true);
+        test.equal(guarded.toString, "custom", "should not treat inherited keys as set when merging without overwriting");
         test.end();
     });
 

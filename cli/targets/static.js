@@ -1103,7 +1103,7 @@ function buildEnum(ref, enm) {
     else
         push(escapeName(ref) + "." + escapeName(enm.name) + " = (function() {");
     ++indent;
-        push((config.es6 ? "const" : "var") + " valuesById = {}, values = " + globalRef("Object") + ".create(valuesById);");
+        push((config.es6 ? "const" : "var") + " valuesById = " + globalRef("Object") + ".create(null), values = " + globalRef("Object") + ".create(valuesById);");
         var aliased = [];
         Object.keys(enm.values).forEach(function(key) {
             var valueId = enm.values[key];

@@ -464,17 +464,16 @@ Parser.prototype.parseAny = function parseAny(type, typeUrl, object, seen, depth
 };
 
 Parser.prototype.parseMapField = function parseMapField(field, object, depth) {
-    if (!object[field.name])
-        object[field.name] = {};
+    var map = getField(object, field, {});
     if (this.tn.skip("[")) {
         if (!this.tn.skip("]")) {
             do {
-                addMapEntry(field, object[field.name], this.parseMapEntry(field, depth + 1));
+                addMapEntry(field, map, this.parseMapEntry(field, depth + 1));
             } while (this.tn.skip(","));
             this.tn.expect("]");
         }
     } else
-        addMapEntry(field, object[field.name], this.parseMapEntry(field, depth + 1));
+        addMapEntry(field, map, this.parseMapEntry(field, depth + 1));
 };
 
 Parser.prototype.parseMessageFieldDelimiter = function parseMessageFieldDelimiter() {
@@ -637,7 +636,7 @@ Parser.prototype.skipBalanced = function skipBalanced(open, close, depth) {
 
 function addField(object, seen, field, value) {
     if (field.repeated) {
-        (object[field.name] || (object[field.name] = [])).push(value);
+        getField(object, field, []).push(value);
         return;
     }
     if (Object.prototype.hasOwnProperty.call(seen, field.name))
@@ -649,6 +648,18 @@ function addField(object, seen, field, value) {
         seen[oneofName] = true;
     }
     seen[field.name] = true;
+    setField(object, field, value);
+}
+
+function getField(object, field, value) {
+    if (!Object.prototype.hasOwnProperty.call(object, field.name))
+        setField(object, field, value);
+    return object[field.name];
+}
+
+function setField(object, field, value) {
+    if (field.name === "__proto__")
+        util.makeProp(object, field.name);
     object[field.name] = value;
 }
 
@@ -661,7 +672,10 @@ function addMapEntry(field, map, entry) {
         value = Object.prototype.hasOwnProperty.call(entry, "value")
             ? entry.value
             : defaultMapValue(valueField);
-    map[mapKey(keyField, key)] = value;
+    var outKey = mapKey(keyField, key);
+    if (outKey === "__proto__")
+        util.makeProp(map, outKey);
+    map[outKey] = value;
 }
 
 function defaultMapValue(field) {

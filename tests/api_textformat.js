@@ -80,6 +80,40 @@ tape.test("textformat - parses scalar, repeated, map and nested fields", functio
     test.end();
 });
 
+tape.test("textformat - preserves __proto__ map key as own data", function(test) {
+    var MapRoot = protobuf.parse("syntax = \"proto3\"; message Value { bool admin = 1; string role = 2; } message M { map<string, Value> labels = 1; }").root,
+        M = MapRoot.lookupType("M"),
+        msg = M.fromText("labels { key: \"__proto__\" value { admin: true role: \"owner\" } }");
+
+    test.same(Object.keys(msg.labels), ["__proto__"], "stores __proto__ as enumerable map key");
+    test.ok(Object.prototype.hasOwnProperty.call(msg.labels, "__proto__"), "stores __proto__ as own property");
+    test.equal(Object.getPrototypeOf(msg.labels), Object.prototype, "does not change map prototype");
+    test.equal("admin" in msg.labels, false, "does not expose value fields through map prototype");
+    test.equal(msg.labels.__proto__.admin, true, "keeps map value accessible by key");
+    test.equal(msg.labels.__proto__.role, "owner", "keeps complete map value");
+    test.end();
+});
+
+tape.test("textformat - parses fields whose names shadow object prototype", function(test) {
+    var ShadowRoot = protobuf.parse("syntax = \"proto3\"; message M { repeated string to_string = 1; map<string, string> has_own_property = 2; }").root,
+        M = ShadowRoot.lookupType("M"),
+        msg = M.fromText("to_string: \"x\" has_own_property { key: \"a\" value: \"b\" }");
+
+    test.same(msg.toString, ["x"], "parses repeated field named toString");
+    test.same(msg.hasOwnProperty, { a: "b" }, "parses map field named hasOwnProperty");
+    test.end();
+});
+
+tape.test("textformat - rejects inherited object properties as enum names", function(test) {
+    var EnumRoot = protobuf.parse("syntax = \"proto3\"; enum E { A = 0; } message M { E e = 1; }").root,
+        M = EnumRoot.lookupType("M");
+
+    test.throws(function() {
+        M.fromText("e: constructor");
+    }, /enum value expected/, "does not treat inherited constructor as an enum value");
+    test.end();
+});
+
 tape.test("textformat - formats deterministically", function(test) {
     var text = Msg.toText(Msg.create({
         stringMap: { b: 2, a: 1 },

@@ -255,7 +255,7 @@ $root.jspb = (function() {
          * @property {number} BAR=2 BAR value
          */
         test.OuterEnum = (function() {
-            var valuesById = {}, values = $Object.create(valuesById);
+            var valuesById = $Object.create(null), values = $Object.create(valuesById);
             values[valuesById[1] = "FOO"] = 1;
             values[valuesById[2] = "BAR"] = 2;
             return values;
@@ -4665,7 +4665,7 @@ $root.jspb = (function() {
              * @property {number} E2=77 E2 value
              */
             DefaultValues.Enum = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[13] = "E1"] = 13;
                 values[valuesById[77] = "E2"] = 77;
                 return values;
@@ -7929,7 +7929,7 @@ $root.jspb = (function() {
                  * @property {number} second=1 second value
                  */
                 EnumInGroup.NestedEnum = (function() {
-                    var valuesById = {}, values = $Object.create(valuesById);
+                    var valuesById = $Object.create(null), values = $Object.create(valuesById);
                     values[valuesById[0] = "first"] = 0;
                     values[valuesById[1] = "second"] = 1;
                     return values;
@@ -10709,7 +10709,7 @@ $root.jspb = (function() {
          * @property {number} MAP_VALUE_BAZ_NOBINARY=2 MAP_VALUE_BAZ_NOBINARY value
          */
         test.MapValueEnumNoBinary = (function() {
-            var valuesById = {}, values = $Object.create(valuesById);
+            var valuesById = $Object.create(null), values = $Object.create(valuesById);
             values[valuesById[0] = "MAP_VALUE_FOO_NOBINARY"] = 0;
             values[valuesById[1] = "MAP_VALUE_BAR_NOBINARY"] = 1;
             values[valuesById[2] = "MAP_VALUE_BAZ_NOBINARY"] = 2;
@@ -11985,7 +11985,7 @@ $root.google = (function() {
          * @property {number} EDITION_MAX=2147483647 EDITION_MAX value
          */
         protobuf.Edition = (function() {
-            var valuesById = {}, values = $Object.create(valuesById);
+            var valuesById = $Object.create(null), values = $Object.create(valuesById);
             values[valuesById[0] = "EDITION_UNKNOWN"] = 0;
             values[valuesById[900] = "EDITION_LEGACY"] = 900;
             values[valuesById[998] = "EDITION_PROTO2"] = 998;
@@ -14885,7 +14885,7 @@ $root.google = (function() {
              * @property {number} UNVERIFIED=1 UNVERIFIED value
              */
             ExtensionRangeOptions.VerificationState = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "DECLARATION"] = 0;
                 values[valuesById[1] = "UNVERIFIED"] = 1;
                 return values;
@@ -15550,7 +15550,7 @@ $root.google = (function() {
              * @property {number} TYPE_SINT64=18 TYPE_SINT64 value
              */
             FieldDescriptorProto.Type = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[1] = "TYPE_DOUBLE"] = 1;
                 values[valuesById[2] = "TYPE_FLOAT"] = 2;
                 values[valuesById[3] = "TYPE_INT64"] = 3;
@@ -15581,7 +15581,7 @@ $root.google = (function() {
              * @property {number} LABEL_REQUIRED=2 LABEL_REQUIRED value
              */
             FieldDescriptorProto.Label = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[1] = "LABEL_OPTIONAL"] = 1;
                 values[valuesById[3] = "LABEL_REPEATED"] = 3;
                 values[valuesById[2] = "LABEL_REQUIRED"] = 2;
@@ -18478,7 +18478,7 @@ $root.google = (function() {
              * @property {number} LITE_RUNTIME=3 LITE_RUNTIME value
              */
             FileOptions.OptimizeMode = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[1] = "SPEED"] = 1;
                 values[valuesById[2] = "CODE_SIZE"] = 2;
                 values[valuesById[3] = "LITE_RUNTIME"] = 3;
@@ -19719,7 +19719,7 @@ $root.google = (function() {
              * @property {number} STRING_PIECE=2 STRING_PIECE value
              */
             FieldOptions.CType = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "STRING"] = 0;
                 values[valuesById[1] = "CORD"] = 1;
                 values[valuesById[2] = "STRING_PIECE"] = 2;
@@ -19735,7 +19735,7 @@ $root.google = (function() {
              * @property {number} JS_NUMBER=2 JS_NUMBER value
              */
             FieldOptions.JSType = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "JS_NORMAL"] = 0;
                 values[valuesById[1] = "JS_STRING"] = 1;
                 values[valuesById[2] = "JS_NUMBER"] = 2;
@@ -19751,7 +19751,7 @@ $root.google = (function() {
              * @property {number} RETENTION_SOURCE=2 RETENTION_SOURCE value
              */
             FieldOptions.OptionRetention = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "RETENTION_UNKNOWN"] = 0;
                 values[valuesById[1] = "RETENTION_RUNTIME"] = 1;
                 values[valuesById[2] = "RETENTION_SOURCE"] = 2;
@@ -19774,7 +19774,7 @@ $root.google = (function() {
              * @property {number} TARGET_TYPE_METHOD=9 TARGET_TYPE_METHOD value
              */
             FieldOptions.OptionTargetType = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "TARGET_TYPE_UNKNOWN"] = 0;
                 values[valuesById[1] = "TARGET_TYPE_FILE"] = 1;
                 values[valuesById[2] = "TARGET_TYPE_EXTENSION_RANGE"] = 2;
@@ -22505,7 +22505,7 @@ $root.google = (function() {
              * @property {number} IDEMPOTENT=2 IDEMPOTENT value
              */
             MethodOptions.IdempotencyLevel = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "IDEMPOTENCY_UNKNOWN"] = 0;
                 values[valuesById[1] = "NO_SIDE_EFFECTS"] = 1;
                 values[valuesById[2] = "IDEMPOTENT"] = 2;
@@ -23913,7 +23913,7 @@ $root.google = (function() {
              * @property {number} LEGACY_REQUIRED=3 LEGACY_REQUIRED value
              */
             FeatureSet.FieldPresence = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "FIELD_PRESENCE_UNKNOWN"] = 0;
                 values[valuesById[1] = "EXPLICIT"] = 1;
                 values[valuesById[2] = "IMPLICIT"] = 2;
@@ -23930,7 +23930,7 @@ $root.google = (function() {
              * @property {number} CLOSED=2 CLOSED value
              */
             FeatureSet.EnumType = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "ENUM_TYPE_UNKNOWN"] = 0;
                 values[valuesById[1] = "OPEN"] = 1;
                 values[valuesById[2] = "CLOSED"] = 2;
@@ -23946,7 +23946,7 @@ $root.google = (function() {
              * @property {number} EXPANDED=2 EXPANDED value
              */
             FeatureSet.RepeatedFieldEncoding = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "REPEATED_FIELD_ENCODING_UNKNOWN"] = 0;
                 values[valuesById[1] = "PACKED"] = 1;
                 values[valuesById[2] = "EXPANDED"] = 2;
@@ -23962,7 +23962,7 @@ $root.google = (function() {
              * @property {number} NONE=3 NONE value
              */
             FeatureSet.Utf8Validation = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "UTF8_VALIDATION_UNKNOWN"] = 0;
                 values[valuesById[2] = "VERIFY"] = 2;
                 values[valuesById[3] = "NONE"] = 3;
@@ -23978,7 +23978,7 @@ $root.google = (function() {
              * @property {number} DELIMITED=2 DELIMITED value
              */
             FeatureSet.MessageEncoding = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "MESSAGE_ENCODING_UNKNOWN"] = 0;
                 values[valuesById[1] = "LENGTH_PREFIXED"] = 1;
                 values[valuesById[2] = "DELIMITED"] = 2;
@@ -23994,7 +23994,7 @@ $root.google = (function() {
              * @property {number} LEGACY_BEST_EFFORT=2 LEGACY_BEST_EFFORT value
              */
             FeatureSet.JsonFormat = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "JSON_FORMAT_UNKNOWN"] = 0;
                 values[valuesById[1] = "ALLOW"] = 1;
                 values[valuesById[2] = "LEGACY_BEST_EFFORT"] = 2;
@@ -24010,7 +24010,7 @@ $root.google = (function() {
              * @property {number} STYLE_LEGACY=2 STYLE_LEGACY value
              */
             FeatureSet.EnforceNamingStyle = (function() {
-                var valuesById = {}, values = $Object.create(valuesById);
+                var valuesById = $Object.create(null), values = $Object.create(valuesById);
                 values[valuesById[0] = "ENFORCE_NAMING_STYLE_UNKNOWN"] = 0;
                 values[valuesById[1] = "STYLE2024"] = 1;
                 values[valuesById[2] = "STYLE_LEGACY"] = 2;
@@ -24244,7 +24244,7 @@ $root.google = (function() {
                  * @property {number} STRICT=4 STRICT value
                  */
                 VisibilityFeature.DefaultSymbolVisibility = (function() {
-                    var valuesById = {}, values = $Object.create(valuesById);
+                    var valuesById = $Object.create(null), values = $Object.create(valuesById);
                     values[valuesById[0] = "DEFAULT_SYMBOL_VISIBILITY_UNKNOWN"] = 0;
                     values[valuesById[1] = "EXPORT_ALL"] = 1;
                     values[valuesById[2] = "EXPORT_TOP_LEVEL"] = 2;
@@ -26507,7 +26507,7 @@ $root.google = (function() {
                  * @property {number} ALIAS=2 ALIAS value
                  */
                 Annotation.Semantic = (function() {
-                    var valuesById = {}, values = $Object.create(valuesById);
+                    var valuesById = $Object.create(null), values = $Object.create(valuesById);
                     values[valuesById[0] = "NONE"] = 0;
                     values[valuesById[1] = "SET"] = 1;
                     values[valuesById[2] = "ALIAS"] = 2;
@@ -26529,7 +26529,7 @@ $root.google = (function() {
          * @property {number} VISIBILITY_EXPORT=2 VISIBILITY_EXPORT value
          */
         protobuf.SymbolVisibility = (function() {
-            var valuesById = {}, values = $Object.create(valuesById);
+            var valuesById = $Object.create(null), values = $Object.create(valuesById);
             values[valuesById[0] = "VISIBILITY_UNSET"] = 0;
             values[valuesById[1] = "VISIBILITY_LOCAL"] = 1;
             values[valuesById[2] = "VISIBILITY_EXPORT"] = 2;

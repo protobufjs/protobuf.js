@@ -819,7 +819,9 @@ function parse(source, root, options) {
                     setOption(parent, name + "." + token, value);
                 }
 
-                var prevValue = objectResult[propName];
+                var prevValue = Object.prototype.hasOwnProperty.call(objectResult, propName)
+                    ? objectResult[propName]
+                    : undefined;
 
                 if (prevValue)
                     value = [].concat(prevValue).concat(value);

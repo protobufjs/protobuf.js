@@ -277,7 +277,7 @@ function buildFieldOptions(field) {
 }
 
 function consolidateExtends(nested) {
-    var ext = {};
+    var ext = Object.create(null);
     nested = nested.filter(function(obj) {
         if (!(obj instanceof Field) || obj.extend === undefined)
             return true;

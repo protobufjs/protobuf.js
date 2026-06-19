@@ -713,7 +713,7 @@ $root.Message = (function() {
      * @property {number} TWO=2 TWO value
      */
     Message.SomeEnum = (function() {
-        var valuesById = {}, values = $Object.create(valuesById);
+        var valuesById = $Object.create(null), values = $Object.create(valuesById);
         values[valuesById[1] = "ONE"] = 1;
         values[valuesById[2] = "TWO"] = 2;
         return values;
