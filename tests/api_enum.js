@@ -52,6 +52,11 @@ tape.test("reflected enums", function(test) {
     var special = new protobuf.Enum("Special", {});
     special.add("__proto__", 1);
     test.notOk(Object.prototype.hasOwnProperty.call(special.values, "__proto__"), "should ignore reserved enum value names");
+    test.equal(special.values.constructor, undefined, "should not expose inherited object properties as enum values");
+
+    special.add("constructor", 2);
+    test.equal(special.values.constructor, 2, "should allow enum value names that shadow object properties");
+    test.equal(special.valuesById[2], "constructor", "should expose shadowing enum value names by id");
 
     test.throws(function() {
         enm.remove(1);
@@ -98,6 +103,11 @@ tape.test("reflected enums", function(test) {
         valuesOptions: { a: { deprecated: true } }
     });
     test.same(enmFromJSON.valuesOptions, { a: { deprecated: true } }, "should import value options from JSON");
+
+    var shadowFromJSON = protobuf.Enum.fromJSON("ShadowFromJSON", {
+        values: { toString: 0 }
+    });
+    test.equal(shadowFromJSON.values.toString, 0, "should import shadowing enum value names from JSON");
 
     enm.reserved = [[100,200], "BAD_NAME"];
     test.throws(function() {

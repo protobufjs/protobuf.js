@@ -562,7 +562,7 @@ $root.Test2 = (function() {
  * @property {number} FIVE=5 Leading comment for value with both types of comments after field with trailing comment.
  */
 $root.Test3 = (function() {
-    var valuesById = {}, values = $Object.create(valuesById);
+    var valuesById = $Object.create(null), values = $Object.create(valuesById);
     values[valuesById[1] = "ONE"] = 1;
     values[valuesById[2] = "TWO"] = 2;
     values[valuesById[3] = "THREE"] = 3;

@@ -251,7 +251,7 @@ function Type_fromDescriptor(descriptor, ctx, nested, depth) {
 
     var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++, fromDescriptorOptions(descriptor.options, exports.MessageOptions)),
         i,
-        mapEntries = {};
+        mapEntries = Object.create(null);
 
     if (!nested) {
         type._edition = ctx.edition;
@@ -704,6 +704,8 @@ function Enum_fromDescriptor(descriptor, ctx, nested) {
                 valueName = name && name.length ? name : "NAME" + (descriptor.value[i].number || 0),
                 value = descriptor.value[i].number || 0,
                 options = fromDescriptorOptions(descriptor.value[i].options, exports.EnumValueOptions);
+            if (valueName === "__proto__")
+                continue;
             values[valueName] = value;
             if (options)
                 (valuesOptions || (valuesOptions = {}))[valueName] = options;
@@ -1006,7 +1008,7 @@ function fromDescriptorType(type) {
 }
 
 function groupTypeNames() {
-    var names = {};
+    var names = Object.create(null);
     for (var a = 0; a < arguments.length; ++a) {
         var fields = arguments[a];
         if (!fields)

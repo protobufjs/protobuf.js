@@ -270,7 +270,7 @@ ReflectionObject.prototype._inferLegacyProtoFeatures = function _inferLegacyProt
  * @returns {*} Option value or `undefined` if not set
  */
 ReflectionObject.prototype.getOption = function getOption(name) {
-    if (this.options)
+    if (this.options && Object.prototype.hasOwnProperty.call(this.options, name))
         return this.options[name];
     return undefined;
 };
@@ -289,9 +289,12 @@ ReflectionObject.prototype.setOption = function setOption(name, value, ifNotSet)
         this.options = {};
     if (/^features\./.test(name)) {
         util.setProperty(this.options, name, value, ifNotSet);
-    } else if (!ifNotSet || this.options[name] === undefined) {
-        if (this.getOption(name) !== value) this.resolved = false;
-        this.options[name] = value;
+    } else {
+        var prev = this.getOption(name);
+        if (!ifNotSet || prev === undefined) {
+            if (prev !== value) this.resolved = false;
+            this.options[name] = value;
+        }
     }
 
     return this;
@@ -353,6 +356,8 @@ ReflectionObject.prototype.setOptions = function setOptions(options, ifNotSet) {
 
 /**
  * Converts this instance to its string representation.
+ * @name ReflectionObject#toString
+ * @function
  * @returns {string} Class name[, space, full name]
  */
 Object.defineProperty(ReflectionObject.prototype, "toString", {

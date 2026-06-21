@@ -282,7 +282,7 @@ function merge(dst) { // used by converters
         if (!src)
             continue;
         for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
-            if (!isUnsafeProperty(keys[i]) && (dst[keys[i]] === undefined || !ifNotSet))
+            if (!isUnsafeProperty(keys[i]) && (!ifNotSet || !Object.prototype.hasOwnProperty.call(dst, keys[i]) || dst[keys[i]] === undefined))
                 dst[keys[i]] = src[keys[i]];
     }
     return dst;

@@ -484,13 +484,35 @@ tape.test("descriptor - oneof and enum value options", function(test) {
                 }
             }]
         }),
-        enm = protobuf.Enum.fromDescriptor(enumDescriptor);
+        enm = protobuf.Enum.fromDescriptor(enumDescriptor),
+        unsafeEnumDescriptor = descriptor.EnumDescriptorProto.create({
+            name: "Unsafe",
+            value: [{
+                name: "__proto__",
+                number: 0,
+                options: {
+                    deprecated: true
+                }
+            }, {
+                name: "OK",
+                number: 1,
+                options: {
+                    deprecated: false
+                }
+            }]
+        }),
+        unsafe = protobuf.Enum.fromDescriptor(unsafeEnumDescriptor);
 
     test.same(oneof.options, { features: { field_presence: "EXPLICIT" } }, "preserves oneof options");
     test.equal(oneof.toDescriptor().options.features.fieldPresence, fieldPresence, "emits oneof options");
     test.same(enm.valuesOptions.ON, { deprecated: true, features: { field_presence: "EXPLICIT" } }, "preserves enum value options");
     test.equal(enm.toDescriptor().value[0].options.deprecated, true, "emits enum value options");
     test.equal(enm.toDescriptor().value[0].options.features.fieldPresence, fieldPresence, "emits enum value features");
+    test.equal(unsafe.values.OK, 1, "keeps safe enum value");
+    test.equal(unsafe.valuesById[1], "OK", "keeps safe enum value by id");
+    test.notOk(Object.prototype.hasOwnProperty.call(unsafe.values, "__proto__"), "skips unsafe enum value name");
+    test.equal(unsafe.valuesOptions.deprecated, undefined, "does not expose unsafe enum value options through prototype");
+    test.same(unsafe.valuesOptions.OK, { deprecated: false }, "keeps safe enum value options");
 
     test.end();
 });

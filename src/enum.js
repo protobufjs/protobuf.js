@@ -38,7 +38,7 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
      * Enum values by id.
      * @type {Object.<number,string>}
      */
-    this.valuesById = {};
+    this.valuesById = Object.create(null);
 
     /**
      * Enum values by name.
