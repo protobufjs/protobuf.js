@@ -163,7 +163,7 @@ $root.MyRequest = (function() {
             _depth = 0;
         if (_depth > $util.recursionLimit)
             throw $Error("max depth exceeded");
-        if (message.path != null && $Object.hasOwnProperty.call(message, "path"))
+        if (message.path != null && $Object.hasOwnProperty.call(message, "path") && message.path !== "")
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
         if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)
@@ -423,7 +423,7 @@ $root.MyResponse = (function() {
             _depth = 0;
         if (_depth > $util.recursionLimit)
             throw $Error("max depth exceeded");
-        if (message.status != null && $Object.hasOwnProperty.call(message, "status"))
+        if (message.status != null && $Object.hasOwnProperty.call(message, "status") && message.status !== 0)
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
         if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)

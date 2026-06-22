@@ -517,6 +517,127 @@ tape.test("decode implicit enum zero with non-zero default", function(test) {
     test.notOk(Message.fields.op.hasPresence, "enum field should have implicit presence");
     test.equal(Message.fields.op.typeDefault, -1, "enum field should use the first value as default");
     test.equal(Message.decode(protobuf.util.newBuffer([0x20, 0x00])).op, 0, "should preserve explicit enum zero");
+    test.equal(Buffer.from(Message.encode({ op: -1 }).finish()).toString("hex"), "", "should omit implicit enum default");
+    test.equal(Buffer.from(Message.encode({ op: 0 }).finish()).toString("hex"), "2000", "should encode non-default enum zero");
+
+    test.end();
+});
+
+tape.test("encode omits implicit default values", function(test) {
+    var Message = protobuf.parse("syntax=\"proto3\";\
+        message Message {\
+            int32 int32_value = 1;\
+            bool bool_value = 2;\
+            string string_value = 3;\
+            bytes bytes_value = 4;\
+            double double_value = 5;\
+            float float_value = 6;\
+            Enum enum_value = 7;\
+            optional int32 optional_int32_value = 8;\
+            optional double optional_double_value = 9;\
+            oneof kind { int32 oneof_int32_value = 10; }\
+            enum Enum { A = 0; B = 1; }\
+        }").root.resolveAll().lookupType("Message");
+
+    function hex(buf) {
+        return Buffer.from(buf).toString("hex");
+    }
+
+    test.equal(hex(Message.encode({
+        int32Value: 0,
+        boolValue: false,
+        stringValue: "",
+        bytesValue: [],
+        doubleValue: 0,
+        floatValue: 0,
+        enumValue: 0
+    }).finish()), "", "should omit implicit scalar defaults");
+
+    test.equal(hex(Message.encode({
+        doubleValue: -0,
+        floatValue: -0
+    }).finish()), "2900000000000000803500000080", "should preserve implicit negative zero");
+
+    test.equal(hex(Message.encode({
+        optionalInt32Value: 0,
+        optionalDoubleValue: -0,
+        oneofInt32Value: 0
+    }).finish()), "40004900000000000000805000", "should encode explicit defaults");
+
+    test.end();
+});
+
+tape.test("decode preserves implicit negative zero", function(test) {
+    var Message = protobuf.parse("syntax=\"proto3\";\
+        message Message {\
+            double double_value = 1;\
+            float float_value = 2;\
+            optional double optional_double_value = 3;\
+            optional float optional_float_value = 4;\
+        }").root.resolveAll().lookupType("Message");
+
+    function bytes(hex) {
+        return protobuf.util.newBuffer(Buffer.from(hex, "hex"));
+    }
+
+    function hex(buf) {
+        return Buffer.from(buf).toString("hex");
+    }
+
+    var implicit = Message.decode(bytes("0900000000000000801500000080"));
+    test.ok(Object.is(implicit.doubleValue, -0), "should decode implicit double negative zero");
+    test.ok(Object.is(implicit.floatValue, -0), "should decode implicit float negative zero");
+    test.equal(hex(Message.encode(implicit).finish()), "0900000000000000801500000080", "should re-encode implicit negative zero");
+
+    var positive = Message.decode(bytes("0900000000000000001500000000"));
+    test.notOk(Object.prototype.hasOwnProperty.call(positive, "doubleValue"), "should drop implicit double positive zero");
+    test.notOk(Object.prototype.hasOwnProperty.call(positive, "floatValue"), "should drop implicit float positive zero");
+    test.equal(hex(Message.encode(positive).finish()), "", "should not re-encode implicit positive zero");
+
+    var explicit = Message.decode(bytes("1900000000000000802500000080"));
+    test.ok(Object.is(explicit.optionalDoubleValue, -0), "should decode explicit double negative zero");
+    test.ok(Object.is(explicit.optionalFloatValue, -0), "should decode explicit float negative zero");
+    test.equal(hex(Message.encode(explicit).finish()), "1900000000000000802500000080", "should re-encode explicit negative zero");
+
+    test.end();
+});
+
+tape.test("fromObject preserves implicit negative zero", function(test) {
+    var Message = protobuf.parse("syntax=\"proto3\";\
+        message Message {\
+            double double_value = 1;\
+            float float_value = 2;\
+            optional double optional_double_value = 3;\
+            optional float optional_float_value = 4;\
+        }").root.resolveAll().lookupType("Message");
+
+    function hex(buf) {
+        return Buffer.from(buf).toString("hex");
+    }
+
+    var implicit = Message.fromObject({
+        doubleValue: -0,
+        floatValue: -0
+    });
+    test.ok(Object.is(implicit.doubleValue, -0), "should convert implicit double negative zero");
+    test.ok(Object.is(implicit.floatValue, -0), "should convert implicit float negative zero");
+    test.equal(hex(Message.encode(implicit).finish()), "0900000000000000801500000080", "should encode converted implicit negative zero");
+
+    var positive = Message.fromObject({
+        doubleValue: 0,
+        floatValue: 0
+    });
+    test.notOk(Object.prototype.hasOwnProperty.call(positive, "doubleValue"), "should drop implicit double positive zero");
+    test.notOk(Object.prototype.hasOwnProperty.call(positive, "floatValue"), "should drop implicit float positive zero");
+    test.equal(hex(Message.encode(positive).finish()), "", "should not encode converted implicit positive zero");
+
+    var explicit = Message.fromObject({
+        optionalDoubleValue: -0,
+        optionalFloatValue: -0
+    });
+    test.ok(Object.is(explicit.optionalDoubleValue, -0), "should convert explicit double negative zero");
+    test.ok(Object.is(explicit.optionalFloatValue, -0), "should convert explicit float negative zero");
+    test.equal(hex(Message.encode(explicit).finish()), "1900000000000000802500000080", "should encode converted explicit negative zero");
 
     test.end();
 });

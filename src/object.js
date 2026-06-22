@@ -353,6 +353,8 @@ ReflectionObject.prototype.setOptions = function setOptions(options, ifNotSet) {
 
 /**
  * Converts this instance to its string representation.
+ * @name ReflectionObject#toString
+ * @function
  * @returns {string} Class name[, space, full name]
  */
 Object.defineProperty(ReflectionObject.prototype, "toString", {

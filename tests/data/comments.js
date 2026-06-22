@@ -108,11 +108,11 @@ $root.Test1 = (function() {
             _depth = 0;
         if (_depth > $util.recursionLimit)
             throw $Error("max depth exceeded");
-        if (message.field1 != null && $Object.hasOwnProperty.call(message, "field1"))
+        if (message.field1 != null && $Object.hasOwnProperty.call(message, "field1") && message.field1 !== "")
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.field1);
-        if (message.field2 != null && $Object.hasOwnProperty.call(message, "field2"))
+        if (message.field2 != null && $Object.hasOwnProperty.call(message, "field2") && message.field2 !== 0)
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.field2);
-        if (message.field3 != null && $Object.hasOwnProperty.call(message, "field3"))
+        if (message.field3 != null && $Object.hasOwnProperty.call(message, "field3") && message.field3 !== false)
             writer.uint32(/* id 3, wireType 0 =*/24).bool(message.field3);
         if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)
