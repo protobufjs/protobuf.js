@@ -1124,7 +1124,7 @@ $root.ClosedImplicitMessage = (function() {
             _depth = 0;
         if (_depth > $util.recursionLimit)
             throw $Error("max depth exceeded");
-        if (message.singular != null && $Object.hasOwnProperty.call(message, "singular"))
+        if (message.singular != null && $Object.hasOwnProperty.call(message, "singular") && message.singular !== 0)
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.singular);
         if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)
