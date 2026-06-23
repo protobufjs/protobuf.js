@@ -5,7 +5,7 @@ var $protobuf = require("../../minimal");
 
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
-var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $Array = $util.global.Array, $TypeError = $util.global.TypeError, $String = $util.global.String, $Number = $util.global.Number, $parseInt = $util.global.parseInt, $BigInt = $util.global.BigInt;
+var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $Array = $util.global.Array, $TypeError = $util.global.TypeError, $String = $util.global.String, $Number = $util.global.Number, $parseInt = $util.global.parseInt, $BigInt = $util.global.BigInt, $isFinite = $util.global.isFinite;
 
 // Exported root namespace
 var $root = $protobuf.roots["test_convert"] || ($protobuf.roots["test_convert"] = {});
@@ -24,6 +24,8 @@ $root.Message = (function() {
      * @property {Message.SomeEnum|null} [enumVal] Message enumVal
      * @property {Array.<Message.SomeEnum>|null} [enumRepeated] Message enumRepeated
      * @property {Object.<string,number|Long>|null} [int64Map] Message int64Map
+     * @property {number|null} [doubleVal] Message doubleVal
+     * @property {number|null} [floatVal] Message floatVal
      * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding when enabled
      */
 
@@ -133,6 +135,22 @@ $root.Message = (function() {
     Message.prototype.int64Map = $util.emptyObject;
 
     /**
+     * Message doubleVal.
+     * @member {number} doubleVal
+     * @memberof Message
+     * @instance
+     */
+    Message.prototype.doubleVal = 0;
+
+    /**
+     * Message floatVal.
+     * @member {number} floatVal
+     * @memberof Message
+     * @instance
+     */
+    Message.prototype.floatVal = 0;
+
+    /**
      * Creates a new Message instance using the specified properties.
      * @function create
      * @memberof Message
@@ -164,12 +182,12 @@ $root.Message = (function() {
             _depth = 0;
         if (_depth > $util.recursionLimit)
             throw $Error("max depth exceeded");
-        if (message.stringVal != null && $Object.hasOwnProperty.call(message, "stringVal"))
+        if (message.stringVal != null && $Object.hasOwnProperty.call(message, "stringVal") && message.stringVal !== "")
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringVal);
         if (message.stringRepeated != null && message.stringRepeated.length)
             for (var i = 0; i < message.stringRepeated.length; ++i)
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.stringRepeated[i]);
-        if (message.uint64Val != null && $Object.hasOwnProperty.call(message, "uint64Val"))
+        if (message.uint64Val != null && $Object.hasOwnProperty.call(message, "uint64Val") && (typeof message.uint64Val === "object" ? message.uint64Val.low || message.uint64Val.high : message.uint64Val !== 0))
             writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.uint64Val);
         if (message.uint64Repeated != null && message.uint64Repeated.length) {
             writer.uint32(/* id 4, wireType 2 =*/34).fork();
@@ -177,12 +195,12 @@ $root.Message = (function() {
                 writer.uint64(message.uint64Repeated[i]);
             writer.ldelim();
         }
-        if (message.bytesVal != null && $Object.hasOwnProperty.call(message, "bytesVal"))
+        if (message.bytesVal != null && $Object.hasOwnProperty.call(message, "bytesVal") && message.bytesVal.length)
             writer.uint32(/* id 5, wireType 2 =*/42).bytes(message.bytesVal);
         if (message.bytesRepeated != null && message.bytesRepeated.length)
             for (var i = 0; i < message.bytesRepeated.length; ++i)
                 writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.bytesRepeated[i]);
-        if (message.enumVal != null && $Object.hasOwnProperty.call(message, "enumVal"))
+        if (message.enumVal != null && $Object.hasOwnProperty.call(message, "enumVal") && message.enumVal !== 1)
             writer.uint32(/* id 7, wireType 0 =*/56).int32(message.enumVal);
         if (message.enumRepeated != null && message.enumRepeated.length) {
             writer.uint32(/* id 8, wireType 2 =*/66).fork();
@@ -193,6 +211,10 @@ $root.Message = (function() {
         if (message.int64Map != null && $Object.hasOwnProperty.call(message, "int64Map"))
             for (var keys = $Object.keys(message.int64Map), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).int64(message.int64Map[keys[i]]).ldelim();
+        if (message.doubleVal != null && $Object.hasOwnProperty.call(message, "doubleVal") && !$Object.is(message.doubleVal, 0))
+            writer.uint32(/* id 10, wireType 1 =*/81).double(message.doubleVal);
+        if (message.floatVal != null && $Object.hasOwnProperty.call(message, "floatVal") && !$Object.is(message.floatVal, 0))
+            writer.uint32(/* id 11, wireType 5 =*/93).float(message.floatVal);
         if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)
                 writer.raw(message.$unknowns[i]);
@@ -354,6 +376,24 @@ $root.Message = (function() {
                     message.int64Map[key] = value;
                     continue;
                 }
+            case 10: {
+                    if (wireType !== 1)
+                        break;
+                    if (!$Object.is(value = reader.double(), 0))
+                        message.doubleVal = value;
+                    else
+                        delete message.doubleVal;
+                    continue;
+                }
+            case 11: {
+                    if (wireType !== 5)
+                        break;
+                    if (!$Object.is(value = reader.float(), 0))
+                        message.floatVal = value;
+                    else
+                        delete message.floatVal;
+                    continue;
+                }
             }
             reader.skipType(wireType, _depth, tag);
             if (!reader.discardUnknown) {
@@ -445,6 +485,12 @@ $root.Message = (function() {
                 if (!$util.isInteger(message.int64Map[key[i]]) && !(message.int64Map[key[i]] && $util.isInteger(message.int64Map[key[i]].low) && $util.isInteger(message.int64Map[key[i]].high)))
                     return "int64Map: integer|Long{k:string} expected";
         }
+        if (message.doubleVal != null && $Object.hasOwnProperty.call(message, "doubleVal"))
+            if (typeof message.doubleVal !== "number")
+                return "doubleVal: number expected";
+        if (message.floatVal != null && $Object.hasOwnProperty.call(message, "floatVal"))
+            if (typeof message.floatVal !== "number")
+                return "floatVal: number expected";
         return null;
     };
 
@@ -566,6 +612,12 @@ $root.Message = (function() {
                     message.int64Map[keys[i]] = new $util.LongBits(object.int64Map[keys[i]].low >>> 0, object.int64Map[keys[i]].high >>> 0).toNumber();
             }
         }
+        if (object.doubleVal != null)
+            if (!$Object.is($Number(object.doubleVal), 0))
+                message.doubleVal = $Number(object.doubleVal);
+        if (object.floatVal != null)
+            if (!$Object.is($Number(object.floatVal), 0))
+                message.floatVal = $Number(object.floatVal);
         return message;
     };
 
@@ -609,6 +661,8 @@ $root.Message = (function() {
                     object.bytesVal = $util.newBuffer(object.bytesVal);
             }
             object.enumVal = options.enums === $String ? "ONE" : 1;
+            object.doubleVal = 0;
+            object.floatVal = 0;
         }
         if (message.stringVal != null && $Object.hasOwnProperty.call(message, "stringVal"))
             object.stringVal = message.stringVal;
@@ -662,6 +716,10 @@ $root.Message = (function() {
                     object.int64Map[keys2[j]] = options.longs === $String ? $util.Long.prototype.toString.call(message.int64Map[keys2[j]]) : options.longs === $Number ? new $util.LongBits(message.int64Map[keys2[j]].low >>> 0, message.int64Map[keys2[j]].high >>> 0).toNumber() : message.int64Map[keys2[j]];
             }
         }
+        if (message.doubleVal != null && $Object.hasOwnProperty.call(message, "doubleVal"))
+            object.doubleVal = options.json && !$isFinite(message.doubleVal) ? $String(message.doubleVal) : message.doubleVal;
+        if (message.floatVal != null && $Object.hasOwnProperty.call(message, "floatVal"))
+            object.floatVal = options.json && !$isFinite(message.floatVal) ? $String(message.floatVal) : message.floatVal;
         return object;
     };
 

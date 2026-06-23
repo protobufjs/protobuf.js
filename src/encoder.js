@@ -91,8 +91,23 @@ function encoder(mtype) {
 
         // Non-repeated
         } else {
-            if (!field.required) gen
+            if (!field.required)
+                if (field.hasPresence || !(field.resolvedType instanceof Enum || types.basic[type] !== undefined)) gen
     ("if(%s!=null&&Object.hasOwnProperty.call(m,%j))", ref, field.name); // !== undefined && !== null
+                else if (field.resolvedType instanceof Enum) gen
+    ("if(%s!=null&&Object.hasOwnProperty.call(m,%j)&&%s!==%j)", ref, field.name, ref, field.typeDefault);
+                else if (type === "bool") gen
+    ("if(%s!=null&&Object.hasOwnProperty.call(m,%j)&&%s!==false)", ref, field.name, ref);
+                else if (type === "string") gen
+    ("if(%s!=null&&Object.hasOwnProperty.call(m,%j)&&%s!==\"\")", ref, field.name, ref);
+                else if (type === "bytes") gen
+    ("if(%s!=null&&Object.hasOwnProperty.call(m,%j)&&%s.length)", ref, field.name, ref);
+                else if (type === "double" || type === "float") gen
+    ("if(%s!=null&&Object.hasOwnProperty.call(m,%j)&&!Object.is(%s,0))", ref, field.name, ref);
+                else if (types.long[type] !== undefined) gen
+    ("if(%s!=null&&Object.hasOwnProperty.call(m,%j)&&(typeof %s===\"object\"?%s.low||%s.high:%s!==0))", ref, field.name, ref, ref, ref, ref);
+                else gen
+    ("if(%s!=null&&Object.hasOwnProperty.call(m,%j)&&%s!==0)", ref, field.name, ref);
 
             if (wireType === undefined)
         genTypePartial(gen, field, index, ref);

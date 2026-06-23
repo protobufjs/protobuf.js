@@ -168,6 +168,8 @@ converter.fromObject = function fromObject(mtype) {
     ("if(d%s.length){", prop);
                 else if (field.type === "bool") gen
     ("if(d%s){", prop);
+                else if (field.type === "double" || field.type === "float") gen
+    ("if(!Object.is(Number(d%s),0)){", prop);
                 else if (types.long[field.type] !== undefined) gen
     ("if(typeof d%s===\"object\"?d%s.low||d%s.high:Number(d%s)!==0){", prop, prop, prop, prop);
                 else gen
