@@ -3,7 +3,7 @@ description: "Build and run the upstream Protocol Buffers conformance suite for 
 inputs:
   upstream-version:
     description: "Upstream protocolbuffers/protobuf tag or branch to test against."
-    default: "v35.0"
+    default: "v35.1"
   upstream-dir:
     description: "Directory where upstream protobuf is checked out."
     default: "tests/conformance/upstream"
