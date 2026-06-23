@@ -173,7 +173,7 @@ function decoder(mtype) {
             else if (types.long[type] !== undefined) gen
                 ("if(typeof(v=r.%s())===\"object\"?v.low||v.high:v!==0)", type);
             else if (type === "double" || type === "float") gen
-                ("if((v=r.%s())!==0)", type);
+                ("if(!Object.is(v=r.%s(),0))", type);
             else gen
                 ("if(v=r.%s())", type);
             gen

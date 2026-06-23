@@ -237,26 +237,26 @@ $root.Package = (function() {
             _depth = 0;
         if (_depth > $util.recursionLimit)
             throw $Error("max depth exceeded");
-        if (message.name != null && $Object.hasOwnProperty.call(message, "name"))
+        if (message.name != null && $Object.hasOwnProperty.call(message, "name") && message.name !== "")
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-        if (message.version != null && $Object.hasOwnProperty.call(message, "version"))
+        if (message.version != null && $Object.hasOwnProperty.call(message, "version") && message.version !== "")
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.version);
-        if (message.description != null && $Object.hasOwnProperty.call(message, "description"))
+        if (message.description != null && $Object.hasOwnProperty.call(message, "description") && message.description !== "")
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
-        if (message.author != null && $Object.hasOwnProperty.call(message, "author"))
+        if (message.author != null && $Object.hasOwnProperty.call(message, "author") && message.author !== "")
             writer.uint32(/* id 4, wireType 2 =*/34).string(message.author);
-        if (message.license != null && $Object.hasOwnProperty.call(message, "license"))
+        if (message.license != null && $Object.hasOwnProperty.call(message, "license") && message.license !== "")
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.license);
         if (message.repository != null && $Object.hasOwnProperty.call(message, "repository"))
             $root.Package.Repository.encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork(), _depth + 1).ldelim();
-        if (message.bugs != null && $Object.hasOwnProperty.call(message, "bugs"))
+        if (message.bugs != null && $Object.hasOwnProperty.call(message, "bugs") && message.bugs !== "")
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);
-        if (message.homepage != null && $Object.hasOwnProperty.call(message, "homepage"))
+        if (message.homepage != null && $Object.hasOwnProperty.call(message, "homepage") && message.homepage !== "")
             writer.uint32(/* id 8, wireType 2 =*/66).string(message.homepage);
         if (message.keywords != null && message.keywords.length)
             for (var i = 0; i < message.keywords.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).string(message.keywords[i]);
-        if (message.main != null && $Object.hasOwnProperty.call(message, "main"))
+        if (message.main != null && $Object.hasOwnProperty.call(message, "main") && message.main !== "")
             writer.uint32(/* id 10, wireType 2 =*/82).string(message.main);
         if (message.bin != null && $Object.hasOwnProperty.call(message, "bin"))
             for (var keys = $Object.keys(message.bin), i = 0; i < keys.length; ++i)
@@ -270,12 +270,12 @@ $root.Package = (function() {
         if (message.devDependencies != null && $Object.hasOwnProperty.call(message, "devDependencies"))
             for (var keys = $Object.keys(message.devDependencies), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 15, wireType 2 =*/122).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.devDependencies[keys[i]]).ldelim();
-        if (message.types != null && $Object.hasOwnProperty.call(message, "types"))
+        if (message.types != null && $Object.hasOwnProperty.call(message, "types") && message.types !== "")
             writer.uint32(/* id 17, wireType 2 =*/138).string(message.types);
         if (message.cliDependencies != null && message.cliDependencies.length)
             for (var i = 0; i < message.cliDependencies.length; ++i)
                 writer.uint32(/* id 18, wireType 2 =*/146).string(message.cliDependencies[i]);
-        if (message.versionScheme != null && $Object.hasOwnProperty.call(message, "versionScheme"))
+        if (message.versionScheme != null && $Object.hasOwnProperty.call(message, "versionScheme") && message.versionScheme !== "")
             writer.uint32(/* id 19, wireType 2 =*/154).string(message.versionScheme);
         if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)
@@ -1012,9 +1012,9 @@ $root.Package = (function() {
                 _depth = 0;
             if (_depth > $util.recursionLimit)
                 throw $Error("max depth exceeded");
-            if (message.type != null && $Object.hasOwnProperty.call(message, "type"))
+            if (message.type != null && $Object.hasOwnProperty.call(message, "type") && message.type !== "")
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
-            if (message.url != null && $Object.hasOwnProperty.call(message, "url"))
+            if (message.url != null && $Object.hasOwnProperty.call(message, "url") && message.url !== "")
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.url);
             if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                 for (var i = 0; i < message.$unknowns.length; ++i)

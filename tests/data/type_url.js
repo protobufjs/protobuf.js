@@ -345,7 +345,7 @@ $root.TypeUrlTest = (function() {
                 _depth = 0;
             if (_depth > $util.recursionLimit)
                 throw $Error("max depth exceeded");
-            if (message.a != null && $Object.hasOwnProperty.call(message, "a"))
+            if (message.a != null && $Object.hasOwnProperty.call(message, "a") && message.a !== "")
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.a);
             if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                 for (var i = 0; i < message.$unknowns.length; ++i)
