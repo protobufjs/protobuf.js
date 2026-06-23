@@ -46,7 +46,7 @@ tape.test("negative enum reserved values", function(test) {
 
     test.throws(function() {
         protobuf.parse("syntax = \"proto3\"; message M { reserved -1; int32 value = 1; }");
-    }, /illegal id '-1'/, "should still reject negative message reserved field ids");
+    }, /illegal token \(line 1, column 41\)/, "should still reject negative message reserved field ids");
 
     test.end();
 });
@@ -65,7 +65,7 @@ tape.test("invalid lookup", async function(test) {
         await protobuf.load("tests/data/invalid-lookup.proto");
         test.fail("should have thrown");
     } catch(err) {
-        test.match(err.message, /illegal token 'required'/, "failed to parse");
+        test.match(err.message, /illegal token \(tests\/data\/invalid-lookup\.proto, line \d+, column \d+\)/, "failed to parse");
     }
 });
 

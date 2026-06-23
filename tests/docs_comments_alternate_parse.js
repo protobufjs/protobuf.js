@@ -101,7 +101,7 @@ tape.test("proto comments in alternate-parse mode maintain line numbers", functi
         protobuf.parse(source, { alternateCommentMode: true });
         test.fail("should throw on invalid token");
     } catch (err) {
-        test.equal(err.message, "illegal token 'a' (line 8)");
+        test.equal(err.message, "illegal token (line 8, column 16)");
     }
     test.end();
 });

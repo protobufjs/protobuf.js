@@ -88,6 +88,7 @@ tokenize.unescape = unescape;
  * @property {TokenizerHandleSkip} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
  * @property {TokenizerHandleCmnt} cmnt Gets the comment on the previous line or the line comment on the specified line, if any
  * @property {number} line Current line number
+ * @property {number} column Current token column number
  */
 
 /**
@@ -103,6 +104,7 @@ function tokenize(source, alternateCommentMode) {
     var offset = 0,
         length = source.length,
         line = 1,
+        column = 1,
         lastCommentLine = 0,
         comments = {};
 
@@ -113,12 +115,11 @@ function tokenize(source, alternateCommentMode) {
     /* istanbul ignore next */
     /**
      * Creates an error for illegal syntax.
-     * @param {string} subject Subject
      * @returns {Error} Error created
      * @inner
      */
-    function illegal(subject) {
-        return Error("illegal " + subject + " (line " + line + ")");
+    function illegal() {
+        return Error("illegal token (line " + line + ", column " + column + ")");
     }
 
     /**
@@ -131,9 +132,13 @@ function tokenize(source, alternateCommentMode) {
         re.lastIndex = offset - 1;
         var match = re.exec(source);
         if (!match)
-            throw illegal("string");
+            throw illegal();
         offset = re.lastIndex;
-        push(stringDelim);
+        stack.push({
+            token: stringDelim,
+            line: line,
+            column: columnAt(offset - 1)
+        });
         stringDelim = null;
         return unescape(match[1]);
     }
@@ -146,6 +151,17 @@ function tokenize(source, alternateCommentMode) {
      */
     function charAt(pos) {
         return source.charAt(pos);
+    }
+
+    /**
+     * Gets the 1-based column at the specified offset.
+     * @param {number} pos Position
+     * @returns {number} Column
+     * @inner
+     */
+    function columnAt(pos) {
+        var lineStart = source.lastIndexOf("\n", pos - 1);
+        return pos - lineStart;
     }
 
     /**
@@ -216,8 +232,12 @@ function tokenize(source, alternateCommentMode) {
      * @inner
      */
     function next() {
-        if (stack.length > 0)
-            return stack.shift();
+        if (stack.length > 0) {
+            var stacked = stack.shift();
+            line = stacked.line;
+            column = stacked.column;
+            return stacked.token;
+        }
         if (stringDelim)
             return readString();
         var repeat,
@@ -241,8 +261,10 @@ function tokenize(source, alternateCommentMode) {
             }
 
             if (charAt(offset) === "/") {
+                start = offset;
+                column = columnAt(start);
                 if (++offset === length) {
-                    throw illegal("comment");
+                    throw illegal();
                 }
                 if (charAt(offset) === "/") { // Line
                     if (!alternateCommentMode) {
@@ -303,7 +325,7 @@ function tokenize(source, alternateCommentMode) {
                             ++line;
                         }
                         if (++offset === length) {
-                            throw illegal("comment");
+                            throw illegal();
                         }
                         prev = curr;
                         curr = charAt(offset);
@@ -315,6 +337,7 @@ function tokenize(source, alternateCommentMode) {
                     }
                     repeat = true;
                 } else {
+                    column = columnAt(start);
                     return "/";
                 }
             }
@@ -323,6 +346,7 @@ function tokenize(source, alternateCommentMode) {
         // offset !== length if we got here
 
         var end = offset;
+        column = columnAt(offset);
         delimRe.lastIndex = 0;
         var delim = delimRe.test(charAt(end++));
         if (!delim)
@@ -341,7 +365,11 @@ function tokenize(source, alternateCommentMode) {
      * @inner
      */
     function push(token) {
-        stack.push(token);
+        stack.push({
+            token: token,
+            line: line,
+            column: column
+        });
     }
 
     /**
@@ -356,7 +384,9 @@ function tokenize(source, alternateCommentMode) {
                 return null;
             push(token);
         }
-        return stack[0];
+        line = stack[0].line;
+        column = stack[0].column;
+        return stack[0].token;
     }
 
     /**
@@ -375,7 +405,7 @@ function tokenize(source, alternateCommentMode) {
             return true;
         }
         if (!optional)
-            throw illegal("token '" + actual + "', '" + expected + "' expected");
+            throw illegal();
         return false;
     }
 
@@ -408,14 +438,19 @@ function tokenize(source, alternateCommentMode) {
         return ret;
     }
 
-    return Object.defineProperty({
+    return Object.defineProperties({
         next: next,
         peek: peek,
         push: push,
         skip: skip,
         cmnt: cmnt
-    }, "line", {
-        get: function() { return line; }
+    }, {
+        line: {
+            get: function() { return line; }
+        },
+        column: {
+            get: function() { return column; }
+        }
     });
     /* eslint-enable callback-return */
 }
