@@ -428,24 +428,14 @@ $root.Message = (function() {
                     return "bytesRepeated: buffer[] expected";
         }
         if (message.enumVal != null && $Object.hasOwnProperty.call(message, "enumVal"))
-            switch (message.enumVal) {
-            default:
+            if (typeof message.enumVal !== "number" || (message.enumVal | 0) !== message.enumVal)
                 return "enumVal: enum value expected";
-            case 1:
-            case 2:
-                break;
-            }
         if (message.enumRepeated != null && $Object.hasOwnProperty.call(message, "enumRepeated")) {
             if (!$Array.isArray(message.enumRepeated))
                 return "enumRepeated: array expected";
             for (var i = 0; i < message.enumRepeated.length; ++i)
-                switch (message.enumRepeated[i]) {
-                default:
+                if (typeof message.enumRepeated[i] !== "number" || (message.enumRepeated[i] | 0) !== message.enumRepeated[i])
                     return "enumRepeated: enum value[] expected";
-                case 1:
-                case 2:
-                    break;
-                }
         }
         if (message.int64Map != null && $Object.hasOwnProperty.call(message, "int64Map")) {
             if (!$util.isObject(message.int64Map))
@@ -528,12 +518,6 @@ $root.Message = (function() {
         }
         if (object.enumVal !== 1 && (typeof object.enumVal !== "string" || $root.Message.SomeEnum[object.enumVal] !== 1))
             switch (object.enumVal) {
-            default:
-                if (typeof object.enumVal === "number") {
-                    message.enumVal = object.enumVal;
-                    break;
-                }
-                break;
             case "ONE":
             case 1:
                 message.enumVal = 1;
@@ -542,26 +526,27 @@ $root.Message = (function() {
             case 2:
                 message.enumVal = 2;
                 break;
+            default:
+                if (typeof object.enumVal === "number" && (object.enumVal | 0) === object.enumVal)
+                    message.enumVal = object.enumVal;
             }
         if (object.enumRepeated) {
             if (!$Array.isArray(object.enumRepeated))
                 throw $TypeError(".Message.enumRepeated: array expected");
-            message.enumRepeated = $Array(object.enumRepeated.length);
+            message.enumRepeated = [];
             for (var i = 0; i < object.enumRepeated.length; ++i)
                 switch (object.enumRepeated[i]) {
-                default:
-                    if (typeof object.enumRepeated[i] === "number") {
-                        message.enumRepeated[i] = object.enumRepeated[i];
-                        break;
-                    }
                 case "ONE":
                 case 1:
-                    message.enumRepeated[i] = 1;
+                    message.enumRepeated[message.enumRepeated.length] = 1;
                     break;
                 case "TWO":
                 case 2:
-                    message.enumRepeated[i] = 2;
+                    message.enumRepeated[message.enumRepeated.length] = 2;
                     break;
+                default:
+                    if (typeof object.enumRepeated[i] === "number" && (object.enumRepeated[i] | 0) === object.enumRepeated[i])
+                        message.enumRepeated[message.enumRepeated.length] = object.enumRepeated[i];
                 }
         }
         if (object.int64Map) {

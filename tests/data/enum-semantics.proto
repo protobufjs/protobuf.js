@@ -1,0 +1,39 @@
+edition = "2023";
+
+message OpenMessage {
+    enum OpenEnum {
+        ZERO = 0;
+        ONE = 1;
+    }
+
+    OpenEnum singular = 1;
+    repeated OpenEnum repeated = 2 [features.repeated_field_encoding = EXPANDED];
+    repeated OpenEnum packed = 3 [features.repeated_field_encoding = PACKED];
+    map<string, OpenEnum> values = 4;
+}
+
+message ClosedMessage {
+    option features.enum_type = CLOSED;
+
+    enum ClosedEnum {
+        ZERO = 0;
+        ONE = 1;
+    }
+
+    ClosedEnum singular = 1;
+    repeated ClosedEnum repeated = 2 [features.repeated_field_encoding = EXPANDED];
+    repeated ClosedEnum packed = 3 [features.repeated_field_encoding = PACKED];
+    map<string, ClosedEnum> values = 4;
+}
+
+message ClosedImplicitMessage {
+    option features.enum_type = CLOSED;
+    option features.field_presence = IMPLICIT;
+
+    enum ClosedEnum {
+        ZERO = 0;
+        ONE = 1;
+    }
+
+    ClosedEnum singular = 1;
+}

@@ -170,6 +170,28 @@ util.newBuffer = function newBuffer(sizeOrArray) {
 };
 
 /**
+ * Prepends a raw field tag to raw field data.
+ * @param {number} id Field id
+ * @param {number} wireType Wire type
+ * @param {Uint8Array} data Raw field data
+ * @returns {Uint8Array|Buffer} Raw field bytes
+ * @ignore
+ */
+util.rawField = function rawField(id, wireType, data) {
+    var out = [],
+        tag = id << 3 | wireType;
+    tag >>>= 0;
+    while (tag > 127) {
+        out.push(tag & 127 | 128);
+        tag >>>= 7;
+    }
+    out.push(tag);
+    for (var i = 0; i < data.length; ++i)
+        out.push(data[i]);
+    return util.newBuffer(out);
+};
+
+/**
  * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
  * @type {Constructor<Uint8Array>}
  */

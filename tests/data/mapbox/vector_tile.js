@@ -925,7 +925,7 @@ $root.vector_tile = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Feature();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Feature(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -960,7 +960,13 @@ $root.vector_tile = (function() {
                     case 3: {
                             if (wireType !== 0)
                                 break;
-                            message.type = reader.int32();
+                            value = reader.int32();
+                            if ($root.vector_tile.Tile.GeomType[value] !== $undefined)
+                                message.type = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 4: {
@@ -1087,12 +1093,6 @@ $root.vector_tile = (function() {
                         message.tags[i] = object.tags[i] >>> 0;
                 }
                 switch (object.type) {
-                default:
-                    if (typeof object.type === "number") {
-                        message.type = object.type;
-                        break;
-                    }
-                    break;
                 case "UNKNOWN":
                 case 0:
                     message.type = 0;
@@ -1109,6 +1109,7 @@ $root.vector_tile = (function() {
                 case 3:
                     message.type = 3;
                     break;
+                default:
                 }
                 if (object.geometry) {
                     if (!$Array.isArray(object.geometry))
