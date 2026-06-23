@@ -846,6 +846,12 @@ function parseInteger(token, sign, unsigned, bits) {
         return parseIntegerBigInt(digits, radix, sign, unsigned, bits);
 
     var value = parseInt(digits, radix) * sign;
+    if (bits === 32) {
+        var min = unsigned ? 0 : -2147483648,
+            max = unsigned ? 4294967295 : 2147483647;
+        if (value < min || value > max)
+            throw Error((unsigned ? "unsigned " : "") + "integer value out of range");
+    }
     if (bits === 64 && util.Long)
         return util.Long.fromString(String(value), unsigned);
     return value;

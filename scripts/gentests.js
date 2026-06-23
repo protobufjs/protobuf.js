@@ -7,6 +7,7 @@ var fs   = require("fs"),
 [
     { file: "tests/data/comments.proto", flags: [] },
     { file: "tests/data/convert.proto", flags: [] },
+    { file: "tests/data/enum-semantics.proto", flags: [] },
     { file: "tests/data/mapbox/vector_tile.proto", flags: [] },
     { file: "tests/data/package.proto", flags: [] },
     { file: "tests/data/rpc.proto", flags: [ "es6" ] },
@@ -47,6 +48,7 @@ process.stdout.write("\n");
 [
     { file: "tests/data/comments.js" },
     { file: "tests/data/convert.js" },
+    { file: "tests/data/enum-semantics.js" },
     { file: "tests/data/mapbox/vector_tile.js" },
     { file: "tests/data/package.js" },
     { file: "tests/data/rpc.js" },

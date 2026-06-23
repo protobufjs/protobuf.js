@@ -241,8 +241,10 @@ function readEnum(enm, value, name, options) {
         throw invalid(name, value, "unknown enum value");
     }
     if (typeof value === "number") {
-        if (!isFinite(value) || Math.floor(value) !== value)
+        if ((value | 0) !== value)
             throw invalid(name, value, "invalid enum number");
+        if (enm._features.enum_type === "CLOSED" && enm.valuesById[value] === undefined)
+            throw invalid(name, value, "unknown enum value");
         return value;
     }
     if (value === null && enm.fullName === ".google.protobuf.NullValue")

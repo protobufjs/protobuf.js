@@ -19,16 +19,21 @@ function invalid(field, expected) {
  */
 function genVerifyValue(gen, field, fieldIndex, ref) {
     /* eslint-disable no-unexpected-multiline */
-    if (field.resolvedType) {
-        if (field.resolvedType instanceof Enum) { gen
-            ("switch(%s){", ref)
-                ("default:")
+    var resolvedType = field.resolvedType;
+    if (resolvedType) {
+        if (resolvedType instanceof Enum) {
+            if (resolvedType._features.enum_type === "CLOSED") { gen
+                ("switch(%s){", ref)
+                    ("default:")
+                        ("return%j", invalid(field, "enum value"));
+                for (var keys = Object.keys(resolvedType.values), j = 0; j < keys.length; ++j) gen
+                    ("case %i:", resolvedType.values[keys[j]]);
+                gen
+                        ("break")
+                ("}");
+            } else gen
+                ("if(typeof %s!==\"number\"||(%s|0)!==%s)", ref, ref, ref)
                     ("return%j", invalid(field, "enum value"));
-            for (var keys = Object.keys(field.resolvedType.values), j = 0; j < keys.length; ++j) gen
-                ("case %i:", field.resolvedType.values[keys[j]]);
-            gen
-                    ("break")
-            ("}");
         } else {
             gen
             ("{")

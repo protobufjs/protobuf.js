@@ -444,6 +444,15 @@ function buildFunction(type, functionName, gen, scope) {
              && node.property.type === "Identifier" && node.property.name === "values"
             )
                 return rootMemberRef(type.fieldsArray[node.object.property.value].resolvedType);
+            // replace types[N].valuesById with the field's actual enum object
+            if (
+                node.type === "MemberExpression"
+             && node.object.type === "MemberExpression"
+             && node.object.object.type === "Identifier" && node.object.object.name === "types"
+             && node.object.property.type === "Literal"
+             && node.property.type === "Identifier" && node.property.name === "valuesById"
+            )
+                return rootMemberRef(type.fieldsArray[node.object.property.value].resolvedType);
             // replace types[N] with the field's actual type
             if (
                 node.type === "MemberExpression"

@@ -377,7 +377,7 @@ $root.jspb = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.EnumContainer();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.EnumContainer(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -390,7 +390,13 @@ $root.jspb = (function() {
                     case 1: {
                             if (wireType !== 0)
                                 break;
-                            message.outerEnum = reader.int32();
+                            value = reader.int32();
+                            if ($root.jspb.test.OuterEnum[value] !== $undefined)
+                                message.outerEnum = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     }
@@ -466,12 +472,6 @@ $root.jspb = (function() {
                     throw $Error("max depth exceeded");
                 var message = new $root.jspb.test.EnumContainer();
                 switch (object.outerEnum) {
-                default:
-                    if (typeof object.outerEnum === "number") {
-                        message.outerEnum = object.outerEnum;
-                        break;
-                    }
-                    break;
                 case "FOO":
                 case 1:
                     message.outerEnum = 1;
@@ -480,6 +480,7 @@ $root.jspb = (function() {
                 case 2:
                     message.outerEnum = 2;
                     break;
+                default:
                 }
                 return message;
             };
@@ -4401,7 +4402,7 @@ $root.jspb = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.DefaultValues();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.DefaultValues(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -4432,7 +4433,13 @@ $root.jspb = (function() {
                     case 4: {
                             if (wireType !== 0)
                                 break;
-                            message.enumField = reader.int32();
+                            value = reader.int32();
+                            if ($root.jspb.test.DefaultValues.Enum[value] !== $undefined)
+                                message.enumField = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 6: {
@@ -4548,12 +4555,6 @@ $root.jspb = (function() {
                     else if (typeof object.intField === "object")
                         message.intField = new $util.LongBits(object.intField.low >>> 0, object.intField.high >>> 0).toNumber();
                 switch (object.enumField) {
-                default:
-                    if (typeof object.enumField === "number") {
-                        message.enumField = object.enumField;
-                        break;
-                    }
-                    break;
                 case "E1":
                 case 13:
                     message.enumField = 13;
@@ -4562,6 +4563,7 @@ $root.jspb = (function() {
                 case 77:
                     message.enumField = 77;
                     break;
+                default:
                 }
                 if (object.emptyField != null)
                     message.emptyField = $String(object.emptyField);
@@ -7764,7 +7766,7 @@ $root.jspb = (function() {
                         _depth = 0;
                     if (_depth > $Reader.recursionLimit)
                         throw $Error("max depth exceeded");
-                    var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.EnumInGroup();
+                    var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.EnumInGroup(), value;
                     while (reader.pos < end) {
                         var start = reader.pos;
                         var tag = reader.tag();
@@ -7777,7 +7779,13 @@ $root.jspb = (function() {
                         case 1: {
                                 if (wireType !== 0)
                                     break;
-                                message.id = reader.int32();
+                                value = reader.int32();
+                                if ($root.jspb.test.TestGroup.EnumInGroup.NestedEnum[value] !== $undefined)
+                                    message.id = value;
+                                else if (!reader.discardUnknown) {
+                                    $util.makeProp(message, "$unknowns", false);
+                                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                                }
                                 continue;
                             }
                         }
@@ -7854,12 +7862,6 @@ $root.jspb = (function() {
                         throw $Error("max depth exceeded");
                     var message = new $root.jspb.test.TestGroup.EnumInGroup();
                     switch (object.id) {
-                    default:
-                        if (typeof object.id === "number") {
-                            message.id = object.id;
-                            break;
-                        }
-                        break;
                     case "first":
                     case 0:
                         message.id = 0;
@@ -7868,6 +7870,7 @@ $root.jspb = (function() {
                     case 1:
                         message.id = 1;
                         break;
+                    default:
                     }
                     return message;
                 };
@@ -10039,8 +10042,6 @@ $root.jspb = (function() {
                     case 6: {
                             if (wireType !== 2)
                                 break;
-                            if (message.mapStringEnum === $util.emptyObject)
-                                message.mapStringEnum = {};
                             var end2 = reader.uint32() + reader.pos;
                             key = "";
                             value = 0;
@@ -10061,6 +10062,15 @@ $root.jspb = (function() {
                                 }
                                 reader.skipType(wireType, _depth, tag2);
                             }
+                            if ($root.jspb.test.MapValueEnumNoBinary[value] === $undefined) {
+                                if (!reader.discardUnknown) {
+                                    $util.makeProp(message, "$unknowns", false);
+                                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                                }
+                                continue;
+                            }
+                            if (message.mapStringEnum === $util.emptyObject)
+                                message.mapStringEnum = {};
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringEnum, key);
                             message.mapStringEnum[key] = value;
@@ -10457,12 +10467,6 @@ $root.jspb = (function() {
                         if (keys[i] === "__proto__")
                             $util.makeProp(message.mapStringEnum, keys[i]);
                         switch (object.mapStringEnum[keys[i]]) {
-                        default:
-                            if (typeof object.mapStringEnum[keys[i]] === "number") {
-                                message.mapStringEnum[keys[i]] = object.mapStringEnum[keys[i]];
-                                break;
-                            }
-                            break;
                         case "MAP_VALUE_FOO_NOBINARY":
                         case 0:
                             message.mapStringEnum[keys[i]] = 0;
@@ -10475,6 +10479,7 @@ $root.jspb = (function() {
                         case 2:
                             message.mapStringEnum[keys[i]] = 2;
                             break;
+                        default:
                         }
                     }
                 }
@@ -12276,7 +12281,7 @@ $root.google = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FileDescriptorProto();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FileDescriptorProto(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -12399,7 +12404,13 @@ $root.google = (function() {
                     case 14: {
                             if (wireType !== 0)
                                 break;
-                            message.edition = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.Edition[value] !== $undefined)
+                                message.edition = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     }
@@ -12652,12 +12663,6 @@ $root.google = (function() {
                 if (object.syntax != null)
                     message.syntax = $String(object.syntax);
                 switch (object.edition) {
-                default:
-                    if (typeof object.edition === "number") {
-                        message.edition = object.edition;
-                        break;
-                    }
-                    break;
                 case "EDITION_UNKNOWN":
                 case 0:
                     message.edition = 0;
@@ -12706,6 +12711,7 @@ $root.google = (function() {
                 case 2147483647:
                     message.edition = 2147483647;
                     break;
+                default:
                 }
                 return message;
             };
@@ -13070,7 +13076,7 @@ $root.google = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.DescriptorProto();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.DescriptorProto(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -13159,7 +13165,13 @@ $root.google = (function() {
                     case 11: {
                             if (wireType !== 0)
                                 break;
-                            message.visibility = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.SymbolVisibility[value] !== $undefined)
+                                message.visibility = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     }
@@ -13398,12 +13410,6 @@ $root.google = (function() {
                         message.reservedName[i] = $String(object.reservedName[i]);
                 }
                 switch (object.visibility) {
-                default:
-                    if (typeof object.visibility === "number") {
-                        message.visibility = object.visibility;
-                        break;
-                    }
-                    break;
                 case "VISIBILITY_UNSET":
                 case 0:
                     message.visibility = 0;
@@ -13416,6 +13422,7 @@ $root.google = (function() {
                 case 2:
                     message.visibility = 2;
                     break;
+                default:
                 }
                 return message;
             };
@@ -14276,7 +14283,7 @@ $root.google = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.ExtensionRangeOptions();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.ExtensionRangeOptions(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -14311,7 +14318,13 @@ $root.google = (function() {
                     case 3: {
                             if (wireType !== 0)
                                 break;
-                            message.verification = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.ExtensionRangeOptions.VerificationState[value] !== $undefined)
+                                message.verification = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     }
@@ -14439,16 +14452,11 @@ $root.google = (function() {
                 case 0:
                     message.verification = 0;
                     break;
-                default:
-                    if (typeof object.verification === "number") {
-                        message.verification = object.verification;
-                        break;
-                    }
-                    break;
                 case "UNVERIFIED":
                 case 1:
                     message.verification = 1;
                     break;
+                default:
                 }
                 return message;
             };
@@ -15120,7 +15128,7 @@ $root.google = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldDescriptorProto();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldDescriptorProto(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -15145,13 +15153,25 @@ $root.google = (function() {
                     case 4: {
                             if (wireType !== 0)
                                 break;
-                            message.label = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FieldDescriptorProto.Label[value] !== $undefined)
+                                message.label = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 5: {
                             if (wireType !== 0)
                                 break;
-                            message.type = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FieldDescriptorProto.Type[value] !== $undefined)
+                                message.type = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 6: {
@@ -15327,12 +15347,6 @@ $root.google = (function() {
                 if (object.number != null)
                     message.number = object.number | 0;
                 switch (object.label) {
-                default:
-                    if (typeof object.label === "number") {
-                        message.label = object.label;
-                        break;
-                    }
-                    break;
                 case "LABEL_OPTIONAL":
                 case 1:
                     message.label = 1;
@@ -15345,14 +15359,9 @@ $root.google = (function() {
                 case 2:
                     message.label = 2;
                     break;
+                default:
                 }
                 switch (object.type) {
-                default:
-                    if (typeof object.type === "number") {
-                        message.type = object.type;
-                        break;
-                    }
-                    break;
                 case "TYPE_DOUBLE":
                 case 1:
                     message.type = 1;
@@ -15425,6 +15434,7 @@ $root.google = (function() {
                 case 18:
                     message.type = 18;
                     break;
+                default:
                 }
                 if (object.typeName != null)
                     message.typeName = $String(object.typeName);
@@ -16055,7 +16065,7 @@ $root.google = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumDescriptorProto();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumDescriptorProto(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -16104,7 +16114,13 @@ $root.google = (function() {
                     case 6: {
                             if (wireType !== 0)
                                 break;
-                            message.visibility = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.SymbolVisibility[value] !== $undefined)
+                                message.visibility = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     }
@@ -16248,12 +16264,6 @@ $root.google = (function() {
                         message.reservedName[i] = $String(object.reservedName[i]);
                 }
                 switch (object.visibility) {
-                default:
-                    if (typeof object.visibility === "number") {
-                        message.visibility = object.visibility;
-                        break;
-                    }
-                    break;
                 case "VISIBILITY_UNSET":
                 case 0:
                     message.visibility = 0;
@@ -16266,6 +16276,7 @@ $root.google = (function() {
                 case 2:
                     message.visibility = 2;
                     break;
+                default:
                 }
                 return message;
             };
@@ -18002,7 +18013,7 @@ $root.google = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FileOptions();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FileOptions(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -18045,7 +18056,13 @@ $root.google = (function() {
                     case 9: {
                             if (wireType !== 0)
                                 break;
-                            message.optimizeFor = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FileOptions.OptimizeMode[value] !== $undefined)
+                                message.optimizeFor = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 11: {
@@ -18292,12 +18309,6 @@ $root.google = (function() {
                 if (object.javaStringCheckUtf8 != null)
                     message.javaStringCheckUtf8 = $Boolean(object.javaStringCheckUtf8);
                 switch (object.optimizeFor) {
-                default:
-                    if (typeof object.optimizeFor === "number") {
-                        message.optimizeFor = object.optimizeFor;
-                        break;
-                    }
-                    break;
                 case "SPEED":
                 case 1:
                     message.optimizeFor = 1;
@@ -18310,6 +18321,7 @@ $root.google = (function() {
                 case 3:
                     message.optimizeFor = 3;
                     break;
+                default:
                 }
                 if (object.goPackage != null)
                     message.goPackage = $String(object.goPackage);
@@ -19187,7 +19199,7 @@ $root.google = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -19200,7 +19212,13 @@ $root.google = (function() {
                     case 1: {
                             if (wireType !== 0)
                                 break;
-                            message.ctype = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FieldOptions.CType[value] !== $undefined)
+                                message.ctype = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 2: {
@@ -19212,7 +19230,13 @@ $root.google = (function() {
                     case 6: {
                             if (wireType !== 0)
                                 break;
-                            message.jstype = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FieldOptions.JSType[value] !== $undefined)
+                                message.jstype = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 5: {
@@ -19248,23 +19272,43 @@ $root.google = (function() {
                     case 17: {
                             if (wireType !== 0)
                                 break;
-                            message.retention = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FieldOptions.OptionRetention[value] !== $undefined)
+                                message.retention = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 19: {
                             if (wireType === 2) {
-                                if (!(message.targets && message.targets.length))
-                                    message.targets = [];
                                 var end2 = reader.uint32() + reader.pos;
-                                while (reader.pos < end2)
-                                    message.targets.push(reader.int32());
+                                while (reader.pos < end2) {
+                                    start = reader.pos;
+                                    value = reader.int32();
+                                    if ($root.google.protobuf.FieldOptions.OptionTargetType[value] !== $undefined) {
+                                        if (!(message.targets && message.targets.length))
+                                            message.targets = [];
+                                        message.targets.push(value);
+                                    } else if (!reader.discardUnknown) {
+                                        $util.makeProp(message, "$unknowns", false);
+                                        (message.$unknowns || (message.$unknowns = [])).push($util.rawField(19, 0, reader.raw(start, reader.pos)));
+                                    }
+                                }
                                 continue;
                             }
                             if (wireType !== 0)
                                 break;
-                            if (!(message.targets && message.targets.length))
-                                message.targets = [];
-                            message.targets.push(reader.int32());
+                            value = reader.int32();
+                            if ($root.google.protobuf.FieldOptions.OptionTargetType[value] !== $undefined) {
+                                if (!(message.targets && message.targets.length))
+                                    message.targets = [];
+                                message.targets.push(value);
+                            } else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 20: {
@@ -19453,12 +19497,6 @@ $root.google = (function() {
                     throw $Error("max depth exceeded");
                 var message = new $root.google.protobuf.FieldOptions();
                 switch (object.ctype) {
-                default:
-                    if (typeof object.ctype === "number") {
-                        message.ctype = object.ctype;
-                        break;
-                    }
-                    break;
                 case "STRING":
                 case 0:
                     message.ctype = 0;
@@ -19471,16 +19509,11 @@ $root.google = (function() {
                 case 2:
                     message.ctype = 2;
                     break;
+                default:
                 }
                 if (object.packed != null)
                     message.packed = $Boolean(object.packed);
                 switch (object.jstype) {
-                default:
-                    if (typeof object.jstype === "number") {
-                        message.jstype = object.jstype;
-                        break;
-                    }
-                    break;
                 case "JS_NORMAL":
                 case 0:
                     message.jstype = 0;
@@ -19493,6 +19526,7 @@ $root.google = (function() {
                 case 2:
                     message.jstype = 2;
                     break;
+                default:
                 }
                 if (object.lazy != null)
                     message.lazy = $Boolean(object.lazy);
@@ -19505,12 +19539,6 @@ $root.google = (function() {
                 if (object.debugRedact != null)
                     message.debugRedact = $Boolean(object.debugRedact);
                 switch (object.retention) {
-                default:
-                    if (typeof object.retention === "number") {
-                        message.retention = object.retention;
-                        break;
-                    }
-                    break;
                 case "RETENTION_UNKNOWN":
                 case 0:
                     message.retention = 0;
@@ -19523,58 +19551,55 @@ $root.google = (function() {
                 case 2:
                     message.retention = 2;
                     break;
+                default:
                 }
                 if (object.targets) {
                     if (!$Array.isArray(object.targets))
                         throw $TypeError(".google.protobuf.FieldOptions.targets: array expected");
-                    message.targets = $Array(object.targets.length);
+                    message.targets = [];
                     for (var i = 0; i < object.targets.length; ++i)
                         switch (object.targets[i]) {
-                        default:
-                            if (typeof object.targets[i] === "number") {
-                                message.targets[i] = object.targets[i];
-                                break;
-                            }
                         case "TARGET_TYPE_UNKNOWN":
                         case 0:
-                            message.targets[i] = 0;
+                            message.targets[message.targets.length] = 0;
                             break;
                         case "TARGET_TYPE_FILE":
                         case 1:
-                            message.targets[i] = 1;
+                            message.targets[message.targets.length] = 1;
                             break;
                         case "TARGET_TYPE_EXTENSION_RANGE":
                         case 2:
-                            message.targets[i] = 2;
+                            message.targets[message.targets.length] = 2;
                             break;
                         case "TARGET_TYPE_MESSAGE":
                         case 3:
-                            message.targets[i] = 3;
+                            message.targets[message.targets.length] = 3;
                             break;
                         case "TARGET_TYPE_FIELD":
                         case 4:
-                            message.targets[i] = 4;
+                            message.targets[message.targets.length] = 4;
                             break;
                         case "TARGET_TYPE_ONEOF":
                         case 5:
-                            message.targets[i] = 5;
+                            message.targets[message.targets.length] = 5;
                             break;
                         case "TARGET_TYPE_ENUM":
                         case 6:
-                            message.targets[i] = 6;
+                            message.targets[message.targets.length] = 6;
                             break;
                         case "TARGET_TYPE_ENUM_ENTRY":
                         case 7:
-                            message.targets[i] = 7;
+                            message.targets[message.targets.length] = 7;
                             break;
                         case "TARGET_TYPE_SERVICE":
                         case 8:
-                            message.targets[i] = 8;
+                            message.targets[message.targets.length] = 8;
                             break;
                         case "TARGET_TYPE_METHOD":
                         case 9:
-                            message.targets[i] = 9;
+                            message.targets[message.targets.length] = 9;
                             break;
+                        default:
                         }
                 }
                 if (object.editionDefaults) {
@@ -19915,7 +19940,7 @@ $root.google = (function() {
                         _depth = 0;
                     if (_depth > $Reader.recursionLimit)
                         throw $Error("max depth exceeded");
-                    var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions.EditionDefault();
+                    var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions.EditionDefault(), value;
                     while (reader.pos < end) {
                         var start = reader.pos;
                         var tag = reader.tag();
@@ -19928,7 +19953,13 @@ $root.google = (function() {
                         case 3: {
                                 if (wireType !== 0)
                                     break;
-                                message.edition = reader.int32();
+                                value = reader.int32();
+                                if ($root.google.protobuf.Edition[value] !== $undefined)
+                                    message.edition = value;
+                                else if (!reader.discardUnknown) {
+                                    $util.makeProp(message, "$unknowns", false);
+                                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                                }
                                 continue;
                             }
                         case 2: {
@@ -20023,12 +20054,6 @@ $root.google = (function() {
                         throw $Error("max depth exceeded");
                     var message = new $root.google.protobuf.FieldOptions.EditionDefault();
                     switch (object.edition) {
-                    default:
-                        if (typeof object.edition === "number") {
-                            message.edition = object.edition;
-                            break;
-                        }
-                        break;
                     case "EDITION_UNKNOWN":
                     case 0:
                         message.edition = 0;
@@ -20077,6 +20102,7 @@ $root.google = (function() {
                     case 2147483647:
                         message.edition = 2147483647;
                         break;
+                    default:
                     }
                     if (object.value != null)
                         message.value = $String(object.value);
@@ -20288,7 +20314,7 @@ $root.google = (function() {
                         _depth = 0;
                     if (_depth > $Reader.recursionLimit)
                         throw $Error("max depth exceeded");
-                    var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions.FeatureSupport();
+                    var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions.FeatureSupport(), value;
                     while (reader.pos < end) {
                         var start = reader.pos;
                         var tag = reader.tag();
@@ -20301,13 +20327,25 @@ $root.google = (function() {
                         case 1: {
                                 if (wireType !== 0)
                                     break;
-                                message.editionIntroduced = reader.int32();
+                                value = reader.int32();
+                                if ($root.google.protobuf.Edition[value] !== $undefined)
+                                    message.editionIntroduced = value;
+                                else if (!reader.discardUnknown) {
+                                    $util.makeProp(message, "$unknowns", false);
+                                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                                }
                                 continue;
                             }
                         case 2: {
                                 if (wireType !== 0)
                                     break;
-                                message.editionDeprecated = reader.int32();
+                                value = reader.int32();
+                                if ($root.google.protobuf.Edition[value] !== $undefined)
+                                    message.editionDeprecated = value;
+                                else if (!reader.discardUnknown) {
+                                    $util.makeProp(message, "$unknowns", false);
+                                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                                }
                                 continue;
                             }
                         case 3: {
@@ -20319,7 +20357,13 @@ $root.google = (function() {
                         case 4: {
                                 if (wireType !== 0)
                                     break;
-                                message.editionRemoved = reader.int32();
+                                value = reader.int32();
+                                if ($root.google.protobuf.Edition[value] !== $undefined)
+                                    message.editionRemoved = value;
+                                else if (!reader.discardUnknown) {
+                                    $util.makeProp(message, "$unknowns", false);
+                                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                                }
                                 continue;
                             }
                         }
@@ -20444,12 +20488,6 @@ $root.google = (function() {
                         throw $Error("max depth exceeded");
                     var message = new $root.google.protobuf.FieldOptions.FeatureSupport();
                     switch (object.editionIntroduced) {
-                    default:
-                        if (typeof object.editionIntroduced === "number") {
-                            message.editionIntroduced = object.editionIntroduced;
-                            break;
-                        }
-                        break;
                     case "EDITION_UNKNOWN":
                     case 0:
                         message.editionIntroduced = 0;
@@ -20498,14 +20536,9 @@ $root.google = (function() {
                     case 2147483647:
                         message.editionIntroduced = 2147483647;
                         break;
+                    default:
                     }
                     switch (object.editionDeprecated) {
-                    default:
-                        if (typeof object.editionDeprecated === "number") {
-                            message.editionDeprecated = object.editionDeprecated;
-                            break;
-                        }
-                        break;
                     case "EDITION_UNKNOWN":
                     case 0:
                         message.editionDeprecated = 0;
@@ -20554,16 +20587,11 @@ $root.google = (function() {
                     case 2147483647:
                         message.editionDeprecated = 2147483647;
                         break;
+                    default:
                     }
                     if (object.deprecationWarning != null)
                         message.deprecationWarning = $String(object.deprecationWarning);
                     switch (object.editionRemoved) {
-                    default:
-                        if (typeof object.editionRemoved === "number") {
-                            message.editionRemoved = object.editionRemoved;
-                            break;
-                        }
-                        break;
                     case "EDITION_UNKNOWN":
                     case 0:
                         message.editionRemoved = 0;
@@ -20612,6 +20640,7 @@ $root.google = (function() {
                     case 2147483647:
                         message.editionRemoved = 2147483647;
                         break;
+                    default:
                     }
                     return message;
                 };
@@ -22267,7 +22296,7 @@ $root.google = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.MethodOptions();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.MethodOptions(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -22286,7 +22315,13 @@ $root.google = (function() {
                     case 34: {
                             if (wireType !== 0)
                                 break;
-                            message.idempotencyLevel = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.MethodOptions.IdempotencyLevel[value] !== $undefined)
+                                message.idempotencyLevel = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 35: {
@@ -22396,12 +22431,6 @@ $root.google = (function() {
                 if (object.deprecated != null)
                     message.deprecated = $Boolean(object.deprecated);
                 switch (object.idempotencyLevel) {
-                default:
-                    if (typeof object.idempotencyLevel === "number") {
-                        message.idempotencyLevel = object.idempotencyLevel;
-                        break;
-                    }
-                    break;
                 case "IDEMPOTENCY_UNKNOWN":
                 case 0:
                     message.idempotencyLevel = 0;
@@ -22414,6 +22443,7 @@ $root.google = (function() {
                 case 2:
                     message.idempotencyLevel = 2;
                     break;
+                default:
                 }
                 if (object.features != null) {
                     if (!$util.isObject(object.features))
@@ -23460,7 +23490,7 @@ $root.google = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSet();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSet(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -23473,49 +23503,97 @@ $root.google = (function() {
                     case 1: {
                             if (wireType !== 0)
                                 break;
-                            message.fieldPresence = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FeatureSet.FieldPresence[value] !== $undefined)
+                                message.fieldPresence = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 2: {
                             if (wireType !== 0)
                                 break;
-                            message.enumType = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FeatureSet.EnumType[value] !== $undefined)
+                                message.enumType = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 3: {
                             if (wireType !== 0)
                                 break;
-                            message.repeatedFieldEncoding = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FeatureSet.RepeatedFieldEncoding[value] !== $undefined)
+                                message.repeatedFieldEncoding = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 4: {
                             if (wireType !== 0)
                                 break;
-                            message.utf8Validation = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FeatureSet.Utf8Validation[value] !== $undefined)
+                                message.utf8Validation = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 5: {
                             if (wireType !== 0)
                                 break;
-                            message.messageEncoding = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FeatureSet.MessageEncoding[value] !== $undefined)
+                                message.messageEncoding = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 6: {
                             if (wireType !== 0)
                                 break;
-                            message.jsonFormat = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FeatureSet.JsonFormat[value] !== $undefined)
+                                message.jsonFormat = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 7: {
                             if (wireType !== 0)
                                 break;
-                            message.enforceNamingStyle = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FeatureSet.EnforceNamingStyle[value] !== $undefined)
+                                message.enforceNamingStyle = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 8: {
                             if (wireType !== 0)
                                 break;
-                            message.defaultSymbolVisibility = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.FeatureSet.VisibilityFeature.DefaultSymbolVisibility[value] !== $undefined)
+                                message.defaultSymbolVisibility = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     }
@@ -23658,12 +23736,6 @@ $root.google = (function() {
                     throw $Error("max depth exceeded");
                 var message = new $root.google.protobuf.FeatureSet();
                 switch (object.fieldPresence) {
-                default:
-                    if (typeof object.fieldPresence === "number") {
-                        message.fieldPresence = object.fieldPresence;
-                        break;
-                    }
-                    break;
                 case "FIELD_PRESENCE_UNKNOWN":
                 case 0:
                     message.fieldPresence = 0;
@@ -23680,14 +23752,9 @@ $root.google = (function() {
                 case 3:
                     message.fieldPresence = 3;
                     break;
+                default:
                 }
                 switch (object.enumType) {
-                default:
-                    if (typeof object.enumType === "number") {
-                        message.enumType = object.enumType;
-                        break;
-                    }
-                    break;
                 case "ENUM_TYPE_UNKNOWN":
                 case 0:
                     message.enumType = 0;
@@ -23700,14 +23767,9 @@ $root.google = (function() {
                 case 2:
                     message.enumType = 2;
                     break;
+                default:
                 }
                 switch (object.repeatedFieldEncoding) {
-                default:
-                    if (typeof object.repeatedFieldEncoding === "number") {
-                        message.repeatedFieldEncoding = object.repeatedFieldEncoding;
-                        break;
-                    }
-                    break;
                 case "REPEATED_FIELD_ENCODING_UNKNOWN":
                 case 0:
                     message.repeatedFieldEncoding = 0;
@@ -23720,14 +23782,9 @@ $root.google = (function() {
                 case 2:
                     message.repeatedFieldEncoding = 2;
                     break;
+                default:
                 }
                 switch (object.utf8Validation) {
-                default:
-                    if (typeof object.utf8Validation === "number") {
-                        message.utf8Validation = object.utf8Validation;
-                        break;
-                    }
-                    break;
                 case "UTF8_VALIDATION_UNKNOWN":
                 case 0:
                     message.utf8Validation = 0;
@@ -23740,14 +23797,9 @@ $root.google = (function() {
                 case 3:
                     message.utf8Validation = 3;
                     break;
+                default:
                 }
                 switch (object.messageEncoding) {
-                default:
-                    if (typeof object.messageEncoding === "number") {
-                        message.messageEncoding = object.messageEncoding;
-                        break;
-                    }
-                    break;
                 case "MESSAGE_ENCODING_UNKNOWN":
                 case 0:
                     message.messageEncoding = 0;
@@ -23760,14 +23812,9 @@ $root.google = (function() {
                 case 2:
                     message.messageEncoding = 2;
                     break;
+                default:
                 }
                 switch (object.jsonFormat) {
-                default:
-                    if (typeof object.jsonFormat === "number") {
-                        message.jsonFormat = object.jsonFormat;
-                        break;
-                    }
-                    break;
                 case "JSON_FORMAT_UNKNOWN":
                 case 0:
                     message.jsonFormat = 0;
@@ -23780,14 +23827,9 @@ $root.google = (function() {
                 case 2:
                     message.jsonFormat = 2;
                     break;
+                default:
                 }
                 switch (object.enforceNamingStyle) {
-                default:
-                    if (typeof object.enforceNamingStyle === "number") {
-                        message.enforceNamingStyle = object.enforceNamingStyle;
-                        break;
-                    }
-                    break;
                 case "ENFORCE_NAMING_STYLE_UNKNOWN":
                 case 0:
                     message.enforceNamingStyle = 0;
@@ -23800,14 +23842,9 @@ $root.google = (function() {
                 case 2:
                     message.enforceNamingStyle = 2;
                     break;
+                default:
                 }
                 switch (object.defaultSymbolVisibility) {
-                default:
-                    if (typeof object.defaultSymbolVisibility === "number") {
-                        message.defaultSymbolVisibility = object.defaultSymbolVisibility;
-                        break;
-                    }
-                    break;
                 case "DEFAULT_SYMBOL_VISIBILITY_UNKNOWN":
                 case 0:
                     message.defaultSymbolVisibility = 0;
@@ -23828,6 +23865,7 @@ $root.google = (function() {
                 case 4:
                     message.defaultSymbolVisibility = 4;
                     break;
+                default:
                 }
                 return message;
             };
@@ -24399,7 +24437,7 @@ $root.google = (function() {
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
                     throw $Error("max depth exceeded");
-                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSetDefaults();
+                var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSetDefaults(), value;
                 while (reader.pos < end) {
                     var start = reader.pos;
                     var tag = reader.tag();
@@ -24420,13 +24458,25 @@ $root.google = (function() {
                     case 4: {
                             if (wireType !== 0)
                                 break;
-                            message.minimumEdition = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.Edition[value] !== $undefined)
+                                message.minimumEdition = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     case 5: {
                             if (wireType !== 0)
                                 break;
-                            message.maximumEdition = reader.int32();
+                            value = reader.int32();
+                            if ($root.google.protobuf.Edition[value] !== $undefined)
+                                message.maximumEdition = value;
+                            else if (!reader.discardUnknown) {
+                                $util.makeProp(message, "$unknowns", false);
+                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                            }
                             continue;
                         }
                     }
@@ -24549,12 +24599,6 @@ $root.google = (function() {
                     }
                 }
                 switch (object.minimumEdition) {
-                default:
-                    if (typeof object.minimumEdition === "number") {
-                        message.minimumEdition = object.minimumEdition;
-                        break;
-                    }
-                    break;
                 case "EDITION_UNKNOWN":
                 case 0:
                     message.minimumEdition = 0;
@@ -24603,14 +24647,9 @@ $root.google = (function() {
                 case 2147483647:
                     message.minimumEdition = 2147483647;
                     break;
+                default:
                 }
                 switch (object.maximumEdition) {
-                default:
-                    if (typeof object.maximumEdition === "number") {
-                        message.maximumEdition = object.maximumEdition;
-                        break;
-                    }
-                    break;
                 case "EDITION_UNKNOWN":
                 case 0:
                     message.maximumEdition = 0;
@@ -24659,6 +24698,7 @@ $root.google = (function() {
                 case 2147483647:
                     message.maximumEdition = 2147483647;
                     break;
+                default:
                 }
                 return message;
             };
@@ -24861,7 +24901,7 @@ $root.google = (function() {
                         _depth = 0;
                     if (_depth > $Reader.recursionLimit)
                         throw $Error("max depth exceeded");
-                    var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault();
+                    var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault(), value;
                     while (reader.pos < end) {
                         var start = reader.pos;
                         var tag = reader.tag();
@@ -24874,7 +24914,13 @@ $root.google = (function() {
                         case 3: {
                                 if (wireType !== 0)
                                     break;
-                                message.edition = reader.int32();
+                                value = reader.int32();
+                                if ($root.google.protobuf.Edition[value] !== $undefined)
+                                    message.edition = value;
+                                else if (!reader.discardUnknown) {
+                                    $util.makeProp(message, "$unknowns", false);
+                                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                                }
                                 continue;
                             }
                         case 4: {
@@ -24982,12 +25028,6 @@ $root.google = (function() {
                         throw $Error("max depth exceeded");
                     var message = new $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault();
                     switch (object.edition) {
-                    default:
-                        if (typeof object.edition === "number") {
-                            message.edition = object.edition;
-                            break;
-                        }
-                        break;
                     case "EDITION_UNKNOWN":
                     case 0:
                         message.edition = 0;
@@ -25036,6 +25076,7 @@ $root.google = (function() {
                     case 2147483647:
                         message.edition = 2147483647;
                         break;
+                    default:
                     }
                     if (object.overridableFeatures != null) {
                         if (!$util.isObject(object.overridableFeatures))
@@ -26257,7 +26298,7 @@ $root.google = (function() {
                         _depth = 0;
                     if (_depth > $Reader.recursionLimit)
                         throw $Error("max depth exceeded");
-                    var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.GeneratedCodeInfo.Annotation();
+                    var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.GeneratedCodeInfo.Annotation(), value;
                     while (reader.pos < end) {
                         var start = reader.pos;
                         var tag = reader.tag();
@@ -26304,7 +26345,13 @@ $root.google = (function() {
                         case 5: {
                                 if (wireType !== 0)
                                     break;
-                                message.semantic = reader.int32();
+                                value = reader.int32();
+                                if ($root.google.protobuf.GeneratedCodeInfo.Annotation.Semantic[value] !== $undefined)
+                                    message.semantic = value;
+                                else if (!reader.discardUnknown) {
+                                    $util.makeProp(message, "$unknowns", false);
+                                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
+                                }
                                 continue;
                             }
                         }
@@ -26410,12 +26457,6 @@ $root.google = (function() {
                     if (object.end != null)
                         message.end = object.end | 0;
                     switch (object.semantic) {
-                    default:
-                        if (typeof object.semantic === "number") {
-                            message.semantic = object.semantic;
-                            break;
-                        }
-                        break;
                     case "NONE":
                     case 0:
                         message.semantic = 0;
@@ -26428,6 +26469,7 @@ $root.google = (function() {
                     case 2:
                         message.semantic = 2;
                         break;
+                    default:
                     }
                     return message;
                 };
