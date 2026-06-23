@@ -9,7 +9,7 @@
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://protobuf.dev/)).
 
-**protobuf.js** is a standalone JavaScript implementation of Protocol Buffers for Node.js and browsers. It is tuned for fast binary I/O, battle-tested at scale, can load `.proto` files directly, and supports runtime reflection as well as static code generation with strong TypeScript declarations.
+**protobuf.js** is a standalone JavaScript implementation of Protocol Buffers for Node.js and browsers. It is tuned for fast binary I/O, battle-tested at scale, and validated against the official Protocol Buffers conformance suite. It can load `.proto` files directly, does not require protoc, and supports runtime reflection plus reflection-free and reflection-backed code generation with strong TypeScript declarations.
 
 If protobuf.js is important to your project or organization, especially if you depend on it commercially, [consider supporting its ongoing maintenance](https://github.com/sponsors/dcodeIO).
 
@@ -336,13 +336,13 @@ protobuf.js targets complete binary wire-format conformance for **Proto2**, **Pr
 
 | Category   |               Total |            Required |         Recommended |
 | ---------- | ------------------: | ------------------: | ------------------: |
-| Binary     | 100.00% (2805/2805) | 100.00% (1939/1939) |   100.00% (866/866) |
-| ↳ Proto2   |   100.00% (703/703) |   100.00% (485/485) |   100.00% (218/218) |
-| ↳ Proto3   |   100.00% (698/698) |   100.00% (482/482) |   100.00% (216/216) |
-| ↳ Editions | 100.00% (1404/1404) |   100.00% (972/972) |   100.00% (432/432) |
-| ProtoJSON  | 100.00% (2762/2762) | 100.00% (2328/2328) |   100.00% (434/434) |
-| TextFormat |   100.00% (883/883) |   100.00% (819/819) |     100.00% (64/64) |
-| Overall    | 100.00% (6450/6450) | 100.00% (5086/5086) | 100.00% (1364/1364) |
+| Binary     | 100.00% (2835/2835) | 100.00% (1958/1958) |   100.00% (877/877) |
+| ↳ Proto2   |   100.00% (707/707) |   100.00% (489/489) |   100.00% (218/218) |
+| ↳ Proto3   |   100.00% (707/707) |   100.00% (486/486) |   100.00% (221/221) |
+| ↳ Editions | 100.00% (1419/1419) |   100.00% (981/981) |   100.00% (438/438) |
+| ProtoJSON  | 100.00% (2796/2796) | 100.00% (2362/2362) |   100.00% (434/434) |
+| TextFormat |   100.00% (909/909) |   100.00% (845/845) |     100.00% (64/64) |
+| Overall    | 100.00% (6540/6540) | 100.00% (5165/5165) | 100.00% (1375/1375) |
 
 ## Performance
 
