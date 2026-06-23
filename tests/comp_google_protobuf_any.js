@@ -19,6 +19,22 @@ var root = new protobuf.Root().addJSON(protobuf.common["google/protobuf/any.prot
             }
         }
     },
+    Status: {
+        values: {
+            UNKNOWN: 0
+        }
+    },
+    Svc: {
+        methods: {
+            Call: {
+                requestType: "Bar",
+                responseType: "Bar"
+            }
+        }
+    },
+    Ns: {
+        nested: {}
+    },
     Loop: {
         fields: {
             next: {
@@ -68,6 +84,30 @@ tape.test("google.protobuf.Any", function(test) {
     });
     obj = Foo.toObject(baz, { json: true });
     test.same(obj.foo, { "@type": "type.someurl.com/Bar", bar: "a" }, "should keep prefix in type url");
+
+    test.end();
+});
+
+tape.test("google.protobuf.Any - ignores non-message type_url targets", function(test) {
+
+    [ ".Status", ".Svc", ".Ns" ].forEach(function(typeUrl) {
+        var any = Any.fromObject({
+            "@type": typeUrl,
+            bar: "a"
+        });
+        test.same(any, {}, "should not unwrap " + typeUrl + " in fromObject");
+    });
+
+    [ "type.googleapis.com/Status", "type.googleapis.com/Svc", "type.googleapis.com/Ns" ].forEach(function(typeUrl) {
+        var any = Any.create({
+            type_url: typeUrl,
+            value: protobuf.util.newBuffer([10, 1, 97])
+        });
+        test.same(Any.toObject(any, { json: true }), {
+            type_url: typeUrl,
+            value: protobuf.util.newBuffer([10, 1, 97])
+        }, "should not unwrap " + typeUrl + " in toObject");
+    });
 
     test.end();
 });

@@ -45,7 +45,7 @@ wrappers[".google.protobuf.Any"] = {
         if (object && object["@type"]) {
              // Only use fully qualified type name after the last '/'
             var name = object["@type"].substring(object["@type"].lastIndexOf("/") + 1);
-            var type = this.lookup(name);
+            var type = this.lookup(name, [ this.constructor ]);
             /* istanbul ignore else */
             if (type) {
                 // type_url does not accept leading "."
@@ -81,7 +81,7 @@ wrappers[".google.protobuf.Any"] = {
             name = message.type_url.substring(message.type_url.lastIndexOf("/") + 1);
             // Separate the prefix used
             prefix = message.type_url.substring(0, message.type_url.lastIndexOf("/") + 1);
-            var type = this.lookup(name);
+            var type = this.lookup(name, [ this.constructor ]);
             /* istanbul ignore else */
             if (type)
                 message = type.decode(message.value, undefined, undefined, depth + 1);
