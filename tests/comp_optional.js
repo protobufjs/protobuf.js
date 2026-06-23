@@ -114,3 +114,25 @@ tape.test("proto3 implicit scalar conversion defaults", function(test) {
 
     test.end();
 });
+
+tape.test("proto3 implicit scalar defaults without an explicit resolveAll", function(test) {
+    // parse().root builds its codecs lazily via setup(); it must omit
+    // implicit-presence defaults the same way load()/fromJSON() do (those
+    // resolveAll internally), instead of requiring a manual resolveAll first.
+    var root = protobuf.parse(proto).root;
+
+    var Message = root.lookupType("Message");
+
+    function encode(message) {
+        return Array.prototype.slice.call(Message.encode(message).finish());
+    }
+
+    test.same(encode({ regularInt32: 0 }), [], "should omit default int32");
+    test.same(encode({ regularString: "" }), [], "should omit default string");
+    test.same(encode({ regularBool: false }), [], "should omit default bool");
+    test.same(encode({ regularEnum: 0 }), [], "should omit default enum");
+    test.same(encode({ regularInt32: 5 }), [8, 5], "should still emit non-default values");
+    test.same(encode({ optionalInt32: 0 }), [16, 0], "should still emit proto3 optional presence");
+
+    test.end();
+});

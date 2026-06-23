@@ -494,6 +494,13 @@ Type.prototype.setup = function setup() {
     // Sets up everything at once so that the prototype chain does not have to be re-evaluated
     // multiple times (V8, soft-deopt prototype-check).
 
+    // Resolve feature defaults (e.g. proto3 implicit field presence) before the
+    // codecs are generated, so encoders built from a parsed-but-not-resolveAll'd
+    // root omit implicit-presence default values per the proto3/editions spec.
+    var root = this.root;
+    if (root && root._needsRecursiveFeatureResolution && (root._edition || this._edition))
+        root._resolveFeaturesRecursive(root._edition);
+
     var fullName = this.fullName,
         types    = [];
     for (var i = 0; i < /* initializes */ this.fieldsArray.length; ++i)
