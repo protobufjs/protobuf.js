@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.6.6](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.5...protobufjs-v8.6.6) (2026-06-24)
+
+
+### Bug Fixes
+
+* Filter Any type_url lookups to message types ([#2346](https://github.com/protobufjs/protobuf.js/issues/2346)) ([88f0aa1](https://github.com/protobufjs/protobuf.js/commit/88f0aa1b1c406a42c2ed0e21c940a9ca6637ff53))
+
 ## [8.6.5](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.4...protobufjs-v8.6.5) (2026-06-23)
 
 
