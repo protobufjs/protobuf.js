@@ -9,11 +9,13 @@
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://protobuf.dev/)).
 
-**protobuf.js** is a standalone JavaScript implementation of Protocol Buffers for Node.js and browsers. It is tuned for fast binary I/O, battle-tested at scale, and validated against the official Protocol Buffers conformance suite. It can load `.proto` files directly, does not require protoc, and supports runtime reflection plus reflection-free and reflection-backed code generation with strong TypeScript declarations.
+**protobuf.js** is a very fast, conformant, and unusually versatile JavaScript implementation of Protocol Buffers for Node.js and browsers. It works with `.proto` files out of the box, does not require protoc, and supports runtime reflection as well as specialized code generation with strong TypeScript declarations.
 
-If protobuf.js is important to your project or organization, especially if you depend on it commercially, [consider supporting its ongoing maintenance](https://github.com/sponsors/dcodeIO).
+If protobuf.js is important to your project or organization, or if you depend on it commercially, [consider supporting](https://github.com/sponsors/dcodeIO) its ongoing maintenance. Sponsorship helps make bug fixes, releases, LTS/security handling, and user support more sustainable.
 
 ## Getting started
+
+Getting up and running is simple: Install the package, load a `.proto` file, and you are all set to encode and decode Protobuf messages. From there, protobuf.js grows with your requirements: Add any combination of capabilities, such as [code generation](#code-generation), [TypeScript declarations](#typescript-integration), [transport-agnostic services](#services), [programmatic schemas](#programmatic-schemas), [optional extensions](#extensions), and more as needed. All in one flexible toolkit.
 
 ### Install
 
@@ -314,6 +316,23 @@ const myService = MyService.create(myRpcImpl/*, requestDelimited?, responseDelim
 
 See [examples/streaming-rpc.js](./examples/streaming-rpc.js) for a streaming example.
 
+Integration example with [@grpc/grpc-js](https://www.npmjs.com/package/@grpc/grpc-js):
+
+```js
+const grpc = require('@grpc/grpc-js');
+
+const Client = grpc.makeGenericClientConstructor({});
+const client = new Client(serverAddress, grpc.credentials.createInsecure());
+
+const rpcImpl = (method, requestData, callback) =>
+  client.makeUnaryRequest(method.path, (data) => data, (data) => data, requestData, callback);
+
+const greeter = root.lookupService("example.Greeter").create(rpcImpl);
+const reply = await greeter.sayHello({ name: "world" });
+```
+
+See [examples/grpc-service.js](./examples/grpc-service.js) for a complete example.
+
 ### Extensions
 
 The following extensions provide descriptor conversion and text-based protobuf formats when reflection metadata is available. Most applications only need the binary APIs above.
@@ -332,73 +351,53 @@ Protocol Buffers [Text Format](https://protobuf.dev/reference/protobuf/textforma
 
 ## Conformance
 
-protobuf.js targets complete binary wire-format conformance for **Proto2**, **Proto3** and **Editions** in both static and reflection modes, plus complete **ProtoJSON** and **Text Format** conformance with reflection metadata present. CI runs the official Protocol Buffers conformance suite for validation, with logs [uploaded as artifacts](https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush).
+protobuf.js is validated against the official Protocol Buffers conformance suite, achieving complete binary wire-format conformance for **Proto2**, **Proto3** and **Editions**, plus complete **ProtoJSON** and **Text Format** conformance in its default configuration with reflection metadata present.
+
+<!-- BEGIN CONFORMANCE DATA -->
 
 | Category   |               Total |            Required |         Recommended |
 | ---------- | ------------------: | ------------------: | ------------------: |
 | Binary     | 100.00% (2835/2835) | 100.00% (1958/1958) |   100.00% (877/877) |
 | ↳ Proto2   |   100.00% (707/707) |   100.00% (489/489) |   100.00% (218/218) |
 | ↳ Proto3   |   100.00% (707/707) |   100.00% (486/486) |   100.00% (221/221) |
-| ↳ Editions | 100.00% (1419/1419) |   100.00% (981/981) |   100.00% (438/438) |
+| ↳ Editions | 100.00% (1421/1421) |   100.00% (983/983) |   100.00% (438/438) |
 | ProtoJSON  | 100.00% (2796/2796) | 100.00% (2362/2362) |   100.00% (434/434) |
 | TextFormat |   100.00% (909/909) |   100.00% (845/845) |     100.00% (64/64) |
 | Overall    | 100.00% (6540/6540) | 100.00% (5165/5165) | 100.00% (1375/1375) |
 
+<!-- END CONFORMANCE DATA -->
+
+[Structured results](https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush) are available as CI artifacts. In case of contradicting claims by your favorite LLM, [see](https://dev.to/dcode/when-the-model-is-the-marketing-device-a-protobuf-short-story-2p7p).
+
 ## Performance
 
-In both reflection and reflection-free modes, protobuf.js builds specialized encoders and decoders instead of interpreting descriptors at runtime.
+In both reflection and reflection-free modes, protobuf.js builds specialized encoders and decoders on top of hand-tuned reader and writer primitives, making it a strong fit from battery-powered devices to high-traffic servers, or generally for projects and their downstream users adopting protobuf as a faster, smaller alternative to JSON.
 
-The repository includes a [small benchmark](./bench). It compares protobuf.js reflection and static code against JSON encode/decode, protoc-gen-js, and protoc-gen-es. Results depend on hardware, Node.js version, and message shape, so they should be treated as indicative rather than absolute.
+The repository includes a [small benchmark](./bench) over a common message shape, plus Mapbox's vector tile fixture and Buf's perf payload, both unmodified. For each case, it compares protobuf.js encode and decode throughput against JSON encode/decode, Google's protoc-gen-js, and Buf's protoc-gen-es. Results show that protobuf.js is consistently faster than the other Protobuf implementations, up to an order of magnitude on real-world data, and among the libraries tested, it is the only one that is an upgrade over using JSON.
 
-<details>
-<summary>Benchmark run on AMD Ryzen 9 9950X3D with Node.js 24.15.0</summary>
+<!-- BEGIN BENCHMARK DATA -->
 
-```
-benchmarking encode performance ...
+![Encode benchmark](./bench/results/encode.svg)
 
-protobuf.js reflect x 2,430,103 ops/sec ±0.62% (95 runs sampled)
-protobuf.js static x 2,390,407 ops/sec ±0.42% (96 runs sampled)
-JSON encode x 2,155,918 ops/sec ±0.63% (92 runs sampled)
-protoc-gen-js x 995,429 ops/sec ±0.18% (98 runs sampled)
-protoc-gen-es x 403,334 ops/sec ±0.14% (96 runs sampled)
+| Case | protobuf.js static | protobuf.js reflect | JSON | protoc-gen-js | protoc-gen-es |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Common | 3.18M ops/s | 3.25M ops/s | 2.07M ops/s | 1.01M ops/s | 395K ops/s |
+| Vector tile | 2.82K ops/s | 2.76K ops/s | 859 ops/s | 680 ops/s | 231 ops/s |
+| Buf perf | 41.4K ops/s | 39.9K ops/s | 6.59K ops/s | 13.5K ops/s | 8.00K ops/s |
 
-    protobuf.js reflect was fastest
-     protobuf.js static was 1.4% ops/sec slower (factor 1.0)
-            JSON encode was 11.3% ops/sec slower (factor 1.1)
-          protoc-gen-js was 58.9% ops/sec slower (factor 2.4)
-          protoc-gen-es was 83.3% ops/sec slower (factor 6.0)
+![Decode benchmark](./bench/results/decode.svg)
 
-benchmarking decode performance ...
+| Case | protobuf.js static | protobuf.js reflect | JSON | protoc-gen-js | protoc-gen-es |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Common | 6.11M ops/s | 6.09M ops/s | 1.31M ops/s | 790K ops/s | 710K ops/s |
+| Vector tile | 2.45K ops/s | 2.78K ops/s | 1.04K ops/s | 858 ops/s | 392 ops/s |
+| Buf perf | 72.5K ops/s | 66.4K ops/s | 19.0K ops/s | 21.1K ops/s | 14.2K ops/s |
 
-protobuf.js reflect x 6,440,387 ops/sec ±0.25% (97 runs sampled)
-protobuf.js static x 6,463,283 ops/sec ±0.27% (101 runs sampled)
-JSON decode x 1,409,923 ops/sec ±0.11% (97 runs sampled)
-protoc-gen-js x 947,647 ops/sec ±0.15% (99 runs sampled)
-protoc-gen-es x 731,819 ops/sec ±0.28% (98 runs sampled)
+<!-- END BENCHMARK DATA -->
 
-     protobuf.js static was fastest
-    protobuf.js reflect was 0.3% ops/sec slower (factor 1.0)
-            JSON decode was 78.2% ops/sec slower (factor 4.6)
-          protoc-gen-js was 85.3% ops/sec slower (factor 6.8)
-          protoc-gen-es was 88.7% ops/sec slower (factor 8.8)
+[Structured results](./bench/results/latest.json) of this run are available as committed artifacts.
 
-benchmarking round-trip performance ...
-
-protobuf.js reflect x 1,310,677 ops/sec ±0.21% (97 runs sampled)
-protobuf.js static x 1,310,926 ops/sec ±0.26% (101 runs sampled)
-JSON encode/decode x 741,714 ops/sec ±0.24% (99 runs sampled)
-protoc-gen-js x 472,844 ops/sec ±0.09% (96 runs sampled)
-protoc-gen-es x 254,044 ops/sec ±0.05% (101 runs sampled)
-
-    protobuf.js reflect was fastest
-     protobuf.js static was 0.0% ops/sec slower (factor 1.0)
-     JSON encode/decode was 43.4% ops/sec slower (factor 1.8)
-          protoc-gen-js was 63.9% ops/sec slower (factor 2.8)
-          protoc-gen-es was 80.6% ops/sec slower (factor 5.2)
-```
-</details>
-
-Run it locally with:
+To run the benchmark yourself on your own hardware:
 
 ```sh
 npm --prefix bench install

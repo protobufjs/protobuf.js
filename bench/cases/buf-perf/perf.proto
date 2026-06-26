@@ -1,0 +1,76 @@
+// Copyright 2021-2026 Buf Technologies, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package perf.v1;
+
+message PerfMessage {
+  double double_field = 1;
+  int32 int32_field = 2;
+  uint32 uint32_field = 3333;
+  optional int64 int64_field = 3;
+  optional bool bool_field = 4;
+  string string_field = 5;
+  bytes bytes_field = 6;
+  PerfEnum enum_field = 7;
+  PerfMessage small_message_field = 8;
+
+  int32 unused_field_1 = 9;
+  int32 unused_field_2 = 10;
+  int32 unused_field_3 = 11;
+  int32 unused_field_4 = 12;
+  int32 unused_field_5 = 13;
+  int32 unused_field_6 = 14;
+  int32 unused_field_7 = 15;
+  int32 unused_field_8 = 16;
+  int32 unused_field_9 = 17;
+  int32 unused_field_10 = 18;
+
+  repeated double repeated_double_field = 19;
+  repeated int32 repeated_int32_field = 20;
+  repeated int64 repeated_int64_field = 41;
+  repeated bool repeated_bool_field = 22;
+  repeated string repeated_short_string_field = 23;
+  repeated string repeated_long_string_field = 24;
+  repeated bytes repeated_short_bytes_field = 25;
+  repeated bytes repeated_long_bytes_field = 26;
+  repeated PerfEnum repeated_enum_field = 27;
+  repeated PerfMessage repeated_small_message_field = 28;
+
+  map<int32, int32> map_int32_int32 = 30;
+  map<int64, int64> map_int64_int64 = 31;
+  map<string, PerfMessage> map_string_message = 32;
+  map<string, PerfEnum> map_string_enum = 33;
+
+  oneof oneof_enum {
+    PerfEnum oneof_enum_verified = 34;
+    PerfEnum oneof_enum_cromulent = 35;
+  }
+  oneof oneof_message {
+    PerfMessage oneof_message_field = 36;
+    PerfMessage oneof_small_message_field = 37;
+  }
+  oneof oneof_scalar {
+    int32 oneof_int32_field = 38;
+    bool oneof_bool_field = 39;
+  }
+
+  uint32 id = 40;
+}
+enum PerfEnum {
+  PERF_ENUM_UNSPECIFIED = 0;
+  PERF_ENUM_YES = 1;
+  PERF_ENUM_NO = 2;
+}

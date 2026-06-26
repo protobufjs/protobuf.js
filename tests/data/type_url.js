@@ -105,7 +105,7 @@ $root.TypeUrlTest = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     TypeUrlTest.encodeDelimited = function(message, writer) {
-        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+        return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
     };
 
     /**
@@ -363,7 +363,7 @@ $root.TypeUrlTest = (function() {
          * @returns {$protobuf.Writer} Writer
          */
         Nested.encodeDelimited = function(message, writer) {
-            return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
         };
 
         /**

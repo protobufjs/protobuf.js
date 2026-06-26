@@ -28,7 +28,7 @@ function BufferReader(buffer) {
      * Read buffer.
      * @name BufferReader#buf
      * @type {Buffer}
-     */
+    */
 }
 
 BufferReader._configure = function () {
@@ -46,8 +46,6 @@ BufferReader._configure = function () {
  * @returns {Buffer} Raw bytes
  */
 BufferReader.prototype.raw = function read_raw_buffer(start, end) {
-    if (start === end)
-        return util.Buffer.alloc(0);
     return this._slice.call(this.buf, start, end);
 };
 

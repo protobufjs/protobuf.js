@@ -181,7 +181,7 @@ $root.MyRequest = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     MyRequest.encodeDelimited = function(message, writer) {
-        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+        return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
     };
 
     /**
@@ -441,7 +441,7 @@ $root.MyResponse = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     MyResponse.encodeDelimited = function(message, writer) {
-        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+        return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
     };
 
     /**

@@ -75,7 +75,8 @@ function binarySyntaxRows() {
     var rows = [
         binarySyntax("proto2"),
         binarySyntax("proto3"),
-        binarySyntax("editions")
+        binarySyntax("editions"),
+        binarySyntax("other")
     ].filter(Boolean);
     rows.forEach(function(row) {
         row[0] = "\u21b3 " + row[0];

@@ -1,105 +1,144 @@
 "use strict";
 
-// Measures encode, decode, and round-trip throughput for the benchmark fixture.
+// Measures encode and decode throughput for benchmark fixtures.
 // JSON cases include binary conversion so all variants operate on transferable bytes.
 
-var newSuite  = require("./suite"),
-    payload   = require("./data/bench.json");
+var fs       = require("fs"),
+    os       = require("os"),
+    path     = require("path"),
+    newSuite = require("./suite");
 
-var Buffer_from = Buffer.from !== Uint8Array.from && Buffer.from || function(value, encoding) { return new Buffer(value, encoding); };
-var BigInt_from = global.BigInt;
-var BigInt_32 = BigInt_from(32);
+var resultsFile = path.join(__dirname, "results", "latest.json");
 
-// protobuf.js dynamic: load the proto and set up a buffer
-var pbjsCls = require("..").loadSync(require.resolve("./data/bench.proto")).resolveAll().lookup("Test");
-var pbjsMsg = payload; // alt: pbjsCls.fromObject(payload);
-var pbjsBuf = pbjsCls.encode(pbjsMsg).finish();
+var caseFactories = [
+    require("./cases/common"),
+    require("./cases/vector-tile"),
+    require("./cases/buf-perf")
+];
 
-// protobuf.js static: load the proto
-var pbjsStaticCls = require("./data/bench_protobufjs.js").Test;
+var operations = [ "encode", "decode" ];
 
-// JSON: set up a string and a buffer
-var jsonMsg = payload;
-var jsonStr = JSON.stringify(jsonMsg);
-var jsonBuf = Buffer_from(jsonStr, "utf8");
+try {
+    main();
+} catch (err) {
+    process.stderr.write((err && err.stack || err) + "\n");
+    process.exitCode = 1;
+}
 
-// protoc-gen-js: load the proto, set up an Uint8Array and a message
-var jsCls = require("./data/bench_protoc_gen_js.js").Test;
-var jsBuf = new Uint8Array(Array.prototype.slice.call(pbjsBuf));
-var jsMsg = jsCls.deserializeBinary(jsBuf);
+function main() {
+    var options = parseArgs(process.argv.slice(2)),
+        cases = caseFactories.filter(function(createCase) {
+            return options.caseName === "all" || createCase.caseName === options.caseName;
+        }).map(function(createCase) {
+            return createCase();
+        });
 
-// protoc-gen-es: load the schema, set up a buffer and a message
-var es  = require("@bufbuild/protobuf");
-var esCls = require("./data/bench_protoc_gen_es.js").TestSchema;
-var esBuf = new Uint8Array(Array.prototype.slice.call(pbjsBuf));
-var esMsg = es.create(esCls, {
-    string: payload.string,
-    uint32: payload.uint32,
-    inner: {
-        int32: payload.inner.int32,
-        innerInner: {
-            long: BigInt_from(payload.inner.innerInner.long.high) << BigInt_32 | BigInt_from(payload.inner.innerInner.long.low >>> 0),
-            enum: payload.inner.innerInner.enum,
-            sint32: payload.inner.innerInner.sint32
-        },
-        outer: payload.inner.outer
-    },
-    float: payload.float
-});
+    if (!cases.length)
+        throw Error("unknown benchmark case '" + options.caseName + "'");
 
-newSuite("encode")
+    var result = {
+        node: process.version,
+        cpu: cpuName(),
+        operations: []
+    };
 
-.add("protobuf.js reflect", function() {
-    pbjsCls.encode(pbjsMsg).finish();
-})
-.add("protobuf.js static", function() {
-    pbjsStaticCls.encode(pbjsMsg).finish();
-})
-.add("JSON encode", function() {
-    Buffer_from(JSON.stringify(jsonMsg), "utf8");
-})
-.add("protoc-gen-js", function() {
-    jsMsg.serializeBinary();
-})
-.add("protoc-gen-es", function() {
-    es.toBinary(esCls, esMsg);
-})
-.run();
+    operations.filter(function(operation) {
+        return !options.only || options.only === operation;
+    }).forEach(function(operation) {
+        var opResult = {
+            name: operation,
+            title: operation,
+            cases: []
+        };
+        result.operations.push(opResult);
 
-newSuite("decode")
+        cases.forEach(function(benchCase) {
+            var caseResult = {
+                title: benchCase.title,
+                variants: []
+            };
+            opResult.cases.push(caseResult);
 
-.add("protobuf.js reflect", function() {
-    pbjsCls.decode(pbjsBuf);
-})
-.add("protobuf.js static", function() {
-    pbjsStaticCls.decode(pbjsBuf);
-})
-.add("JSON decode", function() {
-    JSON.parse(jsonBuf.toString("utf8"));
-})
-.add("protoc-gen-js", function() {
-    jsCls.deserializeBinary(jsBuf);
-})
-.add("protoc-gen-es", function() {
-    es.fromBinary(esCls, esBuf);
-})
-.run();
+            var suite = newSuite(benchCase.title + " " + operation, {
+                onComplete: function(variants) {
+                    caseResult.variants = variants;
+                }
+            });
+            benchCase.variants.filter(function(variant) {
+                return typeof variant[operation] === "function";
+            }).forEach(function(variant) {
+                suite.add(variant.name, variant[operation]);
+                for (var i = 0; i < 10; ++i)
+                    variant[operation](); // warmup
+            });
+            if (typeof global.gc === "function") {
+                suite.on("cycle", function() {
+                    global.gc();
+                });
+            }
+            suite.run();
+        });
+    });
 
-newSuite("round-trip")
+    if (options.save) {
+        write(resultsFile, JSON.stringify(result, null, 2) + "\n");
+        process.stdout.write("wrote " + relative(resultsFile) + "\n");
+    }
+}
 
-.add("protobuf.js reflect", function() {
-    pbjsCls.decode(pbjsCls.encode(pbjsMsg).finish());
-})
-.add("protobuf.js static", function() {
-    pbjsStaticCls.decode(pbjsStaticCls.encode(pbjsMsg).finish());
-})
-.add("JSON encode/decode", function() {
-    JSON.parse(Buffer_from(JSON.stringify(jsonMsg), "utf8").toString("utf8"));
-})
-.add("protoc-gen-js", function() {
-    jsCls.deserializeBinary(jsMsg.serializeBinary());
-})
-.add("protoc-gen-es", function() {
-    es.fromBinary(esCls, es.toBinary(esCls, esMsg));
-})
-.run();
+function parseArgs(args) {
+    var options = {
+        caseName: "all",
+        only: "",
+        save: false
+    };
+
+    for (var i = 0; i < args.length; ++i) {
+        var arg = args[i];
+        if (arg === "--case") {
+            options.caseName = args[++i] || "";
+        } else if (arg.indexOf("--case=") === 0) {
+            options.caseName = arg.substring("--case=".length);
+        } else if (arg === "--only") {
+            options.only = args[++i] || "";
+        } else if (arg.indexOf("--only=") === 0) {
+            options.only = arg.substring("--only=".length);
+        } else if (arg === "--save") {
+            options.save = true;
+        } else {
+            usage();
+            throw Error("unknown argument '" + arg + "'");
+        }
+    }
+
+    if (options.only && operations.indexOf(options.only) < 0)
+        throw Error("unknown operation '" + options.only + "'");
+    if (options.save && (options.caseName !== "all" || options.only))
+        throw Error("--save requires a complete benchmark run");
+
+    return options;
+}
+
+function usage() {
+    process.stderr.write([
+        "usage: node bench/index.js [--case all|common|vector-tile|buf-perf]",
+        "                           [--only encode|decode]",
+        "                           [--save]",
+        ""
+    ].join("\n"));
+}
+
+function write(file, data) {
+    var dir = path.dirname(file);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(file, data);
+}
+
+function relative(file) {
+    return path.relative(path.resolve(__dirname, ".."), file).replace(/\\/g, "/");
+}
+
+function cpuName() {
+    var cpus = os.cpus();
+    return cpus.length ? cpus[0].model.trim() : "";
+}

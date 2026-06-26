@@ -19,7 +19,7 @@ tape.test("utf8", function(test) {
     });
 
     test.test(test.name + " - read", function(test) {
-        var comp = utf8.read([], 0, 0);
+        var comp = utf8.read(new Uint8Array(0), 0, 0);
         test.equal(comp, "", "should decode an empty buffer to an empty string");
 
         comp = utf8.read(data, 0, data.length);

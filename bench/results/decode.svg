@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="362" viewBox="0 0 840 362" role="img" aria-labelledby="title desc">
+<title id="title">protobuf.js decode benchmark</title>
+<desc id="desc">Normalized benchmark throughput by case. The fastest implementation in each case is 100%.</desc>
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#1f2933}
+.title{font-size:22px;font-weight:700}.meta,.legend{font-size:12px;fill:#65758b}.case{font-size:15px;font-weight:700}.value{font-size:10px;fill:#4a5568}.axis{stroke:#d8dee9;stroke-width:1}.grid{stroke:#eef2f7;stroke-width:1}.bar{rx:3;ry:3}
+</style>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="12" y="30" class="title">Decode Throughput</text>
+<text x="12" y="50" class="meta">Normalized ops/s; fastest = 100%. Node v24.15.0 · AMD Ryzen 9 9950X3D 16-Core Processor.</text>
+<text x="144" y="88" text-anchor="middle" class="case">Common</text>
+<line x1="12" y1="290" x2="276" y2="290" class="axis"/>
+<line x1="12" y1="195" x2="276" y2="195" class="grid"/>
+<line x1="12" y1="100" x2="276" y2="100" class="grid"/>
+<rect x="56" y="100" width="30" height="190" class="bar" fill="#0072ce"/>
+<text x="71" y="307" text-anchor="middle" class="value">6.11M</text>
+<rect x="88" y="100" width="30" height="190" class="bar" fill="#60a5fa"/>
+<text x="103" y="307" text-anchor="middle" class="value">6.09M</text>
+<rect x="126" y="249" width="30" height="41" class="bar" fill="#7c3aed"/>
+<text x="141" y="307" text-anchor="middle" class="value">1.31M</text>
+<rect x="164" y="265" width="30" height="25" class="bar" fill="#f59e0b"/>
+<text x="179" y="307" text-anchor="middle" class="value">790K</text>
+<rect x="202" y="268" width="30" height="22" class="bar" fill="#ef4444"/>
+<text x="217" y="307" text-anchor="middle" class="value">710K</text>
+<text x="420" y="88" text-anchor="middle" class="case">Vector tile</text>
+<line x1="288" y1="290" x2="552" y2="290" class="axis"/>
+<line x1="288" y1="195" x2="552" y2="195" class="grid"/>
+<line x1="288" y1="100" x2="552" y2="100" class="grid"/>
+<rect x="332" y="123" width="30" height="167" class="bar" fill="#0072ce"/>
+<text x="347" y="307" text-anchor="middle" class="value">2.45K</text>
+<rect x="364" y="100" width="30" height="190" class="bar" fill="#60a5fa"/>
+<text x="379" y="307" text-anchor="middle" class="value">2.78K</text>
+<rect x="402" y="219" width="30" height="71" class="bar" fill="#7c3aed"/>
+<text x="417" y="307" text-anchor="middle" class="value">1.04K</text>
+<rect x="440" y="231" width="30" height="59" class="bar" fill="#f59e0b"/>
+<text x="455" y="307" text-anchor="middle" class="value">858</text>
+<rect x="478" y="263" width="30" height="27" class="bar" fill="#ef4444"/>
+<text x="493" y="307" text-anchor="middle" class="value">392</text>
+<text x="696" y="88" text-anchor="middle" class="case">Buf perf</text>
+<line x1="564" y1="290" x2="828" y2="290" class="axis"/>
+<line x1="564" y1="195" x2="828" y2="195" class="grid"/>
+<line x1="564" y1="100" x2="828" y2="100" class="grid"/>
+<rect x="608" y="100" width="30" height="190" class="bar" fill="#0072ce"/>
+<text x="623" y="307" text-anchor="middle" class="value">72.5K</text>
+<rect x="640" y="116" width="30" height="174" class="bar" fill="#60a5fa"/>
+<text x="655" y="307" text-anchor="middle" class="value">66.4K</text>
+<rect x="678" y="235" width="30" height="55" class="bar" fill="#f59e0b"/>
+<text x="693" y="307" text-anchor="middle" class="value">21.1K</text>
+<rect x="716" y="240" width="30" height="50" class="bar" fill="#7c3aed"/>
+<text x="731" y="307" text-anchor="middle" class="value">19.0K</text>
+<rect x="754" y="253" width="30" height="37" class="bar" fill="#ef4444"/>
+<text x="769" y="307" text-anchor="middle" class="value">14.2K</text>
+<rect x="120" y="328" width="11" height="11" rx="2" ry="2" fill="#0072ce"/>
+<text x="136" y="338" class="legend">protobuf.js static</text>
+<rect x="260" y="328" width="11" height="11" rx="2" ry="2" fill="#60a5fa"/>
+<text x="276" y="338" class="legend">protobuf.js reflect</text>
+<rect x="400" y="328" width="11" height="11" rx="2" ry="2" fill="#7c3aed"/>
+<text x="416" y="338" class="legend">JSON</text>
+<rect x="480" y="328" width="11" height="11" rx="2" ry="2" fill="#f59e0b"/>
+<text x="496" y="338" class="legend">protoc-gen-js</text>
+<rect x="600" y="328" width="11" height="11" rx="2" ry="2" fill="#ef4444"/>
+<text x="616" y="338" class="legend">protoc-gen-es</text>
+</svg>
