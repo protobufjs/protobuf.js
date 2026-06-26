@@ -3,10 +3,11 @@ module.exports = newSuite;
 
 var benchmark = require("benchmark");
 
-var padSize = 23;
+var padSize = 27;
 var colors = process.stdout.isTTY;
 
-function newSuite(name) {
+function newSuite(name, options) {
+    options = options || {};
     var benches = [];
     return new benchmark.Suite(name, {
         delay: 5
@@ -31,6 +32,15 @@ function newSuite(name) {
                 var percent = 1 - hz / fastestHz;
                 process.stdout.write(pad(bench.name, padSize) + " was " + red((percent * 100).toFixed(1) + "% ops/sec slower (factor " + (fastestHz / hz).toFixed(1) + ")") + "\n");
             });
+            if (options.onComplete)
+                options.onComplete(benches.map(function(bench) {
+                    var hz = getHz(bench);
+                    return {
+                        name: bench.name,
+                        hz: hz,
+                        relative: hz / fastestHz
+                    };
+                }));
         }
         process.stdout.write("\n");
     });

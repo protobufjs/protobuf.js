@@ -1212,7 +1212,7 @@ export interface IToJSONOptions {
  */
 export function parse(source: string, root: Root, options?: IParseOptions): IParserResult;
 
-/** Wire format reader using `Uint8Array` if available, otherwise `Array`. */
+/** Wire format reader using `Uint8Array`. */
 export class Reader {
 
     /**
@@ -1229,6 +1229,9 @@ export class Reader {
 
     /** Read buffer length. */
     len: number;
+
+    /** Cached DataView for packed reads. */
+    view: (DataView|null);
 
     /** Whether to discard unknown fields while decoding. */
     discardUnknown: boolean;
@@ -1332,6 +1335,97 @@ export class Reader {
      * @returns Value read
      */
     double(): number;
+
+    /**
+     * Reads a packed repeated field of unsigned 32 bit varints.
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    uint32s(array?: number[]): number[];
+
+    /**
+     * Reads a packed repeated field of signed 32 bit varints.
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    int32s(array?: number[]): number[];
+
+    /**
+     * Reads a packed repeated field of zig-zag encoded signed 32 bit varints.
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    sint32s(array?: number[]): number[];
+
+    /**
+     * Reads a packed repeated field of booleans.
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    bools(array?: boolean[]): boolean[];
+
+    /**
+     * Reads a packed repeated field of unsigned 32 bit fixed values.
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    fixed32s(array?: number[]): number[];
+
+    /**
+     * Reads a packed repeated field of signed 32 bit fixed values.
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    sfixed32s(array?: number[]): number[];
+
+    /**
+     * Reads a packed repeated field of floats (32 bit).
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    floats(array?: number[]): number[];
+
+    /**
+     * Reads a packed repeated field of doubles (64 bit float).
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    doubles(array?: number[]): number[];
+
+    /**
+     * Reads a packed repeated field of unsigned 64 bit varints.
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    uint64s(array?: (Long|number)[]): (Long|number)[];
+
+    /**
+     * Reads a packed repeated field of signed 64 bit varints.
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    int64s(array?: (Long|number)[]): (Long|number)[];
+
+    /**
+     * Reads a packed repeated field of zig-zag encoded signed 64 bit varints.
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    sint64s(array?: (Long|number)[]): (Long|number)[];
+
+    /**
+     * Reads a packed repeated field of unsigned 64 bit fixed values.
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    fixed64s(array?: (Long|number)[]): (Long|number)[];
+
+    /**
+     * Reads a packed repeated field of signed 64 bit fixed values.
+     * @param [array] Array to read into; a new one is created if omitted
+     * @returns Array read into
+     */
+    sfixed64s(array?: (Long|number)[]): (Long|number)[];
 
     /**
      * Reads a sequence of bytes preceeded by its length as a varint.
@@ -2464,7 +2558,10 @@ export namespace util {
      */
     function newBuffer(sizeOrArray?: (number|number[])): (Uint8Array|Buffer);
 
-    /** Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`. */
+    /**
+     * Array implementation used in the browser.
+     * @deprecated Use `Uint8Array` instead.
+     */
     let Array: Constructor<Uint8Array>;
 
     /** Long.js's Long class if available. */
@@ -2626,7 +2723,7 @@ export namespace util {
      */
     function pool(alloc: PoolAllocator, slice: PoolSlicer, size?: number): PoolAllocator;
 
-    /** A minimal UTF8 implementation for number arrays. */
+    /** A minimal UTF8 implementation. */
     namespace utf8 {
 
         /**
@@ -2803,23 +2900,29 @@ export interface IWrapper {
     toObject?: WrapperToObjectConverter;
 }
 
-/** Wire format writer using `Uint8Array` if available, otherwise `Array`. */
+/** Wire format writer using `Uint8Array`. */
 export class Writer {
 
     /** Constructs a new writer instance. */
     constructor();
 
-    /** Current length. */
+    /** Write cursor into {@link Writer#buf}. */
+    pos: number;
+
+    /** Backing buffer. */
+    buf: Uint8Array;
+
+    /** Cached DataView over {@link Writer#buf}. */
+    view: (DataView|null);
+
+    /** Stack of forked length-prefix positions. */
+    states: (number[]|null);
+
+    /**
+     * Current write position.
+     * @deprecated Use {@link Writer#pos} instead.
+     */
     len: number;
-
-    /** Operations head. */
-    head: object;
-
-    /** Operations tail */
-    tail: object;
-
-    /** Linked forked states. */
-    states: (object|null);
 
     /**
      * Creates a new writer.
@@ -2952,8 +3055,98 @@ export class Writer {
     string(value: string): Writer;
 
     /**
+     * Writes an array of unsigned 32 bit values as a packed repeated field.
+     * @param value Values to write
+     * @returns `this`
+     */
+    uint32s(value: number[]): Writer;
+
+    /**
+     * Writes an array of signed 32 bit values as a packed repeated field.
+     * @param value Values to write
+     * @returns `this`
+     */
+    int32s(value: number[]): Writer;
+
+    /**
+     * Writes an array of 32 bit values as packed, zig-zag encoded varints.
+     * @param value Values to write
+     * @returns `this`
+     */
+    sint32s(value: number[]): Writer;
+
+    /**
+     * Writes an array of unsigned 64 bit values as a packed repeated field.
+     * @param value Values to write
+     * @returns `this`
+     */
+    uint64s(value: (Long|number|string)[]): Writer;
+
+    /**
+     * Writes an array of signed 64 bit values as a packed repeated field.
+     * @param value Values to write
+     * @returns `this`
+     */
+    int64s(value: (Long|number|string)[]): Writer;
+
+    /**
+     * Writes an array of 64 bit values as packed, zig-zag encoded varints.
+     * @param value Values to write
+     * @returns `this`
+     */
+    sint64s(value: (Long|number|string)[]): Writer;
+
+    /**
+     * Writes an array of boolish values as a packed repeated field.
+     * @param value Values to write
+     * @returns `this`
+     */
+    bools(value: boolean[]): Writer;
+
+    /**
+     * Writes an array of unsigned 32 bit values as packed, fixed 32 bits.
+     * @param value Values to write
+     * @returns `this`
+     */
+    fixed32s(value: number[]): Writer;
+
+    /**
+     * Writes an array of signed 32 bit values as packed, fixed 32 bits.
+     * @param value Values to write
+     * @returns `this`
+     */
+    sfixed32s(value: number[]): Writer;
+
+    /**
+     * Writes an array of unsigned 64 bit values as packed, fixed 64 bits.
+     * @param value Values to write
+     * @returns `this`
+     */
+    fixed64s(value: (Long|number|string)[]): Writer;
+
+    /**
+     * Writes an array of signed 64 bit values as packed, fixed 64 bits.
+     * @param value Values to write
+     * @returns `this`
+     */
+    sfixed64s(value: (Long|number|string)[]): Writer;
+
+    /**
+     * Writes an array of floats (32 bit) as a packed repeated field.
+     * @param value Values to write
+     * @returns `this`
+     */
+    floats(value: number[]): Writer;
+
+    /**
+     * Writes an array of doubles (64 bit float) as a packed repeated field.
+     * @param value Values to write
+     * @returns `this`
+     */
+    doubles(value: number[]): Writer;
+
+    /**
      * Forks this writer's state by pushing it to a stack.
-     * Calling {@link Writer#reset|reset} or {@link Writer#ldelim|ldelim} resets the writer to the previous state.
      * @returns `this`
      */
     fork(): Writer;
@@ -2965,21 +3158,23 @@ export class Writer {
     reset(): Writer;
 
     /**
-     * Resets to the last state and appends the fork state's current write length as a varint followed by its operations.
+     * Resets to the last state and prepends the fork state's current write length as a varint.
      * @returns `this`
      */
     ldelim(): Writer;
 
     /**
      * Finishes the write operation.
+     * Returns a buffer sized to the written data by default.
+     * @param [shared=false] Whether to return a shared view instead of a unique copy
      * @returns Finished buffer
      */
-    finish(): Uint8Array;
+    finish(shared?: boolean): Uint8Array;
 
     /**
      * Finishes the write operation, writing into the provided buffer.
      * The caller must ensure that `buf` has enough space starting at `offset`
-     * to hold {@link Writer#len} bytes.
+     * to hold {@link Writer#pos} bytes.
      * @param buf Target buffer
      * @param [offset=0] Offset to start writing at
      * @returns The provided buffer
@@ -2999,13 +3194,6 @@ export class BufferWriter extends Writer {
      * @returns Buffer
      */
     static alloc(size: number): Buffer;
-
-    /**
-     * Writes raw bytes without a tag or length prefix.
-     * @param value Raw bytes
-     * @returns `this`
-     */
-    raw(value: Uint8Array): BufferWriter;
 
     /**
      * Finishes the write operation.

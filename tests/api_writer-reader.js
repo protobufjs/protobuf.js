@@ -165,7 +165,7 @@ tape.test("writer & reader", function(test) {
         var w3 = Writer.create();
         w3.uint32(100).string("hello").bool(true);
         var offset = 3;
-        var buf3 = new Uint8Array(offset + w3.len);
+        var buf3 = new Uint8Array(offset + w3.pos);
         for (var i = 0; i < offset; ++i)
             buf3[i] = 99;
         w3.finishInto(buf3, offset);
@@ -175,6 +175,31 @@ tape.test("writer & reader", function(test) {
         for (var i = 0; i < expected.length; ++i)
             test.equal(buf3[offset + i], expected[i], "byte at offset+" + i + " matches finish()");
 
+        test.end();
+    });
+
+    test.test(test.name + " - finish size", function(test) {
+        var buf = Writer.create().uint32(1).finish();
+
+        test.equal(buf.length, 1, "should expose only written bytes");
+        test.equal(buf.byteLength, 1, "should have the written byte length");
+        test.same(Array.prototype.slice.call(buf), [ 1 ], "should contain written bytes");
+        test.end();
+    });
+
+    test.test(test.name + " - shared finish view", function(test) {
+        var writer = Writer.create().uint32(1);
+        var shared = writer.finish(true);
+
+        test.equal(shared.length, 1, "should expose only written bytes");
+        test.same(Array.prototype.slice.call(shared), [ 1 ], "should contain written bytes");
+
+        shared[0] = 2;
+        test.equal(writer.buf[0], 2, "should share the writer's backing buffer");
+
+        var copied = writer.finish();
+        copied[0] = 3;
+        test.equal(writer.buf[0], 2, "default finish should return an independent buffer");
         test.end();
     });
 

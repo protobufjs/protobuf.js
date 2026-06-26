@@ -141,13 +141,9 @@ function decoder(mtype) {
             if (types.packed[type] !== undefined) {
                 gen
                 ("if(u===2){");
-                if (!closed) gen
-                    ("if(!(%s&&%s.length))", ref, ref)
-                        ("%s=[]", ref);
-                gen
-                    ("var c2=r.uint32()+r.pos");
                 if (closed) {
                     gen
+                    ("var c2=r.uint32()+r.pos")
                     ("while(r.pos<c2){")
                         ("s=r.pos")
                         ("v=r.%s()", type)
@@ -159,8 +155,9 @@ function decoder(mtype) {
                             genPreserveUnknown(gen, "util.rawField(" + field.id + ",0,r.raw(s,r.pos))")
                     ("}");
                 } else gen
-                    ("while(r.pos<c2)")
-                        ("%s.push(r.%s())", ref, type);
+                    ("if(!(%s&&%s.length))", ref, ref)
+                        ("%s=[]", ref)
+                    ("r.%ss(%s)", type, ref);
                 gen
                     ("continue")
                 ("}");

@@ -116,7 +116,7 @@ $root.vector_tile = (function() {
          * @returns {$protobuf.Writer} Writer
          */
         Tile.encodeDelimited = function(message, writer) {
-            return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+            return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
         };
 
         /**
@@ -472,7 +472,7 @@ $root.vector_tile = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Value.encodeDelimited = function(message, writer) {
-                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
             };
 
             /**
@@ -874,20 +874,12 @@ $root.vector_tile = (function() {
                     throw $Error("max depth exceeded");
                 if (message.id != null && $Object.hasOwnProperty.call(message, "id"))
                     writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.id);
-                if (message.tags != null && message.tags.length) {
-                    writer.uint32(/* id 2, wireType 2 =*/18).fork();
-                    for (var i = 0; i < message.tags.length; ++i)
-                        writer.uint32(message.tags[i]);
-                    writer.ldelim();
-                }
+                if (message.tags != null && message.tags.length)
+                    writer.uint32(/* id 2, wireType 2 =*/18).uint32s(message.tags);
                 if (message.type != null && $Object.hasOwnProperty.call(message, "type"))
                     writer.uint32(/* id 3, wireType 0 =*/24).int32(message.type);
-                if (message.geometry != null && message.geometry.length) {
-                    writer.uint32(/* id 4, wireType 2 =*/34).fork();
-                    for (var i = 0; i < message.geometry.length; ++i)
-                        writer.uint32(message.geometry[i]);
-                    writer.ldelim();
-                }
+                if (message.geometry != null && message.geometry.length)
+                    writer.uint32(/* id 4, wireType 2 =*/34).uint32s(message.geometry);
                 if (message.$unknowns != null && $Object.hasOwnProperty.call(message, "$unknowns"))
                     for (var i = 0; i < message.$unknowns.length; ++i)
                         writer.raw(message.$unknowns[i]);
@@ -904,7 +896,7 @@ $root.vector_tile = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Feature.encodeDelimited = function(message, writer) {
-                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
             };
 
             /**
@@ -945,9 +937,7 @@ $root.vector_tile = (function() {
                             if (wireType === 2) {
                                 if (!(message.tags && message.tags.length))
                                     message.tags = [];
-                                var end2 = reader.uint32() + reader.pos;
-                                while (reader.pos < end2)
-                                    message.tags.push(reader.uint32());
+                                reader.uint32s(message.tags);
                                 continue;
                             }
                             if (wireType !== 0)
@@ -973,9 +963,7 @@ $root.vector_tile = (function() {
                             if (wireType === 2) {
                                 if (!(message.geometry && message.geometry.length))
                                     message.geometry = [];
-                                var end2 = reader.uint32() + reader.pos;
-                                while (reader.pos < end2)
-                                    message.geometry.push(reader.uint32());
+                                reader.uint32s(message.geometry);
                                 continue;
                             }
                             if (wireType !== 0)
@@ -1354,7 +1342,7 @@ $root.vector_tile = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Layer.encodeDelimited = function(message, writer) {
-                return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
             };
 
             /**

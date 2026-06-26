@@ -191,7 +191,7 @@ function classifySyntax(name) {
         return "proto2";
     if (parts[1] === "Proto3")
         return "proto3";
-    if (parts[1] === "Editions" || parts[1] === "Editions_Proto2" || parts[1] === "Editions_Proto3")
+    if (/^Edition/.test(parts[1]))
         return "editions";
     return "other";
 }

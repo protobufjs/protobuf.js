@@ -179,7 +179,7 @@ export const MyRequest = $root.MyRequest = (() => {
      * @returns {$protobuf.Writer} Writer
      */
     MyRequest.encodeDelimited = function(message, writer) {
-        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+        return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
     };
 
     /**
@@ -439,7 +439,7 @@ export const MyResponse = $root.MyResponse = (() => {
      * @returns {$protobuf.Writer} Writer
      */
     MyResponse.encodeDelimited = function(message, writer) {
-        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+        return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
     };
 
     /**

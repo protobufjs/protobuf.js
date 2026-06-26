@@ -1,0 +1,198 @@
+{
+  "node": "v24.15.0",
+  "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor",
+  "operations": [
+    {
+      "name": "encode",
+      "title": "encode",
+      "cases": [
+        {
+          "title": "Common",
+          "variants": [
+            {
+              "name": "protobuf.js reflect",
+              "hz": 3249377.817077326,
+              "relative": 1
+            },
+            {
+              "name": "protobuf.js static",
+              "hz": 3182546.984782052,
+              "relative": 0.9794327295693225
+            },
+            {
+              "name": "JSON",
+              "hz": 2074328.5398998256,
+              "relative": 0.6383771468488678
+            },
+            {
+              "name": "protoc-gen-js",
+              "hz": 1012131.704102016,
+              "relative": 0.3114847706483035
+            },
+            {
+              "name": "protoc-gen-es",
+              "hz": 394753.43527013616,
+              "relative": 0.12148585282865004
+            }
+          ]
+        },
+        {
+          "title": "Vector tile",
+          "variants": [
+            {
+              "name": "protobuf.js static",
+              "hz": 2822.7760138895046,
+              "relative": 1
+            },
+            {
+              "name": "protobuf.js reflect",
+              "hz": 2756.3013615741133,
+              "relative": 0.9764506103253315
+            },
+            {
+              "name": "JSON",
+              "hz": 859.0399151834614,
+              "relative": 0.30432450571938574
+            },
+            {
+              "name": "protoc-gen-js",
+              "hz": 680.3719257360049,
+              "relative": 0.24102937051619622
+            },
+            {
+              "name": "protoc-gen-es",
+              "hz": 230.69590152360843,
+              "relative": 0.08172660543679923
+            }
+          ]
+        },
+        {
+          "title": "Buf perf",
+          "variants": [
+            {
+              "name": "protobuf.js static",
+              "hz": 41365.704962520096,
+              "relative": 1
+            },
+            {
+              "name": "protobuf.js reflect",
+              "hz": 39852.41549852507,
+              "relative": 0.9634168095197179
+            },
+            {
+              "name": "protoc-gen-js",
+              "hz": 13528.283608326032,
+              "relative": 0.3270410505655228
+            },
+            {
+              "name": "protoc-gen-es",
+              "hz": 7995.837706142498,
+              "relative": 0.1932962997581505
+            },
+            {
+              "name": "JSON",
+              "hz": 6590.938139734913,
+              "relative": 0.15933339334375454
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "decode",
+      "title": "decode",
+      "cases": [
+        {
+          "title": "Common",
+          "variants": [
+            {
+              "name": "protobuf.js static",
+              "hz": 6105820.088480453,
+              "relative": 1
+            },
+            {
+              "name": "protobuf.js reflect",
+              "hz": 6093189.0134391915,
+              "relative": 0.9979313057282687
+            },
+            {
+              "name": "JSON",
+              "hz": 1305382.5481548063,
+              "relative": 0.21379315624081466
+            },
+            {
+              "name": "protoc-gen-js",
+              "hz": 789942.8872284509,
+              "relative": 0.12937539524277775
+            },
+            {
+              "name": "protoc-gen-es",
+              "hz": 709586.0180375653,
+              "relative": 0.11621469479199133
+            }
+          ]
+        },
+        {
+          "title": "Vector tile",
+          "variants": [
+            {
+              "name": "protobuf.js reflect",
+              "hz": 2778.7607963322275,
+              "relative": 1
+            },
+            {
+              "name": "protobuf.js static",
+              "hz": 2446.008086504158,
+              "relative": 0.8802514018956652
+            },
+            {
+              "name": "JSON",
+              "hz": 1038.330115110751,
+              "relative": 0.37366660580546374
+            },
+            {
+              "name": "protoc-gen-js",
+              "hz": 857.9608785001147,
+              "relative": 0.30875665139387454
+            },
+            {
+              "name": "protoc-gen-es",
+              "hz": 392.09603875876394,
+              "relative": 0.1411046389010179
+            }
+          ]
+        },
+        {
+          "title": "Buf perf",
+          "variants": [
+            {
+              "name": "protobuf.js static",
+              "hz": 72521.43459080347,
+              "relative": 1
+            },
+            {
+              "name": "protobuf.js reflect",
+              "hz": 66445.21297551588,
+              "relative": 0.9162148177353054
+            },
+            {
+              "name": "protoc-gen-js",
+              "hz": 21116.07675987232,
+              "relative": 0.29117014685407333
+            },
+            {
+              "name": "JSON",
+              "hz": 18995.331754174156,
+              "relative": 0.26192713728505
+            },
+            {
+              "name": "protoc-gen-es",
+              "hz": 14193.083618579534,
+              "relative": 0.19570880938391386
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

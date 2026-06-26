@@ -26,7 +26,6 @@ exports.configure    = configure;
  * @returns {undefined}
  */
 function configure() {
-    exports.util._configure();
     exports.Writer._configure(exports.BufferWriter);
     exports.Reader._configure(exports.BufferReader);
 }

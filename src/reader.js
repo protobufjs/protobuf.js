@@ -15,7 +15,7 @@ function indexOutOfRange(reader, writeLength) {
 
 /**
  * Constructs a new reader instance using the specified buffer.
- * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
+ * @classdesc Wire format reader using `Uint8Array`.
  * @constructor
  * @param {Uint8Array} buffer Buffer to read from
  */
@@ -40,24 +40,26 @@ function Reader(buffer) {
     this.len = buffer.length;
 
     /**
+     * Cached DataView for packed reads.
+     * @type {DataView|null}
+     */
+    this.view = null;
+
+    /**
      * Whether to discard unknown fields while decoding.
      * @type {boolean}
      */
     this.discardUnknown = Reader.discardUnknown;
 }
 
-var create_array = typeof Uint8Array !== "undefined"
-    ? function create_typed_array(buffer) {
-        if (buffer instanceof Uint8Array || Array.isArray(buffer))
-            return new Reader(buffer);
-        throw Error("illegal buffer");
-    }
-    /* istanbul ignore next */
-    : function create_array(buffer) {
-        if (Array.isArray(buffer))
-            return new Reader(buffer);
-        throw Error("illegal buffer");
-    };
+function create_array(buffer) {
+    // TODO: Remove plain array reader support in the next major release.
+    if (Array.isArray(buffer))
+        buffer = new Uint8Array(buffer);
+    if (buffer instanceof Uint8Array)
+        return new Reader(buffer);
+    throw Error("illegal buffer");
+}
 
 var create = function create() {
     return util.Buffer
@@ -82,8 +84,6 @@ var create = function create() {
  */
 Reader.create = create();
 
-Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
-
 /**
  * Returns raw bytes from the backing buffer without advancing the reader.
  * @param {number} start Start offset
@@ -91,12 +91,7 @@ Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore ne
  * @returns {Uint8Array} Raw bytes
  */
 Reader.prototype.raw = function read_raw(start, end) {
-    if (Array.isArray(this.buf)) // plain array
-        return this.buf.slice(start, end);
-
-    if (start === end) // fix for IE 10/Win8 and others' subarray returning array of size 1
-        return new this.buf.constructor(0);
-    return this._slice.call(this.buf, start, end);
+    return this.buf.subarray(start, end);
 };
 
 /**
@@ -391,6 +386,238 @@ Reader.prototype.double = function read_double() {
     var value = util.float.readDoubleLE(this.buf, this.pos);
     this.pos += 8;
     return value;
+};
+
+/**
+ * Reads a packed repeated field of unsigned 32 bit varints.
+ * @param {number[]} [array] Array to read into; a new one is created if omitted
+ * @returns {number[]} Array read into
+ */
+Reader.prototype.uint32s = function read_uint32s(array) {
+    if (array === undefined) array = [];
+    var end = this.uint32() + this.pos;
+    while (this.pos < end)
+        array.push(this.uint32());
+    return array;
+};
+
+/**
+ * Reads a packed repeated field of signed 32 bit varints.
+ * @param {number[]} [array] Array to read into; a new one is created if omitted
+ * @returns {number[]} Array read into
+ */
+Reader.prototype.int32s = function read_int32s(array) {
+    if (array === undefined) array = [];
+    var end = this.uint32() + this.pos;
+    while (this.pos < end)
+        array.push(this.int32());
+    return array;
+};
+
+/**
+ * Reads a packed repeated field of zig-zag encoded signed 32 bit varints.
+ * @param {number[]} [array] Array to read into; a new one is created if omitted
+ * @returns {number[]} Array read into
+ */
+Reader.prototype.sint32s = function read_sint32s(array) {
+    if (array === undefined) array = [];
+    var end = this.uint32() + this.pos;
+    while (this.pos < end)
+        array.push(this.sint32());
+    return array;
+};
+
+/**
+ * Reads a packed repeated field of booleans.
+ * @param {boolean[]} [array] Array to read into; a new one is created if omitted
+ * @returns {boolean[]} Array read into
+ */
+Reader.prototype.bools = function read_bools(array) {
+    if (array === undefined) array = [];
+    var end = this.uint32() + this.pos;
+    while (this.pos < end)
+        array.push(this.bool());
+    return array;
+};
+
+function getLazyView(reader, count) {
+    var view = reader.view;
+    // The view allocation only pays off when amortized over enough reads
+    if (view || count < 32)
+        return view;
+    var buf = reader.buf;
+    return reader.view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+}
+
+/**
+ * Reads a packed repeated field of unsigned 32 bit fixed values.
+ * @param {number[]} [array] Array to read into; a new one is created if omitted
+ * @returns {number[]} Array read into
+ */
+Reader.prototype.fixed32s = function read_fixed32s(array) {
+    if (array === undefined) array = [];
+    var len = this.uint32(), end = this.pos + len;
+    /* istanbul ignore if */
+    if (end > this.len) throw indexOutOfRange(this, len);
+    var count = len >>> 2, i = array.length, pos = this.pos;
+    array.length = i + count;
+    var dv = getLazyView(this, count);
+    if (dv)
+        for (var k = 0; k < count; ++k, pos += 4) array[i++] = dv.getUint32(pos, true);
+    else {
+        var buf = this.buf;
+        for (var j = 0; j < count; ++j, pos += 4) array[i++] = readFixed32_end(buf, pos + 4);
+    }
+    this.pos = pos;
+    if (pos !== end) throw indexOutOfRange(this, 4);
+    return array;
+};
+
+/**
+ * Reads a packed repeated field of signed 32 bit fixed values.
+ * @param {number[]} [array] Array to read into; a new one is created if omitted
+ * @returns {number[]} Array read into
+ */
+Reader.prototype.sfixed32s = function read_sfixed32s(array) {
+    if (array === undefined) array = [];
+    var len = this.uint32(), end = this.pos + len;
+    /* istanbul ignore if */
+    if (end > this.len) throw indexOutOfRange(this, len);
+    var count = len >>> 2, i = array.length, pos = this.pos;
+    array.length = i + count;
+    var dv = getLazyView(this, count);
+    if (dv)
+        for (var k = 0; k < count; ++k, pos += 4) array[i++] = dv.getInt32(pos, true);
+    else {
+        var buf = this.buf;
+        for (var j = 0; j < count; ++j, pos += 4) array[i++] = readFixed32_end(buf, pos + 4) | 0;
+    }
+    this.pos = pos;
+    if (pos !== end) throw indexOutOfRange(this, 4);
+    return array;
+};
+
+/**
+ * Reads a packed repeated field of floats (32 bit).
+ * @param {number[]} [array] Array to read into; a new one is created if omitted
+ * @returns {number[]} Array read into
+ */
+Reader.prototype.floats = function read_floats(array) {
+    if (array === undefined) array = [];
+    var len = this.uint32(), end = this.pos + len;
+    /* istanbul ignore if */
+    if (end > this.len) throw indexOutOfRange(this, len);
+    var count = len >>> 2, i = array.length, pos = this.pos;
+    array.length = i + count;
+    var dv = getLazyView(this, count);
+    if (dv)
+        for (var k = 0; k < count; ++k, pos += 4) array[i++] = dv.getFloat32(pos, true);
+    else {
+        var buf = this.buf;
+        for (var j = 0; j < count; ++j, pos += 4) array[i++] = util.float.readFloatLE(buf, pos);
+    }
+    this.pos = pos;
+    if (pos !== end) throw indexOutOfRange(this, 4);
+    return array;
+};
+
+/**
+ * Reads a packed repeated field of doubles (64 bit float).
+ * @param {number[]} [array] Array to read into; a new one is created if omitted
+ * @returns {number[]} Array read into
+ */
+Reader.prototype.doubles = function read_doubles(array) {
+    if (array === undefined) array = [];
+    var len = this.uint32(), end = this.pos + len;
+    /* istanbul ignore if */
+    if (end > this.len) throw indexOutOfRange(this, len);
+    var count = len >>> 3, i = array.length, pos = this.pos;
+    array.length = i + count;
+    var dv = getLazyView(this, count);
+    if (dv)
+        for (var k = 0; k < count; ++k, pos += 8) array[i++] = dv.getFloat64(pos, true);
+    else {
+        var buf = this.buf;
+        for (var j = 0; j < count; ++j, pos += 8) array[i++] = util.float.readDoubleLE(buf, pos);
+    }
+    this.pos = pos;
+    if (pos !== end) throw indexOutOfRange(this, 8);
+    return array;
+};
+
+/**
+ * Reads a packed repeated field of unsigned 64 bit varints.
+ * @param {Array.<Long|number>} [array] Array to read into; a new one is created if omitted
+ * @returns {Array.<Long|number>} Array read into
+ */
+Reader.prototype.uint64s = function read_uint64s(array) {
+    if (array === undefined) array = [];
+    var end = this.uint32() + this.pos;
+    while (this.pos < end)
+        array.push(this.uint64());
+    return array;
+};
+
+/**
+ * Reads a packed repeated field of signed 64 bit varints.
+ * @param {Array.<Long|number>} [array] Array to read into; a new one is created if omitted
+ * @returns {Array.<Long|number>} Array read into
+ */
+Reader.prototype.int64s = function read_int64s(array) {
+    if (array === undefined) array = [];
+    var end = this.uint32() + this.pos;
+    while (this.pos < end)
+        array.push(this.int64());
+    return array;
+};
+
+/**
+ * Reads a packed repeated field of zig-zag encoded signed 64 bit varints.
+ * @param {Array.<Long|number>} [array] Array to read into; a new one is created if omitted
+ * @returns {Array.<Long|number>} Array read into
+ */
+Reader.prototype.sint64s = function read_sint64s(array) {
+    if (array === undefined) array = [];
+    var end = this.uint32() + this.pos;
+    while (this.pos < end)
+        array.push(this.sint64());
+    return array;
+};
+
+/**
+ * Reads a packed repeated field of unsigned 64 bit fixed values.
+ * @param {Array.<Long|number>} [array] Array to read into; a new one is created if omitted
+ * @returns {Array.<Long|number>} Array read into
+ */
+Reader.prototype.fixed64s = function read_fixed64s(array) {
+    if (array === undefined) array = [];
+    var len = this.uint32(), end = this.pos + len, i = array.length;
+    /* istanbul ignore if */
+    if (end > this.len) throw indexOutOfRange(this, len);
+    var count = len >>> 3;
+    array.length = i + count; // 8 bytes per value, count is known
+    for (var j = 0; j < count; ++j)
+        array[i++] = this.fixed64();
+    if (this.pos !== end) throw indexOutOfRange(this, 8);
+    return array;
+};
+
+/**
+ * Reads a packed repeated field of signed 64 bit fixed values.
+ * @param {Array.<Long|number>} [array] Array to read into; a new one is created if omitted
+ * @returns {Array.<Long|number>} Array read into
+ */
+Reader.prototype.sfixed64s = function read_sfixed64s(array) {
+    if (array === undefined) array = [];
+    var len = this.uint32(), end = this.pos + len, i = array.length;
+    /* istanbul ignore if */
+    if (end > this.len) throw indexOutOfRange(this, len);
+    var count = len >>> 3;
+    array.length = i + count; // 8 bytes per value, count is known
+    for (var j = 0; j < count; ++j)
+        array[i++] = this.sfixed64();
+    if (this.pos !== end) throw indexOutOfRange(this, 8);
+    return array;
 };
 
 /**
