@@ -245,11 +245,11 @@ converter.toObject = function toObject(mtype) {
         ("}else")
             ("d%s=o.longs===String?%j:%i", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
             else if (field.bytes) {
-                var arrayDefault = "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]";
+                var arrayDefault = Array.prototype.slice.call(field.typeDefault);
                 gen
         ("if(o.bytes===String)d%s=%j", prop, String.fromCharCode.apply(String, field.typeDefault))
         ("else{")
-            ("d%s=%s", prop, arrayDefault)
+            ("d%s=%j", prop, arrayDefault)
             ("if(o.bytes!==Array)d%s=util.newBuffer(d%s)", prop, prop)
         ("}");
             } else gen
