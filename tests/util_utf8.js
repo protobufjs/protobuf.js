@@ -47,6 +47,21 @@ tape.test("utf8", function(test) {
             test.equal(comp, "\ufffd", "should decode overlong UTF-8 sequences as replacement characters");
         });
 
+        // A large non-ASCII string forces the whole payload down the JS fallback
+        // (utf8_read_js) and past its 8192-unit flush boundary many times over,
+        // exercising the batched accumulation.
+        var longMultibyteStr = "\u20ac\u00df\u7a7a\u03bb\ud835\udd4f".repeat(20000); // 3-byte, 2-byte and surrogate-pair code points
+        var longMultibyte = Buffer.from(longMultibyteStr, "utf8");
+        comp = utf8.read(longMultibyte, 0, longMultibyte.length);
+        test.equal(comp, longMultibyteStr, "should decode a large multibyte string spanning many flush boundaries");
+
+        // An ASCII prefix followed by non-ASCII exercises the handoff from the
+        // ASCII fast path into utf8_read_js with a non-empty `str` prefix.
+        var prefixedStr = "a" + "\u03bb".repeat(9000);
+        var prefixed = Buffer.from(prefixedStr, "utf8");
+        comp = utf8.read(prefixed, 0, prefixed.length);
+        test.equal(comp, prefixedStr, "should preserve the ASCII prefix when falling back to the JS decoder");
+
         test.end();
     });
 
