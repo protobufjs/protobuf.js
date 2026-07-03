@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.6.6](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.5...protobufjs-v8.6.6) (2026-07-03)
+
+
+### Bug Fixes
+
+* Filter Any type_url lookups to message types ([#2346](https://github.com/protobufjs/protobuf.js/issues/2346)) ([88f0aa1](https://github.com/protobufjs/protobuf.js/commit/88f0aa1b1c406a42c2ed0e21c940a9ca6637ff53))
+* handle EOF during options parsing ([#2352](https://github.com/protobufjs/protobuf.js/issues/2352)) ([fa5c73a](https://github.com/protobufjs/protobuf.js/commit/fa5c73add738ceb471e74da8cc2f3727c3d0a69f))
+
 ## [8.6.5](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.4...protobufjs-v8.6.5) (2026-06-23)
 
 
