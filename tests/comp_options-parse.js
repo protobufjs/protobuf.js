@@ -1,6 +1,5 @@
 var tape = require("tape");
 var protobuf = require("..");
-var childProcess = require("child_process");
 
 tape.test("Options", function (test) {
     var root = protobuf.loadSync("tests/data/options_test.proto");
@@ -166,21 +165,7 @@ tape.test("Options", function (test) {
     });
 
     test.test(test.name + " - unterminated option name", function (test) {
-        var result = childProcess.spawnSync(process.execPath, ["-e",
-            "var protobuf = require(process.cwd());" +
-            "try {" +
-            "  protobuf.parse('option foo');" +
-            "  process.exit(1);" +
-            "} catch (e) {" +
-            "  process.exit(0);" +
-            "}"
-        ], {
-            cwd: process.cwd(),
-            timeout: 1000
-        });
-
-        test.error(result.error, "should terminate before timeout");
-        test.equal(result.status, 0, "should throw for an unterminated option name");
+        test.throws(() => { protobuf.parse('option foo')});
         test.end();
     });
 
