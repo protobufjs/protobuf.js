@@ -162,6 +162,11 @@ tape.test("Options", function (test) {
         test.end();
     });
 
+    test.test(test.name + " - unterminated option name", function (test) {
+        test.throws(() => { protobuf.parse('option foo')});
+        test.end();
+    });
+
     test.test(test.name + " - reserved aggregate option keys", function(test) {
         var parsed = protobuf.parse(
             "syntax = \"proto2\";" +
