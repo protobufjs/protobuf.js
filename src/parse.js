@@ -220,6 +220,9 @@ function parse(source, root, options) {
     }
 
     function parseId(token, acceptNegative, max) {
+        if (token === null) {
+            throw illegal(token, "end of input");
+        }
         switch (token) {
             case "max": case "MAX": case "Max":
                 return max || maxFieldId;
@@ -456,6 +459,9 @@ function parse(source, root, options) {
 
     function parseField(parent, rule, extend, depth) {
         var type = next();
+        if (type === null) {
+            throw illegal(type, "end of input");
+        }
         if (type === "group") {
             parseGroup(parent, rule, extend, depth);
             return;
@@ -467,8 +473,12 @@ function parse(source, root, options) {
         //    package  .subpackage field       tokens: "package" ".subpackage" [TYPE NAME ENDS HERE] "field"
         // Keep reading tokens until we get a type name with no period at the end,
         // and the next token does not start with a period.
-        while (type.endsWith(".") || peek().startsWith(".")) {
-            type += next();
+        while (type.endsWith(".") || (peek() || "").startsWith(".")) {
+            var part = next();
+            if (part === null) {
+                throw illegal(part, "end of input");
+            }
+            type += part;
         }
 
         /* istanbul ignore if */
@@ -476,6 +486,9 @@ function parse(source, root, options) {
             throw illegal(type, "type");
 
         var name = next();
+        if (name === null) {
+            throw illegal(name, "end of input");
+        }
 
         /* istanbul ignore if */
 
