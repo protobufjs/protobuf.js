@@ -192,5 +192,13 @@ tape.test("EOF / truncated input", function(test) {
     throwsIllegalNotTypeError("message M { repeated int32 f = ", "should reject missing field id");
     throwsIllegalNotTypeError("message M { repeated ", "should reject missing field type");
     throwsIllegalNotTypeError("message M { repeated int32", "should reject missing field name");
+    throwsIllegalNotTypeError("message ", "should reject missing message type name");
+    throwsIllegalNotTypeError("message M { oneof ", "should reject missing oneof name");
+    throwsIllegalNotTypeError("message M { optional group ", "should reject missing group name");
+    throwsIllegalNotTypeError("message M { map<string, Foo> ", "should reject missing map field name");
+    throwsIllegalNotTypeError("enum ", "should reject missing enum name");
+    throwsIllegalNotTypeError("service ", "should reject missing service name");
+    throwsIllegalNotTypeError("extend ", "should reject missing extend reference");
+    throwsIllegalNotTypeError("package ", "should reject missing package name");
     test.end();
 });

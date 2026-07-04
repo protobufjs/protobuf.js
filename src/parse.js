@@ -255,7 +255,7 @@ function parse(source, root, options) {
         pkg = next();
 
         /* istanbul ignore if */
-        if (!typeRefRe.test(pkg))
+        if (pkg === null || !typeRefRe.test(pkg))
             throw illegal(pkg, "name");
 
         ptr = ptr.define(pkg);
@@ -392,7 +392,7 @@ function parse(source, root, options) {
             throw Error("max depth exceeded");
 
         /* istanbul ignore if */
-        if (!nameRe.test(token = next()))
+        if ((token = next()) === null || !nameRe.test(token))
             throw illegal(token, "type name");
 
         var type = new Type(token);
@@ -541,7 +541,7 @@ function parse(source, root, options) {
         var name = next();
 
         /* istanbul ignore if */
-        if (!nameRe.test(name))
+        if (name === null || !nameRe.test(name))
             throw illegal(name, "name");
 
         var fieldName = util.lcFirst(name);
@@ -639,7 +639,7 @@ function parse(source, root, options) {
         var name = next();
 
         /* istanbul ignore if */
-        if (!nameRe.test(name))
+        if (name === null || !nameRe.test(name))
             throw illegal(name, "name");
 
         skip("=");
@@ -666,7 +666,7 @@ function parse(source, root, options) {
     function parseOneOf(parent, token, depth) {
 
         /* istanbul ignore if */
-        if (!nameRe.test(token = next()))
+        if ((token = next()) === null || !nameRe.test(token))
             throw illegal(token, "name");
 
         var oneof = new OneOf(applyCase(token));
@@ -685,7 +685,7 @@ function parse(source, root, options) {
     function parseEnum(parent, token) {
 
         /* istanbul ignore if */
-        if (!nameRe.test(token = next()))
+        if ((token = next()) === null || !nameRe.test(token))
             throw illegal(token, "name");
 
         var enm = new Enum(token);
@@ -897,7 +897,7 @@ function parse(source, root, options) {
             throw Error("max depth exceeded");
 
         /* istanbul ignore if */
-        if (!nameRe.test(token = next()))
+        if ((token = next()) === null || !nameRe.test(token))
             throw illegal(token, "service name");
 
         var service = new Service(token);
@@ -975,7 +975,7 @@ function parse(source, root, options) {
     function parseExtension(parent, token, depth) {
 
         /* istanbul ignore if */
-        if (!typeRefRe.test(token = next()))
+        if ((token = next()) === null || !typeRefRe.test(token))
             throw illegal(token, "reference");
 
         var reference = token;
