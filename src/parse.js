@@ -678,6 +678,9 @@ function parse(source, root, options) {
             }
 
             while (token !== "=") {
+                if (token === null) {
+                    throw illegal(token, "end of input");
+                }
                 if (token === "(") {
                     var parensValue = next();
                     skip(")");
