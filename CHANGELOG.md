@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.6.5](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.6.4...protobufjs-v7.6.5) (2026-07-04)
+
+
+### Bug Fixes
+
+* handle EOF during options parsing ([#2352](https://github.com/protobufjs/protobuf.js/issues/2352)) ([#2356](https://github.com/protobufjs/protobuf.js/issues/2356)) ([10fba6d](https://github.com/protobufjs/protobuf.js/commit/10fba6d54815ceecca8a06b9a6db490c8f5d2217))
+
 ## [7.6.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.6.3...protobufjs-v7.6.4) (2026-06-12)
 
 
