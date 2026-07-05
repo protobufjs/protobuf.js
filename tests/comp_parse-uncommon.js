@@ -200,5 +200,7 @@ tape.test("EOF / truncated input", function(test) {
     throwsIllegalNotTypeError("service ", "should reject missing service name");
     throwsIllegalNotTypeError("extend ", "should reject missing extend reference");
     throwsIllegalNotTypeError("package ", "should reject missing package name");
+    throwsIllegalNotTypeError("message M { reserved ", "should reject missing reserved range");
+    throwsIllegalNotTypeError("message M { optional Foo.", "should reject truncated dotted field type");
     test.end();
 });
