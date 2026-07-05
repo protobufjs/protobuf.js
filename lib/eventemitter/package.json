@@ -5,7 +5,7 @@
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dcodeIO/protobuf.js.git"
+    "url": "https://github.com/protobufjs/protobuf.js.git"
   },
   "license": "BSD-3-Clause",
   "main": "index.js",
