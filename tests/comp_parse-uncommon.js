@@ -177,3 +177,30 @@ tape.test("parser nesting", function(test) {
     test.end();
 });
 
+tape.test("EOF / truncated input", function(test) {
+    function throwsIllegalNotTypeError(source, message) {
+        test.throws(function() {
+            try {
+                protobuf.parse(source);
+            } catch (err) {
+                test.notEqual(err && err.name, "TypeError", message + " should not throw TypeError");
+                throw err;
+            }
+        }, /illegal/, message);
+    }
+
+    throwsIllegalNotTypeError("message M { repeated int32 f = ", "should reject missing field id");
+    throwsIllegalNotTypeError("message M { repeated ", "should reject missing field type");
+    throwsIllegalNotTypeError("message M { repeated int32", "should reject missing field name");
+    throwsIllegalNotTypeError("message ", "should reject missing message type name");
+    throwsIllegalNotTypeError("message M { oneof ", "should reject missing oneof name");
+    throwsIllegalNotTypeError("message M { optional group ", "should reject missing group name");
+    throwsIllegalNotTypeError("message M { map<string, Foo> ", "should reject missing map field name");
+    throwsIllegalNotTypeError("enum ", "should reject missing enum name");
+    throwsIllegalNotTypeError("service ", "should reject missing service name");
+    throwsIllegalNotTypeError("extend ", "should reject missing extend reference");
+    throwsIllegalNotTypeError("package ", "should reject missing package name");
+    throwsIllegalNotTypeError("message M { reserved ", "should reject missing reserved range");
+    throwsIllegalNotTypeError("message M { optional Foo.", "should reject truncated dotted field type");
+    test.end();
+});

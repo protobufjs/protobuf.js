@@ -220,6 +220,9 @@ function parse(source, root, options) {
     }
 
     function parseId(token, acceptNegative, max) {
+        if (token === null) {
+            throw illegal(token, "end of input");
+        }
         switch (token) {
             case "max": case "MAX": case "Max":
                 return max || maxFieldId;
@@ -252,7 +255,7 @@ function parse(source, root, options) {
         pkg = next();
 
         /* istanbul ignore if */
-        if (!typeRefRe.test(pkg))
+        if (pkg === null || !typeRefRe.test(pkg))
             throw illegal(pkg, "name");
 
         ptr = ptr.define(pkg);
@@ -389,7 +392,7 @@ function parse(source, root, options) {
             throw Error("max depth exceeded");
 
         /* istanbul ignore if */
-        if (!nameRe.test(token = next()))
+        if ((token = next()) === null || !nameRe.test(token))
             throw illegal(token, "type name");
 
         var type = new Type(token);
@@ -456,6 +459,9 @@ function parse(source, root, options) {
 
     function parseField(parent, rule, extend, depth) {
         var type = next();
+        if (type === null) {
+            throw illegal(type, "end of input");
+        }
         if (type === "group") {
             parseGroup(parent, rule, extend, depth);
             return;
@@ -467,8 +473,12 @@ function parse(source, root, options) {
         //    package  .subpackage field       tokens: "package" ".subpackage" [TYPE NAME ENDS HERE] "field"
         // Keep reading tokens until we get a type name with no period at the end,
         // and the next token does not start with a period.
-        while (type.endsWith(".") || peek().startsWith(".")) {
-            type += next();
+        while (type.endsWith(".") || (peek() || "").startsWith(".")) {
+            var part = next();
+            if (part === null) {
+                throw illegal(part, "end of input");
+            }
+            type += part;
         }
 
         /* istanbul ignore if */
@@ -476,6 +486,9 @@ function parse(source, root, options) {
             throw illegal(type, "type");
 
         var name = next();
+        if (name === null) {
+            throw illegal(name, "end of input");
+        }
 
         /* istanbul ignore if */
 
@@ -528,7 +541,7 @@ function parse(source, root, options) {
         var name = next();
 
         /* istanbul ignore if */
-        if (!nameRe.test(name))
+        if (name === null || !nameRe.test(name))
             throw illegal(name, "name");
 
         var fieldName = util.lcFirst(name);
@@ -626,7 +639,7 @@ function parse(source, root, options) {
         var name = next();
 
         /* istanbul ignore if */
-        if (!nameRe.test(name))
+        if (name === null || !nameRe.test(name))
             throw illegal(name, "name");
 
         skip("=");
@@ -653,7 +666,7 @@ function parse(source, root, options) {
     function parseOneOf(parent, token, depth) {
 
         /* istanbul ignore if */
-        if (!nameRe.test(token = next()))
+        if ((token = next()) === null || !nameRe.test(token))
             throw illegal(token, "name");
 
         var oneof = new OneOf(applyCase(token));
@@ -672,7 +685,7 @@ function parse(source, root, options) {
     function parseEnum(parent, token) {
 
         /* istanbul ignore if */
-        if (!nameRe.test(token = next()))
+        if ((token = next()) === null || !nameRe.test(token))
             throw illegal(token, "name");
 
         var enm = new Enum(token);
@@ -884,7 +897,7 @@ function parse(source, root, options) {
             throw Error("max depth exceeded");
 
         /* istanbul ignore if */
-        if (!nameRe.test(token = next()))
+        if ((token = next()) === null || !nameRe.test(token))
             throw illegal(token, "service name");
 
         var service = new Service(token);
@@ -962,7 +975,7 @@ function parse(source, root, options) {
     function parseExtension(parent, token, depth) {
 
         /* istanbul ignore if */
-        if (!typeRefRe.test(token = next()))
+        if ((token = next()) === null || !typeRefRe.test(token))
             throw illegal(token, "reference");
 
         var reference = token;
