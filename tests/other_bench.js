@@ -5,13 +5,13 @@ var protobuf = require(".."),
 
 tape.test("bench.proto and bench.json", function(test) {
     test.plan(4);
-    protobuf.load("bench/data/bench.proto", undefined, function(err, root) { // no require.resolve to support browsers
+    protobuf.load("bench/cases/common/bench.proto", undefined, function(err, root) { // no require.resolve to support browsers
         if (err)
             return test.fail(err.message);
 
         var Test = root.lookup("Test");
 
-        var data = require("../bench/data/bench.json");
+        var data = require("../bench/cases/common/bench.json");
 
         test.equal(Test.verify(data), null, "should verify our test data");
         test.equal(Test.ctor.verify(data), null, "should verify our test data (static)");

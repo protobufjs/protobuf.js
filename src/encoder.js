@@ -72,10 +72,7 @@ function encoder(mtype) {
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
 
-        ("w.uint32(%i).fork()", (field.id << 3 | 2) >>> 0)
-        ("for(var i=0;i<%s.length;++i)", ref)
-            ("w.%s(%s[i])", type, ref)
-        ("w.ldelim()");
+        ("w.uint32(%i).%ss(%s)", (field.id << 3 | 2) >>> 0, type, ref);
 
             // Non-packed
             } else { gen

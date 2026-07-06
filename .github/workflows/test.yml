@@ -48,10 +48,14 @@ jobs:
     - uses: actions/setup-node@v6
       with:
         node-version: "lts/*"
+    - name: "Install protoc"
+      run: sudo apt-get update && sudo apt-get install -y protobuf-compiler
     - name: "Install dependencies"
       run: npm install
     - name: "Install benchmark dependencies"
-      run: npm --prefix bench install --omit=dev
+      run: npm --prefix bench install
+    - name: "Generate benchmark fixtures"
+      run: npm --prefix bench run generate
     - name: "Run benchmark"
       run: |
         set -o pipefail

@@ -1,19 +1,21 @@
 "use strict";
 
 /**
- * A minimal UTF8 implementation for number arrays.
+ * A minimal UTF8 implementation.
  * @memberof util
  * @namespace
  */
 var utf8 = exports,
     replacementChar = "\ufffd",
+    looseDecoder = new TextDecoder("utf-8", { ignoreBOM: true }),
     strictDecoder;
+var TEXT_DECODER_MIN_LENGTH = 64;
 
 try {
     strictDecoder = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
 } catch (err) {
     // "fatal" option is not supported on Node.js compiled without ICU
-    strictDecoder = new TextDecoder("utf-8", { ignoreBOM: true });
+    strictDecoder = looseDecoder;
 }
 
 /**
@@ -64,6 +66,13 @@ function utf8_read_js(buffer, start, end, str) {
     return str;
 }
 
+function utf8_read_decoder(decoder, buffer, start, end) {
+    var source = start === 0 && end === buffer.length
+        ? buffer
+        : buffer.subarray(start, end);
+    return decoder.decode(source);
+}
+
 /**
  * Reads UTF8 bytes as a string.
  * @param {Uint8Array} buffer Source buffer
@@ -71,9 +80,11 @@ function utf8_read_js(buffer, start, end, str) {
  * @param {number} end Source end
  * @returns {string} String read
  */
-utf8.read = function utf8_read_ascii(buffer, start, end) {
+utf8.read = function utf8_read_loose(buffer, start, end) {
     if (end - start < 1)
         return "";
+    if (end - start >= TEXT_DECODER_MIN_LENGTH)
+        return utf8_read_decoder(looseDecoder, buffer, start, end);
 
     var str = "",
         i = start,
@@ -103,17 +114,6 @@ utf8.read = function utf8_read_ascii(buffer, start, end) {
     return str;
 };
 
-function utf8_read_strict(buffer, start, end) {
-    var source = start === 0 && end === buffer.length
-        ? buffer
-        : buffer.subarray
-            ? buffer.subarray(start, end)
-            : buffer.slice(start, end);
-    if (Array.isArray(source))
-        source = Uint8Array.from(source);
-    return strictDecoder.decode(source);
-}
-
 /**
  * Reads UTF8 bytes as a string, rejecting invalid UTF8.
  * @param {Uint8Array} buffer Source buffer
@@ -121,9 +121,11 @@ function utf8_read_strict(buffer, start, end) {
  * @param {number} end Source end
  * @returns {string} String read
  */
-utf8.readStrict = function utf8_read_strict_ascii(buffer, start, end) {
+utf8.readStrict = function utf8_read_strict(buffer, start, end) {
     if (end - start < 1)
         return "";
+    if (end - start >= TEXT_DECODER_MIN_LENGTH)
+        return utf8_read_decoder(strictDecoder, buffer, start, end);
 
     var str = "",
         i = start,
@@ -139,14 +141,14 @@ utf8.readStrict = function utf8_read_strict_ascii(buffer, start, end) {
         c7 = buffer[i + 6];
         c8 = buffer[i + 7];
         if ((c1 | c2 | c3 | c4 | c5 | c6 | c7 | c8) & 0x80)
-            return str + utf8_read_strict(buffer, i, end);
+            return str + utf8_read_decoder(strictDecoder, buffer, i, end);
         str += String.fromCharCode(c1, c2, c3, c4, c5, c6, c7, c8);
     }
 
     for (; i < end; ++i) {
         c1 = buffer[i];
         if (c1 & 0x80)
-            return str + utf8_read_strict(buffer, i, end);
+            return str + utf8_read_decoder(strictDecoder, buffer, i, end);
         str += String.fromCharCode(c1);
     }
 

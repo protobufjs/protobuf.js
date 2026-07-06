@@ -137,19 +137,13 @@ util.isSet = function isSet(obj, prop) {
 util.Buffer = (function() {
     try {
         var Buffer = util.global.Buffer;
-        // refuse to use non-node buffers if not explicitly assigned (perf reasons):
-        return Buffer.prototype.utf8Write ? Buffer : /* istanbul ignore next */ null;
+        // refuse to use non-node buffers if not explicitly assigned (perf reasons)
+        return Buffer.prototype.utf8Write || util.isNode ? Buffer : /* istanbul ignore next */ null;
     } catch (e) {
         /* istanbul ignore next */
         return null;
     }
 })();
-
-// Internal alias of or polyfull for Buffer.from.
-util._Buffer_from = null;
-
-// Internal alias of or polyfill for Buffer.allocUnsafe.
-util._Buffer_allocUnsafe = null;
 
 /**
  * Creates a new buffer of whatever type supported by the environment.
@@ -157,16 +151,15 @@ util._Buffer_allocUnsafe = null;
  * @returns {Uint8Array|Buffer} Buffer
  */
 util.newBuffer = function newBuffer(sizeOrArray) {
+    var Buffer = util.Buffer;
     /* istanbul ignore next */
     return typeof sizeOrArray === "number"
-        ? util.Buffer
-            ? util._Buffer_allocUnsafe(sizeOrArray)
-            : new util.Array(sizeOrArray)
-        : util.Buffer
-            ? util._Buffer_from(sizeOrArray)
-            : typeof Uint8Array === "undefined"
-                ? sizeOrArray
-                : new Uint8Array(sizeOrArray);
+        ? Buffer
+            ? Buffer.allocUnsafe(sizeOrArray)
+            : new Uint8Array(sizeOrArray)
+        : Buffer
+            ? Buffer.from(sizeOrArray)
+            : new Uint8Array(sizeOrArray);
 };
 
 /**
@@ -192,10 +185,11 @@ util.rawField = function rawField(id, wireType, data) {
 };
 
 /**
- * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
+ * Array implementation used in the browser.
  * @type {Constructor<Uint8Array>}
+ * @deprecated Use `Uint8Array` instead.
  */
-util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
+util.Array = Uint8Array;
 
 /**
  * Any compatible Long instance.
@@ -514,26 +508,4 @@ util.toJSONOptions = {
     enums: String,
     bytes: String,
     json: true
-};
-
-// Sets up buffer utility according to the environment (called in index-minimal)
-util._configure = function() {
-    var Buffer = util.Buffer;
-    /* istanbul ignore if */
-    if (!Buffer) {
-        util._Buffer_from = util._Buffer_allocUnsafe = null;
-        return;
-    }
-    // because node 4.x buffers are incompatible & immutable
-    // see: https://github.com/dcodeIO/protobuf.js/pull/665
-    util._Buffer_from = Buffer.from !== Uint8Array.from && Buffer.from ||
-        /* istanbul ignore next */
-        function Buffer_from(value, encoding) {
-            return new Buffer(value, encoding);
-        };
-    util._Buffer_allocUnsafe = Buffer.allocUnsafe ||
-        /* istanbul ignore next */
-        function Buffer_allocUnsafe(size) {
-            return new Buffer(size);
-        };
 };

@@ -22,7 +22,7 @@
     "fs": false
   },
   "scripts": {
-    "bench": "node bench",
+    "bench": "npm --prefix bench run bench",
     "build": "npm run build:bundle && npm run build:types",
     "build:bundle": "gulp --gulpfile scripts/gulpfile.js",
     "build:tests": "node ./scripts/gentests.js",

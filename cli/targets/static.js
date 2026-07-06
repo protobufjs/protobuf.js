@@ -880,7 +880,7 @@ function buildType(ref, type) {
             ]);
             push(escapeName(type.name) + ".encodeDelimited = function(message, writer) {");
             ++indent;
-            push("return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();");
+            push("return this.encode(message, (writer || $Writer.create()).fork()).ldelim();");
             --indent;
             push("};");
         }

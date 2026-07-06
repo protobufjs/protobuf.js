@@ -8,31 +8,39 @@ var childProcess = require("child_process"),
 
 var rootDir = path.resolve(__dirname, ".."),
     benchDir = __dirname,
-    dataDir = path.join(benchDir, "data"),
-    protoFile = path.join(dataDir, "bench.proto"),
-    protoArg = path.relative(rootDir, protoFile).replace(/\\/g, "/"),
     binDir = path.join(benchDir, "node_modules", ".bin"),
     protocBin;
 
-generateProtobufJs().then(function() {
+var schemas = [
+    require("./cases/common"),
+    require("./cases/vector-tile"),
+    require("./cases/buf-perf")
+].map(function(createCase) {
+    return createCase.schema;
+});
+
+Promise.all(schemas.map(generateProtobufJs)).then(function() {
     if (!protocPath())
         throw Error("protoc-gen-* plugins require protoc. Install protoc and make sure it is on PATH, or set PROTOC.");
-    generateProtocGenJs();
-    generateProtocGenEs();
+    schemas.forEach(function(schema) {
+        generateProtocGenJs(schema);
+        generateProtocGenEs(schema);
+    });
 }).catch(function(err) {
     process.stderr.write((err && err.stack || err) + "\n");
     process.exitCode = 1;
 });
 
 // protobuf.js
-function generateProtobufJs() {
-    var out = path.join(dataDir, "bench_protobufjs.js");
+function generateProtobufJs(schema) {
+    var out = path.join(schema.outDir, schema.name + "_protobufjs.js");
+    mkdir(schema.outDir);
     return new Promise(function(resolve, reject) {
         pbjs.main([
             "--target", "static-module",
             "--wrap", "commonjs",
-            "--root", "test_bench",
-            protoFile,
+            "--root", schema.root,
+            schema.proto,
             "--no-create",
             "--no-verify",
             "--no-delimited",
@@ -52,10 +60,12 @@ function generateProtobufJs() {
 }
 
 // protoc-gen-js
-function generateProtocGenJs() {
-    var generated = path.join(dataDir, "bench_pb.js"),
-        out = path.join(dataDir, "bench_protoc_gen_js.js");
+function generateProtocGenJs(schema) {
+    var generated = path.join(path.dirname(schema.proto), path.basename(schema.proto, ".proto") + "_pb.js"),
+        out = path.join(schema.outDir, schema.name + "_protoc_gen_js.js"),
+        protoArg = relative(schema.proto);
 
+    mkdir(schema.outDir);
     run(protocPath(), [
         "--proto_path=" + rootDir,
         "--js_out=import_style=commonjs,binary:" + rootDir,
@@ -66,10 +76,12 @@ function generateProtocGenJs() {
 }
 
 // protoc-gen-es
-function generateProtocGenEs() {
-    var generated = path.join(dataDir, "bench_pb.js"),
-        out = path.join(dataDir, "bench_protoc_gen_es.js");
+function generateProtocGenEs(schema) {
+    var generated = path.join(path.dirname(schema.proto), path.basename(schema.proto, ".proto") + "_pb.js"),
+        out = path.join(schema.outDir, schema.name + "_protoc_gen_es.js"),
+        protoArg = relative(schema.proto);
 
+    mkdir(schema.outDir);
     run(protocPath(), [
         "--proto_path=" + rootDir,
         "--es_out=target=js,js_import_style=legacy_commonjs:" + rootDir,
@@ -80,8 +92,13 @@ function generateProtocGenEs() {
 }
 
 function write(file, output) {
+    mkdir(path.dirname(file));
     fs.writeFileSync(file, output);
     process.stdout.write(relative(file) + "\n");
+}
+
+function mkdir(dir) {
+    fs.mkdirSync(dir, { recursive: true });
 }
 
 function run(cmd, args) {

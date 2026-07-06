@@ -565,7 +565,7 @@ Type.prototype.encode = function encode_setup(message, writer) { // eslint-disab
  * @returns {Writer} writer
  */
 Type.prototype.encodeDelimited = function encodeDelimited(message, writer) {
-    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+    return this.encode(message, (writer || Writer.create()).fork()).ldelim();
 };
 
 /**

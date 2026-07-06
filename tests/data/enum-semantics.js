@@ -122,12 +122,8 @@ $root.OpenMessage = (function() {
         if (message.repeated != null && message.repeated.length)
             for (var i = 0; i < message.repeated.length; ++i)
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.repeated[i]);
-        if (message.packed != null && message.packed.length) {
-            writer.uint32(/* id 3, wireType 2 =*/26).fork();
-            for (var i = 0; i < message.packed.length; ++i)
-                writer.int32(message.packed[i]);
-            writer.ldelim();
-        }
+        if (message.packed != null && message.packed.length)
+            writer.uint32(/* id 3, wireType 2 =*/26).int32s(message.packed);
         if (message.values != null && $Object.hasOwnProperty.call(message, "values"))
             for (var keys = $Object.keys(message.values), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 4, wireType 2 =*/34).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).int32(message.values[keys[i]]).ldelim();
@@ -147,7 +143,7 @@ $root.OpenMessage = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     OpenMessage.encodeDelimited = function(message, writer) {
-        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+        return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
     };
 
     /**
@@ -188,9 +184,7 @@ $root.OpenMessage = (function() {
                     if (wireType === 2) {
                         if (!(message.repeated && message.repeated.length))
                             message.repeated = [];
-                        var end2 = reader.uint32() + reader.pos;
-                        while (reader.pos < end2)
-                            message.repeated.push(reader.int32());
+                        reader.int32s(message.repeated);
                         continue;
                     }
                     if (wireType !== 0)
@@ -204,9 +198,7 @@ $root.OpenMessage = (function() {
                     if (wireType === 2) {
                         if (!(message.packed && message.packed.length))
                             message.packed = [];
-                        var end2 = reader.uint32() + reader.pos;
-                        while (reader.pos < end2)
-                            message.packed.push(reader.int32());
+                        reader.int32s(message.packed);
                         continue;
                     }
                     if (wireType !== 0)
@@ -614,12 +606,8 @@ $root.ClosedMessage = (function() {
         if (message.repeated != null && message.repeated.length)
             for (var i = 0; i < message.repeated.length; ++i)
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.repeated[i]);
-        if (message.packed != null && message.packed.length) {
-            writer.uint32(/* id 3, wireType 2 =*/26).fork();
-            for (var i = 0; i < message.packed.length; ++i)
-                writer.int32(message.packed[i]);
-            writer.ldelim();
-        }
+        if (message.packed != null && message.packed.length)
+            writer.uint32(/* id 3, wireType 2 =*/26).int32s(message.packed);
         if (message.values != null && $Object.hasOwnProperty.call(message, "values"))
             for (var keys = $Object.keys(message.values), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 4, wireType 2 =*/34).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).int32(message.values[keys[i]]).ldelim();
@@ -639,7 +627,7 @@ $root.ClosedMessage = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     ClosedMessage.encodeDelimited = function(message, writer) {
-        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+        return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
     };
 
     /**
@@ -1142,7 +1130,7 @@ $root.ClosedImplicitMessage = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     ClosedImplicitMessage.encodeDelimited = function(message, writer) {
-        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+        return this.encode(message, (writer || $Writer.create()).fork()).ldelim();
     };
 
     /**

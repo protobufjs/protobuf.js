@@ -4,15 +4,17 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "generate": "node generate.js"
+    "generate": "node generate.js",
+    "bench": "node --max-semi-space-size=256 --max-old-space-size=1024 index.js --save",
+    "render": "node report.js"
   },
   "dependencies": {
-    "@bufbuild/protobuf": "2.12.0",
+    "@bufbuild/protobuf": "2.12.1",
     "benchmark": "^2.1.4",
     "google-protobuf": "4.0.2"
   },
   "devDependencies": {
-    "@bufbuild/protoc-gen-es": "2.12.0",
+    "@bufbuild/protoc-gen-es": "2.12.1",
     "@protocolbuffers/protoc-gen-js": "4.0.2"
   }
 }
