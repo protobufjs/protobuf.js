@@ -8,7 +8,7 @@
   "dependencyDashboardLabels": ["dependencies"],
   "addLabels": ["dependencies"],
   "timezone": "Europe/Berlin",
-  "rebaseStalePrs": true,
+  "rebaseWhen": "behind-base-branch",
   "schedule": ["after 9am and before 3pm"],
   "ignorePaths": [
     "lib/jsdoc-template/**"
