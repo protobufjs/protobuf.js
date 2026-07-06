@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.6.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.5.7...protobufjs-cli-v2.6.0) (2026-07-06)
+
+
+### Features
+
+* Rework encoder architecture and add additional fast paths ([#2359](https://github.com/protobufjs/protobuf.js/issues/2359)) ([e912baf](https://github.com/protobufjs/protobuf.js/commit/e912baf7a42129dd2741ca6fd8803d3a4d46eb9a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * protobufjs bumped from file:.. to 8.7.0
+  * peerDependencies
+    * protobufjs bumped from ^8.6.6 to ^8.7.0
+
 ## [2.5.7](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.5.6...protobufjs-cli-v2.5.7) (2026-07-03)
 
 
