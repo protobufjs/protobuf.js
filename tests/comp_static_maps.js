@@ -17,3 +17,25 @@ tape.test("static maps - omitted message value", function(test) {
 
     test.end();
 });
+
+tape.test("static maps - repeated message values merge", function(test) {
+
+    var TestMapFields = staticRoot.jspb.test.TestMapFieldsNoBinary;
+
+    var dec = TestMapFields.decode(Uint8Array.of(
+        0x3a, 0x09,
+        0x0a, 0x01, 0x61,
+        0x12, 0x03, 0x08, 0x96, 0x01,
+        0x12, 0x00
+    ));
+
+    test.deepEqual(TestMapFields.toObject(dec), {
+        mapStringMsg: {
+            a: {
+                foo: 150
+            }
+        }
+    }, "should merge repeated message-valued map entry fields");
+
+    test.end();
+});

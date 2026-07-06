@@ -102,7 +102,7 @@ function decoder(mtype) {
                                 ("break");
 
             if (types.basic[type] === undefined) gen
-                            ("v=types[%i].decode(r,r.uint32(),undefined,q+1)", i); // can't be groups
+                            ("v=types[%i].decode(r,r.uint32(),undefined,q+1,v)", i); // can't be groups
             else gen
                             ("v=r.%s()", type === "string" ? stringMethod(field) : type);
 

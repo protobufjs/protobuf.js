@@ -105,6 +105,27 @@ tape.test("maps", function(test) {
         test.end();
     });
 
+    test.test(test.name + " - repeated message values merge", function(test) {
+
+        var dec = Outer.decode(Uint8Array.of(
+            0x0a, 0x12,
+            0x0a, 0x01, 0x61,
+            0x12, 0x08, 0x0a, 0x06, 0x6d, 0x65, 0x72, 0x67, 0x65, 0x64,
+            0x12, 0x03, 0x12, 0x01, 0x78
+        ));
+
+        test.deepEqual(Outer.toObject(dec), {
+            value: {
+                a: {
+                    key: "merged",
+                    values: [ "x" ]
+                }
+            }
+        }, "should merge repeated message-valued map entry fields");
+
+        test.end();
+    });
+
     test.test(test.name + " - special string key", function(test) {
 
         var map = {};
