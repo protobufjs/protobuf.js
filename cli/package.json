@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "escodegen": "^1.13.0",
-    "espree": "^9.6.1",
+    "espree": "^11.0.0",
     "estraverse": "^5.1.0",
     "glob": "^8.1.0",
     "jsdoc": "^4.0.5",
