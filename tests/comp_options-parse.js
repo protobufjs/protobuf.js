@@ -190,3 +190,13 @@ tape.test("Options", function (test) {
 
     test.end();
 });
+
+tape.test("json_name field option", function(test) {
+    var root = protobuf.parse('syntax = "proto3"; message Test { string user_name = 1 [json_name = "customUserName"]; }').root;
+    var field = root.lookupType("Test").fields.userName;
+
+    test.equal(field.jsonName, "customUserName", "should populate Field#jsonName");
+    test.equal(field.options.json_name, "customUserName", "should preserve the declared field option");
+    test.same(field.parsedOptions, [{ json_name: "customUserName" }], "should preserve parsed option metadata");
+    test.end();
+});

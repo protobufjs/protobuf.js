@@ -867,15 +867,12 @@ function parse(source, root, options) {
         // lift json_name onto Field
         if (name === "json_name" && parent instanceof Field) {
             parent.jsonName = value;
-            return;
         }
         if (parent.setOption)
             parent.setOption(name, value);
     }
 
     function setParsedOption(parent, name, value, propName) {
-        if (name === "json_name" && parent instanceof Field)
-            return; // lifted onto Field#jsonName above
         if (parent.setParsedOption)
             parent.setParsedOption(name, value, propName);
     }
