@@ -2,13 +2,13 @@
 var path     = require("path"),
     fs       = require("fs"),
     minimist = require("minimist"),
-    chalk    = require("chalk"),
     pkg      = require("./package.json"),
     util     = require("./util"),
     glob     = require("glob"),
     protobuf = require("protobufjs");
 
 var targets  = util.requireAll("./targets");
+var color    = util.color;
 
 var lintDefault = "eslint-disable " + [
     "block-scoped-var",
@@ -234,7 +234,7 @@ exports.main = function main(args, callback) {
             process.stderr.write([
                 "protobuf.js v" + pkg.version + " CLI for JavaScript",
                 "",
-                chalk.bold.white("Translates between file formats and generates static code."),
+                color.bold + color.white + "Translates between file formats and generates static code." + color.reset,
                 "",
                 "  -t, --target     Specifies the target format. Also accepts a path to require a custom target.",
                 "",
@@ -251,7 +251,7 @@ exports.main = function main(args, callback) {
                 "",
                 "  --sparse         Exports only those types referenced from a main file (experimental).",
                 "",
-                chalk.bold.gray("  Module targets only:"),
+                color.bold + color.gray + "  Module targets only:" + color.reset,
                 "",
                 "  -w, --wrap       Specifies the wrapper to use. Also accepts a path to require a custom wrapper.",
                 "",
@@ -271,12 +271,12 @@ exports.main = function main(args, callback) {
                 "",
                 "  --es6            Enables ES6 syntax (const/let instead of var)",
                 "",
-                chalk.bold.gray("  Proto sources only:"),
+                color.bold + color.gray + "  Proto sources only:" + color.reset,
                 "",
                 "  --keep-case      Keeps field casing instead of converting to camel case.",
                 "  --alt-comment    Turns on an alternate comment parsing mode that preserves more comments.",
                 "",
-                chalk.bold.gray("  Static targets only:"),
+                color.bold + color.gray + "  Static targets only:" + color.reset,
                 "",
                 "  --no-create      Does not generate create functions used for reflection compatibility.",
                 "  --no-encode      Does not generate encode functions.",
@@ -296,7 +296,7 @@ exports.main = function main(args, callback) {
                 "  --null-defaults  Default value for optional fields is null instead of zero value.",
                 "  --null-semantics Make nullable fields match protobuf semantics (overrides --null-defaults).",
                 "",
-                "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or pipe)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
+                "usage: " + color.bold + color.green + "pbjs" + color.reset + " [options] file1.proto file2.json ..." + color.gray + "  (or pipe)  " + color.reset + "other | " + color.bold + color.green + "pbjs" + color.reset + " [options] -",
                 ""
             ].join("\n"));
         return 1;

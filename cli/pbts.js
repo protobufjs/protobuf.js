@@ -4,9 +4,11 @@ var child_process = require("child_process"),
     fs       = require("fs"),
     pkg      = require("./package.json"),
     minimist = require("minimist"),
-    chalk    = require("chalk"),
+    util     = require("./util"),
     glob     = require("glob"),
     tmp      = require("tmp");
+
+var color = util.color;
 
 /**
  * Runs pbts programmatically.
@@ -72,7 +74,7 @@ function run(options) {
             process.stderr.write([
                 "protobuf.js v" + pkg.version + " CLI for TypeScript",
                 "",
-                chalk.bold.white("Generates TypeScript definitions from annotated JavaScript files."),
+                color.bold + color.white + "Generates TypeScript definitions from annotated JavaScript files." + color.reset,
                 "",
                 "  -o, --out       Saves to a file instead of writing to stdout.",
                 "",
@@ -84,13 +86,13 @@ function run(options) {
                 "",
                 "  --no-comments   Does not output any JSDoc comments.",
                 "",
-                chalk.bold.gray("  Internal flags:"),
+                color.bold + color.gray + "  Internal flags:" + color.reset,
                 "",
                 "  -n, --name      Wraps everything in a module of the specified name.",
                 "",
                 "  -m, --main      Whether building a standalone file without any imports.",
                 "",
-                "usage: " + chalk.bold.green("pbts") + " [options] file1.js file2.js ..." + chalk.bold.gray("  (or)  ") + "other | " + chalk.bold.green("pbts") + " [options] -",
+                "usage: " + color.bold + color.green + "pbts" + color.reset + " [options] file1.js file2.js ..." + color.bold + color.gray + "  (or)  " + color.reset + "other | " + color.bold + color.green + "pbts" + color.reset + " [options] -",
                 ""
             ].join("\n"));
         return 1;
