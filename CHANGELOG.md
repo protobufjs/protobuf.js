@@ -1,5 +1,19 @@
 # Changelog
 
+## [8.7.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.6...protobufjs-v8.7.0) (2026-07-06)
+
+
+### Features
+
+* Rework encoder architecture and add additional fast paths ([#2359](https://github.com/protobufjs/protobuf.js/issues/2359)) ([e912baf](https://github.com/protobufjs/protobuf.js/commit/e912baf7a42129dd2741ca6fd8803d3a4d46eb9a))
+
+
+### Bug Fixes
+
+* Preserve parsed json_name in field options ([#2363](https://github.com/protobufjs/protobuf.js/issues/2363)) ([1cdd91e](https://github.com/protobufjs/protobuf.js/commit/1cdd91e0b8c7164bc2b59ffbbd2440c88b76f413))
+* Reject truncated declarations without TypeError ([#2358](https://github.com/protobufjs/protobuf.js/issues/2358)) ([5995f2a](https://github.com/protobufjs/protobuf.js/commit/5995f2a6808869d76daecec1c7546c32c227ba73))
+* Resolve feature defaults before lazy codegen ([d59d100](https://github.com/protobufjs/protobuf.js/commit/d59d100269cfaaf8058494c6d17aff4bb5f9a0c8))
+
 ## [8.6.6](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.5...protobufjs-v8.6.6) (2026-07-03)
 
 
