@@ -494,6 +494,14 @@ Type.prototype.setup = function setup() {
     // Sets up everything at once so that the prototype chain does not have to be re-evaluated
     // multiple times (V8, soft-deopt prototype-check).
 
+    // Resolve feature defaults incl. field presence before generating codecs
+    var root = this.root;
+    if (root && root._needsRecursiveFeatureResolution) {
+        var edition = root._edition || this._edition;
+        if (edition)
+            root._resolveFeaturesRecursive(edition);
+    }
+
     var fullName = this.fullName,
         types    = [];
     for (var i = 0; i < /* initializes */ this.fieldsArray.length; ++i)
