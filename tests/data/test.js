@@ -10090,7 +10090,7 @@ $root.jspb = (function() {
                                 case 2:
                                     if (wireType !== 2)
                                         break;
-                                    value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32(), $undefined, _depth + 1);
+                                    value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32(), $undefined, _depth + 1, value);
                                     continue;
                                 }
                                 reader.skipType(wireType, _depth, tag2);
@@ -10210,7 +10210,7 @@ $root.jspb = (function() {
                                 case 2:
                                     if (wireType !== 2)
                                         break;
-                                    value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32(), $undefined, _depth + 1);
+                                    value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32(), $undefined, _depth + 1, value);
                                     continue;
                                 }
                                 reader.skipType(wireType, _depth, tag2);
