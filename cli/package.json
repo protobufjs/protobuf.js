@@ -23,7 +23,6 @@
     "protobufjs": "^8.7.0"
   },
   "dependencies": {
-    "chalk": "^4.0.0",
     "escodegen": "^1.13.0",
     "espree": "^9.6.1",
     "estraverse": "^5.1.0",

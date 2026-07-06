@@ -1,18 +1,63 @@
 {
   "extends": [
-    "config:base",
+    "config:recommended",
     "docker:disable"
   ],
-  "pinVersions": false,
+  "enabledManagers": ["npm", "github-actions"],
+  "dependencyDashboard": true,
+  "dependencyDashboardLabels": ["dependencies"],
+  "addLabels": ["dependencies"],
+  "timezone": "Europe/Berlin",
   "rebaseStalePrs": true,
-  "schedule": [
-    "after 9am and before 3pm"
+  "schedule": ["after 9am and before 3pm"],
+  "ignorePaths": [
+    "lib/jsdoc-template/**"
   ],
-  "gitAuthor": null,
   "packageRules": [
     {
-      "extends": "packages:linters",
-      "groupName": "linters"
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "matchFileNames": ["bench/package.json"],
+      "matchPackageNames": [
+        "@bufbuild/protobuf",
+        "@bufbuild/protoc-gen-es"
+      ],
+      "groupName": "protoc-gen-es benchmark target",
+      "dependencyDashboardApproval": true
+    },
+    {
+      "matchFileNames": ["bench/package.json"],
+      "matchPackageNames": [
+        "google-protobuf",
+        "@protocolbuffers/protoc-gen-js"
+      ],
+      "groupName": "protoc-gen-js benchmark target",
+      "dependencyDashboardApproval": true
+    },
+    {
+      "matchFileNames": ["package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "runtime dependencies"
+    },
+    {
+      "matchFileNames": ["package.json"],
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "dev dependencies"
+    },
+    {
+      "matchFileNames": ["cli/package.json"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "cli dependencies"
+    },
+    {
+      "matchFileNames": ["bench/package.json"],
+      "matchPackageNames": ["benchmark"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "bench dependencies"
     }
   ]
 }

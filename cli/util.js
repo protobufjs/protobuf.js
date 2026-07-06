@@ -66,42 +66,24 @@ exports.isEsmWrapper = function isEsmWrapper(wrap) {
     return wrap === "esm" || wrap === "es6";
 };
 
-exports.inspect = function inspect(object, indent) {
-    if (!object)
-        return "";
-    var chalk = require("chalk");
-    var sb = [];
-    if (!indent)
-        indent = "";
-    var ind = indent ? indent.substring(0, indent.length - 2) + "└ " : "";
-    sb.push(
-        ind + chalk.bold(object.toString()) + (object.visible ? " (visible)" : ""),
-        indent + chalk.gray("parent: ") + object.parent
-    );
-    if (object instanceof protobuf.Field) {
-        if (object.extend !== undefined)
-            sb.push(indent + chalk.gray("extend: ") + object.extend);
-        if (object.partOf)
-            sb.push(indent + chalk.gray("oneof : ") + object.oneof);
-    }
-    sb.push("");
-    if (object.fieldsArray)
-        object.fieldsArray.forEach(function(field) {
-            sb.push(inspect(field, indent + "  "));
-        });
-    if (object.oneofsArray)
-        object.oneofsArray.forEach(function(oneof) {
-            sb.push(inspect(oneof, indent + "  "));
-        });
-    if (object.methodsArray)
-        object.methodsArray.forEach(function(service) {
-            sb.push(inspect(service, indent + "  "));
-        });
-    if (object.nestedArray)
-        object.nestedArray.forEach(function(nested) {
-            sb.push(inspect(nested, indent + "  "));
-        });
-    return sb.join("\n");
+var env = process.env; // eslint-disable-line no-process-env
+var colorEnabled =
+    env.NO_COLOR === undefined &&
+    env.FORCE_COLOR !== "0" &&
+    (env.FORCE_COLOR !== undefined || process.stderr && process.stderr.isTTY);
+
+exports.color = colorEnabled ? {
+    reset: "\x1b[0m",
+    bold: "\x1b[1m",
+    gray: "\x1b[90m",
+    green: "\x1b[32m",
+    white: "\x1b[37m"
+} : {
+    reset: "",
+    bold: "",
+    gray: "",
+    green: "",
+    white: ""
 };
 
 exports.wrap = function(OUTPUT, options) {
