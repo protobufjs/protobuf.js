@@ -142,6 +142,7 @@ message NullMsg {\
   google.protobuf.Duration duration = 4;\
   google.protobuf.StringValue string_wrapper = 5;\
   google.protobuf.Value value_msg = 6;\
+  repeated google.protobuf.NullValue null_values = 7;\
 }", root);
     return root.resolveAll();
 }
@@ -532,6 +533,23 @@ tape.test("protojson - rejects null repeated elements and map values", function(
     test.throws(function() {
         protojson.fromJson(MapMsg, { stringMap: { key: null } });
     }, /expected string/, "rejects null map value");
+
+    test.end();
+});
+
+tape.test("protojson - round trips repeated google.protobuf.NullValue elements", function(test) {
+    for (var i = 0; i < wktRoots.length; ++i) {
+        var NullMsg = wktRoots[i].root.lookupType("test.NullMsg"),
+            label = wktRoots[i].name,
+            message = protojson.fromJson(NullMsg, {
+                nullValues: [null, null]
+            });
+
+        test.deepEqual(message.nullValues, [0, 0], label + ": parses null elements as NULL_VALUE");
+        test.deepEqual(protojson.toJson(NullMsg, message), {
+            nullValues: [null, null]
+        }, label + ": emits NULL_VALUE elements as null");
+    }
 
     test.end();
 });

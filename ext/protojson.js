@@ -295,7 +295,7 @@ function readField(field, value, options, depth) {
             throw invalid(field.fullName, value, "expected array");
         var arr = [], i = 0;
         for (; i < value.length; ++i) {
-            if (value[i] === null && !isValueType(field.resolvedType))
+            if (value[i] === null && !isValueType(field.resolvedType) && !isNullValueType(field.resolvedType))
                 throw invalid(field.fullName, null, "null element");
             var el = readSingular(field, value[i], options, depth);
             if (el !== SKIP)
@@ -316,6 +316,10 @@ function readSingular(field, value, options, depth) {
 
 function isValueType(type) {
     return type instanceof Type && type.fullName === ".google.protobuf.Value";
+}
+
+function isNullValueType(type) {
+    return type instanceof Enum && type.fullName === ".google.protobuf.NullValue";
 }
 
 function isImplicitDefault(field, value) {
