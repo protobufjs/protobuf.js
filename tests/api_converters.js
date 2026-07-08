@@ -370,3 +370,22 @@ tape.test("converters", function(test) {
     });
 
 });
+
+tape.test("converters - bytes field default with bytes = String", function(test) {
+    var proto = "syntax = \"proto2\";\
+    message DefaultBytes {\
+        optional bytes bytes_field = 1 [default = \"moo\"];\
+    }";
+    var Message = protobuf.parse(proto).root.lookupType("DefaultBytes");
+
+    var withDefault = Message.toObject(Message.create({}), { defaults: true, bytes: String });
+    var withValue = Message.toObject(Message.create({ bytesField: protobuf.util.newBuffer([109, 111, 111]) }), { defaults: true, bytes: String });
+
+    test.equal(withDefault.bytesField, "bW9v", "should base64 encode the default value");
+    test.equal(withDefault.bytesField, withValue.bytesField, "should match an explicitly set value");
+
+    var back = Message.fromObject(withDefault);
+    test.same(Array.prototype.slice.call(back.bytesField), [109, 111, 111], "should round-trip through fromObject");
+
+    test.end();
+});
