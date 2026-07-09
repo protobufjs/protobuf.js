@@ -287,7 +287,10 @@ function getTypeOf(element) {
             return "{ [k: " + $1 + "]: " + $2 + " }";
         });
         name = name.replace(/\bArray\.?<([^<>]*)>/gi, function($0, $1) {
-            return $1 + "[]";
+            var elementType = $1.trim();
+            if (splitTypeList(elementType, "|").length > 1 || splitTypeList(elementType, "&").length > 1)
+                elementType = "(" + elementType + ")";
+            return elementType + "[]";
         });
         name = name.replace(/\b(?!Object|Array)([\w$]+)\.<([^<>]*)>/gi, function($0, $1, $2) {
             return $1 + "<" + $2 + ">";
