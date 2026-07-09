@@ -797,16 +797,25 @@ function parse(source, root, options) {
             var objectResult = {};
 
             while (!skip("}", true)) {
-                /* istanbul ignore if */
-                if (!nameRe.test(token = next())) {
-                    throw illegal(token, "name");
-                }
-                if (token === null) {
-                  throw illegal(token, "end of input");
+                token = next();
+                var propName;
+                if (token === null)
+                    throw illegal(token, "end of input");
+                if (token === "[") {
+                    token = next();
+                    if (token === null || !typeRefRe.test(token))
+                        throw illegal(token, "name");
+                    propName = "[" + token + "]";
+                    skip("]");
+                } else {
+                    /* istanbul ignore if */
+                    if (!nameRe.test(token)) {
+                        throw illegal(token, "name");
+                    }
+                    propName = token;
                 }
 
                 var value;
-                var propName = token;
 
                 skip(":", true);
 
@@ -814,7 +823,7 @@ function parse(source, root, options) {
                     // option (my_option) = {
                     //     repeated_value: [ "foo", "bar" ]
                     // };
-                    value = parseOptionValue(parent, name + "." + token, depth + 1);
+                    value = parseOptionValue(parent, name + "." + propName, depth + 1);
                 } else if (peek() === "[") {
                     value = [];
                     var lastValue;
@@ -826,13 +835,13 @@ function parse(source, root, options) {
                             } while (skip(",", true));
                             skip("]");
                             if (typeof lastValue !== "undefined") {
-                                setOption(parent, name + "." + token, lastValue);
+                                setOption(parent, name + "." + propName, lastValue);
                             }
                         }
                     }
                 } else {
                     value = readValue(true);
-                    setOption(parent, name + "." + token, value);
+                    setOption(parent, name + "." + propName, value);
                 }
 
                 var prevValue = Object.prototype.hasOwnProperty.call(objectResult, propName)

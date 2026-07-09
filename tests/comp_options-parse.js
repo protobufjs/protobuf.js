@@ -188,6 +188,31 @@ tape.test("Options", function (test) {
         test.end();
     });
 
+    test.test(test.name + " - aggregate option special field names", function(test) {
+        var root = protobuf.parse(
+            "syntax = \"proto2\";" +
+            "message Test {" +
+            "  option (foo) = {" +
+            "    regular: 1" +
+            "    [pkg.ext] { enabled: true }" +
+            "    [pkg.scalar]: \"x\"" +
+            "  };" +
+            "}"
+        ).root;
+        var message = root.lookupType("Test"),
+            option = message.parsedOptions[0]["(foo)"];
+
+        test.same(option, {
+            regular: 1,
+            "[pkg.ext]": { enabled: true },
+            "[pkg.scalar]": "x"
+        }, "should preserve bracketed special field names");
+        test.equal(message.options["(foo).regular"], 1, "should keep regular flat option key");
+        test.equal(message.options["(foo).[pkg.ext].enabled"], true, "should keep nested special flat option key");
+        test.equal(message.options["(foo).[pkg.scalar]"], "x", "should keep scalar special flat option key");
+        test.end();
+    });
+
     test.end();
 });
 
