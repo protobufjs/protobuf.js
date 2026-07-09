@@ -140,6 +140,26 @@ tape.test("pbts preserves multiline TypeScript @type expressions", function(test
     });
 });
 
+tape.test("pbts preserves array element union precedence", function(test) {
+    var pbts = require("../cli/pbts");
+
+    pbts.process([
+        "/**",
+        " * Repeated long-compatible field shape.",
+        " * @typedef {{",
+        " *   ids?: Array.<number|Long>|null;",
+        " *   combined?: Array.<Foo&Bar>|null;",
+        " * }} Shape",
+        " */"
+    ].join("\n"), [], function(err, tsCode) {
+        test.error(err, "definition generation worked");
+        test.ok(tsCode.indexOf("ids?: (number|Long)[]|null;") >= 0, "parenthesizes array element union");
+        test.equal(tsCode.indexOf("ids?: number|Long[]|null;"), -1, "does not emit union with array-only Long");
+        test.ok(tsCode.indexOf("combined?: (Foo&Bar)[]|null;") >= 0, "parenthesizes array element intersection");
+        test.end();
+    });
+});
+
 tape.test("pbts preserves qualified Object type names", function(test) {
     var pbts = require("../cli/pbts");
 
