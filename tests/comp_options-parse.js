@@ -213,6 +213,39 @@ tape.test("Options", function (test) {
         test.end();
     });
 
+    test.test(test.name + " - aggregate option Any type URL", function(test) {
+        var root = protobuf.parse(
+            "syntax = \"proto2\";" +
+            "message Test {" +
+            "  option (foo) = {" +
+            "    any {" +
+            "      [type.googleapis.com/pkg.Embedded] { s: \"x\" }" +
+            "    }" +
+            "  };" +
+            "}"
+        ).root;
+        var message = root.lookupType("Test"),
+            option = message.parsedOptions[0]["(foo)"];
+
+        test.same(option, {
+            any: { "[type.googleapis.com/pkg.Embedded]": { s: "x" } }
+        }, "should preserve the Any type URL as a bracketed field name");
+        test.equal(message.options["(foo).any.[type.googleapis.com/pkg.Embedded].s"], "x", "should keep the type URL in the flat option key");
+
+        // Like protoc, the type name is the segment after the last "/" and the URL
+        // prefix is opaque, so a multi-segment prefix parses and is preserved as-is.
+        var multi = protobuf.parse(
+            "syntax = \"proto2\";" +
+            "message Test2 {" +
+            "  option (foo) = { any { [example.com/a/b/pkg.Embedded] { s: \"y\" } } };" +
+            "}"
+        ).root.lookupType("Test2").parsedOptions[0]["(foo)"];
+        test.same(multi, {
+            any: { "[example.com/a/b/pkg.Embedded]": { s: "y" } }
+        }, "should accept and preserve a multi-slash type URL prefix");
+        test.end();
+    });
+
     test.end();
 });
 

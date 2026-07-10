@@ -803,7 +803,9 @@ function parse(source, root, options) {
                     throw illegal(token, "end of input");
                 if (token === "[") {
                     token = next();
-                    if (token === null || !typeRefRe.test(token))
+                    // Extension name or, for Any, a type URL: "<prefix>/<fully.qualified.Type>".
+                    var slash = token === null ? -1 : token.lastIndexOf("/");
+                    if (token === null || !typeRefRe.test(slash < 0 ? token : token.slice(slash + 1)))
                         throw illegal(token, "name");
                     propName = "[" + token + "]";
                     skip("]");
