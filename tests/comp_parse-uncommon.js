@@ -51,6 +51,27 @@ tape.test("negative enum reserved values", function(test) {
     test.end();
 });
 
+tape.test("enum declarations are order-independent", function(test) {
+    var Enum = protobuf.parse("syntax = \"proto3\"; enum Values { INVALID = 0; UNKNOWN = 0; option allow_alias = true; OK = 1; }").root.lookupEnum("Values");
+    test.same(Object.keys(Enum.values).map(function(name) {
+        return [name, Enum.values[name]];
+    }), [
+        ["INVALID", 0],
+        ["UNKNOWN", 0],
+        ["OK", 1]
+    ], "should allow aliases declared before allow_alias");
+
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto3\"; enum Values { INVALID = 0; UNKNOWN = 0; option allow_alias = false; }");
+    }, /duplicate id 0/, "should reject aliases when allow_alias is false");
+
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto3\"; enum Values { INVALID = 0; RESERVED = 1; reserved 1; }");
+    }, /id 1 is reserved/, "should apply reserved declarations to preceding values");
+
+    test.end();
+});
+
 function traverseTypes(current, fn) {
     if (current instanceof protobuf.Type) // and/or protobuf.Enum, protobuf.Service etc.
         fn(current);

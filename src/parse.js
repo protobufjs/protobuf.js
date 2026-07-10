@@ -688,7 +688,8 @@ function parse(source, root, options) {
         if ((token = next()) === null || !nameRe.test(token))
             throw illegal(token, "name");
 
-        var enm = new Enum(token);
+        var enm = new Enum(token),
+            values = [];
         ifBlock(enm, function parseEnum_block(token) {
           switch(token) {
             case ";":
@@ -705,16 +706,18 @@ function parse(source, root, options) {
               break;
 
             default:
-              parseEnumValue(enm, token);
+              values.push(parseEnumValue(token));
           }
         });
+        for (var i = 0; i < values.length; ++i)
+            enm.add(values[i].name, values[i].id, values[i].comment, values[i].options);
         parent.add(enm);
         if (parent === ptr) {
             topLevelObjects.push(enm);
         }
     }
 
-    function parseEnumValue(parent, token) {
+    function parseEnumValue(token) {
 
         /* istanbul ignore if */
         if (!nameRe.test(token))
@@ -746,7 +749,12 @@ function parse(source, root, options) {
         }, function parseEnumValue_line() {
             parseInlineOptions(dummy); // skip
         });
-        parent.add(token, value, dummy.comment, dummy.parsedOptions || dummy.options);
+        return {
+            name: token,
+            id: value,
+            comment: dummy.comment,
+            options: dummy.parsedOptions || dummy.options
+        };
     }
 
     function parseOption(parent, token) {
