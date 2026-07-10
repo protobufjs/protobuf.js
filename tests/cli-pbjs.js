@@ -318,6 +318,24 @@ tape.test("pbjs generates correct ES module static-module imports", function(tes
     });
 });
 
+tape.test("pbjs resolves imports from cwd by default", function(test) {
+    cliTest(test, function() {
+        var output = child_process.execFileSync(process.execPath, [
+            path.resolve("cli", "bin", "pbjs"),
+            "-t", "json",
+            path.join("proto", "a.proto"),
+            path.join("proto", "b.proto")
+        ], {
+            cwd: path.resolve("tests", "data", "cli", "default-path"),
+            encoding: "utf8"
+        });
+        var json = JSON.parse(output);
+        test.ok(json.nested.proto.nested.A, "includes imported type");
+        test.ok(json.nested.proto.nested.B, "includes importing type");
+        test.end();
+    });
+});
+
 tape.test("pbjs emits file overview comments on one line", function(test) {
     cliTest(test, function() {
         var root = new protobuf.Root();
