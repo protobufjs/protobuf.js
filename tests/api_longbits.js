@@ -23,8 +23,11 @@ tape.test("longbits", function(test) {
         test.equal(protobuf.util.longToHash(0), "\0\0\0\0\0\0\0\0", "should convert to a binary hash of 8x0 (number 0 through util.longToHash)");
         test.equal(LongBits.fromHash("\0\0\0\0\0\0\0\0"), zero, "should be returned for a binary hash of 8x0");
         protobuf.util.Long = null;
+        protobuf.configure();
+        test.notOk(Long.isLong(zero.toLong()), "should not return a Long when disabled");
         test.equal(protobuf.util.longFromHash("\0\0\0\0\0\0\0\0"), 0, "should be returned for a binary hash of 8x0 (number 0 through util.longFromHash)");
         protobuf.util.Long = Long;
+        protobuf.configure();
         test.end();
     });
 

@@ -1,7 +1,7 @@
 "use strict";
 module.exports = LongBits;
 
-var util = require("../util/minimal");
+var Long;
 
 /**
  * Constructs new long bits.
@@ -80,10 +80,10 @@ LongBits.fromNumber = function fromNumber(value) {
 LongBits.from = function from(value) {
     if (typeof value === "number")
         return LongBits.fromNumber(value);
-    if (util.isString(value)) {
+    if (typeof value === "string" || value instanceof String) {
         /* istanbul ignore else */
-        if (util.Long)
-            value = util.Long.fromString(value);
+        if (Long)
+            value = Long.fromString(value);
         else
             return LongBits.fromNumber(parseInt(value, 10));
     }
@@ -112,8 +112,8 @@ LongBits.prototype.toNumber = function toNumber(unsigned) {
  * @returns {Long} Long
  */
 LongBits.prototype.toLong = function toLong(unsigned) {
-    return util.Long
-        ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
+    return Long
+        ? new Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
         /* istanbul ignore next */
         : { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
 };
@@ -197,4 +197,8 @@ LongBits.prototype.length = function length() {
              ? part1 < 128 ? 5 : 6
              : part1 < 2097152 ? 7 : 8
          : part2 < 128 ? 9 : 10;
+};
+
+LongBits._configure = function(Long_) {
+    Long = Long_;
 };
