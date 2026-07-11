@@ -182,7 +182,7 @@ function sparsify(root, mainFiles) {
     // 2. empty unreferenced objects
     util.traverse(root, function(obj) {
         var parent = obj.parent;
-        if (!parent || obj.referenced) // root or referenced
+        if (!parent || obj.referenced || obj.declaringField) // root, referenced or synthetic extension field
             return;
         // remove unreferenced namespaces
         if (obj instanceof protobuf.Namespace) {

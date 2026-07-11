@@ -1038,6 +1038,31 @@ tape.test("pbjs builds static references from escaped path segments", function(t
     });
 });
 
+tape.test("pbjs sparsify removes extension fields through their declarations", function(test) {
+    var root = new protobuf.Root({ noGoogleTypes: true }),
+        ns = root.define("sparse"),
+        extendedType = new protobuf.Type("ExtendedType"),
+        declaringType = new protobuf.Type("DeclaringType"),
+        declaringField = new protobuf.Field("extension", 100, "string", "optional", "ExtendedType"),
+        mainType = new protobuf.Type("Main");
+
+    extendedType.extensions = [[100, 199]];
+    extendedType.filename = declaringType.filename = declaringField.filename = "imported.proto";
+    mainType.filename = "main.proto";
+    declaringType.add(declaringField);
+    ns.add(extendedType).add(declaringType).add(mainType);
+
+    test.ok(declaringField.extensionField, "creates a synthetic extension field");
+    test.doesNotThrow(function() {
+        require("../cli/pbjs").sparsify(root, ["main.proto"]);
+    }, "sparsifies extension fields without removing their synthetic fields directly");
+    test.equal(root.lookup("sparse.Main"), mainType, "keeps referenced main types");
+    test.equal(root.lookup("sparse.ExtendedType"), null, "removes unreferenced extended types");
+    test.equal(root.lookup("sparse.DeclaringType"), null, "removes unreferenced declaring types");
+    test.equal(declaringField.extensionField, null, "unlinks the synthetic extension field");
+    test.end();
+});
+
 tape.test("pbjs generates static code with message filter", function (test) {
     cliTest(test, function () {
         var root = protobuf.loadSync("tests/data/cli/test-filter.proto");
