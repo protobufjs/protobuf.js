@@ -11,6 +11,13 @@ var Type      = protobuf.Type,
     Namespace = protobuf.Namespace;
 
 json_module.description = "JSON bundle as a module";
+
+json_module.getDependency = function getDependency(options) {
+    return options.dependency || (util.isEsmWrapper(options.wrap)
+        ? "protobufjs/light.js"
+        : "protobufjs/light");
+};
+
 json_module.defaultExportDoc =
     "/**\n" +
     " * Reflected root namespace.\n" +
@@ -64,9 +71,7 @@ function json_module(root, options, callback) {
         }
 
         output = util.wrap(output.join(""), protobuf.util.merge({
-            dependency: util.isEsmWrapper(options.wrap)
-                ? "protobufjs/light.js"
-                : "protobufjs/light",
+            dependency: json_module.getDependency(options),
             defaultExport: options.comments !== false
                 ? json_module.defaultExportDoc
                 : undefined

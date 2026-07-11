@@ -86,6 +86,10 @@ function normalizeOptions(options) {
     return options;
 }
 
+function getTarget(name) {
+    return Object.prototype.hasOwnProperty.call(targets, name) ? targets[name] : null;
+}
+
 /**
  * Generates JavaScript and optional TypeScript declarations from a root.
  * @param {Root} root Reflected root
@@ -96,7 +100,7 @@ function normalizeOptions(options) {
  */
 exports.generate = function generate(root, options, callback) {
     options = normalizeOptions(options);
-    var target = targets[options.target];
+    var target = getTarget(options.target);
     if (!target) {
         // Require custom target
         try {
@@ -129,7 +133,10 @@ function deriveDtsPath(out) {
 
 function generateDts(root, argv, output, done) {
     function runPbts(jsOutput) {
-        var pbtsArgs = [];
+        var pbtsArgs = [],
+            target = getTarget(argv.target);
+        if (target && target.getDependency)
+            pbtsArgs.push("--import", "\\$protobuf=" + target.getDependency(argv));
         if (argv.target === "json-module")
             pbtsArgs.push("--no-constructor");
         if (!argv.comments)

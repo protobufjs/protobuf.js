@@ -706,6 +706,7 @@ tape.test("pbjs --dts writes module declarations", function(test) {
             test.ok(fs.existsSync(staticOut), "writes static-module javascript");
             test.ok(fs.existsSync(staticDts), "writes static-module declarations");
             var staticTypes = fs.readFileSync(staticDts, "utf8");
+            test.ok(staticTypes.indexOf("import * as $protobuf from \"protobufjs/minimal\";") >= 0, "uses the static-module dependency in declarations");
             test.ok(staticTypes.indexOf("constructor(properties?: Package.$Properties);") >= 0, "keeps constructable static declarations");
             test.ok(staticTypes.indexOf("type $Shape = Package.$Properties;") >= 0, "aliases shape to properties when there is no narrowing");
 
@@ -720,6 +721,7 @@ tape.test("pbjs --dts writes module declarations", function(test) {
                 test.ok(fs.existsSync(jsonOut), "writes json-module javascript");
                 test.ok(fs.existsSync(jsonDts), "writes json-module declarations");
                 var jsonTypes = fs.readFileSync(jsonDts, "utf8");
+                test.ok(jsonTypes.indexOf("import * as $protobuf from \"protobufjs/light\";") >= 0, "uses the json-module dependency in declarations");
                 test.ok(jsonTypes.indexOf("private constructor();") >= 0, "marks reflection-backed declarations as non-constructable");
                 test.ok(jsonTypes.indexOf("Reflection-backed declarations are not constructable. Use Package.create(...) instead.") >= 0, "explains create usage");
                 test.ok(jsonTypes.indexOf("static create(properties?: Package.$Properties): Package;") >= 0, "keeps reflection Type create declaration");
@@ -736,6 +738,7 @@ tape.test("pbjs --dts writes module declarations", function(test) {
                     test.ok(fs.existsSync(jsonEsmOut), "writes json-module esm javascript");
                     test.ok(fs.existsSync(jsonEsmDts), "writes json-module esm declarations");
                     var jsonEsmTypes = fs.readFileSync(jsonEsmDts, "utf8");
+                    test.ok(jsonEsmTypes.indexOf("import * as $protobuf from \"protobufjs/light.js\";") >= 0, "uses the ESM dependency in declarations");
                     test.ok(jsonEsmTypes.indexOf("declare const _default: $protobuf.Root;") >= 0, "declares the default root export");
                     test.ok(jsonEsmTypes.indexOf("export default _default;") >= 0, "exports the default root declaration");
                     test.ok(jsonEsmTypes.indexOf("export class Package") >= 0, "emits message declarations");
@@ -746,6 +749,7 @@ tape.test("pbjs --dts writes module declarations", function(test) {
                         "--wrap", "commonjs",
                         "--out", jsonMinimalOut,
                         "--dts",
+                        "--dependency", "custom-protobuf",
                         "--no-create",
                         "--no-encode",
                         "--no-decode",
@@ -758,7 +762,10 @@ tape.test("pbjs --dts writes module declarations", function(test) {
                         test.error(jsonMinimalErr, "json-module --dts respects static method flags");
                         test.ok(fs.existsSync(jsonMinimalOut), "writes minimal json-module javascript");
                         test.ok(fs.existsSync(jsonMinimalDts), "writes minimal json-module declarations");
+                        var minimalCode = fs.readFileSync(jsonMinimalOut, "utf8");
                         var minimalTypes = fs.readFileSync(jsonMinimalDts, "utf8");
+                        test.ok(minimalCode.indexOf("require(\"custom-protobuf\")") >= 0, "uses a custom dependency in javascript");
+                        test.ok(minimalTypes.indexOf("import * as $protobuf from \"custom-protobuf\";") >= 0, "uses a custom dependency in declarations");
                         test.equal(minimalTypes.indexOf("static create("), -1, "omits disabled create declaration");
                         test.equal(minimalTypes.indexOf("static encode("), -1, "omits disabled encode declaration");
                         test.equal(minimalTypes.indexOf("static decode("), -1, "omits disabled decode declaration");
