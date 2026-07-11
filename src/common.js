@@ -163,27 +163,33 @@ common("struct", {
         fields: {
             nullValue: {
                 type: "NullValue",
-                id: 1
+                id: 1,
+                protoName: "null_value"
             },
             numberValue: {
                 type: "double",
-                id: 2
+                id: 2,
+                protoName: "number_value"
             },
             stringValue: {
                 type: "string",
-                id: 3
+                id: 3,
+                protoName: "string_value"
             },
             boolValue: {
                 type: "bool",
-                id: 4
+                id: 4,
+                protoName: "bool_value"
             },
             structValue: {
                 type: "Struct",
-                id: 5
+                id: 5,
+                protoName: "struct_value"
             },
             listValue: {
                 type: "ListValue",
-                id: 6
+                id: 6,
+                protoName: "list_value"
             }
         }
     },

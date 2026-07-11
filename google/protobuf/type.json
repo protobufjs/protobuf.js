@@ -27,7 +27,8 @@
                 },
                 "sourceContext": {
                   "type": "SourceContext",
-                  "id": 5
+                  "id": 5,
+                  "protoName": "source_context"
                 },
                 "syntax": {
                   "type": "Syntax",
@@ -55,11 +56,13 @@
                 },
                 "typeUrl": {
                   "type": "string",
-                  "id": 6
+                  "id": 6,
+                  "protoName": "type_url"
                 },
                 "oneofIndex": {
                   "type": "int32",
-                  "id": 7
+                  "id": 7,
+                  "protoName": "oneof_index"
                 },
                 "packed": {
                   "type": "bool",
@@ -72,11 +75,13 @@
                 },
                 "jsonName": {
                   "type": "string",
-                  "id": 10
+                  "id": 10,
+                  "protoName": "json_name"
                 },
                 "defaultValue": {
                   "type": "string",
-                  "id": 11
+                  "id": 11,
+                  "protoName": "default_value"
                 }
               },
               "nested": {
@@ -131,7 +136,8 @@
                 },
                 "sourceContext": {
                   "type": "SourceContext",
-                  "id": 4
+                  "id": 4,
+                  "protoName": "source_context"
                 },
                 "syntax": {
                   "type": "Syntax",
@@ -190,7 +196,8 @@
               "fields": {
                 "fileName": {
                   "type": "string",
-                  "id": 1
+                  "id": 1,
+                  "protoName": "file_name"
                 }
               }
             }
