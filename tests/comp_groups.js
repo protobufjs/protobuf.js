@@ -197,3 +197,24 @@ tape.test("extension groups", function(test) {
     test.same(Message.decode(buf), msg, "and decode back the original message");
     test.end();
 });
+
+var protoGroupWithMap = "message Test {\
+    optional group MyGroup = 1 {\
+        optional int32 a = 2;\
+        map<string, int32> mp = 8;\
+    };\
+}";
+
+tape.test("group with map field", function(test) {
+    var root = protobuf.parse(protoGroupWithMap).root.resolveAll();
+
+    var MyGroupType = root.lookup("Test.MyGroup");
+    var mapField = MyGroupType.get("mp");
+
+    test.equal(MyGroupType.group, true, "should have the group flag set on the type");
+    test.ok(mapField instanceof protobuf.MapField, "should parse the nested map field to a MapField");
+    test.equal(mapField.map, true, "should have the map flag set on the field");
+    test.equal(mapField.keyType, "string", "should keep the map key type");
+    test.equal(mapField.type, "int32", "should keep the map value type");
+    test.end();
+});

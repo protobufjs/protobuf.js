@@ -559,6 +559,10 @@ function parse(source, root, options) {
                 case ";":
                     break;
 
+                case "map":
+                    parseMapField(type);
+                    break;
+
                 case "option":
                     parseOption(type, token);
                     skip(";");
