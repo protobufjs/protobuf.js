@@ -1,5 +1,25 @@
 # Changelog
 
+## [8.7.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.7.0...protobufjs-v8.7.1) (2026-07-12)
+
+
+### Bug Fixes
+
+* accept repeated NullValue elements in ProtoJSON ([#2373](https://github.com/protobufjs/protobuf.js/issues/2373)) ([ad0b9bb](https://github.com/protobufjs/protobuf.js/commit/ad0b9bb95115bb8eb3a5752cb27635bb941f6f69))
+* Apply enum options regardless of declaration order ([#2384](https://github.com/protobufjs/protobuf.js/issues/2384)) ([b5009b0](https://github.com/protobufjs/protobuf.js/commit/b5009b0095f45a1531f7a2c5ba6f9850d7989f0b))
+* Base64-encode bytes field defaults in toObject ([#2375](https://github.com/protobufjs/protobuf.js/issues/2375)) ([e552511](https://github.com/protobufjs/protobuf.js/commit/e552511950901519971150fb2a492150bdbeb2e3))
+* **cli:** Handle extensions during sparse generation ([#2386](https://github.com/protobufjs/protobuf.js/issues/2386)) ([1965d37](https://github.com/protobufjs/protobuf.js/commit/1965d37ac40900d943b678be8ed268010c79f50a))
+* **cli:** Match declaration imports to generated modules ([#2385](https://github.com/protobufjs/protobuf.js/issues/2385)) ([3cf7420](https://github.com/protobufjs/protobuf.js/commit/3cf7420b760d7fbf36c699cb249787a58b815912))
+* **cli:** Preserve array element union precedence in pbts ([#2378](https://github.com/protobufjs/protobuf.js/issues/2378)) ([2a697a5](https://github.com/protobufjs/protobuf.js/commit/2a697a5e918ff2cc63bfb6993a5ba17e0d1c1fbd))
+* **cli:** Resolve imports from cwd by default ([#2381](https://github.com/protobufjs/protobuf.js/issues/2381)) ([65f659a](https://github.com/protobufjs/protobuf.js/commit/65f659ac169233edc596fb75870ad75ed913b718))
+* Merge repeated message-valued fields within map entries ([#2364](https://github.com/protobufjs/protobuf.js/issues/2364)) ([13b417b](https://github.com/protobufjs/protobuf.js/commit/13b417b6ff550f56e72f9332ffcafc35c1f79cba))
+* Parse aggregate objects in option arrays ([#2379](https://github.com/protobufjs/protobuf.js/issues/2379)) ([71c2532](https://github.com/protobufjs/protobuf.js/commit/71c2532aa2fec30704a4fa22307833240391c667))
+* Parse Any type URLs in aggregate options ([#2383](https://github.com/protobufjs/protobuf.js/issues/2383)) ([666fa6b](https://github.com/protobufjs/protobuf.js/commit/666fa6b977fffd7ad2ce952978a98541d9972f04))
+* Parse bracketed special field names in options ([#2377](https://github.com/protobufjs/protobuf.js/issues/2377)) ([dd1870b](https://github.com/protobufjs/protobuf.js/commit/dd1870b4a60f9eeb23a3fa5325b7ddadc06e3fe5))
+* Parse map fields inside groups ([#2382](https://github.com/protobufjs/protobuf.js/issues/2382)) ([8a2c427](https://github.com/protobufjs/protobuf.js/commit/8a2c427c1a4382a39ac03564c9a68493ddde595a))
+* Preserve proto names in bundled definitions ([#2390](https://github.com/protobufjs/protobuf.js/issues/2390)) ([7ba0557](https://github.com/protobufjs/protobuf.js/commit/7ba05572b88c5c29c5ec58fe4f834b8a9ab349a6))
+* Remove circular LongBits dependency ([#2387](https://github.com/protobufjs/protobuf.js/issues/2387)) ([829f5cd](https://github.com/protobufjs/protobuf.js/commit/829f5cd9e6446b68feffa4b98633613083b453b5))
+
 ## [8.7.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.6.6...protobufjs-v8.7.0) (2026-07-06)
 
 
