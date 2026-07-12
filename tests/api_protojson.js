@@ -214,6 +214,31 @@ tape.test("protojson - rejects JSON name collisions", function(test) {
     test.end();
 });
 
+tape.test("protojson - emits first enum alias from JSON descriptor roots", function(test) {
+    var schema = "syntax = \"proto3\";\
+enum AliasChoice {\
+  option allow_alias = true;\
+  UNKNOWN = 0;\
+  OLD = 1;\
+  NEW = 1;\
+}\
+message AliasMessage {\
+  AliasChoice choice = 1;\
+}",
+        parsedRoot = protobuf.parse(schema).root.resolveAll(),
+        jsonRoot = protobuf.Root.fromJSON(parsedRoot.toJSON()).resolveAll(),
+        parsedMessage = parsedRoot.lookupType("AliasMessage").create({ choice: 1 }),
+        jsonMessage = jsonRoot.lookupType("AliasMessage").create({ choice: 1 });
+
+    test.deepEqual(protojson.toJson(parsedRoot.lookupType("AliasMessage"), parsedMessage), {
+        choice: "OLD"
+    }, "parsed proto root emits first enum alias");
+    test.deepEqual(protojson.toJson(jsonRoot.lookupType("AliasMessage"), jsonMessage), {
+        choice: "OLD"
+    }, "JSON descriptor root emits first enum alias");
+    test.end();
+});
+
 tape.test("protojson - reads legacy json_name reflection options", function(test) {
     var Legacy = protobuf.Root.fromJSON({
         nested: {
