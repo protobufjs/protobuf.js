@@ -213,6 +213,31 @@ tape.test("Options", function (test) {
         test.end();
     });
 
+    test.test(test.name + " - aggregate option arrays", function(test) {
+        var root = protobuf.parse(
+            "syntax = \"proto2\";" +
+            "message Test {" +
+            "  optional string value = 1 [(foo) = {" +
+            "    rules: [" +
+            "      { field: \"id\" }," +
+            "      { field: \"display_name\" }" +
+            "    ]" +
+            "  }];" +
+            "}"
+        ).root;
+        var field = root.lookupType("Test").fields.value,
+            option = field.parsedOptions[0]["(foo)"];
+
+        test.same(option, {
+            rules: [
+                { field: "id" },
+                { field: "display_name" }
+            ]
+        }, "should preserve aggregate option arrays");
+        test.equal(field.options["(foo).rules.field"], "display_name", "should keep the last repeated aggregate field in flat options");
+        test.end();
+    });
+
     test.end();
 });
 

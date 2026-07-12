@@ -826,16 +826,21 @@ function parse(source, root, options) {
                     value = parseOptionValue(parent, name + "." + propName, depth + 1);
                 } else if (peek() === "[") {
                     value = [];
-                    var lastValue;
+                    var lastValue,
+                        lastValueIsAggregate;
                     if (skip("[", true)) {
                         if (!skip("]", true)) {
                             do {
-                                lastValue = readValue(true);
+                                lastValueIsAggregate = peek() === "{";
+                                lastValue = lastValueIsAggregate
+                                    ? parseOptionValue(parent, name + "." + propName, depth + 1)
+                                    : readValue(true);
                                 value.push(lastValue);
                             } while (skip(",", true));
                             skip("]");
                             if (typeof lastValue !== "undefined") {
-                                setOption(parent, name + "." + propName, lastValue);
+                                if (!lastValueIsAggregate)
+                                    setOption(parent, name + "." + propName, lastValue);
                             }
                         }
                     }
