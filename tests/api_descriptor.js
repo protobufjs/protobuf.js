@@ -3,6 +3,19 @@ var tape = require("tape");
 var protobuf = require("../index");
 var descriptor = require("../ext/descriptor");
 
+tape.test("descriptor - bundled common field names", function(test) {
+    var root = new protobuf.Root().loadSync("google/protobuf/struct.proto", { keepCase: true });
+    var descriptorSet = root.toDescriptor("proto3");
+    var value = descriptorSet.file[0].messageType.filter(function(type) {
+        return type.name === "Value";
+    })[0];
+
+    test.same(value.field.map(function(field) {
+        return field.name;
+    }), [ "null_value", "number_value", "string_value", "bool_value", "struct_value", "list_value" ], "uses original proto field names");
+    test.end();
+});
+
 tape.test("descriptor - proto2 to proto3", function (test) {
     // load document with extended field imported multiple times
     var root = protobuf.loadSync(path.resolve(__dirname, "data/test.proto"));

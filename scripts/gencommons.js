@@ -15,6 +15,7 @@ var pbjs = require("../cli/pbjs");
     pbjs.main([
         "--target", "json",
         "--sparse",
+        "--path", ".",
         "--out", out,
         file
     ], function(err) {

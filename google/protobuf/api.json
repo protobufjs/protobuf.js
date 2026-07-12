@@ -26,7 +26,8 @@
                 },
                 "sourceContext": {
                   "type": "SourceContext",
-                  "id": 5
+                  "id": 5,
+                  "protoName": "source_context"
                 },
                 "mixins": {
                   "rule": "repeated",
@@ -47,19 +48,23 @@
                 },
                 "requestTypeUrl": {
                   "type": "string",
-                  "id": 2
+                  "id": 2,
+                  "protoName": "request_type_url"
                 },
                 "requestStreaming": {
                   "type": "bool",
-                  "id": 3
+                  "id": 3,
+                  "protoName": "request_streaming"
                 },
                 "responseTypeUrl": {
                   "type": "string",
-                  "id": 4
+                  "id": 4,
+                  "protoName": "response_type_url"
                 },
                 "responseStreaming": {
                   "type": "bool",
-                  "id": 5
+                  "id": 5,
+                  "protoName": "response_streaming"
                 },
                 "options": {
                   "rule": "repeated",
@@ -88,7 +93,8 @@
               "fields": {
                 "fileName": {
                   "type": "string",
-                  "id": 1
+                  "id": 1,
+                  "protoName": "file_name"
                 }
               }
             },

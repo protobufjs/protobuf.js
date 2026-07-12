@@ -3,15 +3,6 @@
     "google": {
       "nested": {
         "protobuf": {
-          "options": {
-            "go_package": "google.golang.org/protobuf/types/descriptorpb",
-            "java_package": "com.google.protobuf",
-            "java_outer_classname": "DescriptorProtos",
-            "csharp_namespace": "Google.Protobuf.Reflection",
-            "objc_class_prefix": "GPB",
-            "cc_enable_arenas": true,
-            "optimize_for": "SPEED"
-          },
           "nested": {
             "FileDescriptorSet": {
               "edition": "proto2",
@@ -65,27 +56,32 @@
                 "publicDependency": {
                   "rule": "repeated",
                   "type": "int32",
-                  "id": 10
+                  "id": 10,
+                  "protoName": "public_dependency"
                 },
                 "weakDependency": {
                   "rule": "repeated",
                   "type": "int32",
-                  "id": 11
+                  "id": 11,
+                  "protoName": "weak_dependency"
                 },
                 "optionDependency": {
                   "rule": "repeated",
                   "type": "string",
-                  "id": 15
+                  "id": 15,
+                  "protoName": "option_dependency"
                 },
                 "messageType": {
                   "rule": "repeated",
                   "type": "DescriptorProto",
-                  "id": 4
+                  "id": 4,
+                  "protoName": "message_type"
                 },
                 "enumType": {
                   "rule": "repeated",
                   "type": "EnumDescriptorProto",
-                  "id": 5
+                  "id": 5,
+                  "protoName": "enum_type"
                 },
                 "service": {
                   "rule": "repeated",
@@ -103,7 +99,8 @@
                 },
                 "sourceCodeInfo": {
                   "type": "SourceCodeInfo",
-                  "id": 9
+                  "id": 9,
+                  "protoName": "source_code_info"
                 },
                 "syntax": {
                   "type": "string",
@@ -135,22 +132,26 @@
                 "nestedType": {
                   "rule": "repeated",
                   "type": "DescriptorProto",
-                  "id": 3
+                  "id": 3,
+                  "protoName": "nested_type"
                 },
                 "enumType": {
                   "rule": "repeated",
                   "type": "EnumDescriptorProto",
-                  "id": 4
+                  "id": 4,
+                  "protoName": "enum_type"
                 },
                 "extensionRange": {
                   "rule": "repeated",
                   "type": "ExtensionRange",
-                  "id": 5
+                  "id": 5,
+                  "protoName": "extension_range"
                 },
                 "oneofDecl": {
                   "rule": "repeated",
                   "type": "OneofDescriptorProto",
-                  "id": 8
+                  "id": 8,
+                  "protoName": "oneof_decl"
                 },
                 "options": {
                   "type": "MessageOptions",
@@ -159,12 +160,14 @@
                 "reservedRange": {
                   "rule": "repeated",
                   "type": "ReservedRange",
-                  "id": 9
+                  "id": 9,
+                  "protoName": "reserved_range"
                 },
                 "reservedName": {
                   "rule": "repeated",
                   "type": "string",
-                  "id": 10
+                  "id": 10,
+                  "protoName": "reserved_name"
                 },
                 "visibility": {
                   "type": "SymbolVisibility",
@@ -208,7 +211,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "protoName": "uninterpreted_option"
                 },
                 "declaration": {
                   "rule": "repeated",
@@ -246,7 +250,8 @@
                     },
                     "fullName": {
                       "type": "string",
-                      "id": 2
+                      "id": 2,
+                      "protoName": "full_name"
                     },
                     "type": {
                       "type": "string",
@@ -297,7 +302,8 @@
                 },
                 "typeName": {
                   "type": "string",
-                  "id": 6
+                  "id": 6,
+                  "protoName": "type_name"
                 },
                 "extendee": {
                   "type": "string",
@@ -305,15 +311,18 @@
                 },
                 "defaultValue": {
                   "type": "string",
-                  "id": 7
+                  "id": 7,
+                  "protoName": "default_value"
                 },
                 "oneofIndex": {
                   "type": "int32",
-                  "id": 9
+                  "id": 9,
+                  "protoName": "oneof_index"
                 },
                 "jsonName": {
                   "type": "string",
-                  "id": 10
+                  "id": 10,
+                  "protoName": "json_name"
                 },
                 "options": {
                   "type": "FieldOptions",
@@ -321,7 +330,8 @@
                 },
                 "proto3Optional": {
                   "type": "bool",
-                  "id": 17
+                  "id": 17,
+                  "protoName": "proto3_optional"
                 }
               },
               "nested": {
@@ -388,12 +398,14 @@
                 "reservedRange": {
                   "rule": "repeated",
                   "type": "EnumReservedRange",
-                  "id": 4
+                  "id": 4,
+                  "protoName": "reserved_range"
                 },
                 "reservedName": {
                   "rule": "repeated",
                   "type": "string",
-                  "id": 5
+                  "id": 5,
+                  "protoName": "reserved_name"
                 },
                 "visibility": {
                   "type": "SymbolVisibility",
@@ -459,11 +471,13 @@
                 },
                 "inputType": {
                   "type": "string",
-                  "id": 2
+                  "id": 2,
+                  "protoName": "input_type"
                 },
                 "outputType": {
                   "type": "string",
-                  "id": 3
+                  "id": 3,
+                  "protoName": "output_type"
                 },
                 "options": {
                   "type": "MethodOptions",
@@ -471,11 +485,13 @@
                 },
                 "clientStreaming": {
                   "type": "bool",
-                  "id": 5
+                  "id": 5,
+                  "protoName": "client_streaming"
                 },
                 "serverStreaming": {
                   "type": "bool",
-                  "id": 6
+                  "id": 6,
+                  "protoName": "server_streaming"
                 }
               }
             },
@@ -484,49 +500,59 @@
               "fields": {
                 "javaPackage": {
                   "type": "string",
-                  "id": 1
+                  "id": 1,
+                  "protoName": "java_package"
                 },
                 "javaOuterClassname": {
                   "type": "string",
-                  "id": 8
+                  "id": 8,
+                  "protoName": "java_outer_classname"
                 },
                 "javaMultipleFiles": {
                   "type": "bool",
-                  "id": 10
+                  "id": 10,
+                  "protoName": "java_multiple_files"
                 },
                 "javaGenerateEqualsAndHash": {
                   "type": "bool",
                   "id": 20,
+                  "protoName": "java_generate_equals_and_hash",
                   "options": {
                     "deprecated": true
                   }
                 },
                 "javaStringCheckUtf8": {
                   "type": "bool",
-                  "id": 27
+                  "id": 27,
+                  "protoName": "java_string_check_utf8"
                 },
                 "optimizeFor": {
                   "type": "OptimizeMode",
                   "id": 9,
+                  "protoName": "optimize_for",
                   "options": {
                     "default": "SPEED"
                   }
                 },
                 "goPackage": {
                   "type": "string",
-                  "id": 11
+                  "id": 11,
+                  "protoName": "go_package"
                 },
                 "ccGenericServices": {
                   "type": "bool",
-                  "id": 16
+                  "id": 16,
+                  "protoName": "cc_generic_services"
                 },
                 "javaGenericServices": {
                   "type": "bool",
-                  "id": 17
+                  "id": 17,
+                  "protoName": "java_generic_services"
                 },
                 "pyGenericServices": {
                   "type": "bool",
-                  "id": 18
+                  "id": 18,
+                  "protoName": "py_generic_services"
                 },
                 "deprecated": {
                   "type": "bool",
@@ -535,37 +561,45 @@
                 "ccEnableArenas": {
                   "type": "bool",
                   "id": 31,
+                  "protoName": "cc_enable_arenas",
                   "options": {
                     "default": true
                   }
                 },
                 "objcClassPrefix": {
                   "type": "string",
-                  "id": 36
+                  "id": 36,
+                  "protoName": "objc_class_prefix"
                 },
                 "csharpNamespace": {
                   "type": "string",
-                  "id": 37
+                  "id": 37,
+                  "protoName": "csharp_namespace"
                 },
                 "swiftPrefix": {
                   "type": "string",
-                  "id": 39
+                  "id": 39,
+                  "protoName": "swift_prefix"
                 },
                 "phpClassPrefix": {
                   "type": "string",
-                  "id": 40
+                  "id": 40,
+                  "protoName": "php_class_prefix"
                 },
                 "phpNamespace": {
                   "type": "string",
-                  "id": 41
+                  "id": 41,
+                  "protoName": "php_namespace"
                 },
                 "phpMetadataNamespace": {
                   "type": "string",
-                  "id": 44
+                  "id": 44,
+                  "protoName": "php_metadata_namespace"
                 },
                 "rubyPackage": {
                   "type": "string",
-                  "id": 45
+                  "id": 45,
+                  "protoName": "ruby_package"
                 },
                 "features": {
                   "type": "FeatureSet",
@@ -574,7 +608,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "protoName": "uninterpreted_option"
                 }
               },
               "extensions": [
@@ -609,11 +644,13 @@
               "fields": {
                 "messageSetWireFormat": {
                   "type": "bool",
-                  "id": 1
+                  "id": 1,
+                  "protoName": "message_set_wire_format"
                 },
                 "noStandardDescriptorAccessor": {
                   "type": "bool",
-                  "id": 2
+                  "id": 2,
+                  "protoName": "no_standard_descriptor_accessor"
                 },
                 "deprecated": {
                   "type": "bool",
@@ -621,11 +658,13 @@
                 },
                 "mapEntry": {
                   "type": "bool",
-                  "id": 7
+                  "id": 7,
+                  "protoName": "map_entry"
                 },
                 "deprecatedLegacyJsonFieldConflicts": {
                   "type": "bool",
                   "id": 11,
+                  "protoName": "deprecated_legacy_json_field_conflicts",
                   "options": {
                     "deprecated": true
                   }
@@ -637,7 +676,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "protoName": "uninterpreted_option"
                 }
               },
               "extensions": [
@@ -696,7 +736,8 @@
                 },
                 "unverifiedLazy": {
                   "type": "bool",
-                  "id": 15
+                  "id": 15,
+                  "protoName": "unverified_lazy"
                 },
                 "deprecated": {
                   "type": "bool",
@@ -711,7 +752,8 @@
                 },
                 "debugRedact": {
                   "type": "bool",
-                  "id": 16
+                  "id": 16,
+                  "protoName": "debug_redact"
                 },
                 "retention": {
                   "type": "OptionRetention",
@@ -725,7 +767,8 @@
                 "editionDefaults": {
                   "rule": "repeated",
                   "type": "EditionDefault",
-                  "id": 20
+                  "id": 20,
+                  "protoName": "edition_defaults"
                 },
                 "features": {
                   "type": "FeatureSet",
@@ -733,12 +776,14 @@
                 },
                 "featureSupport": {
                   "type": "FeatureSupport",
-                  "id": 22
+                  "id": 22,
+                  "protoName": "feature_support"
                 },
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "protoName": "uninterpreted_option"
                 }
               },
               "extensions": [
@@ -809,19 +854,23 @@
                   "fields": {
                     "editionIntroduced": {
                       "type": "Edition",
-                      "id": 1
+                      "id": 1,
+                      "protoName": "edition_introduced"
                     },
                     "editionDeprecated": {
                       "type": "Edition",
-                      "id": 2
+                      "id": 2,
+                      "protoName": "edition_deprecated"
                     },
                     "deprecationWarning": {
                       "type": "string",
-                      "id": 3
+                      "id": 3,
+                      "protoName": "deprecation_warning"
                     },
                     "editionRemoved": {
                       "type": "Edition",
-                      "id": 4
+                      "id": 4,
+                      "protoName": "edition_removed"
                     }
                   }
                 }
@@ -837,7 +886,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "protoName": "uninterpreted_option"
                 }
               },
               "extensions": [
@@ -852,7 +902,8 @@
               "fields": {
                 "allowAlias": {
                   "type": "bool",
-                  "id": 2
+                  "id": 2,
+                  "protoName": "allow_alias"
                 },
                 "deprecated": {
                   "type": "bool",
@@ -861,6 +912,7 @@
                 "deprecatedLegacyJsonFieldConflicts": {
                   "type": "bool",
                   "id": 6,
+                  "protoName": "deprecated_legacy_json_field_conflicts",
                   "options": {
                     "deprecated": true
                   }
@@ -872,7 +924,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "protoName": "uninterpreted_option"
                 }
               },
               "extensions": [
@@ -901,16 +954,19 @@
                 },
                 "debugRedact": {
                   "type": "bool",
-                  "id": 3
+                  "id": 3,
+                  "protoName": "debug_redact"
                 },
                 "featureSupport": {
                   "type": "FieldOptions.FeatureSupport",
-                  "id": 4
+                  "id": 4,
+                  "protoName": "feature_support"
                 },
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "protoName": "uninterpreted_option"
                 }
               },
               "extensions": [
@@ -934,7 +990,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "protoName": "uninterpreted_option"
                 }
               },
               "extensions": [
@@ -954,6 +1011,7 @@
                 "idempotencyLevel": {
                   "type": "IdempotencyLevel",
                   "id": 34,
+                  "protoName": "idempotency_level",
                   "options": {
                     "default": "IDEMPOTENCY_UNKNOWN"
                   }
@@ -965,7 +1023,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "protoName": "uninterpreted_option"
                 }
               },
               "extensions": [
@@ -994,27 +1053,33 @@
                 },
                 "identifierValue": {
                   "type": "string",
-                  "id": 3
+                  "id": 3,
+                  "protoName": "identifier_value"
                 },
                 "positiveIntValue": {
                   "type": "uint64",
-                  "id": 4
+                  "id": 4,
+                  "protoName": "positive_int_value"
                 },
                 "negativeIntValue": {
                   "type": "int64",
-                  "id": 5
+                  "id": 5,
+                  "protoName": "negative_int_value"
                 },
                 "doubleValue": {
                   "type": "double",
-                  "id": 6
+                  "id": 6,
+                  "protoName": "double_value"
                 },
                 "stringValue": {
                   "type": "bytes",
-                  "id": 7
+                  "id": 7,
+                  "protoName": "string_value"
                 },
                 "aggregateValue": {
                   "type": "string",
-                  "id": 8
+                  "id": 8,
+                  "protoName": "aggregate_value"
                 }
               },
               "nested": {
@@ -1023,12 +1088,14 @@
                     "namePart": {
                       "rule": "required",
                       "type": "string",
-                      "id": 1
+                      "id": 1,
+                      "protoName": "name_part"
                     },
                     "isExtension": {
                       "rule": "required",
                       "type": "bool",
-                      "id": 2
+                      "id": 2,
+                      "protoName": "is_extension"
                     }
                   }
                 }
@@ -1040,6 +1107,7 @@
                 "fieldPresence": {
                   "type": "FieldPresence",
                   "id": 1,
+                  "protoName": "field_presence",
                   "options": {
                     "retention": "RETENTION_RUNTIME",
                     "targets": "TARGET_TYPE_FILE",
@@ -1051,6 +1119,7 @@
                 "enumType": {
                   "type": "EnumType",
                   "id": 2,
+                  "protoName": "enum_type",
                   "options": {
                     "retention": "RETENTION_RUNTIME",
                     "targets": "TARGET_TYPE_FILE",
@@ -1062,6 +1131,7 @@
                 "repeatedFieldEncoding": {
                   "type": "RepeatedFieldEncoding",
                   "id": 3,
+                  "protoName": "repeated_field_encoding",
                   "options": {
                     "retention": "RETENTION_RUNTIME",
                     "targets": "TARGET_TYPE_FILE",
@@ -1073,6 +1143,7 @@
                 "utf8Validation": {
                   "type": "Utf8Validation",
                   "id": 4,
+                  "protoName": "utf8_validation",
                   "options": {
                     "retention": "RETENTION_RUNTIME",
                     "targets": "TARGET_TYPE_FILE",
@@ -1084,6 +1155,7 @@
                 "messageEncoding": {
                   "type": "MessageEncoding",
                   "id": 5,
+                  "protoName": "message_encoding",
                   "options": {
                     "retention": "RETENTION_RUNTIME",
                     "targets": "TARGET_TYPE_FILE",
@@ -1095,6 +1167,7 @@
                 "jsonFormat": {
                   "type": "JsonFormat",
                   "id": 6,
+                  "protoName": "json_format",
                   "options": {
                     "retention": "RETENTION_RUNTIME",
                     "targets": "TARGET_TYPE_FILE",
@@ -1106,6 +1179,7 @@
                 "enforceNamingStyle": {
                   "type": "EnforceNamingStyle",
                   "id": 7,
+                  "protoName": "enforce_naming_style",
                   "options": {
                     "retention": "RETENTION_SOURCE",
                     "targets": "TARGET_TYPE_METHOD",
@@ -1117,6 +1191,7 @@
                 "defaultSymbolVisibility": {
                   "type": "VisibilityFeature.DefaultSymbolVisibility",
                   "id": 8,
+                  "protoName": "default_symbol_visibility",
                   "options": {
                     "retention": "RETENTION_SOURCE",
                     "targets": "TARGET_TYPE_FILE",
@@ -1229,11 +1304,13 @@
                 },
                 "minimumEdition": {
                   "type": "Edition",
-                  "id": 4
+                  "id": 4,
+                  "protoName": "minimum_edition"
                 },
                 "maximumEdition": {
                   "type": "Edition",
-                  "id": 5
+                  "id": 5,
+                  "protoName": "maximum_edition"
                 }
               },
               "nested": {
@@ -1245,11 +1322,13 @@
                     },
                     "overridableFeatures": {
                       "type": "FeatureSet",
-                      "id": 4
+                      "id": 4,
+                      "protoName": "overridable_features"
                     },
                     "fixedFeatures": {
                       "type": "FeatureSet",
-                      "id": 5
+                      "id": 5,
+                      "protoName": "fixed_features"
                     }
                   },
                   "reserved": [
@@ -1302,16 +1381,19 @@
                     },
                     "leadingComments": {
                       "type": "string",
-                      "id": 3
+                      "id": 3,
+                      "protoName": "leading_comments"
                     },
                     "trailingComments": {
                       "type": "string",
-                      "id": 4
+                      "id": 4,
+                      "protoName": "trailing_comments"
                     },
                     "leadingDetachedComments": {
                       "rule": "repeated",
                       "type": "string",
-                      "id": 6
+                      "id": 6,
+                      "protoName": "leading_detached_comments"
                     }
                   }
                 }
@@ -1339,7 +1421,8 @@
                     },
                     "sourceFile": {
                       "type": "string",
-                      "id": 2
+                      "id": 2,
+                      "protoName": "source_file"
                     },
                     "begin": {
                       "type": "int32",

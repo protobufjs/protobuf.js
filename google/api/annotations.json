@@ -58,7 +58,8 @@
                 "additionalBindings": {
                   "rule": "repeated",
                   "type": "HttpRule",
-                  "id": 11
+                  "id": 11,
+                  "protoName": "additional_bindings"
                 }
               }
             }
@@ -67,6 +68,7 @@
         "protobuf": {
           "nested": {
             "MethodOptions": {
+              "edition": "proto2",
               "fields": {},
               "extensions": [
                 [
