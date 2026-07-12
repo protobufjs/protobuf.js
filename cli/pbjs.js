@@ -221,6 +221,9 @@ exports.main = function main(args, callback) {
     var files  = argv._,
         paths  = typeof argv.path === "string" ? [ argv.path ] : argv.path || [];
 
+    if (!paths.length)
+        paths.push(".");
+
     // protobuf.js package directory contains additional, otherwise non-bundled google types
     paths.push(path.relative(process.cwd(), path.join(__dirname, "../protobufjs")) || ".");
 
