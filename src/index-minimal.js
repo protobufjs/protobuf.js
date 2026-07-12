@@ -26,6 +26,7 @@ exports.configure    = configure;
  * @returns {undefined}
  */
 function configure() {
+    exports.util.LongBits._configure(exports.util.Long);
     exports.Writer._configure(exports.BufferWriter);
     exports.Reader._configure(exports.BufferReader);
 }
