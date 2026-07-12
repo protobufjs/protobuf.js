@@ -60,7 +60,7 @@ const root = await protobuf.load("awesome.proto");
 const AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");
 ```
 
-Optionally use `load()` with a callback, or `loadSync()` for synchronous loading on Node.js.
+Optionally use `load()` with a callback, or `loadSync()` for synchronous loading on Node.js. Imports resolve relative to the importing file by default. To resolve imports against a specific base directory, create a `Root` and override `root.resolvePath` before calling `root.load()`.
 
 ### Encode and decode
 
