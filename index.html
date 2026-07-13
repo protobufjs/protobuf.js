@@ -3226,7 +3226,7 @@ message AwesomeMessage {
 const root = await protobuf.load(&quot;awesome.proto&quot;);
 const AwesomeMessage = root.lookupType(&quot;awesomepackage.AwesomeMessage&quot;);
 </code></pre>
-<p>Optionally use <code>load()</code> with a callback, or <code>loadSync()</code> for synchronous loading on Node.js.</p>
+<p>Optionally use <code>load()</code> with a callback, or <code>loadSync()</code> for synchronous loading on Node.js. Imports resolve relative to the importing file by default. To resolve imports against a specific base directory, create a <code>Root</code> and override <code>root.resolvePath</code> before calling <code>root.load()</code>.</p>
 <h3 id="encode-and-decode">Encode and decode</h3>
 <pre class="prettyprint source lang-ts"><code>const payload = { awesomeField: &quot;hello&quot; };
 
