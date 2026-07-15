@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.7.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.7.1...protobufjs-v8.7.2) (2026-07-15)
+
+
+### Bug Fixes
+
+* preserve first enum alias from JSON descriptors ([#2389](https://github.com/protobufjs/protobuf.js/issues/2389)) ([8304739](https://github.com/protobufjs/protobuf.js/commit/8304739620bfd0630ff89f7c6a70512dcbc7b845))
+
 ## [8.7.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.7.0...protobufjs-v8.7.1) (2026-07-12)
 
 
