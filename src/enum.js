@@ -82,8 +82,11 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
 
     if (values)
         for (var keys = Object.keys(values), i = 0; i < keys.length; ++i)
-            if (keys[i] !== "__proto__" && typeof values[keys[i]] === "number") // use forward entries only
-                this.valuesById[ this.values[keys[i]] = values[keys[i]] ] = keys[i];
+            if (keys[i] !== "__proto__" && typeof values[keys[i]] === "number") { // use forward entries only
+                this.values[keys[i]] = values[keys[i]];
+                if (this.valuesById[values[keys[i]]] === undefined)
+                    this.valuesById[values[keys[i]]] = keys[i];
+            }
 }
 
 /**
