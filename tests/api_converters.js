@@ -2,6 +2,50 @@ var tape = require("tape");
 
 var protobuf  = require("..");
 
+tape.test("converters - non-finite floating-point defaults", function(test) {
+    var Type = protobuf.parse("syntax = \"proto2\";\
+        message NonFiniteDefaults {\
+            optional double positive = 1 [default = inf];\
+            optional double negative = 2 [default = -inf];\
+            optional float not_a_number = 3 [default = nan];\
+        }").root.lookupType("NonFiniteDefaults"),
+        message = Type.create();
+
+    test.equal(Type.fields.positive.defaultValue, Infinity, "should parse positive infinity as a field default");
+    test.equal(Type.fields.negative.defaultValue, -Infinity, "should parse negative infinity as a field default");
+    test.ok(Number.isNaN(Type.fields.notANumber.defaultValue), "should parse NaN as a field default");
+
+    test.equal(message.positive, Infinity, "should expose positive infinity through the message prototype");
+    test.equal(message.negative, -Infinity, "should expose negative infinity through the message prototype");
+    test.ok(Number.isNaN(message.notANumber), "should expose NaN through the message prototype");
+
+    var object = Type.toObject(message, { defaults: true });
+    test.equal(object.positive, Infinity, "should preserve a positive infinity default");
+    test.equal(object.negative, -Infinity, "should preserve a negative infinity default");
+    test.ok(Number.isNaN(object.notANumber), "should preserve a NaN default");
+
+    var jsonObject = Type.toObject(message, { defaults: true, json: true });
+    test.equal(jsonObject.positive, "Infinity", "should JSON-convert a positive infinity default");
+    test.equal(jsonObject.negative, "-Infinity", "should JSON-convert a negative infinity default");
+    test.equal(jsonObject.notANumber, "NaN", "should JSON-convert a NaN default");
+
+    var ownedObject = Type.toObject(Type.create({
+        positive: Infinity,
+        negative: -Infinity,
+        notANumber: NaN
+    }), { json: true });
+    test.equal(ownedObject.positive, "Infinity", "should JSON-convert an owned positive infinity value");
+    test.equal(ownedObject.negative, "-Infinity", "should JSON-convert an owned negative infinity value");
+    test.equal(ownedObject.notANumber, "NaN", "should JSON-convert an owned NaN value");
+
+    var withoutDefaults = Type.toObject(Type.create());
+    test.equal(Object.prototype.hasOwnProperty.call(withoutDefaults, "positive"), false, "should omit an unset positive field without defaults");
+    test.equal(Object.prototype.hasOwnProperty.call(withoutDefaults, "negative"), false, "should omit an unset negative field without defaults");
+    test.equal(Object.prototype.hasOwnProperty.call(withoutDefaults, "notANumber"), false, "should omit an unset NaN field without defaults");
+
+    test.end();
+});
+
 tape.test("converters", function(test) {
 
     protobuf.load("tests/data/convert.proto", function(err, root) {
