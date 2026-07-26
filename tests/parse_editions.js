@@ -157,3 +157,96 @@ tape.test("edition 2024 import option", function(test) {
 
     test.end();
 });
+
+
+tape.test("edition 2024 local visibility enforcement", function(test) {
+
+    // Parses several sources into one Root, each under its own file name, the
+    // way Root#load does (it sets parse.filename before each parse call).
+    function parseFiles(files) {
+        var root = new protobuf.Root();
+        Object.keys(files).forEach(function(filename) {
+            protobuf.parse.filename = filename;
+            protobuf.parse(files[filename], root);
+        });
+        return root;
+    }
+
+    test.doesNotThrow(function() {
+        parseFiles({
+            "a.proto": `edition = "2024";
+                local message Hidden { int32 value = 1; }
+                message User { Hidden hidden = 1; }`
+        }).resolveAll();
+    }, "local message should resolve within its own file");
+
+    test.doesNotThrow(function() {
+        parseFiles({
+            "a.proto": `edition = "2024";
+                local enum Hidden { ZERO = 0; }
+                message User { Hidden hidden = 1; }`
+        }).resolveAll();
+    }, "local enum should resolve within its own file");
+
+    test.throws(function() {
+        parseFiles({
+            "a.proto": `edition = "2024"; local message Hidden { int32 value = 1; }`,
+            "b.proto": `edition = "2024"; message User { Hidden hidden = 1; }`
+        }).resolveAll();
+    }, /is local to 'a\.proto' and cannot be referenced from 'b\.proto'/, "local message should not resolve from another file");
+
+    test.throws(function() {
+        parseFiles({
+            "a.proto": `edition = "2024"; local enum Hidden { ZERO = 0; }`,
+            "b.proto": `edition = "2024"; message User { Hidden hidden = 1; }`
+        }).resolveAll();
+    }, /is local to 'a\.proto' and cannot be referenced from 'b\.proto'/, "local enum should not resolve from another file");
+
+    test.throws(function() {
+        parseFiles({
+            "a.proto": `edition = "2024"; message Outer { local message Hidden { int32 value = 1; } }`,
+            "b.proto": `edition = "2024"; message User { Outer.Hidden hidden = 1; }`
+        }).resolveAll();
+    }, /is local to 'a\.proto' and cannot be referenced from 'b\.proto'/, "nested local message should not resolve from another file");
+
+    test.doesNotThrow(function() {
+        parseFiles({
+            "a.proto": `edition = "2024"; export message Shared { int32 value = 1; }`,
+            "b.proto": `edition = "2024"; message User { Shared shared = 1; }`
+        }).resolveAll();
+    }, "export message should resolve from another file");
+
+    test.doesNotThrow(function() {
+        parseFiles({
+            "a.proto": `edition = "2024"; message Plain { int32 value = 1; }`,
+            "b.proto": `edition = "2024"; message User { Plain plain = 1; }`
+        }).resolveAll();
+    }, "unmodified message should resolve from another file");
+
+    test.doesNotThrow(function() {
+        parseFiles({
+            "a.proto": `edition = "2023"; message Plain { int32 value = 1; }`,
+            "b.proto": `edition = "2023"; message User { Plain plain = 1; }`
+        }).resolveAll();
+    }, "edition 2023 cross-file references should be untouched");
+
+    test.doesNotThrow(function() {
+        parseFiles({
+            "a.proto": `syntax = "proto2"; message Plain { optional int32 value = 1; }`,
+            "b.proto": `syntax = "proto3"; message User { Plain plain = 1; }`
+        }).resolveAll();
+    }, "proto2/proto3 cross-file references should be untouched");
+
+    // Objects built without a file name cannot be proven to be cross-file, so
+    // they must keep resolving (programmatic construction, fromJSON, commons).
+    test.doesNotThrow(function() {
+        protobuf.Root.fromJSON({
+            nested: {
+                Hidden: { fields: { value: { type: "int32", id: 1 } } },
+                User: { fields: { hidden: { type: "Hidden", id: 1 } } }
+            }
+        }).resolveAll();
+    }, "objects without a file name should keep resolving");
+
+    test.end();
+});
