@@ -23,6 +23,8 @@ var base10Re    = /^[1-9][0-9]*$/,
     base16NegRe = /^-?0[x][0-9a-fA-F]+$/,
     base8Re     = /^0[0-7]+$/,
     base8NegRe  = /^-?0[0-7]+$/,
+    integerTypeRe = /^(?:u?int|sint|s?fixed)(?:32|64)$/,
+    unsignedTypeRe = /^(?:uint|fixed)(?:32|64)$/,
     numberRe    = util.patterns.numberRe,
     nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
     typeRefRe   = util.patterns.typeRefRe;
@@ -202,7 +204,7 @@ function parse(source, root, options) {
             case "nan": case "NAN": case "Nan": case "NaN":
                 return NaN;
             case "0":
-                return 0;
+                return sign * 0;
         }
         if (base10Re.test(token))
             return sign * parseInt(token, 10);
@@ -219,32 +221,31 @@ function parse(source, root, options) {
         throw illegal(token, "number", insideTryCatch);
     }
 
-    function parseId(token, acceptNegative, max) {
-        if (token === null) {
+    function parseInteger(token, acceptNegative, name) {
+        if (token === null)
             throw illegal(token, "end of input");
-        }
+        if (!acceptNegative && token.charAt(0) === "-")
+            throw illegal(token, name || "integer");
+        if (token === "0" || token === "-0")
+            return 0;
+        var value;
+        if (base10NegRe.test(token))
+            value = parseInt(token, 10);
+        else if (base16NegRe.test(token))
+            value = parseInt(token, 16);
+        else if (base8NegRe.test(token))
+            value = parseInt(token, 8);
+        else
+            throw illegal(token, name || "integer");
+        return value || 0;
+    }
+
+    function parseId(token, acceptNegative, max) {
         switch (token) {
             case "max": case "MAX": case "Max":
                 return max || maxFieldId;
-            case "0":
-                return 0;
         }
-
-        /* istanbul ignore if */
-        if (!acceptNegative && token.charAt(0) === "-")
-            throw illegal(token, "id");
-
-        if (base10NegRe.test(token))
-            return parseInt(token, 10);
-        if (base16NegRe.test(token))
-            return parseInt(token, 16);
-
-        /* istanbul ignore else */
-        if (base8NegRe.test(token))
-            return parseInt(token, 8);
-
-        /* istanbul ignore next */
-        throw illegal(token, "id");
+        return parseInteger(token, acceptNegative, "id");
     }
 
     function parsePackage() {
@@ -881,7 +882,9 @@ function parse(source, root, options) {
             return objectResult;
         }
 
-        var simpleValue = readValue(true);
+        var simpleValue = name === "default" && parent instanceof Field && integerTypeRe.test(parent.type)
+            ? parseInteger(next(), !unsignedTypeRe.test(parent.type))
+            : readValue(true);
         setOption(parent, name, simpleValue);
         return simpleValue;
         // Does not enforce a delimiter to be universal
