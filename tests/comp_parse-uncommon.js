@@ -26,6 +26,33 @@ tape.test("uncommon statements", function(test) {
     });
 });
 
+tape.test("numeric defaults", function(test) {
+    var Type = protobuf.parse("syntax = \"proto2\";\
+        message M {\
+            optional float float_value = 1 [default = -0];\
+            optional double double_value = 2 [default = -0];\
+            optional double zero_value = 3 [default = 0];\
+            optional int32 int_value = 4 [default = -0];\
+            optional int32 hex_int_value = 5 [default = -0x0];\
+        }").root.lookupType("M");
+
+    Type.resolveAll();
+    test.ok(Object.is(Type.fields.floatValue.defaultValue, -0), "should preserve a negative zero float default");
+    test.ok(Object.is(Type.fields.doubleValue.defaultValue, -0), "should preserve a negative zero double default");
+    test.ok(Object.is(Type.fields.zeroValue.defaultValue, 0), "should preserve a positive zero default");
+    test.ok(Object.is(Type.fields.intValue.defaultValue, 0), "should normalize a negative integer zero default");
+    test.ok(Object.is(Type.fields.hexIntValue.defaultValue, 0), "should normalize a negative hexadecimal zero default");
+    var Enum = protobuf.parse("syntax = \"proto3\"; enum E { ZERO = -0; }").root.lookupEnum("E");
+    test.ok(Object.is(Enum.values.ZERO, 0), "should normalize a negative zero enum value");
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto2\"; message M { optional uint32 value = 1 [default = -0]; }");
+    }, /illegal integer '-0'/, "should reject a negative unsigned default");
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto2\"; message M { optional int32 value = 1 [default = 1.5]; }");
+    }, /illegal integer '1\.5'/, "should reject a non-integer default");
+    test.end();
+});
+
 tape.test("negative enum reserved values", function(test) {
     test.doesNotThrow(function() {
         var Enum = protobuf.parse("syntax = \"proto3\"; enum Values { reserved -1; INVALID = 0; OK = 1; }").root.lookupEnum("Values");
