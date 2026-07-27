@@ -2918,6 +2918,9 @@ export class Writer {
     /** Stack of forked length-prefix positions. */
     states: (number[]|null);
 
+    /** Initial backing buffer size in bytes. Defaults to 128. */
+    static initialBufferSize: number;
+
     /**
      * Current write position.
      * @deprecated Use {@link Writer#pos} instead.
