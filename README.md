@@ -7,9 +7,7 @@
   <a href="https://www.jsdelivr.com/package/npm/protobufjs"><img src="https://img.shields.io/jsdelivr/npm/hm/protobufjs?label=requests&logo=jsdelivr" alt=""></a>
 </p>
 
-**Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://protobuf.dev/)).
-
-**protobuf.js** is a very fast, conformant, and unusually versatile JavaScript implementation of Protocol Buffers for Node.js and browsers. It works with `.proto` files out of the box, does not require protoc, and supports runtime reflection as well as specialized code generation with strong TypeScript declarations.
+**protobuf.js** is a very fast, conformant, and unusually versatile JavaScript implementation of [Protocol Buffers](https://protobuf.dev) for Node.js and browsers. It works with `.proto` files out of the box, does not require protoc, and supports runtime reflection as well as specialized code generation with strong TypeScript declarations.
 
 If protobuf.js is important to your project or organization, or if you depend on it commercially, [consider supporting](https://github.com/sponsors/dcodeIO) its ongoing maintenance. Sponsorship helps make bug fixes, releases, LTS/security handling, and user support more sustainable.
 
@@ -78,7 +76,9 @@ const decoded = AwesomeMessage.decode(encoded);
 
 Plain objects can be encoded directly when they already use protobuf.js runtime types: numbers for 32-bit numeric fields, booleans for `bool`, strings for `string`, `Uint8Array` or `Buffer` for `bytes`, arrays for repeated fields, and plain objects for maps. Map keys are the string representation of the respective value or an 8-character hash string for 64-bit keys.
 
-Unknown fields present on the wire are discarded by default. To preserve and forward unknown fields, set `reader.discardUnknown = false` before decoding with that reader, or make this the default for subsequently created readers with `Reader.discardUnknown = false`. Preserved unknown field data can be dropped from a decoded message with `delete message.$unknowns`.
+Note that, as with any structured binary format, decoded structures incur runtime memory overhead beyond their encoded representation. Applications processing untrusted input should therefore apply appropriate input-size and concurrency limits to bound memory use.
+
+For the same reason, unknown fields present on the wire are intentionally discarded by default rather than retained for the lifetime of decoded messages. Applications that need unknown-field round-tripping, such as forwarding messages through an older schema, can opt in by setting `reader.discardUnknown = false`, or make preservation the default for subsequently created readers with `Reader.discardUnknown = false`. Preserved unknown field data can be explicitly dropped with `delete message.$unknowns`.
 
 ### Convert plain objects
 
