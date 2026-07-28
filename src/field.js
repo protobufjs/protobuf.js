@@ -371,12 +371,17 @@ Field.prototype.resolve = function resolve() {
 
     // convert to internal data type if necesssary
     if (this.long) {
-        this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type === "uint64" || this.type === "fixed64");
+        var unsigned = this.type === "uint64" || this.type === "fixed64";
+        this.typeDefault = typeof this.typeDefault === "string"
+            ? util.Long.fromString(this.typeDefault, unsigned)
+            : util.Long.fromNumber(this.typeDefault, unsigned);
 
         /* istanbul ignore else */
         if (Object.freeze)
             Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
 
+    } else if (types.long[this.type] !== undefined && typeof this.typeDefault === "string") {
+        this.typeDefault = parseInt(this.typeDefault, 10);
     } else if (this.bytes && typeof this.typeDefault === "string") {
         var buf;
         if (util.base64.test(this.typeDefault))

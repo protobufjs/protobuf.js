@@ -13,7 +13,7 @@ var Namespace = $protobuf.Namespace,
     Method    = $protobuf.Method,
     patterns  = $protobuf.util.patterns;
 
-var numberRe  = patterns.numberRe,
+var integerRe = /^[+-]?[0-9]+$/,
     typeRefRe = patterns.typeRefRe;
 
 // --- Root ---
@@ -519,17 +519,33 @@ function Field_fromDescriptor(descriptor, ctx, nested) {
 
     if (descriptor.defaultValue && descriptor.defaultValue.length) {
         var defaultValue = descriptor.defaultValue;
-        switch (defaultValue) {
-            case "true": case "TRUE":
-                defaultValue = true;
+        switch (fieldType) {
+            case "double": case "float":
+                switch (defaultValue.toLowerCase()) {
+                    case "inf": defaultValue = Infinity; break;
+                    case "-inf": defaultValue = -Infinity; break;
+                    case "nan": case "-nan": defaultValue = NaN; break;
+                    default:
+                        defaultValue = Number(defaultValue);
+                        if (Number.isNaN(defaultValue))
+                            throw Error("illegal default value for " + fieldType);
+                        break;
+                }
                 break;
-            case "false": case "FALSE":
-                defaultValue = false;
+            case "int32": case "uint32": case "sint32": case "fixed32": case "sfixed32":
+                if (!integerRe.test(defaultValue))
+                    throw Error("illegal default value for " + fieldType);
+                defaultValue = parseInt(defaultValue, 10);
                 break;
-            default:
-                var match = numberRe.exec(defaultValue);
-                if (match)
-                    defaultValue = parseInt(defaultValue); // eslint-disable-line radix
+            case "int64": case "uint64": case "sint64": case "fixed64": case "sfixed64":
+                if (!integerRe.test(defaultValue))
+                    throw Error("illegal default value for " + fieldType);
+                break;
+            case "bool":
+                switch (defaultValue) {
+                    case "true": case "TRUE": defaultValue = true; break;
+                    case "false": case "FALSE": defaultValue = false; break;
+                }
                 break;
         }
         field.setOption("default", defaultValue);
