@@ -26,7 +26,7 @@ function Writer() {
      * Backing buffer.
      * @type {Uint8Array}
      */
-    this.buf = this.constructor.alloc(64);
+    this.buf = this.constructor.alloc(Writer.initialBufferSize);
 
     /**
      * Cached DataView over {@link Writer#buf}.
@@ -40,6 +40,12 @@ function Writer() {
      */
     this.states = null;
 }
+
+/**
+ * Initial backing buffer size in bytes. Defaults to 128.
+ * @type {number}
+ */
+Writer.initialBufferSize = 128;
 
 /**
  * Current write position.

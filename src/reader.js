@@ -395,9 +395,18 @@ Reader.prototype.double = function read_double() {
  */
 Reader.prototype.uint32s = function read_uint32s(array) {
     if (array === undefined) array = [];
-    var end = this.uint32() + this.pos;
-    while (this.pos < end)
-        array.push(this.uint32());
+    var end = this.uint32() + this.pos, buf = this.buf, pos = this.pos, value;
+    while (pos < end) {
+        value = buf[pos++];
+        if (value < 128)
+            array.push(value);
+        else {
+            this.pos = pos - 1;
+            array.push(this.uint32());
+            pos = this.pos;
+        }
+    }
+    this.pos = pos;
     return array;
 };
 
@@ -408,9 +417,18 @@ Reader.prototype.uint32s = function read_uint32s(array) {
  */
 Reader.prototype.int32s = function read_int32s(array) {
     if (array === undefined) array = [];
-    var end = this.uint32() + this.pos;
-    while (this.pos < end)
-        array.push(this.int32());
+    var end = this.uint32() + this.pos, buf = this.buf, pos = this.pos, value;
+    while (pos < end) {
+        value = buf[pos++];
+        if (value < 128)
+            array.push(value);
+        else {
+            this.pos = pos - 1;
+            array.push(this.int32());
+            pos = this.pos;
+        }
+    }
+    this.pos = pos;
     return array;
 };
 
@@ -434,9 +452,18 @@ Reader.prototype.sint32s = function read_sint32s(array) {
  */
 Reader.prototype.bools = function read_bools(array) {
     if (array === undefined) array = [];
-    var end = this.uint32() + this.pos;
-    while (this.pos < end)
-        array.push(this.bool());
+    var end = this.uint32() + this.pos, buf = this.buf, pos = this.pos, value;
+    while (pos < end) {
+        value = buf[pos++];
+        if (value < 128)
+            array.push(value !== 0);
+        else {
+            this.pos = pos - 1;
+            array.push(this.bool());
+            pos = this.pos;
+        }
+    }
+    this.pos = pos;
     return array;
 };
 

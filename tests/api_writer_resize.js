@@ -24,6 +24,19 @@ function ldelimRaw(Ctor, n) {
     return { buf: buf, pattern: pattern };
 }
 
+tape.test("writer initial buffer size", function(test) {
+    var initialBufferSize = Writer.initialBufferSize;
+    test.equal(Writer.initialBufferSize, 128, "defaults to 128 bytes");
+
+    Writer.initialBufferSize = 32;
+    writers.forEach(function(entry) {
+        test.equal(new entry[1]().buf.length, 32, entry[0] + " uses the configured size");
+    });
+    Writer.initialBufferSize = initialBufferSize;
+
+    test.end();
+});
+
 tape.test("writer resize / reserve-and-move", function(test) {
 
     writers.forEach(function(entry) {

@@ -9,20 +9,31 @@ var beginMarker = "<!-- BEGIN BENCHMARK DATA -->",
     resultsDir  = path.join(__dirname, "results"),
     readmeFile  = path.join(__dirname, "..", "README.md");
 
-var palette = [
-    "#0072ce",
-    "#60a5fa",
-    "#7c3aed",
-    "#f59e0b",
-    "#ef4444",
-];
+var themes = {
+    light: {
+        text: "#1f2933",
+        meta: "#65758b",
+        value: "#4a5568",
+        axis: "#d8dee9",
+        grid: "#eef2f7",
+        palette: [ "#0072ce", "#60a5fa", "#7c3aed", "#f59e0b", "#ef4444" ]
+    },
+    dark: {
+        text: "#f0f6fc",
+        meta: "#8b949e",
+        value: "#c9d1d9",
+        axis: "#484f58",
+        grid: "#30363d",
+        palette: [ "#1f6feb", "#79c0ff", "#a371f7", "#d29922", "#f85149" ]
+    }
+};
 
 var series = [
-    { name: "protobuf.js static", color: palette[0], legendWidth: 140 },
-    { name: "protobuf.js reflect", color: palette[1], legendWidth: 140 },
-    { name: "JSON", color: palette[2], legendWidth: 80 },
-    { name: "protoc-gen-js", color: palette[3], legendWidth: 120 },
-    { name: "protoc-gen-es", color: palette[4], legendWidth: 120 }
+    { name: "protobuf.js static", color: 0, legendWidth: 140 },
+    { name: "protobuf.js reflect", color: 1, legendWidth: 140 },
+    { name: "JSON", color: 2, legendWidth: 80 },
+    { name: "protoc-gen-js", color: 3, legendWidth: 120 },
+    { name: "protoc-gen-es", color: 4, legendWidth: 120 }
 ];
 
 if (require.main === module) {
@@ -34,13 +45,18 @@ if (require.main === module) {
 function render(result) {
     fs.mkdirSync(resultsDir, { recursive: true });
     result.operations.forEach(function(operation) {
+        Object.keys(themes).forEach(function(themeName) {
+            var file = path.join(resultsDir, operation.name + "-" + themeName + ".svg");
+            fs.writeFileSync(file, renderOperation(result, operation, themes[themeName]));
+            process.stdout.write("wrote " + file.replace(/\\/g, "/") + "\n");
+        });
         var file = path.join(resultsDir, operation.name + ".svg");
-        fs.writeFileSync(file, renderOperation(result, operation));
+        fs.writeFileSync(file, renderOperation(result, operation, themes.light, "#ffffff"));
         process.stdout.write("wrote " + file.replace(/\\/g, "/") + "\n");
     });
 }
 
-function renderOperation(result, operation) {
+function renderOperation(result, operation, theme, background) {
     var width = 840,
         margin = { top: 100, right: 12, bottom: 72, left: 12 },
         chartHeight = 190,
@@ -61,10 +77,11 @@ function renderOperation(result, operation) {
     out.push("<title id=\"title\">protobuf.js " + escapeXml(operation.title) + " benchmark</title>");
     out.push("<desc id=\"desc\">Normalized benchmark throughput by case. The fastest implementation in each case is 100%.</desc>");
     out.push("<style>");
-    out.push("text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#1f2933}");
-    out.push(".title{font-size:22px;font-weight:700}.meta,.legend{font-size:12px;fill:#65758b}.case{font-size:15px;font-weight:700}.value{font-size:10px;fill:#4a5568}.axis{stroke:#d8dee9;stroke-width:1}.grid{stroke:#eef2f7;stroke-width:1}.bar{rx:3;ry:3}");
+    out.push("text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:" + theme.text + "}");
+    out.push(".title{font-size:22px;font-weight:700}.meta,.legend{font-size:12px;fill:" + theme.meta + "}.case{font-size:15px;font-weight:700}.value{font-size:10px;fill:" + theme.value + "}.axis{stroke:" + theme.axis + ";stroke-width:1}.grid{stroke:" + theme.grid + ";stroke-width:1}.bar{rx:3;ry:3}");
     out.push("</style>");
-    out.push("<rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/>");
+    if (background)
+        out.push("<rect width=\"100%\" height=\"100%\" fill=\"" + background + "\"/>");
     out.push("<text x=\"" + margin.left + "\" y=\"30\" class=\"title\">" + escapeXml(titleCase(operation.title)) + " Throughput</text>");
     out.push("<text x=\"" + margin.left + "\" y=\"50\" class=\"meta\">Normalized ops/s; fastest = 100%. " + escapeXml(systemLabel(result)) + ".</text>");
 
@@ -85,11 +102,11 @@ function renderOperation(result, operation) {
             var barX = barsX + barOffset(barIndex, barWidth, barGap, pairedBarGap),
                 barHeight = Math.max(1, Math.round(chartHeight * variant.relative)),
                 barY = chartBottom - barHeight;
-            out.push("<rect x=\"" + barX + "\" y=\"" + barY + "\" width=\"" + barWidth + "\" height=\"" + barHeight + "\" class=\"bar\" fill=\"" + item.color + "\"/>");
+            out.push("<rect x=\"" + barX + "\" y=\"" + barY + "\" width=\"" + barWidth + "\" height=\"" + barHeight + "\" class=\"bar\" fill=\"" + theme.palette[item.color] + "\"/>");
             out.push("<text x=\"" + (barX + barWidth / 2) + "\" y=\"" + (chartBottom + 17) + "\" text-anchor=\"middle\" class=\"value\">" + escapeXml(formatHz(variant.hz)) + "</text>");
         });
     });
-    renderLegend(out, orderedSeries, margin.left, height - 24, width - margin.left - margin.right);
+    renderLegend(out, orderedSeries, theme, margin.left, height - 24, width - margin.left - margin.right);
 
     out.push("</svg>");
     return out.join("\n") + "\n";
@@ -113,11 +130,12 @@ function updateReadme(result) {
 
 function renderBenchmarkData(result) {
     return result.operations.map(function(operation) {
-        return "!["
-            + titleCase(operation.title)
-            + " benchmark](./bench/results/"
-            + operation.name
-            + ".svg)\n\n"
+        var title = titleCase(operation.title) + " benchmark";
+        return "<picture>\n"
+            + "  <source media=\"(prefers-color-scheme: dark)\" srcset=\"./bench/results/" + operation.name + "-dark.svg\">\n"
+            + "  <source media=\"(prefers-color-scheme: light)\" srcset=\"./bench/results/" + operation.name + "-light.svg\">\n"
+            + "  <img alt=\"" + title + "\" src=\"./bench/results/" + operation.name + ".svg\">\n"
+            + "</picture>\n\n"
             + renderTable(operation);
     }).join("\n\n");
 }
@@ -141,14 +159,14 @@ function renderTable(operation) {
     return rows.join("\n");
 }
 
-function renderLegend(out, orderedSeries, x, y, width) {
+function renderLegend(out, orderedSeries, theme, x, y, width) {
     var totalWidth = orderedSeries.reduce(function(sum, item) {
         return sum + item.legendWidth;
     }, 0);
     x += Math.max(0, (width - totalWidth) / 2);
     orderedSeries.forEach(function(item) {
         var slotX = x;
-        out.push("<rect x=\"" + slotX + "\" y=\"" + (y - 10) + "\" width=\"11\" height=\"11\" rx=\"2\" ry=\"2\" fill=\"" + item.color + "\"/>");
+        out.push("<rect x=\"" + slotX + "\" y=\"" + (y - 10) + "\" width=\"11\" height=\"11\" rx=\"2\" ry=\"2\" fill=\"" + theme.palette[item.color] + "\"/>");
         out.push("<text x=\"" + (slotX + 16) + "\" y=\"" + y + "\" class=\"legend\">" + escapeXml(item.name) + "</text>");
         x += item.legendWidth;
     });

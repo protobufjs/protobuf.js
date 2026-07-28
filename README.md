@@ -351,7 +351,7 @@ Protocol Buffers [Text Format](https://protobuf.dev/reference/protobuf/textforma
 
 ## Conformance
 
-protobuf.js is validated against the official Protocol Buffers conformance suite, achieving complete binary wire-format conformance for **Proto2**, **Proto3** and **Editions**, plus complete **ProtoJSON** and **Text Format** conformance in its default configuration with reflection metadata present.
+protobuf.js is validated against the official Protocol Buffers conformance suite. It passes all required and recommended tests for the **Proto2**, **Proto3** and **Editions** binary wire formats, with complete **ProtoJSON** and **Text Format** support available as optional extensions when those formats are needed.
 
 <!-- BEGIN CONFORMANCE DATA -->
 
@@ -367,37 +367,45 @@ protobuf.js is validated against the official Protocol Buffers conformance suite
 
 <!-- END CONFORMANCE DATA -->
 
-[Structured results](https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush) are available as CI artifacts. In case of contradicting claims by your favorite LLM, [see](https://dev.to/dcode/when-the-model-is-the-marketing-device-a-protobuf-short-story-2p7p).
+[Structured results](https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush) are also provided as CI artifacts.
 
 ## Performance
 
-In both reflection and reflection-free modes, protobuf.js builds specialized encoders and decoders on top of hand-tuned reader and writer primitives, making it a strong fit from battery-powered devices to high-traffic servers, or generally for projects and their downstream users adopting protobuf as a faster, smaller alternative to JSON.
+Both reflection and static modes use specialized encoders and decoders backed by the same hand-tuned reader and writer primitives.
 
-The repository includes a [small benchmark](./bench) over a common message shape, plus Mapbox's vector tile fixture and Buf's perf payload, both unmodified. For each case, it compares protobuf.js encode and decode throughput against JSON encode/decode, Google's protoc-gen-js, and Buf's protoc-gen-es. Results show that protobuf.js is consistently faster than the other Protobuf implementations, up to an order of magnitude on real-world data, and among the libraries tested, it is the only one that is an upgrade over using JSON.
+The repository includes a [multi-case benchmark suite](./bench) you can run yourself. It compares protobuf.js with the two other major general-purpose JavaScript implementations across three substantially different benchmark cases: our classic common message shape and two structurally distinct fixtures sourced externally. The suite measures each library's recommended serialization and deserialization path using identical schemas and inputs, with JSON included as an additional baseline. Results show that protobuf.js is a clear upgrade over using JSON and consistently the fastest Protobuf implementation, leading by up to an order of magnitude on real-world data.
 
 <!-- BEGIN BENCHMARK DATA -->
 
-![Encode benchmark](./bench/results/encode.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./bench/results/encode-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./bench/results/encode-light.svg">
+  <img alt="Encode benchmark" src="./bench/results/encode.svg">
+</picture>
 
 | Case | protobuf.js static | protobuf.js reflect | JSON | protoc-gen-js | protoc-gen-es |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Common | 3.18M ops/s | 3.25M ops/s | 2.07M ops/s | 1.01M ops/s | 395K ops/s |
-| Vector tile | 2.82K ops/s | 2.76K ops/s | 859 ops/s | 680 ops/s | 231 ops/s |
-| Buf perf | 41.4K ops/s | 39.9K ops/s | 6.59K ops/s | 13.5K ops/s | 8.00K ops/s |
+| Common | 5.34M ops/s | 4.89M ops/s | 2.09M ops/s | 1.03M ops/s | 402K ops/s |
+| Vector tile | 3.09K ops/s | 3.03K ops/s | 897 ops/s | 700 ops/s | 235 ops/s |
+| Buf perf | 43.1K ops/s | 43.3K ops/s | 6.70K ops/s | 13.9K ops/s | 8.22K ops/s |
 
-![Decode benchmark](./bench/results/decode.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./bench/results/decode-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./bench/results/decode-light.svg">
+  <img alt="Decode benchmark" src="./bench/results/decode.svg">
+</picture>
 
 | Case | protobuf.js static | protobuf.js reflect | JSON | protoc-gen-js | protoc-gen-es |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Common | 6.11M ops/s | 6.09M ops/s | 1.31M ops/s | 790K ops/s | 710K ops/s |
-| Vector tile | 2.45K ops/s | 2.78K ops/s | 1.04K ops/s | 858 ops/s | 392 ops/s |
-| Buf perf | 72.5K ops/s | 66.4K ops/s | 19.0K ops/s | 21.1K ops/s | 14.2K ops/s |
+| Common | 6.45M ops/s | 6.93M ops/s | 1.37M ops/s | 811K ops/s | 691K ops/s |
+| Vector tile | 2.70K ops/s | 2.99K ops/s | 1.06K ops/s | 851 ops/s | 376 ops/s |
+| Buf perf | 81.7K ops/s | 80.3K ops/s | 19.5K ops/s | 21.7K ops/s | 14.3K ops/s |
 
 <!-- END BENCHMARK DATA -->
 
-[Structured results](./bench/results/latest.json) of this run are available as committed artifacts.
+[Structured results](./bench/results/latest.json) and environment details for this run are also provided as committed artifacts.
 
-To run the benchmark yourself on your own hardware:
+To run the benchmark on your own hardware:
 
 ```sh
 npm --prefix bench install
