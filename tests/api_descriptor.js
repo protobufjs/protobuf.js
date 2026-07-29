@@ -64,6 +64,55 @@ tape.test("descriptor - proto2 roundtrip", function (test) {
     test.end();
 });
 
+tape.test("descriptor - numeric defaults", function(test) {
+    var root = protobuf.Root.fromDescriptor(descriptor.FileDescriptorSet.create({
+        file: [{
+            name: "defaults.proto",
+            syntax: "proto2",
+            messageType: [{
+                name: "Message",
+                field: [
+                    { name: "floatValue", number: 1, label: 1, type: 2, defaultValue: "8.999999488e+09" },
+                    { name: "doubleValue", number: 2, label: 1, type: 1, defaultValue: "7e+22" },
+                    { name: "negativeZero", number: 3, label: 1, type: 2, defaultValue: "-0" },
+                    { name: "positiveInfinity", number: 4, label: 1, type: 1, defaultValue: "inf" },
+                    { name: "negativeInfinity", number: 5, label: 1, type: 1, defaultValue: "-inf" },
+                    { name: "notANumber", number: 6, label: 1, type: 1, defaultValue: "nan" },
+                    { name: "int32Value", number: 7, label: 1, type: 5, defaultValue: "-123456789" },
+                    { name: "int64Value", number: 8, label: 1, type: 3, defaultValue: "-9123456789123456789" },
+                    { name: "uint64Value", number: 9, label: 1, type: 4, defaultValue: "10123456789123456789" },
+                    { name: "stringValue", number: 10, label: 1, type: 9, defaultValue: "123" }
+                ]
+            }]
+        }]
+    })).resolveAll();
+    var Message = root.lookupType("Message"),
+        message = Message.create();
+
+    test.equal(message.floatValue, 8999999488, "parses an exponent float default");
+    test.equal(message.doubleValue, 7e22, "parses an exponent double default");
+    test.ok(Object.is(message.negativeZero, -0), "preserves a negative zero float default");
+    test.equal(message.positiveInfinity, Infinity, "parses a positive infinity default");
+    test.equal(message.negativeInfinity, -Infinity, "parses a negative infinity default");
+    test.ok(Number.isNaN(message.notANumber), "parses a nan default");
+    test.equal(message.int32Value, -123456789, "parses a negative int32 default");
+    test.equal(message.int64Value.toString(), "-9123456789123456789", "parses an exact int64 default");
+    test.equal(message.uint64Value.toString(), "10123456789123456789", "parses an exact uint64 default");
+    test.equal(message.stringValue, "123", "keeps a numeric-looking string default");
+    test.throws(function() {
+        protobuf.Field.fromDescriptor(descriptor.FieldDescriptorProto.create({
+            name: "value", number: 1, label: 1, type: 1, defaultValue: "7junk"
+        }));
+    }, /illegal default value for double/, "rejects an invalid floating-point default");
+    test.throws(function() {
+        protobuf.Field.fromDescriptor(descriptor.FieldDescriptorProto.create({
+            name: "value", number: 1, label: 1, type: 3, defaultValue: "7junk"
+        }));
+    }, /illegal default value for int64/, "rejects an invalid integer default");
+
+    test.end();
+});
+
 tape.test("descriptor - ranges use descriptor end semantics at boundary", function (test) {
     var root = protobuf.parse(`syntax = "proto2";
 
