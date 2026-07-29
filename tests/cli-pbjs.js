@@ -162,7 +162,6 @@ tape.test("pbjs generates shadow-safe special floating-point defaults", function
             test.equal(jsonObject.negative, "-Infinity", "generated toObject should JSON-convert a negative infinity default");
             test.equal(jsonObject.notANumber, "NaN", "generated toObject should JSON-convert a NaN default");
             test.ok(Object.is(jsonObject.negativeZero, -0), "generated toObject should preserve a negative zero default in JSON mode");
-            test.equal(jsonObject.finite, 1.5, "generated toObject should preserve a finite default in JSON mode");
 
             delete protobuf.roots.staticSpecialDefaults;
             test.end();

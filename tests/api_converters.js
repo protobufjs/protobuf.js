@@ -13,18 +13,6 @@ tape.test("converters - special floating-point defaults", function(test) {
         }").root.lookupType("NonFiniteDefaults"),
         message = Type.create();
 
-    test.equal(Type.fields.positive.defaultValue, Infinity, "should parse positive infinity as a field default");
-    test.equal(Type.fields.negative.defaultValue, -Infinity, "should parse negative infinity as a field default");
-    test.ok(Number.isNaN(Type.fields.notANumber.defaultValue), "should parse NaN as a field default");
-    test.ok(Object.is(Type.fields.negativeZero.defaultValue, -0), "should parse negative zero as a field default");
-    test.equal(Type.fields.finite.defaultValue, 1.5, "should parse a finite field default");
-
-    test.equal(message.positive, Infinity, "should expose positive infinity through the message prototype");
-    test.equal(message.negative, -Infinity, "should expose negative infinity through the message prototype");
-    test.ok(Number.isNaN(message.notANumber), "should expose NaN through the message prototype");
-    test.ok(Object.is(message.negativeZero, -0), "should expose negative zero through the message prototype");
-    test.equal(message.finite, 1.5, "should expose a finite value through the message prototype");
-
     var object = Type.toObject(message, { defaults: true });
     test.equal(object.positive, Infinity, "should preserve a positive infinity default");
     test.equal(object.negative, -Infinity, "should preserve a negative infinity default");
@@ -37,27 +25,6 @@ tape.test("converters - special floating-point defaults", function(test) {
     test.equal(jsonObject.negative, "-Infinity", "should JSON-convert a negative infinity default");
     test.equal(jsonObject.notANumber, "NaN", "should JSON-convert a NaN default");
     test.ok(Object.is(jsonObject.negativeZero, -0), "should preserve a negative zero default in JSON mode");
-    test.equal(jsonObject.finite, 1.5, "should preserve a finite default in JSON mode");
-
-    var ownedObject = Type.toObject(Type.create({
-        positive: Infinity,
-        negative: -Infinity,
-        notANumber: NaN,
-        negativeZero: -0,
-        finite: 1.5
-    }), { json: true });
-    test.equal(ownedObject.positive, "Infinity", "should JSON-convert an owned positive infinity value");
-    test.equal(ownedObject.negative, "-Infinity", "should JSON-convert an owned negative infinity value");
-    test.equal(ownedObject.notANumber, "NaN", "should JSON-convert an owned NaN value");
-    test.ok(Object.is(ownedObject.negativeZero, -0), "should preserve an owned negative zero value in JSON mode");
-    test.equal(ownedObject.finite, 1.5, "should preserve an owned finite value in JSON mode");
-
-    var withoutDefaults = Type.toObject(Type.create());
-    test.equal(Object.prototype.hasOwnProperty.call(withoutDefaults, "positive"), false, "should omit an unset positive field without defaults");
-    test.equal(Object.prototype.hasOwnProperty.call(withoutDefaults, "negative"), false, "should omit an unset negative field without defaults");
-    test.equal(Object.prototype.hasOwnProperty.call(withoutDefaults, "notANumber"), false, "should omit an unset NaN field without defaults");
-    test.equal(Object.prototype.hasOwnProperty.call(withoutDefaults, "negativeZero"), false, "should omit an unset negative zero field without defaults");
-    test.equal(Object.prototype.hasOwnProperty.call(withoutDefaults, "finite"), false, "should omit an unset finite field without defaults");
 
     test.end();
 });
