@@ -110,6 +110,65 @@ tape.test("pbjs generates unsigned fixed64 defaults", function(test) {
     });
 });
 
+tape.test("pbjs generates shadow-safe special floating-point defaults", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.parse("syntax = \"proto2\";\
+            message NaN {\
+                message Infinity {\
+                    optional double positive = 1 [default = inf];\
+                    optional double negative = 2 [default = -inf];\
+                    optional float not_a_number = 3 [default = nan];\
+                    optional double negative_zero = 4 [default = -0];\
+                    optional double finite = 5 [default = 1.5];\
+                }\
+            }").root;
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {
+            create: true,
+            convert: true,
+            root: "staticSpecialDefaults"
+        }, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+            if (err) {
+                test.end();
+                return;
+            }
+
+            delete protobuf.roots.staticSpecialDefaults;
+            var $protobuf = protobuf;
+            eval(jsCode);
+
+            var Type = protobuf.roots.staticSpecialDefaults.NaN.Infinity,
+                message = Type.create();
+
+            test.equal(message.positive, Infinity, "generated prototype should expose positive infinity");
+            test.equal(message.negative, -Infinity, "generated prototype should expose negative infinity");
+            test.ok(Number.isNaN(message.notANumber), "generated prototype should expose NaN");
+            test.ok(Object.is(message.negativeZero, -0), "generated prototype should expose negative zero");
+            test.equal(message.finite, 1.5, "generated prototype should expose a finite value");
+
+            var object = Type.toObject(message, { defaults: true });
+            test.equal(object.positive, Infinity, "generated toObject should preserve a positive infinity default");
+            test.equal(object.negative, -Infinity, "generated toObject should preserve a negative infinity default");
+            test.ok(Number.isNaN(object.notANumber), "generated toObject should preserve a NaN default");
+            test.ok(Object.is(object.negativeZero, -0), "generated toObject should preserve a negative zero default");
+            test.equal(object.finite, 1.5, "generated toObject should preserve a finite default");
+
+            var jsonObject = Type.toObject(message, { defaults: true, json: true });
+            test.equal(jsonObject.positive, "Infinity", "generated toObject should JSON-convert a positive infinity default");
+            test.equal(jsonObject.negative, "-Infinity", "generated toObject should JSON-convert a negative infinity default");
+            test.equal(jsonObject.notANumber, "NaN", "generated toObject should JSON-convert a NaN default");
+            test.ok(Object.is(jsonObject.negativeZero, -0), "generated toObject should preserve a negative zero default in JSON mode");
+
+            delete protobuf.roots.staticSpecialDefaults;
+            test.end();
+        });
+    });
+});
+
 tape.test("pbjs static service methods expose rpc metadata", function(test) {
     cliTest(test, function() {
         var root = protobuf.parse([
@@ -1135,4 +1194,3 @@ tape.test("pbjs generates static code with message filter", function (test) {
         });
     });
 });
-

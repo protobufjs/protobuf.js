@@ -303,7 +303,11 @@ converter.toObject = function toObject(mtype) {
             ("d%s=%j", prop, arrayDefault)
             ("if(o.bytes!==Array)d%s=util.newBuffer(d%s)", prop, prop)
         ("}");
-            } else gen
+            } else if ((field.type === "double" || field.type === "float") && typeof field.typeDefault === "number"
+                    && (!isFinite(field.typeDefault) || Object.is(field.typeDefault, -0))) gen
+        ("d%s=%f", prop, field.typeDefault)
+        ("if(o.json&&!isFinite(d%s))d%s=String(d%s)", prop, prop, prop);
+            else gen
         ("d%s=%j", prop, field.typeDefault); // also messages (=null)
         } gen
     ("}");

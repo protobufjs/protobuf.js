@@ -345,6 +345,18 @@ function globalRef(name) {
     return "$" + name;
 }
 
+function floatDefaultLiteral(value) {
+    if (Object.is(value, -0))
+        return "-0";
+    if (value === Infinity)
+        return globalRef("Infinity");
+    if (value === -Infinity)
+        return "-" + globalRef("Infinity");
+    if (Number.isNaN(value))
+        return globalRef("NaN");
+    return JSON.stringify(value);
+}
+
 function isIdentifierReference(node, parent) {
     if (!parent)
         return true;
@@ -797,7 +809,10 @@ function buildType(ref, type) {
                 + ") : " + field.typeDefault.toNumber(field.type === "uint64" || field.type === "fixed64") + ";");
         else if (field.bytes) {
             push(escapeName(type.name) + ".prototype" + prop + " = $util.newBuffer(" + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ");");
-        } else
+        } else if ((field.type === "double" || field.type === "float") && typeof field.typeDefault === "number"
+                && (!isFinite(field.typeDefault) || Object.is(field.typeDefault, -0)))
+            push(escapeName(type.name) + ".prototype" + prop + " = " + floatDefaultLiteral(field.typeDefault) + ";");
+        else
             push(escapeName(type.name) + ".prototype" + prop + " = " + JSON.stringify(field.typeDefault) + ";");
     });
 

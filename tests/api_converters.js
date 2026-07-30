@@ -2,6 +2,33 @@ var tape = require("tape");
 
 var protobuf  = require("..");
 
+tape.test("converters - special floating-point defaults", function(test) {
+    var Type = protobuf.parse("syntax = \"proto2\";\
+        message NonFiniteDefaults {\
+            optional double positive = 1 [default = inf];\
+            optional double negative = 2 [default = -inf];\
+            optional float not_a_number = 3 [default = nan];\
+            optional double negative_zero = 4 [default = -0];\
+            optional double finite = 5 [default = 1.5];\
+        }").root.lookupType("NonFiniteDefaults"),
+        message = Type.create();
+
+    var object = Type.toObject(message, { defaults: true });
+    test.equal(object.positive, Infinity, "should preserve a positive infinity default");
+    test.equal(object.negative, -Infinity, "should preserve a negative infinity default");
+    test.ok(Number.isNaN(object.notANumber), "should preserve a NaN default");
+    test.ok(Object.is(object.negativeZero, -0), "should preserve a negative zero default");
+    test.equal(object.finite, 1.5, "should preserve a finite default");
+
+    var jsonObject = Type.toObject(message, { defaults: true, json: true });
+    test.equal(jsonObject.positive, "Infinity", "should JSON-convert a positive infinity default");
+    test.equal(jsonObject.negative, "-Infinity", "should JSON-convert a negative infinity default");
+    test.equal(jsonObject.notANumber, "NaN", "should JSON-convert a NaN default");
+    test.ok(Object.is(jsonObject.negativeZero, -0), "should preserve a negative zero default in JSON mode");
+
+    test.end();
+});
+
 tape.test("converters", function(test) {
 
     protobuf.load("tests/data/convert.proto", function(err, root) {
