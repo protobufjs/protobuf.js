@@ -136,6 +136,22 @@ function run(options) {
     }
 
     function callJsdoc() {
+        // Workaround for jsdoc >3.5.5
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var fileTmp = file + '.pbts-tmp.js';
+
+            fs.writeFileSync(
+                fileTmp,
+                fs.readFileSync(file).toString().replace(
+                    /((^|\n) *\* )@exports/g,
+                    '$1@name'
+                )
+            );
+
+            files[i] = fileTmp;
+            cleanup.push(fileTmp);
+        }
 
         // There is no proper API for jsdoc, so this executes the CLI and pipes the output
         var basedir = path.join(__dirname, ".");
