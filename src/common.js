@@ -139,54 +139,54 @@ common("struct", {
      * @interface IValue
      * @type {Object}
      * @property {string} [kind]
-     * @property {0} [nullValue]
-     * @property {number} [numberValue]
-     * @property {string} [stringValue]
-     * @property {boolean} [boolValue]
-     * @property {IStruct} [structValue]
-     * @property {IListValue} [listValue]
+     * @property {0} [null_value]
+     * @property {number} [number_value]
+     * @property {string} [string_value]
+     * @property {boolean} [bool_value]
+     * @property {IStruct} [struct_value]
+     * @property {IListValue} [list_value]
      * @memberof common
      */
     Value: {
         oneofs: {
             kind: {
                 oneof: [
-                    "nullValue",
-                    "numberValue",
-                    "stringValue",
-                    "boolValue",
-                    "structValue",
-                    "listValue"
+                    "null_value",
+                    "number_value",
+                    "string_value",
+                    "bool_value",
+                    "struct_value",
+                    "list_value"
                 ]
             }
         },
         fields: {
-            nullValue: {
+            null_value: {
                 type: "NullValue",
                 id: 1,
                 protoName: "null_value"
             },
-            numberValue: {
+            number_value: {
                 type: "double",
                 id: 2,
                 protoName: "number_value"
             },
-            stringValue: {
+            string_value: {
                 type: "string",
                 id: 3,
                 protoName: "string_value"
             },
-            boolValue: {
+            bool_value: {
                 type: "bool",
                 id: 4,
                 protoName: "bool_value"
             },
-            structValue: {
+            struct_value: {
                 type: "Struct",
                 id: 5,
                 protoName: "struct_value"
             },
-            listValue: {
+            list_value: {
                 type: "ListValue",
                 id: 6,
                 protoName: "list_value"
