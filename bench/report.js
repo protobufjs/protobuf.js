@@ -136,7 +136,10 @@ function renderBenchmarkData(result) {
             + "  <source media=\"(prefers-color-scheme: light)\" srcset=\"./bench/results/" + operation.name + "-light.svg\">\n"
             + "  <img alt=\"" + title + "\" src=\"./bench/results/" + operation.name + ".svg\">\n"
             + "</picture>\n\n"
-            + renderTable(operation);
+            + "<details>\n"
+            + "<summary>Show table</summary>\n\n"
+            + renderTable(operation) + "\n\n"
+            + "</details>";
     }).join("\n\n");
 }
 
@@ -145,14 +148,23 @@ function renderTable(operation) {
             return item.name;
         }),
         rows = [
-            "| Case | " + variants.join(" | ") + " |",
-            "| --- | " + variants.map(function() { return "---:"; }).join(" | ") + " |"
+            "| Implementation | " + operation.cases.map(function(benchCase) { return benchCase.title; }).join(" | ") + " |",
+            "| --- | " + operation.cases.map(function() { return "---:"; }).join(" | ") + " |"
         ];
 
-    operation.cases.forEach(function(benchCase) {
-        var byName = indexVariants(benchCase.variants);
-        rows.push("| " + benchCase.title + " | " + variants.map(function(name) {
-            return byName[name] ? formatThroughput(byName[name].hz) : "";
+    var cases = operation.cases.map(function(benchCase) {
+        return {
+            byName: indexVariants(benchCase.variants),
+            fastestHz: Math.max.apply(Math, benchCase.variants.map(function(variant) {
+                return variant.hz;
+            }))
+        };
+    });
+
+    variants.forEach(function(name) {
+        rows.push("| " + name + " | " + cases.map(function(benchCase) {
+            var variant = benchCase.byName[name];
+            return variant ? formatThroughput(variant.hz, benchCase.fastestHz) : "";
         }).join(" | ") + " |");
     });
 
@@ -226,8 +238,11 @@ function formatHz(value) {
     return value.toFixed(0);
 }
 
-function formatThroughput(value) {
-    return formatHz(value) + " ops/s";
+function formatThroughput(value, fastest) {
+    var throughput = formatHz(value) + " ops/s";
+    return (value === fastest
+        ? "**" + throughput + "**"
+        : throughput) + " &nbsp; <small>" + (fastest / value).toFixed(1) + "x</small>";
 }
 
 function systemLabel(result) {

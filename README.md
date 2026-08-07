@@ -7,13 +7,13 @@
   <a href="https://www.jsdelivr.com/package/npm/protobufjs"><img src="https://img.shields.io/jsdelivr/npm/hm/protobufjs?label=requests&logo=jsdelivr" alt=""></a>
 </p>
 
-**protobuf.js** is a very fast, conformant, and unusually versatile JavaScript implementation of [Protocol Buffers](https://protobuf.dev) for Node.js and browsers. It works with `.proto` files out of the box, does not require protoc, and supports runtime reflection as well as specialized code generation with strong TypeScript declarations.
+**protobuf.js** is a very fast, conformant, and unusually versatile JavaScript implementation of [Protocol Buffers](https://protobuf.dev) for Node.js and browsers. It is independently maintained with contributions from the upstream Protocol Buffers project, works with `.proto` schemas without requiring `protoc`, and supports runtime reflection as well as specialized code generation with matching TypeScript declarations.
 
 If protobuf.js is important to your project or organization, or if you depend on it commercially, [consider supporting](https://github.com/sponsors/dcodeIO) its ongoing maintenance. Sponsorship helps make bug fixes, releases, LTS/security handling, and user support more sustainable.
 
 ## Getting started
 
-Getting up and running is simple: Install the package, load a `.proto` file, and you are all set to encode and decode Protobuf messages. From there, protobuf.js grows with your requirements: Add any combination of capabilities, such as [code generation](#code-generation), [TypeScript declarations](#typescript-integration), [transport-agnostic services](#services), [programmatic schemas](#programmatic-schemas), [optional extensions](#extensions), and more as needed. All in one flexible toolkit.
+Getting up and running is simple: Install the package, load a schema, and you are all set to encode and decode Protobuf messages. From there, protobuf.js grows with your requirements: Add code generation with TypeScript declarations, transport-agnostic services, support for text-based formats, and more as needed.
 
 ### Install
 
@@ -31,7 +31,7 @@ The CLI is a JS-native protobuf.js toolchain that does not require setting up `p
 
 #### Browser builds
 
-Canonical browser builds for each runtime variant are [provided via the jsDelivr CDN](https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/), supporting CommonJS, AMD and global `window.protobuf`. Make sure to pin an exact version in production.
+Canonical browser builds are [provided via the jsDelivr CDN](https://cdn.jsdelivr.net/npm/protobufjs@8.X.X/dist/), supporting CommonJS, AMD and global `window.protobuf`. Make sure to pin an exact version in production.
 
 ## Usage
 
@@ -76,9 +76,7 @@ const decoded = AwesomeMessage.decode(encoded);
 
 Plain objects can be encoded directly when they already use protobuf.js runtime types: numbers for 32-bit numeric fields, booleans for `bool`, strings for `string`, `Uint8Array` or `Buffer` for `bytes`, arrays for repeated fields, and plain objects for maps. Map keys are the string representation of the respective value or an 8-character hash string for 64-bit keys.
 
-Note that, as with any structured binary format, decoded structures incur runtime memory overhead beyond their encoded representation. Applications processing untrusted input should therefore apply appropriate input-size and concurrency limits to bound memory use.
-
-For the same reason, unknown fields present on the wire are intentionally discarded by default rather than retained for the lifetime of decoded messages. Applications that need unknown-field round-tripping, such as forwarding messages through an older schema, can opt in by setting `reader.discardUnknown = false`, or make preservation the default for subsequently created readers with `Reader.discardUnknown = false`. Preserved unknown field data can be explicitly dropped with `delete message.$unknowns`.
+Note that, as with any structured binary format, decoded structures incur runtime memory overhead beyond their encoded representation. Applications processing untrusted input should therefore apply appropriate input-size and concurrency limits to bound memory use. For this reason, unknown fields present on the wire are intentionally discarded as the safer default, but can be retained by setting `reader.discardUnknown = false` per reader, or by setting `Reader.discardUnknown = false` to make it the default for subsequently created readers. Preserved unknown field data can also be explicitly dropped with `delete message.$unknowns`.
 
 ### Convert plain objects
 
@@ -138,41 +136,28 @@ Message types expose focused methods for validation, conversion, and binary I/O.
 * **message.toJSON**(): `object`  
   Converts a message instance to JSON-compatible output using default conversion options.
 
-Message instances provide runtime identity, so they can be tested with `instanceof`. Their `toJSON` method integrates them with `JSON.stringify`.
+Message instances provide stable runtime identity for testing with `instanceof`.
 
 Length-delimited methods read and write a varint byte length before the message, which is useful for streams and framed protocols.
 
 If required fields are missing while decoding proto2 data, `decode` throws `protobuf.util.ProtocolError` with the partially decoded message available as `err.instance`.
 
-## Runtimes
-
-protobuf.js provides three runtime entry points, keeping parser and reflection support optional: Runtime `.proto` loading needs the parser, JSON/reflection bundles need reflection support, and generated static modules only need the minimal runtime.
-
-| Import                  | Includes           | Use when
-| ----------------------- | ------------------ | --------
-| `protobufjs`            | Reflection, Parser | You load `.proto` files at runtime
-| `protobufjs/light.js`   | Reflection         | You load JSON bundles or build schemas programmatically
-| `protobufjs/minimal.js` | Static runtime     | You use generated static code
-
-The full build includes the light build, and the light build includes the minimal runtime.
-
 ## Code generation
 
-Use [`protobufjs-cli`](./cli/#readme) to generate reflection bundles, static JavaScript code, and matching TypeScript declarations, either directly with `pbjs` or through the optional `protoc-gen-pbjs` plugin for `protoc`.
+Use [`protobufjs-cli`](./cli/#readme) to generate schema-specific code, either directly with `pbjs` or through the optional `protoc-gen-pbjs` plugin for `protoc`.
 
-Reflection keeps schemas as JSON metadata and generates optimized functions at runtime. Static code emits schema-specific, reflection-free functions ahead of time. The main tradeoffs are how schemas are loaded, how bundle size scales with schema size, and whether reflection metadata should remain available at runtime.
+protobuf.js offers two code-generation modes, both with matching TypeScript declarations: reflection modules generate optimized code at runtime with reflection metadata retained; static modules generate reflection-free code ahead of time. Both use the same runtime package and automatically import only the runtime capabilities they need.
 
-| Target | Output | Minimum Runtime |
-|--------|--------|-----------------|
-| `json` | JSON bundle | `protobufjs/light.js` |
-| `json-module` | JSON bundle module | `protobufjs/light.js` |
-| `static-module` | Static code module | `protobufjs/minimal.js` |
+| Target | Output | Runtime entry |
+|--------|--------|---------------|
+| `json-module` | Reflection module | `protobufjs/light.js` (without parser) |
+| `static-module` | Static code module | `protobufjs/minimal.js` (without reflection) |
 
 Module targets support `--wrap default` for CommonJS and AMD, plus `esm`, `commonjs`, `amd`, and `closure`; `--wrap` can also load a custom wrapper module.
 
 ### Static modules
 
-Static modules emit dedicated JavaScript for your schema, so they only need `protobufjs/minimal.js` at runtime.
+Static modules emit dedicated, reflection-free JavaScript code for your schema.
 
 ```sh
 npx pbjs -t static-module -w esm -o awesome.js --dts awesome.proto
@@ -184,22 +169,11 @@ import { awesomepackage } from "./awesome.js";
 const message = awesomepackage.AwesomeMessage.create({ awesomeField: "hello" });
 ```
 
-While static code is verbose by design, its repeated patterns compress well with Brotli or gzip, and it works in [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval without sacrificing performance.
+Static code is repetitive by design, but compresses unusually well with Brotli or gzip and works in [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments.
 
-### Reflection bundles
+### Reflection modules
 
-Reflection bundles store schemas as compact JSON metadata, avoiding `.proto` parsing at runtime and letting browsers load schema metadata in one request. While they require at least `protobufjs/light.js`, large schemas can produce smaller combined bundles than equivalent static modules because common code is shared through reflection.
-
-```sh
-npx pbjs -t json -o awesome.json awesome1.proto awesome2.proto ...
-```
-
-```ts
-const bundle = require("./awesome.json");
-
-const root = protobuf.Root.fromJSON(bundle);
-const AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");
-```
+Reflection modules wrap schemas as compact JSON metadata while avoiding `.proto` parsing at runtime.
 
 ```sh
 npx pbjs -t json-module -w esm -o awesome.js --dts awesome.proto
@@ -211,13 +185,11 @@ import { awesomepackage } from "./awesome.js";
 const AwesomeMessage = awesomepackage.AwesomeMessage;
 ```
 
-JSON modules export the reflection root and, with `-w esm`, also provide top-level named exports that align with static modules. Their declarations mirror `static-module` typings, but because JSON modules are backed by reflection objects, message instances should be created with `MyMessage.create(...)` instead of constructors. Code using `create(...)` works with static modules as well.
+Declarations for reflection modules mirror `static-module` typings. Because JSON modules export reflection objects, message instances should be created with `MyMessage.create(...)` rather than constructors. Code using `create(...)` works with static modules as well. Separately, `-t json` can serialize reflection metadata as bare JSON bundles for use with `load()` or `Root.fromJSON()`.
 
 ### TypeScript integration
 
-protobuf.js works with TypeScript out of the box: the runtime API is typed, and generated JavaScript can be paired with strong TypeScript declarations in the same CLI invocation. Generated output is directly usable from JavaScript without a transpile step, and strongly typed in TypeScript projects, with type-checked oneofs and JavaScript-friendly plain-object input.
-
-For example, given the oneof:
+protobuf.js works with TypeScript out of the box: its runtime API is typed, and generated code can be paired with matching TypeScript declarations in a single CLI invocation. Declarations are strongly typed, including discriminated unions for oneofs and scoped types for plain-object usage:
 
 ```proto
 message Profile {
@@ -227,8 +199,6 @@ message Profile {
   }
 }
 ```
-
-Generated declarations narrow both the `contact` oneof and the concrete values:
 
 ```ts
 const profile = Profile.create({
@@ -246,7 +216,7 @@ if (decoded.contact === "phone") {
 }
 ```
 
-Plain objects can use the same narrowed shape through a collision-free scoped type:
+The same narrowed shape is available for plain-object inputs:
 
 ```ts
 const object: Profile.$Shape = {
@@ -259,7 +229,7 @@ const object: Profile.$Shape = {
 
 ### Programmatic schemas
 
-The full and light builds can construct schemas directly through reflection:
+Schemas can be constructed directly through reflection:
 
 ```ts
 const AwesomeMessage = new protobuf.Type("AwesomeMessage")
@@ -316,22 +286,7 @@ const myService = MyService.create(myRpcImpl/*, requestDelimited?, responseDelim
 
 See [examples/streaming-rpc.js](./examples/streaming-rpc.js) for a streaming example.
 
-Integration example with [@grpc/grpc-js](https://www.npmjs.com/package/@grpc/grpc-js):
-
-```js
-const grpc = require('@grpc/grpc-js');
-
-const Client = grpc.makeGenericClientConstructor({});
-const client = new Client(serverAddress, grpc.credentials.createInsecure());
-
-const rpcImpl = (method, requestData, callback) =>
-  client.makeUnaryRequest(method.path, (data) => data, (data) => data, requestData, callback);
-
-const greeter = root.lookupService("example.Greeter").create(rpcImpl);
-const reply = await greeter.sayHello({ name: "world" });
-```
-
-See [examples/grpc-service.js](./examples/grpc-service.js) for a complete example.
+See [examples/grpc-service.js](./examples/grpc-service.js) for an integration example with [@grpc/grpc-js](https://www.npmjs.com/package/@grpc/grpc-js).
 
 ### Extensions
 
@@ -339,7 +294,7 @@ The following extensions provide descriptor conversion and text-based protobuf f
 
 #### Descriptors
 
-protobuf.js uses a compact JSON-based reflection representation internally that is easy to embed and fast to parse, so schemas can be loaded directly without first decoding binary descriptor blobs or postprocessing their full JSON representation. See [ext/descriptor](./ext/README.md#descriptor) for use cases that need conversion between reflected roots and `protoc` descriptor messages.
+protobuf.js uses a compact JSON-based reflection representation internally. See [ext/descriptor](./ext/README.md#descriptor) for use cases that need conversion between reflected roots and `protoc` descriptor messages.
 
 #### ProtoJSON
 
@@ -367,13 +322,13 @@ protobuf.js is validated against the official Protocol Buffers conformance suite
 
 <!-- END CONFORMANCE DATA -->
 
-[Structured results](https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush) are also provided as CI artifacts.
+[Structured results](https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush) of the conformance tests are also available as CI artifacts.
 
 ## Performance
 
 Both reflection and static modes use specialized encoders and decoders backed by the same hand-tuned reader and writer primitives.
 
-The repository includes a [multi-case benchmark suite](./bench) you can run yourself. It compares protobuf.js with the two other major general-purpose JavaScript implementations across three substantially different benchmark cases: our classic common message shape and two structurally distinct fixtures sourced externally. The suite measures each library's recommended serialization and deserialization path using identical schemas and inputs, with JSON included as an additional baseline. Results show that protobuf.js is a clear upgrade over using JSON and consistently the fastest Protobuf implementation, leading by up to an order of magnitude on real-world data.
+The repository includes a [benchmark suite](./bench) you can run yourself. It compares protobuf.js with other general-purpose JavaScript implementations across three substantially different cases: our classic common message shape and two unmodified, structurally distinct fixtures sourced externally. The suite measures each library's recommended serialization and deserialization path using identical schemas and inputs, with JSON included as an additional baseline. Across these cases, protobuf.js is a clear upgrade over using JSON and consistently the fastest Protobuf implementation by a considerable margin.
 
 <!-- BEGIN BENCHMARK DATA -->
 
@@ -383,11 +338,18 @@ The repository includes a [multi-case benchmark suite](./bench) you can run your
   <img alt="Encode benchmark" src="./bench/results/encode.svg">
 </picture>
 
-| Case | protobuf.js static | protobuf.js reflect | JSON | protoc-gen-js | protoc-gen-es |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Common | 5.34M ops/s | 4.89M ops/s | 2.09M ops/s | 1.03M ops/s | 402K ops/s |
-| Vector tile | 3.09K ops/s | 3.03K ops/s | 897 ops/s | 700 ops/s | 235 ops/s |
-| Buf perf | 43.1K ops/s | 43.3K ops/s | 6.70K ops/s | 13.9K ops/s | 8.22K ops/s |
+<details>
+<summary>Show table</summary>
+
+| Implementation | Common | Vector tile | Buf perf |
+| --- | ---: | ---: | ---: |
+| protobuf.js static | **5.34M ops/s** &nbsp; <small>1.0x</small> | **3.09K ops/s** &nbsp; <small>1.0x</small> | 43.1K ops/s &nbsp; <small>1.0x</small> |
+| protobuf.js reflect | 4.89M ops/s &nbsp; <small>1.1x</small> | 3.03K ops/s &nbsp; <small>1.0x</small> | **43.3K ops/s** &nbsp; <small>1.0x</small> |
+| JSON | 2.09M ops/s &nbsp; <small>2.6x</small> | 897 ops/s &nbsp; <small>3.4x</small> | 6.70K ops/s &nbsp; <small>6.5x</small> |
+| protoc-gen-js | 1.03M ops/s &nbsp; <small>5.2x</small> | 700 ops/s &nbsp; <small>4.4x</small> | 13.9K ops/s &nbsp; <small>3.1x</small> |
+| protoc-gen-es | 402K ops/s &nbsp; <small>13.3x</small> | 235 ops/s &nbsp; <small>13.2x</small> | 8.22K ops/s &nbsp; <small>5.3x</small> |
+
+</details>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./bench/results/decode-dark.svg">
@@ -395,15 +357,22 @@ The repository includes a [multi-case benchmark suite](./bench) you can run your
   <img alt="Decode benchmark" src="./bench/results/decode.svg">
 </picture>
 
-| Case | protobuf.js static | protobuf.js reflect | JSON | protoc-gen-js | protoc-gen-es |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Common | 6.45M ops/s | 6.93M ops/s | 1.37M ops/s | 811K ops/s | 691K ops/s |
-| Vector tile | 2.70K ops/s | 2.99K ops/s | 1.06K ops/s | 851 ops/s | 376 ops/s |
-| Buf perf | 81.7K ops/s | 80.3K ops/s | 19.5K ops/s | 21.7K ops/s | 14.3K ops/s |
+<details>
+<summary>Show table</summary>
+
+| Implementation | Common | Vector tile | Buf perf |
+| --- | ---: | ---: | ---: |
+| protobuf.js static | 6.45M ops/s &nbsp; <small>1.1x</small> | 2.70K ops/s &nbsp; <small>1.1x</small> | **81.7K ops/s** &nbsp; <small>1.0x</small> |
+| protobuf.js reflect | **6.93M ops/s** &nbsp; <small>1.0x</small> | **2.99K ops/s** &nbsp; <small>1.0x</small> | 80.3K ops/s &nbsp; <small>1.0x</small> |
+| JSON | 1.37M ops/s &nbsp; <small>5.0x</small> | 1.06K ops/s &nbsp; <small>2.8x</small> | 19.5K ops/s &nbsp; <small>4.2x</small> |
+| protoc-gen-js | 811K ops/s &nbsp; <small>8.5x</small> | 851 ops/s &nbsp; <small>3.5x</small> | 21.7K ops/s &nbsp; <small>3.8x</small> |
+| protoc-gen-es | 691K ops/s &nbsp; <small>10.0x</small> | 376 ops/s &nbsp; <small>8.0x</small> | 14.3K ops/s &nbsp; <small>5.7x</small> |
+
+</details>
 
 <!-- END BENCHMARK DATA -->
 
-[Structured results](./bench/results/latest.json) and environment details for this run are also provided as committed artifacts.
+[Structured results](./bench/results/latest.json) and environment details for this run are also available as committed artifacts.
 
 To run the benchmark on your own hardware:
 
