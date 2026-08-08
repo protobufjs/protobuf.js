@@ -6,7 +6,6 @@
  * @namespace
  */
 var utf8 = exports,
-    replacementChar = "\ufffd",
     looseDecoder = new TextDecoder("utf-8", { ignoreBOM: true }),
     strictDecoder;
 var TEXT_DECODER_MIN_LENGTH = 64;
@@ -40,31 +39,6 @@ utf8.length = function utf8_length(string) {
     }
     return len;
 };
-
-function utf8_read_js(buffer, start, end, str) {
-    for (var i = start; i < end;) {
-        var t = buffer[i++];
-        if (t <= 0x7F) {
-            str += String.fromCharCode(t);
-        } else if (t >= 0xC0 && t < 0xE0) {
-            var c2 = (t & 0x1F) << 6 | buffer[i++] & 0x3F;
-            str += c2 >= 0x80 ? String.fromCharCode(c2) : replacementChar;
-        } else if (t >= 0xE0 && t < 0xF0) {
-            var c3 = (t & 0xF) << 12 | (buffer[i++] & 0x3F) << 6 | buffer[i++] & 0x3F;
-            str += c3 >= 0x800 ? String.fromCharCode(c3) : replacementChar;
-        } else if (t >= 0xF0) {
-            var t2 = (t & 7) << 18 | (buffer[i++] & 0x3F) << 12 | (buffer[i++] & 0x3F) << 6 | buffer[i++] & 0x3F;
-            if (t2 < 0x10000 || t2 > 0x10FFFF)
-                str += replacementChar;
-            else {
-                t2 -= 0x10000;
-                str += String.fromCharCode(0xD800 + (t2 >> 10));
-                str += String.fromCharCode(0xDC00 + (t2 & 0x3FF));
-            }
-        }
-    }
-    return str;
-}
 
 function utf8_read_decoder(decoder, buffer, start, end) {
     var source = start === 0 && end === buffer.length
@@ -100,14 +74,14 @@ utf8.read = function utf8_read_loose(buffer, start, end) {
         c7 = buffer[i + 6];
         c8 = buffer[i + 7];
         if ((c1 | c2 | c3 | c4 | c5 | c6 | c7 | c8) & 0x80)
-            return utf8_read_js(buffer, i, end, str);
+            return str + utf8_read_decoder(looseDecoder, buffer, i, end);
         str += String.fromCharCode(c1, c2, c3, c4, c5, c6, c7, c8);
     }
 
     for (; i < end; ++i) {
         c1 = buffer[i];
         if (c1 & 0x80)
-            return utf8_read_js(buffer, i, end, str);
+            return str + utf8_read_decoder(looseDecoder, buffer, i, end);
         str += String.fromCharCode(c1);
     }
 
