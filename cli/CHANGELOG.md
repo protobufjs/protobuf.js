@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.6.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.6.1...protobufjs-cli-v2.6.2) (2026-08-08)
+
+
+### Bug Fixes
+
+* Preserve non-finite defaults in toObject ([#2393](https://github.com/protobufjs/protobuf.js/issues/2393)) ([a38b925](https://github.com/protobufjs/protobuf.js/commit/a38b925802203f8c6c8060fa692f359212ebc717))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * protobufjs bumped from file:.. to 8.7.2
+  * peerDependencies
+    * protobufjs bumped from ^8.7.1 to ^8.7.2
+
 ## [2.6.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.6.0...protobufjs-cli-v2.6.1) (2026-07-12)
 
 

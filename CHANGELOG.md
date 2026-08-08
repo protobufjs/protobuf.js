@@ -1,5 +1,22 @@
 # Changelog
 
+## [8.7.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.7.1...protobufjs-v8.7.2) (2026-08-08)
+
+
+### Bug Fixes
+
+* Also use TextDecoder for loose UTF-8 decoding ([#2408](https://github.com/protobufjs/protobuf.js/issues/2408)) ([5851a3b](https://github.com/protobufjs/protobuf.js/commit/5851a3bd4cbaee44aef13cc72ce1923e56d995ff))
+* Parse numeric defaults according to field type ([#2402](https://github.com/protobufjs/protobuf.js/issues/2402)) ([bb2d836](https://github.com/protobufjs/protobuf.js/commit/bb2d83638f1a3bb9a48920e9976615543e0e5a94))
+* Parse numeric descriptor defaults by field type ([#2406](https://github.com/protobufjs/protobuf.js/issues/2406)) ([09f24ec](https://github.com/protobufjs/protobuf.js/commit/09f24ec1e5e6c84d28882dd549e462ee22f41b6a))
+* preserve first enum alias from JSON descriptors ([#2389](https://github.com/protobufjs/protobuf.js/issues/2389)) ([8304739](https://github.com/protobufjs/protobuf.js/commit/8304739620bfd0630ff89f7c6a70512dcbc7b845))
+* Preserve negative zero in codegen formatters ([#2403](https://github.com/protobufjs/protobuf.js/issues/2403)) ([92ddc9b](https://github.com/protobufjs/protobuf.js/commit/92ddc9b897394d56eff936fa914b923f124fd005))
+* Preserve non-finite defaults in toObject ([#2393](https://github.com/protobufjs/protobuf.js/issues/2393)) ([a38b925](https://github.com/protobufjs/protobuf.js/commit/a38b925802203f8c6c8060fa692f359212ebc717))
+
+
+### Performance Improvements
+
+* Optimize writer allocs and packed varint reads ([#2405](https://github.com/protobufjs/protobuf.js/issues/2405)) ([64cc8f1](https://github.com/protobufjs/protobuf.js/commit/64cc8f14210dad3632ec45256a402725608f15cb))
+
 ## [8.7.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.7.0...protobufjs-v8.7.1) (2026-07-12)
 
 
