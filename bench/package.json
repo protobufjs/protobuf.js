@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@bufbuild/protoc-gen-es": "2.14.0",
-    "@protocolbuffers/protoc-gen-js": "4.0.2"
+    "@protocolbuffers/protoc-gen-js": "4.0.2",
+    "protoc": "^35.1.0"
   }
 }

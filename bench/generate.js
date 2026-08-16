@@ -8,8 +8,7 @@ var childProcess = require("child_process"),
 
 var rootDir = path.resolve(__dirname, ".."),
     benchDir = __dirname,
-    binDir = path.join(benchDir, "node_modules", ".bin"),
-    protocBin;
+    binDir = path.join(benchDir, "node_modules", ".bin");
 
 var schemas = [
     require("./cases/common"),
@@ -20,8 +19,6 @@ var schemas = [
 });
 
 Promise.all(schemas.map(generateProtobufJs)).then(function() {
-    if (!protocPath())
-        throw Error("protoc-gen-* plugins require protoc. Install protoc and make sure it is on PATH, or set PROTOC.");
     schemas.forEach(function(schema) {
         generateProtocGenJs(schema);
         generateProtocGenEs(schema);
@@ -66,7 +63,7 @@ function generateProtocGenJs(schema) {
         protoArg = relative(schema.proto);
 
     mkdir(schema.outDir);
-    run(protocPath(), [
+    runProtoc([
         "--proto_path=" + rootDir,
         "--js_out=import_style=commonjs,binary:" + rootDir,
         protoArg
@@ -82,7 +79,7 @@ function generateProtocGenEs(schema) {
         protoArg = relative(schema.proto);
 
     mkdir(schema.outDir);
-    run(protocPath(), [
+    runProtoc([
         "--proto_path=" + rootDir,
         "--es_out=target=js,js_import_style=legacy_commonjs:" + rootDir,
         protoArg
@@ -101,6 +98,13 @@ function mkdir(dir) {
     fs.mkdirSync(dir, { recursive: true });
 }
 
+function runProtoc(args) {
+    if (process.env.PROTOC)
+        run(process.env.PROTOC, args);
+    else
+        run(process.execPath, [require.resolve("protoc/protoc.cjs")].concat(args));
+}
+
 function run(cmd, args) {
     childProcess.execFileSync(cmd, args, {
         cwd: benchDir,
@@ -109,31 +113,6 @@ function run(cmd, args) {
         }),
         stdio: "inherit"
     });
-}
-
-function protocPath() {
-    if (protocBin)
-        return protocBin;
-    if (process.env.PROTOC)
-        return protocBin = process.env.PROTOC;
-    try {
-        protocBin = childProcess.execFileSync(process.platform === "win32" ? "where.exe" : "which", ["protoc"], {
-            encoding: "utf8",
-            env: Object.assign({}, process.env, {
-                PATH: externalPath()
-            }),
-            stdio: ["ignore", "pipe", "ignore"]
-        }).split(/\r?\n/)[0];
-    } catch (err) {
-        protocBin = "";
-    }
-    return protocBin;
-}
-
-function externalPath() {
-    return (process.env.PATH || "").split(path.delimiter).filter(function(entry) {
-        return !/[\\/]node_modules[\\/]\.bin$/i.test(entry);
-    }).join(path.delimiter);
 }
 
 function relative(file) {

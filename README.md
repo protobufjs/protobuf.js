@@ -328,14 +328,14 @@ protobuf.js is validated against the official Protocol Buffers conformance suite
 
 Both reflection and static modes use specialized encoders and decoders backed by the same hand-tuned reader and writer primitives.
 
-The repository includes a [benchmark suite](./bench) you can run yourself. It compares protobuf.js with other general-purpose JavaScript implementations across three substantially different cases: our classic common message shape and two unmodified, structurally distinct fixtures sourced externally. The suite measures each library's recommended serialization and deserialization path using identical schemas and inputs, with JSON included as an additional baseline. Across these cases, protobuf.js is a clear upgrade over using JSON and consistently the fastest Protobuf implementation by a considerable margin.
+The repository includes a reproducible [benchmark suite](./bench) comparing protobuf.js with other general-purpose JavaScript implementations across three cases: our classic common message shape and two unmodified, structurally distinct fixtures sourced from external projects. Each library is tested through its recommended serialization and deserialization path using identical schemas and message contents. [Structured results](./bench/results/latest.json) and environment details are committed; the suite also runs in CI.
 
 <!-- BEGIN BENCHMARK DATA -->
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./bench/results/encode-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="./bench/results/encode-light.svg">
-  <img alt="Encode benchmark" src="./bench/results/encode.svg">
+  <img alt="Encode Throughput" src="./bench/results/encode.svg">
 </picture>
 
 <details>
@@ -343,18 +343,18 @@ The repository includes a [benchmark suite](./bench) you can run yourself. It co
 
 | Implementation | Common | Vector tile | Buf perf |
 | --- | ---: | ---: | ---: |
-| protobuf.js static | **5.34M ops/s** &nbsp; <small>1.0x</small> | **3.09K ops/s** &nbsp; <small>1.0x</small> | 43.1K ops/s &nbsp; <small>1.0x</small> |
-| protobuf.js reflect | 4.89M ops/s &nbsp; <small>1.1x</small> | 3.03K ops/s &nbsp; <small>1.0x</small> | **43.3K ops/s** &nbsp; <small>1.0x</small> |
-| JSON | 2.09M ops/s &nbsp; <small>2.6x</small> | 897 ops/s &nbsp; <small>3.4x</small> | 6.70K ops/s &nbsp; <small>6.5x</small> |
-| protoc-gen-js | 1.03M ops/s &nbsp; <small>5.2x</small> | 700 ops/s &nbsp; <small>4.4x</small> | 13.9K ops/s &nbsp; <small>3.1x</small> |
-| protoc-gen-es | 402K ops/s &nbsp; <small>13.3x</small> | 235 ops/s &nbsp; <small>13.2x</small> | 8.22K ops/s &nbsp; <small>5.3x</small> |
+| protobuf.js static | **5.11M ops/s** &nbsp; <small>1.0x</small> | 3.05K ops/s &nbsp; <small>1.0x</small> | **44.5K ops/s** &nbsp; <small>1.0x</small> |
+| protobuf.js reflect | 5.01M ops/s &nbsp; <small>1.0x</small> | **3.07K ops/s** &nbsp; <small>1.0x</small> | 43.3K ops/s &nbsp; <small>1.0x</small> |
+| JSON | 2.08M ops/s &nbsp; <small>2.5x</small> | 873 ops/s &nbsp; <small>3.5x</small> | 6.70K ops/s &nbsp; <small>6.6x</small> |
+| protoc-gen-js | 1.01M ops/s &nbsp; <small>5.0x</small> | 697 ops/s &nbsp; <small>4.4x</small> | 13.8K ops/s &nbsp; <small>3.2x</small> |
+| protoc-gen-es | 1.25M ops/s &nbsp; <small>4.1x</small> | 1.16K ops/s &nbsp; <small>2.6x</small> | 34.4K ops/s &nbsp; <small>1.3x</small> |
 
 </details>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./bench/results/decode-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="./bench/results/decode-light.svg">
-  <img alt="Decode benchmark" src="./bench/results/decode.svg">
+  <img alt="Decode Throughput" src="./bench/results/decode.svg">
 </picture>
 
 <details>
@@ -362,22 +362,23 @@ The repository includes a [benchmark suite](./bench) you can run yourself. It co
 
 | Implementation | Common | Vector tile | Buf perf |
 | --- | ---: | ---: | ---: |
-| protobuf.js static | 6.45M ops/s &nbsp; <small>1.1x</small> | 2.70K ops/s &nbsp; <small>1.1x</small> | **81.7K ops/s** &nbsp; <small>1.0x</small> |
-| protobuf.js reflect | **6.93M ops/s** &nbsp; <small>1.0x</small> | **2.99K ops/s** &nbsp; <small>1.0x</small> | 80.3K ops/s &nbsp; <small>1.0x</small> |
-| JSON | 1.37M ops/s &nbsp; <small>5.0x</small> | 1.06K ops/s &nbsp; <small>2.8x</small> | 19.5K ops/s &nbsp; <small>4.2x</small> |
-| protoc-gen-js | 811K ops/s &nbsp; <small>8.5x</small> | 851 ops/s &nbsp; <small>3.5x</small> | 21.7K ops/s &nbsp; <small>3.8x</small> |
-| protoc-gen-es | 691K ops/s &nbsp; <small>10.0x</small> | 376 ops/s &nbsp; <small>8.0x</small> | 14.3K ops/s &nbsp; <small>5.7x</small> |
+| protobuf.js static | 6.20M ops/s &nbsp; <small>1.0x</small> | 2.68K ops/s &nbsp; <small>1.1x</small> | **80.5K ops/s** &nbsp; <small>1.0x</small> |
+| protobuf.js reflect | **6.46M ops/s** &nbsp; <small>1.0x</small> | **3.01K ops/s** &nbsp; <small>1.0x</small> | 79.6K ops/s &nbsp; <small>1.0x</small> |
+| JSON | 1.35M ops/s &nbsp; <small>4.8x</small> | 1.05K ops/s &nbsp; <small>2.9x</small> | 19.1K ops/s &nbsp; <small>4.2x</small> |
+| protoc-gen-js | 799K ops/s &nbsp; <small>8.1x</small> | 877 ops/s &nbsp; <small>3.4x</small> | 21.6K ops/s &nbsp; <small>3.7x</small> |
+| protoc-gen-es | 1.62M ops/s &nbsp; <small>4.0x</small> | 1.24K ops/s &nbsp; <small>2.4x</small> | 29.1K ops/s &nbsp; <small>2.8x</small> |
 
 </details>
 
 <!-- END BENCHMARK DATA -->
 
-[Structured results](./bench/results/latest.json) and environment details for this run are also available as committed artifacts.
+According to the results, protobuf.js consistently achieves the highest throughput among the Protobuf implementations tested and exceeds the JSON baseline in every encode/decode comparison.
 
 To run the benchmark on your own hardware:
 
 ```sh
 npm --prefix bench install
+npm --prefix bench run generate
 npm run bench
 ```
 

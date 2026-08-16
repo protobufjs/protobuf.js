@@ -130,7 +130,7 @@ function updateReadme(result) {
 
 function renderBenchmarkData(result) {
     return result.operations.map(function(operation) {
-        var title = titleCase(operation.title) + " benchmark";
+        var title = titleCase(operation.title) + " Throughput";
         return "<picture>\n"
             + "  <source media=\"(prefers-color-scheme: dark)\" srcset=\"./bench/results/" + operation.name + "-dark.svg\">\n"
             + "  <source media=\"(prefers-color-scheme: light)\" srcset=\"./bench/results/" + operation.name + "-light.svg\">\n"
