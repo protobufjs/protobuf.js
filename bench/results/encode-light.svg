@@ -12,41 +12,41 @@ text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#1f
 <line x1="12" y1="195" x2="276" y2="195" class="grid"/>
 <line x1="12" y1="100" x2="276" y2="100" class="grid"/>
 <rect x="56" y="100" width="30" height="190" class="bar" fill="#0072ce"/>
-<text x="71" y="307" text-anchor="middle" class="value">5.34M</text>
-<rect x="88" y="116" width="30" height="174" class="bar" fill="#60a5fa"/>
-<text x="103" y="307" text-anchor="middle" class="value">4.89M</text>
-<rect x="126" y="216" width="30" height="74" class="bar" fill="#7c3aed"/>
-<text x="141" y="307" text-anchor="middle" class="value">2.09M</text>
-<rect x="164" y="253" width="30" height="37" class="bar" fill="#f59e0b"/>
-<text x="179" y="307" text-anchor="middle" class="value">1.03M</text>
-<rect x="202" y="276" width="30" height="14" class="bar" fill="#ef4444"/>
-<text x="217" y="307" text-anchor="middle" class="value">402K</text>
+<text x="71" y="307" text-anchor="middle" class="value">5.11M</text>
+<rect x="88" y="104" width="30" height="186" class="bar" fill="#60a5fa"/>
+<text x="103" y="307" text-anchor="middle" class="value">5.01M</text>
+<rect x="126" y="213" width="30" height="77" class="bar" fill="#7c3aed"/>
+<text x="141" y="307" text-anchor="middle" class="value">2.08M</text>
+<rect x="164" y="243" width="30" height="47" class="bar" fill="#ef4444"/>
+<text x="179" y="307" text-anchor="middle" class="value">1.25M</text>
+<rect x="202" y="252" width="30" height="38" class="bar" fill="#f59e0b"/>
+<text x="217" y="307" text-anchor="middle" class="value">1.01M</text>
 <text x="420" y="88" text-anchor="middle" class="case">Vector tile</text>
 <line x1="288" y1="290" x2="552" y2="290" class="axis"/>
 <line x1="288" y1="195" x2="552" y2="195" class="grid"/>
 <line x1="288" y1="100" x2="552" y2="100" class="grid"/>
-<rect x="332" y="100" width="30" height="190" class="bar" fill="#0072ce"/>
-<text x="347" y="307" text-anchor="middle" class="value">3.09K</text>
-<rect x="364" y="104" width="30" height="186" class="bar" fill="#60a5fa"/>
-<text x="379" y="307" text-anchor="middle" class="value">3.03K</text>
-<rect x="402" y="235" width="30" height="55" class="bar" fill="#7c3aed"/>
-<text x="417" y="307" text-anchor="middle" class="value">897</text>
-<rect x="440" y="247" width="30" height="43" class="bar" fill="#f59e0b"/>
-<text x="455" y="307" text-anchor="middle" class="value">700</text>
-<rect x="478" y="276" width="30" height="14" class="bar" fill="#ef4444"/>
-<text x="493" y="307" text-anchor="middle" class="value">235</text>
+<rect x="332" y="102" width="30" height="188" class="bar" fill="#0072ce"/>
+<text x="347" y="307" text-anchor="middle" class="value">3.05K</text>
+<rect x="364" y="100" width="30" height="190" class="bar" fill="#60a5fa"/>
+<text x="379" y="307" text-anchor="middle" class="value">3.07K</text>
+<rect x="402" y="218" width="30" height="72" class="bar" fill="#ef4444"/>
+<text x="417" y="307" text-anchor="middle" class="value">1.16K</text>
+<rect x="440" y="236" width="30" height="54" class="bar" fill="#7c3aed"/>
+<text x="455" y="307" text-anchor="middle" class="value">873</text>
+<rect x="478" y="247" width="30" height="43" class="bar" fill="#f59e0b"/>
+<text x="493" y="307" text-anchor="middle" class="value">697</text>
 <text x="696" y="88" text-anchor="middle" class="case">Buf perf</text>
 <line x1="564" y1="290" x2="828" y2="290" class="axis"/>
 <line x1="564" y1="195" x2="828" y2="195" class="grid"/>
 <line x1="564" y1="100" x2="828" y2="100" class="grid"/>
-<rect x="608" y="101" width="30" height="189" class="bar" fill="#0072ce"/>
-<text x="623" y="307" text-anchor="middle" class="value">43.1K</text>
-<rect x="640" y="100" width="30" height="190" class="bar" fill="#60a5fa"/>
+<rect x="608" y="100" width="30" height="190" class="bar" fill="#0072ce"/>
+<text x="623" y="307" text-anchor="middle" class="value">44.5K</text>
+<rect x="640" y="105" width="30" height="185" class="bar" fill="#60a5fa"/>
 <text x="655" y="307" text-anchor="middle" class="value">43.3K</text>
-<rect x="678" y="229" width="30" height="61" class="bar" fill="#f59e0b"/>
-<text x="693" y="307" text-anchor="middle" class="value">13.9K</text>
-<rect x="716" y="254" width="30" height="36" class="bar" fill="#ef4444"/>
-<text x="731" y="307" text-anchor="middle" class="value">8.22K</text>
+<rect x="678" y="143" width="30" height="147" class="bar" fill="#ef4444"/>
+<text x="693" y="307" text-anchor="middle" class="value">34.4K</text>
+<rect x="716" y="231" width="30" height="59" class="bar" fill="#f59e0b"/>
+<text x="731" y="307" text-anchor="middle" class="value">13.8K</text>
 <rect x="754" y="261" width="30" height="29" class="bar" fill="#7c3aed"/>
 <text x="769" y="307" text-anchor="middle" class="value">6.70K</text>
 <rect x="120" y="328" width="11" height="11" rx="2" ry="2" fill="#0072ce"/>
