@@ -308,7 +308,7 @@ function parse(source, root, options) {
     function parseEdition() {
         skip("=");
         edition = readString();
-        const supportedEditions = ["2023", "2024"];
+        const supportedEditions = ["2023", "2024", "2026"];
 
         /* istanbul ignore if */
         if (!supportedEditions.includes(edition))

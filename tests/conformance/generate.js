@@ -42,14 +42,14 @@ fs.mkdirSync(outputDir, { recursive: true });
 removeFile(staticPluginFile);
 removeFile(reflectPluginFile);
 
-// Upstream v34+ includes REQUIRED EditionUnstable conformance tests even with
-// --maximum_edition 2024. Optionally use a local stable-edition copy because
+// Upstream includes REQUIRED EditionUnstable conformance tests even with a
+// stable --maximum_edition. Optionally use a local stable-edition copy because
 // the parser intentionally only supports released editions.
 if (fs.existsSync(fromUpstream(upstreamUnstableSchemaFile))) {
     fs.writeFileSync(
         unstableSchemaFile,
         fs.readFileSync(fromUpstream(upstreamUnstableSchemaFile), "utf8")
-            .replace("edition = \"UNSTABLE\";", "edition = \"2024\";")
+            .replace("edition = \"UNSTABLE\";", "edition = \"2026\";")
     );
     schemaFiles.push(unstableSchemaFile);
 }

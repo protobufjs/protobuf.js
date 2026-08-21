@@ -353,6 +353,7 @@ export interface IFeatureSet {
     jsonFormat?: number;
     enforceNamingStyle?: number;
     defaultSymbolVisibility?: number;
+    enforceProtoLimits?: number;
 }
 
 /** Properties of a OneofDescriptorProto message. */

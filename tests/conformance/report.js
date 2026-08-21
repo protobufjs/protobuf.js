@@ -4,26 +4,34 @@ var fs = require("fs"),
     path = require("path"),
     summary = require("./summary");
 
+var beginMarker = "<!-- BEGIN CONFORMANCE DATA -->",
+    endMarker = "<!-- END CONFORMANCE DATA -->",
+    readmeFile = path.join(__dirname, "..", "..", "README.md");
+
 var args = process.argv.slice(2),
     jsonFile = null,
     binaryOnly = false,
+    updateReadmeFile = false,
     files = [],
     report,
     runnerSummary,
-    totals;
+    totals,
+    table;
 
 args.forEach(function(arg, index) {
     if (arg === "--json") {
         jsonFile = args[index + 1];
     } else if (arg === "--binary-only") {
         binaryOnly = true;
+    } else if (arg === "--update-readme") {
+        updateReadmeFile = true;
     } else if (index === 0 || args[index - 1] !== "--json") {
         files.push(arg);
     }
 });
 
 if (!files[0]) {
-    console.error("usage: node tests/conformance/report.js <conformance-log> [test-list-log] [--binary-only] [--json <summary-json>]");
+    console.error("usage: node tests/conformance/report.js <conformance-log> [test-list-log] [--binary-only] [--json <summary-json>] [--update-readme]");
     process.exit(1);
 }
 
@@ -45,7 +53,10 @@ if (!runnerSummary) {
 }
 
 totals = report.totals;
-printTable("Category", conformanceRows());
+table = renderTable("Category", conformanceRows());
+console.log(table);
+if (updateReadmeFile)
+    updateReadme(table);
 
 function conformanceRows() {
     var rows = [suite("Binary", "binary")].concat(binarySyntaxRows());
@@ -96,7 +107,7 @@ function suite(label, format) {
     ];
 }
 
-function printTable(firstColumn, rows) {
+function renderTable(firstColumn, rows) {
     var suiteWidth = maxWidth([firstColumn].concat(rows.map(function(row) {
             return row[0];
         }))),
@@ -108,17 +119,34 @@ function printTable(firstColumn, rows) {
         }))),
         recommendedWidth = maxWidth(["Recommended"].concat(rows.map(function(row) {
             return row[3];
-        })));
+        }))),
+        lines = [];
 
     if (!rows.length)
-        return false;
+        return "";
 
-    console.log("| " + padRight(firstColumn, suiteWidth) + " | " + padLeft("Total", totalWidth) + " | " + padLeft("Required", requiredWidth) + " | " + padLeft("Recommended", recommendedWidth) + " |");
-    console.log("| " + repeat("-", suiteWidth) + " | " + repeat("-", totalWidth - 1) + ": | " + repeat("-", requiredWidth - 1) + ": | " + repeat("-", recommendedWidth - 1) + ": |");
+    lines.push("| " + padRight(firstColumn, suiteWidth) + " | " + padLeft("Total", totalWidth) + " | " + padLeft("Required", requiredWidth) + " | " + padLeft("Recommended", recommendedWidth) + " |");
+    lines.push("| " + repeat("-", suiteWidth) + " | " + repeat("-", totalWidth - 1) + ": | " + repeat("-", requiredWidth - 1) + ": | " + repeat("-", recommendedWidth - 1) + ": |");
     rows.forEach(function(row) {
-        console.log("| " + padRight(row[0], suiteWidth) + " | " + padLeft(row[1], totalWidth) + " | " + padLeft(row[2], requiredWidth) + " | " + padLeft(row[3], recommendedWidth) + " |");
+        lines.push("| " + padRight(row[0], suiteWidth) + " | " + padLeft(row[1], totalWidth) + " | " + padLeft(row[2], requiredWidth) + " | " + padLeft(row[3], recommendedWidth) + " |");
     });
-    return true;
+    return lines.join("\n");
+}
+
+function updateReadme(table) {
+    var markdown = fs.readFileSync(readmeFile, "utf8"),
+        begin = markdown.indexOf(beginMarker),
+        end = markdown.indexOf(endMarker);
+
+    if (begin < 0 || end < 0 || end < begin)
+        throw Error("README conformance markers missing or out of order");
+
+    markdown = markdown.substring(0, begin + beginMarker.length)
+        + "\n\n" + table
+        + "\n\n" + markdown.substring(end);
+
+    fs.writeFileSync(readmeFile, markdown);
+    process.stdout.write("updated " + path.relative(path.join(__dirname, "..", ".."), readmeFile).replace(/\\/g, "/") + "\n");
 }
 
 function formatResult(value) {

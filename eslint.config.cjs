@@ -24,7 +24,8 @@ module.exports = [
             "sandbox/**",
             "scripts/**",
             "tests/**",
-            "!tests/data/rpc*.js"
+            "!tests/data/rpc*.js",
+            "bench/generated/**"
         ]
     },
     {

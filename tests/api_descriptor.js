@@ -243,6 +243,10 @@ tape.test("descriptor - edition 2023 file roundtrip", function (test) {
     };
     var root = protobuf.Root.fromJSON(json);
 
+    var edition2026 = root.toDescriptor("2026");
+    test.equal(edition2026.file[0].edition, descriptor.Edition.EDITION_2026, "writes edition 2026");
+    test.equal(protobuf.Root.fromDescriptor(edition2026).nested.Message._edition, "2026", "reads edition 2026");
+
     // convert to Descriptor Set
     const decodedDescriptorSet = root.toDescriptor("2023");
     

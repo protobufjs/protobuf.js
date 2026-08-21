@@ -54,7 +54,7 @@ tape.test("protoc-gen-pbjs generates static-module responses", function(test) {
             test.notOk(response.error, "response has no error");
             test.equal(response.supportedFeatures, 3, "advertises proto3 optional and editions support");
             test.equal(response.minimumEdition, 1000, "advertises minimum edition 2023");
-            test.equal(response.maximumEdition, 1001, "advertises maximum edition 2024");
+            test.equal(response.maximumEdition, 1002, "advertises maximum edition 2026");
             test.equal(response.file.length, 2, "writes js and dts files");
             test.equal(response.file[0].name, "awesome.js", "writes requested js file");
             test.equal(response.file[1].name, "awesome.d.ts", "derives dts file");
@@ -245,7 +245,7 @@ tape.test("protoc-gen-pbjs validates options", function(test) {
     });
 });
 
-tape.test("protoc-gen-pbjs supports keep-case and edition 2024 descriptors", function(test) {
+tape.test("protoc-gen-pbjs supports keep-case and edition 2026 descriptors", function(test) {
     cliTest(test, function() {
         var descriptor = require("../ext/descriptor");
         var plugin = require("../cli/protoc-gen-pbjs");
@@ -253,7 +253,7 @@ tape.test("protoc-gen-pbjs supports keep-case and edition 2024 descriptors", fun
             file: [ {
                 name: "edition.proto",
                 syntax: "editions",
-                edition: descriptor.Edition.EDITION_2024,
+                edition: descriptor.Edition.EDITION_2026,
                 messageType: [ {
                     name: "EditionMessage",
                     field: [ {
@@ -275,7 +275,7 @@ tape.test("protoc-gen-pbjs supports keep-case and edition 2024 descriptors", fun
         plugin.run(request, function(err, response) {
             test.error(err, "plugin request decoded");
             test.notOk(response.error, "response has no error");
-            test.equal(response.maximumEdition, 1001, "advertises edition 2024");
+            test.equal(response.maximumEdition, 1002, "advertises edition 2026");
             test.ok(response.file[0].content.indexOf("some_field") >= 0, "keeps snake_case when requested");
             test.end();
         });
