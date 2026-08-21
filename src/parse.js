@@ -319,6 +319,7 @@ function parse(source, root, options) {
 
 
     function parseCommon(parent, token, depth) {
+        var visibility;
         if (depth === undefined)
             depth = 0;
         // depth is checked by dispatched functions
@@ -342,6 +343,7 @@ function parse(source, root, options) {
                 if (edition < "2024") {
                     return false;
                 }
+                visibility = token;
                 token = next();
                 if (token === "export" || token === "local") {
                     return false;
@@ -349,9 +351,13 @@ function parse(source, root, options) {
                 if (token !== "message" && token !== "enum") {
                     return false;
                 }
-                /* eslint-disable no-warning-comments */
-                // TODO: actually enforce visiblity modifiers like protoc does.
-                return parseCommon(parent, token, depth);
+                // Recorded on the object so that resolution can reject references to
+                // a "local" symbol from another file, see Field#resolve.
+                (token === "message"
+                    ? parseType(parent, token, depth + 1)
+                    : parseEnum(parent, token)
+                ).visibility = visibility;
+                return true;
 
             case "service":
                 parseService(parent, token, depth + 1);
@@ -456,6 +462,7 @@ function parse(source, root, options) {
         if (parent === ptr) {
             topLevelObjects.push(type);
         }
+        return type;
     }
 
     function parseField(parent, rule, extend, depth) {
@@ -720,6 +727,7 @@ function parse(source, root, options) {
         if (parent === ptr) {
             topLevelObjects.push(enm);
         }
+        return enm;
     }
 
     function parseEnumValue(token) {
