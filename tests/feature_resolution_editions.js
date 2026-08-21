@@ -66,23 +66,19 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-var protoEditions2024 = `edition = "2024";  message Foo {}`;
-var protoEditions2023 = `edition = "2023";  message Foo {}`;
+var proto2 = `syntax = "proto2"; message Foo {}`;
+var proto3 = `syntax = "proto3"; message Foo {}`;
+var editions2023 = `edition = "2023"; message Foo {}`;
+var editions2024 = `edition = "2024"; message Foo {}`;
+var editions2026 = `edition = "2026"; message Foo {}`;
 
-var proto2 = `syntax = "proto2";  message Foo {}`;
-
-var proto3 = `syntax = "proto3";  message Foo {}`;
-
-var editions2024Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE2024", default_symbol_visibility: "EXPORT_TOP_LEVEL" };
-var editions2023Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE_LEGACY", default_symbol_visibility: "EXPORT_ALL" };
 var proto2Defaults = {enum_type: "CLOSED", field_presence: "EXPLICIT", json_format: "LEGACY_BEST_EFFORT", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "EXPANDED", utf8_validation: "NONE", enforce_naming_style: "STYLE_LEGACY", default_symbol_visibility: "EXPORT_ALL" };
 var proto3Defaults = {enum_type: "OPEN", field_presence: "IMPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE_LEGACY", default_symbol_visibility: "EXPORT_ALL" };
+var editions2023Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE_LEGACY", default_symbol_visibility: "EXPORT_ALL" };
+var editions2024Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE2024", default_symbol_visibility: "EXPORT_TOP_LEVEL" };
+var editions2026Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE2026", default_symbol_visibility: "STRICT", enforce_proto_limits: "PROTO_LIMITS2026" };
 
 tape.test("feature resolution defaults", function(test) {
-    var rootEditions = protobuf.parse(protoEditions2024).root;
-    rootEditions.resolveAll();
-    test.same(rootEditions.Foo._features, editions2024Defaults);
-
     var rootProto2 = protobuf.parse(proto2).root;
     rootProto2.resolveAll();
     test.same(rootProto2.Foo._features, proto2Defaults);
@@ -90,6 +86,18 @@ tape.test("feature resolution defaults", function(test) {
     var rootProto3 = protobuf.parse(proto3).root;
     rootProto3.resolveAll();
     test.same(rootProto3.Foo._features, proto3Defaults);
+
+    var rootEditions2023 = protobuf.parse(editions2023).root;
+    rootEditions2023.resolveAll();
+    test.same(rootEditions2023.Foo._features, editions2023Defaults);
+
+    var rootEditions2024 = protobuf.parse(editions2024).root;
+    rootEditions2024.resolveAll();
+    test.same(rootEditions2024.Foo._features, editions2024Defaults);
+
+    var rootEditions2026 = protobuf.parse(editions2026).root;
+    rootEditions2026.resolveAll();
+    test.same(rootEditions2026.Foo._features, editions2026Defaults);
 
     test.end();
 })

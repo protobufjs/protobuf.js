@@ -52,6 +52,7 @@ var integerRe = /^[+-]?[0-9]+$/,
  * @property {number} EDITION_PROTO3=999
  * @property {number} EDITION_2023=1000
  * @property {number} EDITION_2024=1001
+ * @property {number} EDITION_2026=1002
  * @property {number} EDITION_1_TEST_ONLY=1
  * @property {number} EDITION_2_TEST_ONLY=2
  * @property {number} EDITION_99997_TEST_ONLY=99997
@@ -693,6 +694,7 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
  * @property {number} [jsonFormat]
  * @property {number} [enforceNamingStyle]
  * @property {number} [defaultSymbolVisibility]
+ * @property {number} [enforceProtoLimits]
  */
 
 var unnamedEnumIndex = 0;
@@ -1158,6 +1160,8 @@ function editionFromDescriptor(fileDescriptor) {
                 return "2023";
             case exports.Edition.EDITION_2024:
                 return "2024";
+            case exports.Edition.EDITION_2026:
+                return "2026";
             default:
                 throw new Error("Unsupported edition " + fileDescriptor.edition);
         }
@@ -1180,6 +1184,9 @@ function editionToDescriptor(edition, fileDescriptor) {
                 break;
             case "2024":
                 fileDescriptor.edition = exports.Edition.EDITION_2024;
+                break;
+            case "2026":
+                fileDescriptor.edition = exports.Edition.EDITION_2026;
                 break;
             default:
                 throw new Error("Unsupported edition " + edition);

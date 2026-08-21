@@ -3,7 +3,7 @@ description: "Build and run the upstream Protocol Buffers conformance suite for 
 inputs:
   upstream-version:
     description: "Upstream protocolbuffers/protobuf tag or branch to test against."
-    default: "v35.1"
+    default: "v36.0"
   upstream-dir:
     description: "Directory where upstream protobuf is checked out."
     default: "tests/conformance/upstream"
@@ -15,7 +15,7 @@ inputs:
     default: "tests/conformance/out"
   maximum-edition:
     description: "Maximum protobuf edition passed to the conformance runner."
-    default: "2024"
+    default: "2026"
 outputs:
   exit-code:
     description: "Exit code returned by the conformance suites."

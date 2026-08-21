@@ -19,7 +19,7 @@ exports.CodeGeneratorResponse = pluginRoot.lookupType("google.protobuf.compiler.
 var FEATURE_PROTO3_OPTIONAL = 1;
 var FEATURE_SUPPORTS_EDITIONS = 2;
 var EDITION_2023 = 1000;
-var EDITION_2024 = 1001;
+var EDITION_2026 = 1002;
 
 var targets = new Set([ "static-module", "json-module" ]);
 var wrappers = new Set([ "default", "commonjs", "amd", "esm", "es6", "closure" ]);
@@ -213,7 +213,7 @@ function response(files, error) {
         error: error || undefined,
         supportedFeatures: FEATURE_PROTO3_OPTIONAL | FEATURE_SUPPORTS_EDITIONS,
         minimumEdition: EDITION_2023,
-        maximumEdition: EDITION_2024,
+        maximumEdition: EDITION_2026,
         file: files
     });
 }

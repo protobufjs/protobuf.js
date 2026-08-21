@@ -17,6 +17,7 @@ enum Edition {
     EDITION_PROTO3 = 999;
     EDITION_2023 = 1000;
     EDITION_2024 = 1001;
+    EDITION_2026 = 1002;
     EDITION_1_TEST_ONLY = 1;
     EDITION_2_TEST_ONLY = 2;
     EDITION_99997_TEST_ONLY = 99997;
@@ -396,6 +397,7 @@ message FeatureSet {
     optional JsonFormat json_format = 6 [retention="RETENTION_RUNTIME", targets="TARGET_TYPE_FILE", feature_support.edition_introduced="EDITION_2023", edition_defaults.edition="EDITION_PROTO3", edition_defaults.value="ALLOW"];
     optional EnforceNamingStyle enforce_naming_style = 7 [retention="RETENTION_SOURCE", targets="TARGET_TYPE_METHOD", feature_support.edition_introduced="EDITION_2024", edition_defaults.edition="EDITION_2024", edition_defaults.value="STYLE2024"];
     optional VisibilityFeature.DefaultSymbolVisibility default_symbol_visibility = 8 [retention="RETENTION_SOURCE", targets="TARGET_TYPE_FILE", feature_support.edition_introduced="EDITION_2024", edition_defaults.edition="EDITION_2024", edition_defaults.value="EXPORT_TOP_LEVEL"];
+    optional ProtoLimitsFeature.EnforceProtoLimits enforce_proto_limits = 9;
 
     enum FieldPresence {
 
@@ -445,6 +447,7 @@ message FeatureSet {
         ENFORCE_NAMING_STYLE_UNKNOWN = 0;
         STYLE2024 = 1;
         STYLE_LEGACY = 2;
+        STYLE2026 = 3;
     }
 
     message VisibilityFeature {
@@ -459,6 +462,16 @@ message FeatureSet {
         }
 
         reserved 1 to max;
+    }
+
+    message ProtoLimitsFeature {
+
+        enum EnforceProtoLimits {
+
+            PROTO_LIMITS_UNKNOWN = 0;
+            LEGACY_NO_EXPLICIT_LIMITS = 1;
+            PROTO_LIMITS2026 = 2;
+        }
     }
 
     extensions 1000 to 9994, 9995 to 9999, 10000;
