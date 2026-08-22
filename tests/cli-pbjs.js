@@ -1194,3 +1194,136 @@ tape.test("pbjs generates static code with message filter", function (test) {
         });
     });
 });
+
+// Applies a filter to a freshly loaded root and asserts on what survived.
+function filterTest(test, file, messageNames, kept, removed) {
+    var util = require("../cli/util");
+    var root = protobuf.loadSync(path.join("tests/data/cli", file));
+
+    util.filterMessage(root, { messageNames: messageNames });
+
+    kept.forEach(function(name) {
+        test.ok(root.lookup(name), "keeps " + name);
+    });
+    removed.forEach(function(name) {
+        test.equal(root.lookup(name), null, "removes " + name);
+    });
+    // Resolving the pruned root in place is not enough: its objects are already resolved and
+    // Namespace#remove does not invalidate them. Reloading from JSON resolves from scratch and
+    // so is the check that no retained field points at a type that was pruned away.
+    test.doesNotThrow(function() {
+        protobuf.Root.fromJSON(JSON.parse(JSON.stringify(root.toJSON()))).resolveAll();
+    }, "leaves a root that resolves from scratch");
+    return root;
+}
+
+tape.test("pbjs filter keeps dependencies in deeply nested namespaces", function(test) {
+    cliTest(test, function() {
+        filterTest(test, "filter-nested.proto", [ "example.Response" ], [
+            ".example.Response",
+            ".example.values.Value",
+            ".example.values.Meta",
+            ".example.values.Kind"
+        ], [
+            ".example.UnusedRoot",
+            ".example.values.UnusedValue"
+        ]);
+        test.end();
+    });
+});
+
+tape.test("pbjs filter follows cyclic, repeated, map and oneof dependencies", function(test) {
+    cliTest(test, function() {
+        filterTest(test, "filter-edge.proto", [ "edge.Cyclic" ], [
+            ".edge.Cyclic",
+            ".edge.CyclicPeer"
+        ], [
+            ".edge.Unused"
+        ]);
+
+        filterTest(test, "filter-edge.proto", [ "edge.Collections" ], [
+            ".edge.Collections",
+            ".edge.Item",
+            ".edge.Flavor"
+        ], [
+            ".edge.Unused"
+        ]);
+
+        filterTest(test, "filter-edge.proto", [ "edge.Choice" ], [
+            ".edge.Choice",
+            ".edge.FirstChoice",
+            ".edge.SecondChoice"
+        ], [
+            ".edge.Unused"
+        ]);
+
+        test.end();
+    });
+});
+
+tape.test("pbjs filter keeps used nested types and drops unused ones", function(test) {
+    cliTest(test, function() {
+        filterTest(test, "filter-edge.proto", [ "edge.Container" ], [
+            ".edge.Container",
+            ".edge.Container.UsedNested",
+            ".edge.Container.UsedNestedEnum"
+        ], [
+            ".edge.Container.UnusedNested",
+            ".edge.Container.UnusedNestedEnum",
+            ".edge.EdgeService"
+        ]);
+        test.end();
+    });
+});
+
+tape.test("pbjs filter reduces an unselected parent type to a namespace", function(test) {
+    cliTest(test, function() {
+        var root = filterTest(test, "filter-edge.proto", [ "edge.Outer.SelectedNested" ], [
+            ".edge.Outer",
+            ".edge.Outer.SelectedNested"
+        ], [
+            ".edge.OuterDependency"
+        ]);
+
+        var outer = root.lookup(".edge.Outer");
+        test.ok(outer instanceof protobuf.Namespace, "keeps Outer as a namespace");
+        test.notOk(outer instanceof protobuf.Type, "does not keep Outer as a message");
+
+        var json = root.toJSON().nested.edge.nested.Outer;
+        test.notOk(json.fields, "does not keep the fields of Outer");
+        test.notOk(json.edition, "does not change the edition of the retained nested type");
+
+        test.end();
+    });
+});
+
+tape.test("pbjs filter rejects invalid configurations", function(test) {
+    cliTest(test, function() {
+        var util = require("../cli/util");
+        var root = protobuf.loadSync("tests/data/cli/filter-nested.proto");
+
+        [ undefined, {}, { messageNames: [] }, { messageNames: "example.Response" } ].forEach(function(config) {
+            test.throws(function() {
+                util.filterMessage(root, config);
+            }, /messageNames must be a non-empty array/, "rejects " + JSON.stringify(config));
+        });
+
+        [ [ "" ], [ 42 ] ].forEach(function(messageNames) {
+            test.throws(function() {
+                util.filterMessage(root, { messageNames: messageNames });
+            }, /messageNames must contain non-empty strings/, "rejects " + JSON.stringify(messageNames));
+        });
+
+        // Only messages can be selected, everything else is kept as a dependency or not at all.
+        [ "example.Missing", "example.values.Kind", "example.values" ].forEach(function(name) {
+            test.throws(function() {
+                util.filterMessage(root, { messageNames: [ name ] });
+            }, /no such message: /, "rejects " + name + " as a root");
+        });
+
+        test.ok(root.lookup(".example.UnusedRoot"), "leaves the root untouched on error");
+
+        test.end();
+    });
+});
+
