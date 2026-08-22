@@ -290,6 +290,37 @@ tape.test("descriptor - imports file-level edition features", function(test) {
     test.end();
 });
 
+tape.test("descriptor - symbol visibility", function(test) {
+    var type = protobuf.Type.fromDescriptor(descriptor.DescriptorProto.create({
+            name: "LocalMessage",
+            visibility: descriptor.SymbolVisibility.VISIBILITY_LOCAL,
+            nestedType: [{
+                name: "NestedMessage",
+                visibility: descriptor.SymbolVisibility.VISIBILITY_EXPORT
+            }],
+            enumType: [{
+                name: "NestedEnum",
+                visibility: descriptor.SymbolVisibility.VISIBILITY_LOCAL
+            }]
+        }), "2024"),
+        enm = protobuf.Enum.fromDescriptor(descriptor.EnumDescriptorProto.create({
+            name: "ExportedEnum",
+            visibility: descriptor.SymbolVisibility.VISIBILITY_EXPORT
+        }), "2024");
+
+    test.equal(type.visibility, "local", "imports message visibility");
+    test.equal(type.lookupType("NestedMessage").visibility, "export", "imports nested message visibility");
+    test.equal(type.lookupEnum("NestedEnum").visibility, "local", "imports nested enum visibility");
+    var typeDescriptor = type.toDescriptor("2024");
+    test.equal(typeDescriptor.visibility, descriptor.SymbolVisibility.VISIBILITY_LOCAL, "exports message visibility");
+    test.equal(typeDescriptor.nestedType[0].visibility, descriptor.SymbolVisibility.VISIBILITY_EXPORT, "exports nested message visibility");
+    test.equal(typeDescriptor.enumType[0].visibility, descriptor.SymbolVisibility.VISIBILITY_LOCAL, "exports nested enum visibility");
+    test.equal(enm.visibility, "export", "imports enum visibility");
+    test.equal(enm.toDescriptor().visibility, descriptor.SymbolVisibility.VISIBILITY_EXPORT, "exports enum visibility");
+
+    test.end();
+});
+
 tape.test("descriptor - imports legacy group metadata", function(test) {
     var root = protobuf.parse(`syntax = "proto2";
         message WithGroup {

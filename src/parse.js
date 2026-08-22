@@ -342,6 +342,7 @@ function parse(source, root, options) {
                 if (edition < "2024") {
                     return false;
                 }
+                var visibility = token;
                 token = next();
                 if (token === "export" || token === "local") {
                     return false;
@@ -349,9 +350,11 @@ function parse(source, root, options) {
                 if (token !== "message" && token !== "enum") {
                     return false;
                 }
-                /* eslint-disable no-warning-comments */
-                // TODO: actually enforce visiblity modifiers like protoc does.
-                return parseCommon(parent, token, depth);
+                (token === "message"
+                    ? parseType(parent, token, depth + 1)
+                    : parseEnum(parent, token)
+                ).visibility = visibility;
+                return true;
 
             case "service":
                 parseService(parent, token, depth + 1);
@@ -456,6 +459,7 @@ function parse(source, root, options) {
         if (parent === ptr) {
             topLevelObjects.push(type);
         }
+        return type;
     }
 
     function parseField(parent, rule, extend, depth) {
@@ -720,6 +724,7 @@ function parse(source, root, options) {
         if (parent === ptr) {
             topLevelObjects.push(enm);
         }
+        return enm;
     }
 
     function parseEnumValue(token) {
