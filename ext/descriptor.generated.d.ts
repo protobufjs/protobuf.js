@@ -215,6 +215,9 @@ export interface IDescriptorProto {
 
     /** Reserved names */
     reservedName?: string[];
+
+    /** Declared symbol visibility */
+    visibility?: number;
 }
 
 /** Properties of a MessageOptions message. */
@@ -311,6 +314,9 @@ export interface IEnumDescriptorProto {
 
     /** Enum options */
     options?: IEnumOptions;
+
+    /** Declared symbol visibility */
+    visibility?: number;
 }
 
 /** Properties of an EnumValueDescriptorProto message. */

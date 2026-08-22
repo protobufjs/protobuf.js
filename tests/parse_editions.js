@@ -85,20 +85,21 @@ tape.test("edition 2023 reserved", function(test) {
 });
 
 tape.test("edition 2024 visibility", function(test) {
-    test.ok(protobuf.parse(`edition = "2024"; export message Foo {}`), "messages should allow export modifier");;
-    test.ok(protobuf.parse(`edition = "2024"; export enum Foo {}`), "enums should allow export modifier");;
-    test.ok(protobuf.parse(`edition = "2024"; local message Foo {}`), "messages should allow local modifier");;
-    test.ok(protobuf.parse(`edition = "2024"; local enum Foo {}`), "enums should allow local modifier");;
-    test.ok(protobuf.parse(`edition = "2024";
-        message Foo {
-            export message Export {}
-            local message Local {}
-        }`), "nested messages should allow visibility modifiers");;
-    test.ok(protobuf.parse(`edition = "2024";
-        message Foo {
-            export enum Export {}
-            local enum Local {}
-        }`), "nested enums should allow visibility modifiers");;
+    var root = protobuf.parse(`edition = "2024";
+        local message LocalMessage {}
+        export enum ExportedEnum {}
+        message Outer {
+            export message ExportedMessage {}
+            local enum LocalEnum { ZERO = 0; }
+        }
+    `).root;
+    test.equal(root.lookupType("LocalMessage").visibility, "local", "messages should preserve local modifier");
+    test.equal(root.lookupEnum("ExportedEnum").visibility, "export", "enums should preserve export modifier");
+    test.equal(root.lookupType("Outer.ExportedMessage").visibility, "export", "nested messages should preserve export modifier");
+    test.equal(root.lookupEnum("Outer.LocalEnum").visibility, "local", "nested enums should preserve local modifier");
+    var roundtrip = protobuf.Root.fromJSON(root.toJSON());
+    test.equal(roundtrip.lookupType("LocalMessage").visibility, "local", "reflection JSON should preserve message visibility");
+    test.equal(roundtrip.lookupEnum("ExportedEnum").visibility, "export", "reflection JSON should preserve enum visibility");
 
     test.throws(function() {
         protobuf.parse(`edition = "2023"; export message Foo {}`)
@@ -136,7 +137,6 @@ tape.test("edition 2024 visibility", function(test) {
 
     test.end();
 });
-
 
 tape.test("edition 2024 import option", function(test) {
     test.same(protobuf.parse(`edition = "2024"; import "foo.proto";`).imports, ["foo.proto"], "regular options should fetch");

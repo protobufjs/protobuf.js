@@ -190,6 +190,9 @@ export class Enum extends ReflectionObject {
     /** Reserved ranges, if any. */
     reserved: (number[]|string)[];
 
+    /** Declared symbol visibility, if any. */
+    visibility?: ("local"|"export");
+
     /**
      * Constructs an enum from an enum descriptor.
      * @param name Enum name
@@ -259,6 +262,9 @@ export interface IEnum {
 
     /** Reserved ranges */
     reserved?: (number[]|string)[];
+
+    /** Declared symbol visibility */
+    visibility?: ("local"|"export");
 
     /** Enum comment */
     comment?: (string|null);
@@ -1804,6 +1810,9 @@ export class Type extends NamespaceBase {
     /** Reserved ranges, if any. */
     reserved: (number[]|string)[];
 
+    /** Declared symbol visibility, if any. */
+    visibility?: ("local"|"export");
+
     /** Message fields by id. */
     readonly fieldsById: { [k: number]: Field };
 
@@ -1981,6 +1990,9 @@ export interface IType extends INamespace {
 
     /** Whether a legacy group or not */
     group?: boolean;
+
+    /** Declared symbol visibility */
+    visibility?: ("local"|"export");
 
     /** Message type comment */
     comment?: (string|null);

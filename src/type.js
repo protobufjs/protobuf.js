@@ -71,6 +71,12 @@ function Type(name, options) {
     this.group = undefined; // toJSON
 
     /**
+     * Declared symbol visibility, if any.
+     * @type {"local"|"export"|undefined}
+     */
+    this.visibility = undefined; // toJSON
+
+    /**
      * Cached fields by id.
      * @type {Object.<number,Field>|null}
      * @private
@@ -254,6 +260,7 @@ function clearCache(type) {
  * @property {number[][]} [extensions] Extension ranges
  * @property {Array.<number[]|string>} [reserved] Reserved ranges
  * @property {boolean} [group=false] Whether a legacy group or not
+ * @property {"local"|"export"} [visibility] Declared symbol visibility
  * @property {string|null} [comment] Message type comment
  */
 
@@ -304,6 +311,8 @@ Type.fromJSON = function fromJSON(name, json, depth) {
         type.reserved = json.reserved;
     if (json.group)
         type.group = true;
+    if (json.visibility)
+        type.visibility = json.visibility;
     if (json.comment)
         type.comment = json.comment;
     if (json.edition)
@@ -328,6 +337,7 @@ Type.prototype.toJSON = function toJSON(toJSONOptions) {
         "extensions" , this.extensions && this.extensions.length ? this.extensions : undefined,
         "reserved"   , this.reserved && this.reserved.length ? this.reserved : undefined,
         "group"      , this.group || undefined,
+        "visibility" , this.visibility,
         "nested"     , inherited && inherited.nested || undefined,
         "comment"    , keepComments ? this.comment : undefined
     ]);

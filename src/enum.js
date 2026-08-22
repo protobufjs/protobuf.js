@@ -76,6 +76,12 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
      */
     this.reserved = undefined; // toJSON
 
+    /**
+     * Declared symbol visibility, if any.
+     * @type {"local"|"export"|undefined}
+     */
+    this.visibility = undefined; // toJSON
+
     // Note that values inherit valuesById on their prototype which makes them a TypeScript-
     // compatible enum. This is used by pbts to write actual enum definitions that work for
     // static and reflection code alike instead of emitting generic object definitions.
@@ -112,6 +118,7 @@ Enum.prototype._resolveFeatures = function _resolveFeatures(edition) {
  * @property {Object.<string,*>} [options] Enum options
  * @property {Object.<string,Object.<string,*>>} [valuesOptions] Enum value options
  * @property {Array.<number[]|string>} [reserved] Reserved ranges
+ * @property {"local"|"export"} [visibility] Declared symbol visibility
  * @property {string|null} [comment] Enum comment
  * @property {Object.<string,string|null>} [comments] Value comments
  */
@@ -126,6 +133,8 @@ Enum.prototype._resolveFeatures = function _resolveFeatures(edition) {
 Enum.fromJSON = function fromJSON(name, json) {
     var enm = new Enum(name, json.values, json.options, json.comment, json.comments, json.valuesOptions);
     enm.reserved = json.reserved;
+    if (json.visibility)
+        enm.visibility = json.visibility;
     if (json.edition)
         enm._edition = json.edition;
     enm._defaultEdition = "proto3";  // For backwards-compatibility.
@@ -145,6 +154,7 @@ Enum.prototype.toJSON = function toJSON(toJSONOptions) {
         "valuesOptions" , this.valuesOptions,
         "values"        , this.values,
         "reserved"      , this.reserved && this.reserved.length ? this.reserved : undefined,
+        "visibility"    , this.visibility,
         "comment"       , keepComments ? this.comment : undefined,
         "comments"      , keepComments ? this.comments : undefined
     ]);
