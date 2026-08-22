@@ -209,6 +209,7 @@ function Root_toDescriptorRecursive(ns, files, edition) {
  * @property {IMessageOptions} [options] Not supported
  * @property {IDescriptorProtoReservedRange[]} [reservedRange] Reserved ranges
  * @property {string[]} [reservedName] Reserved names
+ * @property {number} [visibility] Declared symbol visibility
  */
 
 /**
@@ -253,6 +254,7 @@ function Type_fromDescriptor(descriptor, ctx, nested, depth) {
     var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++, fromDescriptorOptions(descriptor.options, exports.MessageOptions)),
         i,
         mapEntries = Object.create(null);
+    type.visibility = visibilityFromDescriptor(descriptor.visibility);
 
     if (!nested) {
         type._edition = ctx.edition;
@@ -317,6 +319,9 @@ function Type_fromDescriptor(descriptor, ctx, nested, depth) {
 Type.prototype.toDescriptor = function toDescriptor(edition) {
     var descriptor = exports.DescriptorProto.create({ name: this.name }),
         i;
+
+    if (this.visibility)
+        descriptor.visibility = visibilityToDescriptor(this.visibility);
 
     /* Fields */ for (i = 0; i < this.fieldsArray.length; ++i) {
         var fieldDescriptor;
@@ -656,6 +661,7 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
  * @property {string} [name] Enum name
  * @property {IEnumValueDescriptorProto[]} [value] Enum values
  * @property {IEnumOptions} [options] Enum options
+ * @property {number} [visibility] Declared symbol visibility
  */
 
 /**
@@ -737,6 +743,7 @@ function Enum_fromDescriptor(descriptor, ctx, nested) {
         undefined,
         valuesOptions
     );
+    enm.visibility = visibilityFromDescriptor(descriptor.visibility);
 
     if (!nested) {
         enm._edition = ctx.edition;
@@ -778,6 +785,8 @@ Enum.prototype.toDescriptor = function toDescriptor() {
         value: values,
         options: toDescriptorOptions(this.options, exports.EnumOptions)
     });
+    if (this.visibility)
+        descriptor.visibility = visibilityToDescriptor(this.visibility);
 
     /* Reserved... */ if (this.reserved)
         for (i = 0; i < this.reserved.length; ++i)
@@ -1000,6 +1009,14 @@ function applyContextFeatures(object, ctx) {
     var options = object.options || (object.options = {});
     options.features = $protobuf.util.merge({}, ctx.features, options.features);
     return object;
+}
+
+function visibilityFromDescriptor(visibility) {
+    return visibility === 1 ? "local" : visibility === 2 ? "export" : undefined;
+}
+
+function visibilityToDescriptor(visibility) {
+    return visibility === "local" ? 1 : visibility === "export" ? 2 : 0;
 }
 
 // Converts a descriptor type to a protobuf.js basic type
