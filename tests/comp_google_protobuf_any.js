@@ -137,3 +137,20 @@ tape.test("google.protobuf.Any - toObject recursion limit", function(test) {
 
     test.end();
 });
+
+tape.test("google.protobuf.Any - fromObject recursion limit", function(test) {
+
+    var recursionLimit = protobuf.util.recursionLimit;
+    protobuf.util.recursionLimit = 3;
+    try {
+        test.throws(function() {
+            Any.fromObject({
+                "@type": "type.googleapis.com/google.protobuf.Any"
+            });
+        }, /max depth exceeded/, "should reject excessive Any object expansion depth");
+    } finally {
+        protobuf.util.recursionLimit = recursionLimit;
+    }
+
+    test.end();
+});
