@@ -91,6 +91,15 @@ function invalid(name, value, what) {
     return Error(name + ": " + what + ": " + JSON.stringify(value));
 }
 
+function normalizeIntegerString(str, name, what) {
+    str = str.replace(/^\+/, "").replace(/^(-?)0+(?=\d)/, "$1");
+    if (str === "-0")
+        str = "0";
+    if (str.length > 20) // max uint64 and min int64
+        throw Error(name + ": out of range for " + what);
+    return str;
+}
+
 function parseIntegerString(value, type, name) {
     var str;
     if (typeof value === "number") {
@@ -113,6 +122,7 @@ function parseIntegerString(value, type, name) {
         throw invalid(name, value, "expected integer (number or string)");
 
     var range = INT_RANGE[type];
+    str = normalizeIntegerString(str, name, type);
     if (LONG_TYPE[type]) {
         if (hasBigInt) {
             var big = BigInt(str);
@@ -128,17 +138,17 @@ function parseMapIntegerKey(key, type, name) {
     var unsigned = type === "uint32" || type === "fixed32" || type === "uint64" || type === "fixed64";
     if (!(unsigned ? /^[0-9]+$/ : /^-?[0-9]+$/).test(key))
         throw invalid(name, key, "invalid " + type + " map key");
+    var range = INT_RANGE[type];
+    key = normalizeIntegerString(key, name, type + " map key");
     if (hasBigInt) {
-        var big = BigInt(key),
-            range = INT_RANGE[type];
+        var big = BigInt(key);
         if (big < BigInt(range[0]) || big > BigInt(range[1]))
             throw invalid(name, key, "out of range for " + type + " map key");
         return big.toString();
     }
     parseIntegerString(key, type, name);
     if (LONG_TYPE[type]) {
-        var normalized = key.replace(/^-?0+(?=\d)/, key.charAt(0) === "-" ? "-" : "");
-        return normalized === "-0" ? "0" : normalized;
+        return key;
     }
     return String(Number(key));
 }

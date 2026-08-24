@@ -13,6 +13,7 @@ function bytes(buf) {
 
 var proto = "syntax = \"proto3\";\
 message Msg { int32 value = 1; }\
+message LongMsg { int64 value = 1; }\
 enum Choice { A = 0; B = 1; }\
 message Inner { int32 value = 1; }\
 message Outer {\
@@ -35,6 +36,7 @@ message MapMsg {\
 
 var root = protobuf.parse(proto).root,
     Msg = root.lookupType("Msg"),
+    LongMsg = root.lookupType("LongMsg"),
     Outer = root.lookupType("Outer"),
     OneofDefault = root.lookupType("OneofDefault"),
     MapMsg = root.lookupType("MapMsg"),
@@ -186,6 +188,37 @@ tape.test("protojson - rejects duplicate keys in string input", function(test) {
 tape.test("protojson - accepts already-parsed input", function(test) {
     var message = protojson.fromJson(Msg, { value: 1 });
     test.equal(message.value, 1, "parses object input");
+    test.end();
+});
+
+tape.test("protojson - bounds integer conversion inputs", function(test) {
+    var nativeBigInt = protobuf.util.global.BigInt,
+        maxBigIntLength = 0,
+        oversized = "9".repeat(1000),
+        error;
+    protobuf.util.global.BigInt = function(value) {
+        maxBigIntLength = Math.max(maxBigIntLength, String(value).length);
+        return nativeBigInt(value);
+    };
+    try {
+        try {
+            protojson.fromJson(LongMsg, { value: oversized });
+        } catch (err) {
+            error = err;
+        }
+        test.ok(error && /out of range/.test(error.message), "rejects oversized integer strings");
+        test.ok(error && error.message.length < oversized.length, "does not copy oversized values into errors");
+        test.equal(protojson.fromJson(LongMsg, { value: "0".repeat(1000) + "1" }).value.toString(), "1", "accepts insignificant leading zeros");
+
+        var map = {};
+        map[oversized] = "bad";
+        test.throws(function() {
+            protojson.fromJson(MapMsg, { uint64Map: map });
+        }, /out of range/, "rejects oversized integer map keys");
+        test.ok(maxBigIntLength <= 20, "passes only bounded values to BigInt");
+    } finally {
+        protobuf.util.global.BigInt = nativeBigInt;
+    }
     test.end();
 });
 
