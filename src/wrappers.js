@@ -40,6 +40,10 @@ var Message = require("./message"),
 wrappers[".google.protobuf.Any"] = {
 
     fromObject: function(object, depth) {
+        if (depth === undefined)
+            depth = 0;
+        if (depth > util.recursionLimit)
+            throw Error("max depth exceeded");
 
         // unwrap value type if mapped
         if (object && object["@type"]) {
@@ -57,7 +61,7 @@ wrappers[".google.protobuf.Any"] = {
                 }
                 return this.create({
                     type_url: type_url,
-                    value: type.encode(type.fromObject(object, depth === undefined ? 1 : depth + 1)).finish()
+                    value: type.encode(type.fromObject(object, depth + 1)).finish()
                 });
             }
         }
