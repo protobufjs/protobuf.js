@@ -94,12 +94,32 @@ Reader.prototype.raw = function read_raw(start, end) {
     return this.buf.subarray(start, end);
 };
 
+function readVarint32NearEnd(reader) {
+    // Safely read up to four bytes of a varint32 near the reader limit
+    var value = 0;
+    for (var i = 0; i < 4; ++i) {
+        if (reader.pos >= reader.len)
+            throw indexOutOfRange(reader);
+        var b = reader.buf[reader.pos++];
+        value = (value | (b & 127) << i * 7) >>> 0;
+        if (b < 128)
+            return value;
+    }
+    throw indexOutOfRange(reader);
+}
+
 /**
  * Reads a varint as an unsigned 32 bit value.
  * @function
  * @returns {number} Value read
  */
 Reader.prototype.uint32 = function read_uint32() {
+    if (this.len - this.pos < 5) {
+        if (this.pos >= this.len)
+            throw indexOutOfRange(this);
+        if (this.buf[this.pos] >= 128)
+            return readVarint32NearEnd(this);
+    }
     var buf = this.buf,
         pos = this.pos,
         value = (buf[pos] & 127) >>> 0;
@@ -150,6 +170,12 @@ Reader.prototype.uint32 = function read_uint32() {
  * @returns {number} Tag read
  */
 Reader.prototype.tag = function read_tag() {
+    if (this.len - this.pos < 5) {
+        if (this.pos >= this.len)
+            throw indexOutOfRange(this);
+        if (this.buf[this.pos] >= 128)
+            return readVarint32NearEnd(this);
+    }
     var buf = this.buf,
         pos = this.pos,
         value = (buf[pos] & 127) >>> 0;
@@ -395,7 +421,9 @@ Reader.prototype.double = function read_double() {
  */
 Reader.prototype.uint32s = function read_uint32s(array) {
     if (array === undefined) array = [];
-    var end = this.uint32() + this.pos, buf = this.buf, pos = this.pos, value;
+    var end = this.uint32() + this.pos, len = this.len, buf = this.buf, pos = this.pos, value;
+    if (end > len) throw indexOutOfRange(this, end - this.pos);
+    this.len = end;
     while (pos < end) {
         value = buf[pos++];
         if (value < 128)
@@ -407,6 +435,8 @@ Reader.prototype.uint32s = function read_uint32s(array) {
         }
     }
     this.pos = pos;
+    if (pos !== end) throw RangeError("index out of range");
+    this.len = len;
     return array;
 };
 
@@ -417,7 +447,9 @@ Reader.prototype.uint32s = function read_uint32s(array) {
  */
 Reader.prototype.int32s = function read_int32s(array) {
     if (array === undefined) array = [];
-    var end = this.uint32() + this.pos, buf = this.buf, pos = this.pos, value;
+    var end = this.uint32() + this.pos, len = this.len, buf = this.buf, pos = this.pos, value;
+    if (end > len) throw indexOutOfRange(this, end - this.pos);
+    this.len = end;
     while (pos < end) {
         value = buf[pos++];
         if (value < 128)
@@ -429,6 +461,8 @@ Reader.prototype.int32s = function read_int32s(array) {
         }
     }
     this.pos = pos;
+    if (pos !== end) throw RangeError("index out of range");
+    this.len = len;
     return array;
 };
 
@@ -439,9 +473,13 @@ Reader.prototype.int32s = function read_int32s(array) {
  */
 Reader.prototype.sint32s = function read_sint32s(array) {
     if (array === undefined) array = [];
-    var end = this.uint32() + this.pos;
+    var end = this.uint32() + this.pos, len = this.len;
+    if (end > len) throw indexOutOfRange(this, end - this.pos);
+    this.len = end;
     while (this.pos < end)
         array.push(this.sint32());
+    if (this.pos !== end) throw RangeError("index out of range");
+    this.len = len;
     return array;
 };
 
@@ -452,7 +490,9 @@ Reader.prototype.sint32s = function read_sint32s(array) {
  */
 Reader.prototype.bools = function read_bools(array) {
     if (array === undefined) array = [];
-    var end = this.uint32() + this.pos, buf = this.buf, pos = this.pos, value;
+    var end = this.uint32() + this.pos, len = this.len, buf = this.buf, pos = this.pos, value;
+    if (end > len) throw indexOutOfRange(this, end - this.pos);
+    this.len = end;
     while (pos < end) {
         value = buf[pos++];
         if (value < 128)
@@ -464,6 +504,8 @@ Reader.prototype.bools = function read_bools(array) {
         }
     }
     this.pos = pos;
+    if (pos !== end) throw RangeError("index out of range");
+    this.len = len;
     return array;
 };
 
@@ -582,9 +624,13 @@ Reader.prototype.doubles = function read_doubles(array) {
  */
 Reader.prototype.uint64s = function read_uint64s(array) {
     if (array === undefined) array = [];
-    var end = this.uint32() + this.pos;
+    var end = this.uint32() + this.pos, len = this.len;
+    if (end > len) throw indexOutOfRange(this, end - this.pos);
+    this.len = end;
     while (this.pos < end)
         array.push(this.uint64());
+    if (this.pos !== end) throw RangeError("index out of range");
+    this.len = len;
     return array;
 };
 
@@ -595,9 +641,13 @@ Reader.prototype.uint64s = function read_uint64s(array) {
  */
 Reader.prototype.int64s = function read_int64s(array) {
     if (array === undefined) array = [];
-    var end = this.uint32() + this.pos;
+    var end = this.uint32() + this.pos, len = this.len;
+    if (end > len) throw indexOutOfRange(this, end - this.pos);
+    this.len = end;
     while (this.pos < end)
         array.push(this.int64());
+    if (this.pos !== end) throw RangeError("index out of range");
+    this.len = len;
     return array;
 };
 
@@ -608,9 +658,13 @@ Reader.prototype.int64s = function read_int64s(array) {
  */
 Reader.prototype.sint64s = function read_sint64s(array) {
     if (array === undefined) array = [];
-    var end = this.uint32() + this.pos;
+    var end = this.uint32() + this.pos, len = this.len;
+    if (end > len) throw indexOutOfRange(this, end - this.pos);
+    this.len = end;
     while (this.pos < end)
         array.push(this.sint64());
+    if (this.pos !== end) throw RangeError("index out of range");
+    this.len = len;
     return array;
 };
 

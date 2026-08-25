@@ -81,3 +81,12 @@ tape.test("packed reader methods reject invalid fixed-width lengths", function(t
     });
     test.end();
 });
+
+tape.test("packed reader methods reject varints crossing their declared length", function(test) {
+    [ "uint32s", "int32s", "sint32s", "bools", "uint64s", "int64s", "sint64s" ].forEach(function(name) {
+        test.throws(function() {
+            Reader.create([ 1, 128, 0 ])[name]();
+        }, RangeError, name + " should reject a varint crossing the packed boundary");
+    });
+    test.end();
+});

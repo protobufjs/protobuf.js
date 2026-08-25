@@ -326,9 +326,9 @@ protobuf.js is validated against the official Protocol Buffers conformance suite
 
 ## Performance
 
-Both reflection and static modes use specialized encoders and decoders backed by the same hand-tuned reader and writer primitives.
+protobuf.js's reflection and static modes share the same code-generation backend and underlying hand-tuned reader and writer primitives. Reflection mode emits specialized encoders and decoders just in time, while static mode emits equivalent code ahead of time.
 
-The repository includes a reproducible [benchmark suite](./bench) comparing protobuf.js with other general-purpose JavaScript implementations across three cases: our classic common message shape and two unmodified, structurally distinct fixtures sourced from external projects. Each library is tested through its recommended serialization and deserialization path using identical schemas and message contents. [Structured results](./bench/results/latest.json) and environment details are committed; the suite also runs in CI.
+To see how this architecture compares in practice, the repository includes a reproducible [benchmark suite](./bench) measuring both modes alongside other general-purpose JavaScript implementations across three cases: our classic common message shape and two unmodified, structurally distinct fixtures sourced from other implementations. Each library is tested through its recommended serialization and deserialization path using identical schemas and message contents.
 
 <!-- BEGIN BENCHMARK DATA -->
 
@@ -343,11 +343,11 @@ The repository includes a reproducible [benchmark suite](./bench) comparing prot
 
 | Implementation | Common | Vector tile | Buf perf |
 | --- | ---: | ---: | ---: |
-| protobuf.js static | **5.11M ops/s** &nbsp; <small>1.0x</small> | 3.05K ops/s &nbsp; <small>1.0x</small> | **44.5K ops/s** &nbsp; <small>1.0x</small> |
-| protobuf.js reflect | 5.01M ops/s &nbsp; <small>1.0x</small> | **3.07K ops/s** &nbsp; <small>1.0x</small> | 43.3K ops/s &nbsp; <small>1.0x</small> |
-| JSON | 2.08M ops/s &nbsp; <small>2.5x</small> | 873 ops/s &nbsp; <small>3.5x</small> | 6.70K ops/s &nbsp; <small>6.6x</small> |
-| protoc-gen-js | 1.01M ops/s &nbsp; <small>5.0x</small> | 697 ops/s &nbsp; <small>4.4x</small> | 13.8K ops/s &nbsp; <small>3.2x</small> |
-| protoc-gen-es | 1.25M ops/s &nbsp; <small>4.1x</small> | 1.16K ops/s &nbsp; <small>2.6x</small> | 34.4K ops/s &nbsp; <small>1.3x</small> |
+| protobuf.js static | **5.28M ops/s** &nbsp; <small>1.0x</small> | 3.06K ops/s &nbsp; <small>1.0x</small> | **49.2K ops/s** &nbsp; <small>1.0x</small> |
+| protobuf.js reflect | 5.16M ops/s &nbsp; <small>1.0x</small> | **3.08K ops/s** &nbsp; <small>1.0x</small> | 47.5K ops/s &nbsp; <small>1.0x</small> |
+| JSON | 3.44M ops/s &nbsp; <small>1.5x</small> | 1.50K ops/s &nbsp; <small>2.1x</small> | 7.13K ops/s &nbsp; <small>6.9x</small> |
+| protoc-gen-js | 1.05M ops/s &nbsp; <small>5.0x</small> | 691 ops/s &nbsp; <small>4.5x</small> | 15.0K ops/s &nbsp; <small>3.3x</small> |
+| protoc-gen-es | 1.22M ops/s &nbsp; <small>4.3x</small> | 1.14K ops/s &nbsp; <small>2.7x</small> | 35.8K ops/s &nbsp; <small>1.4x</small> |
 
 </details>
 
@@ -362,17 +362,17 @@ The repository includes a reproducible [benchmark suite](./bench) comparing prot
 
 | Implementation | Common | Vector tile | Buf perf |
 | --- | ---: | ---: | ---: |
-| protobuf.js static | 6.20M ops/s &nbsp; <small>1.0x</small> | 2.68K ops/s &nbsp; <small>1.1x</small> | **80.5K ops/s** &nbsp; <small>1.0x</small> |
-| protobuf.js reflect | **6.46M ops/s** &nbsp; <small>1.0x</small> | **3.01K ops/s** &nbsp; <small>1.0x</small> | 79.6K ops/s &nbsp; <small>1.0x</small> |
-| JSON | 1.35M ops/s &nbsp; <small>4.8x</small> | 1.05K ops/s &nbsp; <small>2.9x</small> | 19.1K ops/s &nbsp; <small>4.2x</small> |
-| protoc-gen-js | 799K ops/s &nbsp; <small>8.1x</small> | 877 ops/s &nbsp; <small>3.4x</small> | 21.6K ops/s &nbsp; <small>3.7x</small> |
-| protoc-gen-es | 1.62M ops/s &nbsp; <small>4.0x</small> | 1.24K ops/s &nbsp; <small>2.4x</small> | 29.1K ops/s &nbsp; <small>2.8x</small> |
+| protobuf.js static | 5.84M ops/s &nbsp; <small>1.1x</small> | 2.45K ops/s &nbsp; <small>1.1x</small> | **78.9K ops/s** &nbsp; <small>1.0x</small> |
+| protobuf.js reflect | **6.54M ops/s** &nbsp; <small>1.0x</small> | **2.66K ops/s** &nbsp; <small>1.0x</small> | 77.0K ops/s &nbsp; <small>1.0x</small> |
+| JSON | 1.58M ops/s &nbsp; <small>4.1x</small> | 1.21K ops/s &nbsp; <small>2.2x</small> | 21.0K ops/s &nbsp; <small>3.8x</small> |
+| protoc-gen-js | 701K ops/s &nbsp; <small>9.3x</small> | 946 ops/s &nbsp; <small>2.8x</small> | 21.5K ops/s &nbsp; <small>3.7x</small> |
+| protoc-gen-es | 1.67M ops/s &nbsp; <small>3.9x</small> | 1.19K ops/s &nbsp; <small>2.2x</small> | 31.0K ops/s &nbsp; <small>2.5x</small> |
 
 </details>
 
 <!-- END BENCHMARK DATA -->
 
-According to the results, protobuf.js consistently achieves the highest throughput among the Protobuf implementations tested and exceeds the JSON baseline in every encode/decode comparison.
+[Structured results](./bench/results/latest.json) include environment details for this run and are committed alongside the charts. The suite also runs in CI.
 
 To run the benchmark on your own hardware:
 
