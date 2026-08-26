@@ -75,3 +75,30 @@ tape.test("decoder respects packed closed-enum boundaries", function(test) {
     }, RangeError, "rejects a packed enum that consumes the following field");
     test.end();
 });
+
+tape.test("decoder respects group boundaries", function(test) {
+    var Type = protobuf.parse([
+        "syntax = \"proto2\";",
+        "message Outer { optional Inner inner = 1; optional int32 after = 2; }",
+        "message Inner { optional group Child = 1 { optional int32 value = 2; } }"
+    ].join("\n")).root.lookupType("Outer");
+
+    test.throws(function() {
+        Type.decode([ 0x0a, 0x01, 0x0b, 0x0c, 0x10, 0x07 ]);
+    }, /missing end group/, "rejects an end-group tag beyond the parent boundary");
+    test.end();
+});
+
+tape.test("decoder respects unknown fixed-width field boundaries", function(test) {
+    var Inner = new protobuf.Type("Inner");
+    var Outer = new protobuf.Type("Outer")
+        .add(new protobuf.Field("inner", 1, "Inner"))
+        .add(new protobuf.Field("after", 2, "uint32"))
+        .add(new protobuf.Field("tail", 3, "uint32"))
+        .add(Inner);
+
+    test.throws(function() {
+        Outer.decode([ 0x0a, 0x01, 0x09, 0x10, 1, 0x10, 2, 0x10, 3, 0x10, 4, 0x18, 7 ]);
+    }, RangeError, "rejects an unknown fixed64 field that crosses the parent boundary");
+    test.end();
+});
