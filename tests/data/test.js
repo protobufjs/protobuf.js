@@ -112,7 +112,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Empty();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.Empty();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -122,6 +132,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -326,7 +341,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.EnumContainer();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.EnumContainer();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -340,6 +365,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -595,7 +625,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Simple1();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.Simple1();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -619,6 +659,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 if (!Object.hasOwnProperty.call(message, "aString"))
                     throw $util.ProtocolError("missing required 'aString'", { instance: message });
@@ -875,7 +920,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Simple2();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.Simple2();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -895,6 +950,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 if (!Object.hasOwnProperty.call(message, "aString"))
                     throw $util.ProtocolError("missing required 'aString'", { instance: message });
@@ -1159,7 +1219,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.SpecialCases();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.SpecialCases();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -1185,6 +1255,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 if (!Object.hasOwnProperty.call(message, "normal"))
                     throw $util.ProtocolError("missing required 'normal'", { instance: message });
@@ -1474,7 +1549,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OptionalFields();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.OptionalFields();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -1508,6 +1593,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 if (!Object.hasOwnProperty.call(message, "aBool"))
                     throw $util.ProtocolError("missing required 'aBool'", { instance: message });
@@ -1788,7 +1878,17 @@ $root.jspb = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OptionalFields.Nested();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.jspb.test.OptionalFields.Nested();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -1802,6 +1902,11 @@ $root.jspb = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -2110,7 +2215,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.HasExtensions();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.HasExtensions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -2160,6 +2275,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -2530,7 +2650,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Complex();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.Complex();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -2564,6 +2694,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 if (!Object.hasOwnProperty.call(message, "aString"))
                     throw $util.ProtocolError("missing required 'aString'", { instance: message });
@@ -2844,7 +2979,17 @@ $root.jspb = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Complex.Nested();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.jspb.test.Complex.Nested();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -2858,6 +3003,11 @@ $root.jspb = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     if (!Object.hasOwnProperty.call(message, "anInt"))
                         throw $util.ProtocolError("missing required 'anInt'", { instance: message });
@@ -3064,7 +3214,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OuterMessage();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.OuterMessage();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -3074,6 +3234,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -3261,7 +3426,17 @@ $root.jspb = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OuterMessage.Complex();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.jspb.test.OuterMessage.Complex();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -3275,6 +3450,11 @@ $root.jspb = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -3491,7 +3671,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.IsExtension();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.IsExtension();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -3505,6 +3695,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -3707,7 +3902,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.IndirectExtension();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.IndirectExtension();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -3717,6 +3922,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -3962,7 +4172,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.DefaultValues();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.DefaultValues();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -3996,6 +4216,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -4391,7 +4616,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.FloatingPointFields();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.FloatingPointFields();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -4410,8 +4645,14 @@ $root.jspb = (function() {
                                 message.repeatedFloatField = [];
                             if ((tag & 7) === 2) {
                                 var end2 = reader.uint32() + reader.pos;
+                                if (end2 > reader.len)
+                                    throw RangeError("index out of range");
+                                reader.len = end2;
                                 while (reader.pos < end2)
                                     message.repeatedFloatField.push(reader.float());
+                                if (reader.pos !== end2)
+                                    throw RangeError("index out of range");
+                                reader.len = end;
                             } else
                                 message.repeatedFloatField.push(reader.float());
                             break;
@@ -4433,8 +4674,14 @@ $root.jspb = (function() {
                                 message.repeatedDoubleField = [];
                             if ((tag & 7) === 2) {
                                 var end2 = reader.uint32() + reader.pos;
+                                if (end2 > reader.len)
+                                    throw RangeError("index out of range");
+                                reader.len = end2;
                                 while (reader.pos < end2)
                                     message.repeatedDoubleField.push(reader.double());
+                                if (reader.pos !== end2)
+                                    throw RangeError("index out of range");
+                                reader.len = end;
                             } else
                                 message.repeatedDoubleField.push(reader.double());
                             break;
@@ -4447,6 +4694,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 if (!Object.hasOwnProperty.call(message, "requiredFloatField"))
                     throw $util.ProtocolError("missing required 'requiredFloatField'", { instance: message });
@@ -4802,7 +5054,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestClone();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.TestClone();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -4838,6 +5100,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -5129,7 +5396,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.CloneExtension();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.CloneExtension();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -5143,6 +5420,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -5433,7 +5715,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.TestGroup();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -5477,6 +5769,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 if (!Object.hasOwnProperty.call(message, "requiredGroup"))
                     throw $util.ProtocolError("missing required 'requiredGroup'", { instance: message });
@@ -5808,7 +6105,17 @@ $root.jspb = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.RepeatedGroup();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.jspb.test.TestGroup.RepeatedGroup();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -5823,8 +6130,14 @@ $root.jspb = (function() {
                                     message.someBool = [];
                                 if ((tag & 7) === 2) {
                                     var end2 = reader.uint32() + reader.pos;
+                                    if (end2 > reader.len)
+                                        throw RangeError("index out of range");
+                                    reader.len = end2;
                                     while (reader.pos < end2)
                                         message.someBool.push(reader.bool());
+                                    if (reader.pos !== end2)
+                                        throw RangeError("index out of range");
+                                    reader.len = end;
                                 } else
                                     message.someBool.push(reader.bool());
                                 break;
@@ -5833,6 +6146,11 @@ $root.jspb = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     if (!Object.hasOwnProperty.call(message, "id"))
                         throw $util.ProtocolError("missing required 'id'", { instance: message });
@@ -6067,7 +6385,17 @@ $root.jspb = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.RequiredGroup();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.jspb.test.TestGroup.RequiredGroup();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -6081,6 +6409,11 @@ $root.jspb = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     if (!Object.hasOwnProperty.call(message, "id"))
                         throw $util.ProtocolError("missing required 'id'", { instance: message });
@@ -6294,7 +6627,17 @@ $root.jspb = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.OptionalGroup();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.jspb.test.TestGroup.OptionalGroup();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -6308,6 +6651,11 @@ $root.jspb = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     if (!Object.hasOwnProperty.call(message, "id"))
                         throw $util.ProtocolError("missing required 'id'", { instance: message });
@@ -6521,7 +6869,17 @@ $root.jspb = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.MessageInGroup();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.jspb.test.TestGroup.MessageInGroup();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -6535,6 +6893,11 @@ $root.jspb = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     if (!Object.hasOwnProperty.call(message, "id"))
                         throw $util.ProtocolError("missing required 'id'", { instance: message });
@@ -6752,7 +7115,17 @@ $root.jspb = (function() {
                             long = 0;
                         if (long > $Reader.recursionLimit)
                             throw Error("maximum nesting depth exceeded");
-                        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.MessageInGroup.NestedMessage();
+                        var end, message;
+                        if (length === undefined)
+                            end = reader.len;
+                        else {
+                            end = reader.pos + length;
+                            if (end > reader.len)
+                                throw RangeError("index out of range");
+                            length = reader.len;
+                            reader.len = end;
+                        }
+                        message = new $root.jspb.test.TestGroup.MessageInGroup.NestedMessage();
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             if (tag === error)
@@ -6766,6 +7139,11 @@ $root.jspb = (function() {
                                 reader.skipType(tag & 7, long);
                                 break;
                             }
+                        }
+                        if (length !== undefined) {
+                            if (reader.pos !== end)
+                                throw RangeError("index out of range");
+                            reader.len = length;
                         }
                         return message;
                     };
@@ -6981,7 +7359,17 @@ $root.jspb = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.EnumInGroup();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.jspb.test.TestGroup.EnumInGroup();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -6995,6 +7383,11 @@ $root.jspb = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     if (!Object.hasOwnProperty.call(message, "id"))
                         throw $util.ProtocolError("missing required 'id'", { instance: message });
@@ -7245,7 +7638,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup1();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.TestGroup1();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -7259,6 +7662,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -7488,7 +7896,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestReservedNames();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.TestReservedNames();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -7506,6 +7924,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -7717,7 +8140,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestReservedNamesExtension();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.TestReservedNamesExtension();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -7727,6 +8160,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -8065,7 +8503,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestMessageWithOneof();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.TestMessageWithOneof();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -8117,6 +8565,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -8473,7 +8926,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestEndsWithBytes();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.TestEndsWithBytes();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -8491,6 +8954,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -8869,7 +9337,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestMapFieldsNoBinary(), key, value;
+                var end, message, key, value;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.TestMapFieldsNoBinary();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -8879,6 +9357,9 @@ $root.jspb = (function() {
                             if (message.mapStringString === $util.emptyObject)
                                 message.mapStringString = {};
                             var end2 = reader.uint32() + reader.pos;
+                            if (end2 > reader.len)
+                                throw RangeError("index out of range");
+                            reader.len = end2;
                             key = "";
                             value = "";
                             while (reader.pos < end2) {
@@ -8895,6 +9376,9 @@ $root.jspb = (function() {
                                     break;
                                 }
                             }
+                            if (reader.pos !== end2)
+                                throw RangeError("index out of range");
+                            reader.len = end;
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringString, key);
                             message.mapStringString[key] = value;
@@ -8904,6 +9388,9 @@ $root.jspb = (function() {
                             if (message.mapStringInt32 === $util.emptyObject)
                                 message.mapStringInt32 = {};
                             var end2 = reader.uint32() + reader.pos;
+                            if (end2 > reader.len)
+                                throw RangeError("index out of range");
+                            reader.len = end2;
                             key = "";
                             value = 0;
                             while (reader.pos < end2) {
@@ -8920,6 +9407,9 @@ $root.jspb = (function() {
                                     break;
                                 }
                             }
+                            if (reader.pos !== end2)
+                                throw RangeError("index out of range");
+                            reader.len = end;
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringInt32, key);
                             message.mapStringInt32[key] = value;
@@ -8929,6 +9419,9 @@ $root.jspb = (function() {
                             if (message.mapStringInt64 === $util.emptyObject)
                                 message.mapStringInt64 = {};
                             var end2 = reader.uint32() + reader.pos;
+                            if (end2 > reader.len)
+                                throw RangeError("index out of range");
+                            reader.len = end2;
                             key = "";
                             value = 0;
                             while (reader.pos < end2) {
@@ -8945,6 +9438,9 @@ $root.jspb = (function() {
                                     break;
                                 }
                             }
+                            if (reader.pos !== end2)
+                                throw RangeError("index out of range");
+                            reader.len = end;
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringInt64, key);
                             message.mapStringInt64[key] = value;
@@ -8954,6 +9450,9 @@ $root.jspb = (function() {
                             if (message.mapStringBool === $util.emptyObject)
                                 message.mapStringBool = {};
                             var end2 = reader.uint32() + reader.pos;
+                            if (end2 > reader.len)
+                                throw RangeError("index out of range");
+                            reader.len = end2;
                             key = "";
                             value = false;
                             while (reader.pos < end2) {
@@ -8970,6 +9469,9 @@ $root.jspb = (function() {
                                     break;
                                 }
                             }
+                            if (reader.pos !== end2)
+                                throw RangeError("index out of range");
+                            reader.len = end;
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringBool, key);
                             message.mapStringBool[key] = value;
@@ -8979,6 +9481,9 @@ $root.jspb = (function() {
                             if (message.mapStringDouble === $util.emptyObject)
                                 message.mapStringDouble = {};
                             var end2 = reader.uint32() + reader.pos;
+                            if (end2 > reader.len)
+                                throw RangeError("index out of range");
+                            reader.len = end2;
                             key = "";
                             value = 0;
                             while (reader.pos < end2) {
@@ -8995,6 +9500,9 @@ $root.jspb = (function() {
                                     break;
                                 }
                             }
+                            if (reader.pos !== end2)
+                                throw RangeError("index out of range");
+                            reader.len = end;
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringDouble, key);
                             message.mapStringDouble[key] = value;
@@ -9004,6 +9512,9 @@ $root.jspb = (function() {
                             if (message.mapStringEnum === $util.emptyObject)
                                 message.mapStringEnum = {};
                             var end2 = reader.uint32() + reader.pos;
+                            if (end2 > reader.len)
+                                throw RangeError("index out of range");
+                            reader.len = end2;
                             key = "";
                             value = 0;
                             while (reader.pos < end2) {
@@ -9020,6 +9531,9 @@ $root.jspb = (function() {
                                     break;
                                 }
                             }
+                            if (reader.pos !== end2)
+                                throw RangeError("index out of range");
+                            reader.len = end;
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringEnum, key);
                             message.mapStringEnum[key] = value;
@@ -9029,6 +9543,9 @@ $root.jspb = (function() {
                             if (message.mapStringMsg === $util.emptyObject)
                                 message.mapStringMsg = {};
                             var end2 = reader.uint32() + reader.pos;
+                            if (end2 > reader.len)
+                                throw RangeError("index out of range");
+                            reader.len = end2;
                             key = "";
                             value = null;
                             while (reader.pos < end2) {
@@ -9045,6 +9562,9 @@ $root.jspb = (function() {
                                     break;
                                 }
                             }
+                            if (reader.pos !== end2)
+                                throw RangeError("index out of range");
+                            reader.len = end;
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringMsg, key);
                             message.mapStringMsg[key] = value;
@@ -9054,6 +9574,9 @@ $root.jspb = (function() {
                             if (message.mapInt32String === $util.emptyObject)
                                 message.mapInt32String = {};
                             var end2 = reader.uint32() + reader.pos;
+                            if (end2 > reader.len)
+                                throw RangeError("index out of range");
+                            reader.len = end2;
                             key = 0;
                             value = "";
                             while (reader.pos < end2) {
@@ -9070,6 +9593,9 @@ $root.jspb = (function() {
                                     break;
                                 }
                             }
+                            if (reader.pos !== end2)
+                                throw RangeError("index out of range");
+                            reader.len = end;
                             message.mapInt32String[key] = value;
                             break;
                         }
@@ -9077,6 +9603,9 @@ $root.jspb = (function() {
                             if (message.mapInt64String === $util.emptyObject)
                                 message.mapInt64String = {};
                             var end2 = reader.uint32() + reader.pos;
+                            if (end2 > reader.len)
+                                throw RangeError("index out of range");
+                            reader.len = end2;
                             key = 0;
                             value = "";
                             while (reader.pos < end2) {
@@ -9093,6 +9622,9 @@ $root.jspb = (function() {
                                     break;
                                 }
                             }
+                            if (reader.pos !== end2)
+                                throw RangeError("index out of range");
+                            reader.len = end;
                             message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = value;
                             break;
                         }
@@ -9100,6 +9632,9 @@ $root.jspb = (function() {
                             if (message.mapBoolString === $util.emptyObject)
                                 message.mapBoolString = {};
                             var end2 = reader.uint32() + reader.pos;
+                            if (end2 > reader.len)
+                                throw RangeError("index out of range");
+                            reader.len = end2;
                             key = false;
                             value = "";
                             while (reader.pos < end2) {
@@ -9116,6 +9651,9 @@ $root.jspb = (function() {
                                     break;
                                 }
                             }
+                            if (reader.pos !== end2)
+                                throw RangeError("index out of range");
+                            reader.len = end;
                             message.mapBoolString[key] = value;
                             break;
                         }
@@ -9127,6 +9665,9 @@ $root.jspb = (function() {
                             if (message.mapStringTestmapfields === $util.emptyObject)
                                 message.mapStringTestmapfields = {};
                             var end2 = reader.uint32() + reader.pos;
+                            if (end2 > reader.len)
+                                throw RangeError("index out of range");
+                            reader.len = end2;
                             key = "";
                             value = null;
                             while (reader.pos < end2) {
@@ -9143,6 +9684,9 @@ $root.jspb = (function() {
                                     break;
                                 }
                             }
+                            if (reader.pos !== end2)
+                                throw RangeError("index out of range");
+                            reader.len = end;
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringTestmapfields, key);
                             message.mapStringTestmapfields[key] = value;
@@ -9152,6 +9696,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -9740,7 +10289,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.MapValueMessageNoBinary();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.MapValueMessageNoBinary();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -9754,6 +10313,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -9956,7 +10520,17 @@ $root.jspb = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Deeply();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.jspb.test.Deeply();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -9966,6 +10540,11 @@ $root.jspb = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -10142,7 +10721,17 @@ $root.jspb = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Deeply.Nested();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.jspb.test.Deeply.Nested();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -10152,6 +10741,11 @@ $root.jspb = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -10339,7 +10933,17 @@ $root.jspb = (function() {
                             long = 0;
                         if (long > $Reader.recursionLimit)
                             throw Error("maximum nesting depth exceeded");
-                        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Deeply.Nested.Message();
+                        var end, message;
+                        if (length === undefined)
+                            end = reader.len;
+                        else {
+                            end = reader.pos + length;
+                            if (end > reader.len)
+                                throw RangeError("index out of range");
+                            length = reader.len;
+                            reader.len = end;
+                        }
+                        message = new $root.jspb.test.Deeply.Nested.Message();
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             if (tag === error)
@@ -10353,6 +10957,11 @@ $root.jspb = (function() {
                                 reader.skipType(tag & 7, long);
                                 break;
                             }
+                        }
+                        if (length !== undefined) {
+                            if (reader.pos !== end)
+                                throw RangeError("index out of range");
+                            reader.len = length;
                         }
                         return message;
                     };
@@ -10598,7 +11207,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FileDescriptorSet();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.FileDescriptorSet();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -10614,6 +11233,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -11037,7 +11661,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FileDescriptorProto();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.FileDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -11062,8 +11696,14 @@ $root.google = (function() {
                                 message.publicDependency = [];
                             if ((tag & 7) === 2) {
                                 var end2 = reader.uint32() + reader.pos;
+                                if (end2 > reader.len)
+                                    throw RangeError("index out of range");
+                                reader.len = end2;
                                 while (reader.pos < end2)
                                     message.publicDependency.push(reader.int32());
+                                if (reader.pos !== end2)
+                                    throw RangeError("index out of range");
+                                reader.len = end;
                             } else
                                 message.publicDependency.push(reader.int32());
                             break;
@@ -11073,8 +11713,14 @@ $root.google = (function() {
                                 message.weakDependency = [];
                             if ((tag & 7) === 2) {
                                 var end2 = reader.uint32() + reader.pos;
+                                if (end2 > reader.len)
+                                    throw RangeError("index out of range");
+                                reader.len = end2;
                                 while (reader.pos < end2)
                                     message.weakDependency.push(reader.int32());
+                                if (reader.pos !== end2)
+                                    throw RangeError("index out of range");
+                                reader.len = end;
                             } else
                                 message.weakDependency.push(reader.int32());
                             break;
@@ -11129,6 +11775,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -11770,7 +12421,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.DescriptorProto();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.DescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -11840,6 +12501,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -12315,7 +12981,17 @@ $root.google = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.DescriptorProto.ExtensionRange();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.google.protobuf.DescriptorProto.ExtensionRange();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -12337,6 +13013,11 @@ $root.google = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -12583,7 +13264,17 @@ $root.google = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.DescriptorProto.ReservedRange();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.google.protobuf.DescriptorProto.ReservedRange();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -12601,6 +13292,11 @@ $root.google = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -12863,7 +13559,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.ExtensionRangeOptions();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.ExtensionRangeOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -12893,6 +13599,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -13232,7 +13943,17 @@ $root.google = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.ExtensionRangeOptions.Declaration();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.google.protobuf.ExtensionRangeOptions.Declaration();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -13262,6 +13983,11 @@ $root.google = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -13635,7 +14361,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FieldDescriptorProto();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.FieldDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -13689,6 +14425,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -14184,7 +14925,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.OneofDescriptorProto();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.OneofDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -14202,6 +14953,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -14490,7 +15246,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumDescriptorProto();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.EnumDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -14530,6 +15296,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -14869,7 +15640,17 @@ $root.google = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumDescriptorProto.EnumReservedRange();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.google.protobuf.EnumDescriptorProto.EnumReservedRange();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -14887,6 +15668,11 @@ $root.google = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -15134,7 +15920,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumValueDescriptorProto();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.EnumValueDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -15156,6 +15952,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -15415,7 +16216,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.ServiceDescriptorProto();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.ServiceDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -15439,6 +16250,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -15747,7 +16563,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.MethodDescriptorProto();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.MethodDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -15781,6 +16607,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -16262,7 +17093,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FileOptions();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.FileOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -16358,6 +17199,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -16863,7 +17709,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.MessageOptions();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.MessageOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -16903,6 +17759,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -17337,7 +18198,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FieldOptions();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.FieldOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -17384,8 +18255,14 @@ $root.google = (function() {
                                 message.targets = [];
                             if ((tag & 7) === 2) {
                                 var end2 = reader.uint32() + reader.pos;
+                                if (end2 > reader.len)
+                                    throw RangeError("index out of range");
+                                reader.len = end2;
                                 while (reader.pos < end2)
                                     message.targets.push(reader.int32());
+                                if (reader.pos !== end2)
+                                    throw RangeError("index out of range");
+                                reader.len = end;
                             } else
                                 message.targets.push(reader.int32());
                             break;
@@ -17414,6 +18291,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -18007,7 +18889,17 @@ $root.google = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FieldOptions.EditionDefault();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.google.protobuf.FieldOptions.EditionDefault();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -18025,6 +18917,11 @@ $root.google = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -18349,7 +19246,17 @@ $root.google = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FieldOptions.FeatureSupport();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.google.protobuf.FieldOptions.FeatureSupport();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -18375,6 +19282,11 @@ $root.google = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -18836,7 +19748,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.OneofOptions();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.OneofOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -18856,6 +19778,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -19157,7 +20084,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumOptions();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.EnumOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -19193,6 +20130,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -19516,7 +20458,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumValueOptions();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.EnumValueOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -19548,6 +20500,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -19846,7 +20803,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.ServiceOptions();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.ServiceOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -19870,6 +20837,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -20158,7 +21130,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.MethodOptions();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.MethodOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -20186,6 +21168,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -20555,7 +21542,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.UninterpretedOption();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.UninterpretedOption();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -20595,6 +21592,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -20922,7 +21924,17 @@ $root.google = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.UninterpretedOption.NamePart();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.google.protobuf.UninterpretedOption.NamePart();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -20940,6 +21952,11 @@ $root.google = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     if (!Object.hasOwnProperty.call(message, "namePart"))
                         throw $util.ProtocolError("missing required 'namePart'", { instance: message });
@@ -21244,7 +22261,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FeatureSet();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.FeatureSet();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -21286,6 +22313,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -21863,7 +22895,17 @@ $root.google = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FeatureSet.VisibilityFeature();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.google.protobuf.FeatureSet.VisibilityFeature();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -21873,6 +22915,11 @@ $root.google = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -22110,7 +23157,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FeatureSetDefaults();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.FeatureSetDefaults();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -22134,6 +23191,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -22539,7 +23601,17 @@ $root.google = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -22561,6 +23633,11 @@ $root.google = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -22875,7 +23952,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.SourceCodeInfo();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.SourceCodeInfo();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -22891,6 +23978,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -23174,7 +24266,17 @@ $root.google = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.SourceCodeInfo.Location();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.google.protobuf.SourceCodeInfo.Location();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -23185,8 +24287,14 @@ $root.google = (function() {
                                     message.path = [];
                                 if ((tag & 7) === 2) {
                                     var end2 = reader.uint32() + reader.pos;
+                                    if (end2 > reader.len)
+                                        throw RangeError("index out of range");
+                                    reader.len = end2;
                                     while (reader.pos < end2)
                                         message.path.push(reader.int32());
+                                    if (reader.pos !== end2)
+                                        throw RangeError("index out of range");
+                                    reader.len = end;
                                 } else
                                     message.path.push(reader.int32());
                                 break;
@@ -23196,8 +24304,14 @@ $root.google = (function() {
                                     message.span = [];
                                 if ((tag & 7) === 2) {
                                     var end2 = reader.uint32() + reader.pos;
+                                    if (end2 > reader.len)
+                                        throw RangeError("index out of range");
+                                    reader.len = end2;
                                     while (reader.pos < end2)
                                         message.span.push(reader.int32());
+                                    if (reader.pos !== end2)
+                                        throw RangeError("index out of range");
+                                    reader.len = end;
                                 } else
                                     message.span.push(reader.int32());
                                 break;
@@ -23220,6 +24334,11 @@ $root.google = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };
@@ -23509,7 +24628,17 @@ $root.google = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.GeneratedCodeInfo();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.google.protobuf.GeneratedCodeInfo();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -23525,6 +24654,11 @@ $root.google = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -23801,7 +24935,17 @@ $root.google = (function() {
                         long = 0;
                     if (long > $Reader.recursionLimit)
                         throw Error("maximum nesting depth exceeded");
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.GeneratedCodeInfo.Annotation();
+                    var end, message;
+                    if (length === undefined)
+                        end = reader.len;
+                    else {
+                        end = reader.pos + length;
+                        if (end > reader.len)
+                            throw RangeError("index out of range");
+                        length = reader.len;
+                        reader.len = end;
+                    }
+                    message = new $root.google.protobuf.GeneratedCodeInfo.Annotation();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         if (tag === error)
@@ -23812,8 +24956,14 @@ $root.google = (function() {
                                     message.path = [];
                                 if ((tag & 7) === 2) {
                                     var end2 = reader.uint32() + reader.pos;
+                                    if (end2 > reader.len)
+                                        throw RangeError("index out of range");
+                                    reader.len = end2;
                                     while (reader.pos < end2)
                                         message.path.push(reader.int32());
+                                    if (reader.pos !== end2)
+                                        throw RangeError("index out of range");
+                                    reader.len = end;
                                 } else
                                     message.path.push(reader.int32());
                                 break;
@@ -23838,6 +24988,11 @@ $root.google = (function() {
                             reader.skipType(tag & 7, long);
                             break;
                         }
+                    }
+                    if (length !== undefined) {
+                        if (reader.pos !== end)
+                            throw RangeError("index out of range");
+                        reader.len = length;
                     }
                     return message;
                 };

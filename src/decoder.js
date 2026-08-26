@@ -22,7 +22,17 @@ function decoder(mtype) {
     ("if(n===undefined)n=0")
     ("if(n>Reader.recursionLimit)")
         ("throw Error(\"maximum nesting depth exceeded\")")
-    ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k,value" : ""))
+    ("var c,m" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k,value" : ""))
+    ("if(l===undefined)")
+        ("c=r.len")
+    ("else{")
+        ("c=r.pos+l")
+        ("if(c>r.len)")
+            ("throw RangeError(\"index out of range\")")
+        ("l=r.len")
+        ("r.len=c")
+    ("}")
+    ("m=new this.ctor")
     ("while(r.pos<c){")
         ("var t=r.uint32()")
         ("if(t===e)")
@@ -40,7 +50,10 @@ function decoder(mtype) {
         if (field.map) { gen
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
-                ("var c2 = r.uint32()+r.pos");
+                ("var c2=r.uint32()+r.pos")
+                ("if(c2>r.len)")
+                    ("throw RangeError(\"index out of range\")")
+                ("r.len=c2");
 
             if (types.defaults[field.keyType] !== undefined) gen
                 ("k=%j", types.defaults[field.keyType]);
@@ -70,7 +83,10 @@ function decoder(mtype) {
                             ("r.skipType(tag2&7,n)")
                             ("break")
                     ("}")
-                ("}");
+                ("}")
+                ("if(r.pos!==c2)")
+                    ("throw RangeError(\"index out of range\")")
+                ("r.len=c");
 
             if (types.long[field.keyType] !== undefined) gen
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=value", ref);
@@ -92,8 +108,14 @@ function decoder(mtype) {
             if (types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var c2=r.uint32()+r.pos")
+                    ("if(c2>r.len)")
+                        ("throw RangeError(\"index out of range\")")
+                    ("r.len=c2")
                     ("while(r.pos<c2)")
                         ("%s.push(r.%s())", ref, type)
+                    ("if(r.pos!==c2)")
+                        ("throw RangeError(\"index out of range\")")
+                    ("r.len=c")
                 ("}else");
 
             // Non-packed
@@ -119,6 +141,13 @@ function decoder(mtype) {
                 ("break")
 
         ("}")
+    ("}");
+
+    gen
+    ("if(l!==undefined){")
+        ("if(r.pos!==c)")
+            ("throw RangeError(\"index out of range\")")
+        ("r.len=l")
     ("}");
 
     // Field presence

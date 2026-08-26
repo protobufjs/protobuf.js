@@ -209,7 +209,17 @@ $root.Message = (function() {
             long = 0;
         if (long > $Reader.recursionLimit)
             throw Error("maximum nesting depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Message(), key, value;
+        var end, message, key, value;
+        if (length === undefined)
+            end = reader.len;
+        else {
+            end = reader.pos + length;
+            if (end > reader.len)
+                throw RangeError("index out of range");
+            length = reader.len;
+            reader.len = end;
+        }
+        message = new $root.Message();
         while (reader.pos < end) {
             var tag = reader.uint32();
             if (tag === error)
@@ -234,8 +244,14 @@ $root.Message = (function() {
                         message.uint64Repeated = [];
                     if ((tag & 7) === 2) {
                         var end2 = reader.uint32() + reader.pos;
+                        if (end2 > reader.len)
+                            throw RangeError("index out of range");
+                        reader.len = end2;
                         while (reader.pos < end2)
                             message.uint64Repeated.push(reader.uint64());
+                        if (reader.pos !== end2)
+                            throw RangeError("index out of range");
+                        reader.len = end;
                     } else
                         message.uint64Repeated.push(reader.uint64());
                     break;
@@ -259,8 +275,14 @@ $root.Message = (function() {
                         message.enumRepeated = [];
                     if ((tag & 7) === 2) {
                         var end2 = reader.uint32() + reader.pos;
+                        if (end2 > reader.len)
+                            throw RangeError("index out of range");
+                        reader.len = end2;
                         while (reader.pos < end2)
                             message.enumRepeated.push(reader.int32());
+                        if (reader.pos !== end2)
+                            throw RangeError("index out of range");
+                        reader.len = end;
                     } else
                         message.enumRepeated.push(reader.int32());
                     break;
@@ -269,6 +291,9 @@ $root.Message = (function() {
                     if (message.int64Map === $util.emptyObject)
                         message.int64Map = {};
                     var end2 = reader.uint32() + reader.pos;
+                    if (end2 > reader.len)
+                        throw RangeError("index out of range");
+                    reader.len = end2;
                     key = "";
                     value = 0;
                     while (reader.pos < end2) {
@@ -285,6 +310,9 @@ $root.Message = (function() {
                             break;
                         }
                     }
+                    if (reader.pos !== end2)
+                        throw RangeError("index out of range");
+                    reader.len = end;
                     if (key === "__proto__")
                         $util.makeProp(message.int64Map, key);
                     message.int64Map[key] = value;
@@ -294,6 +322,11 @@ $root.Message = (function() {
                 reader.skipType(tag & 7, long);
                 break;
             }
+        }
+        if (length !== undefined) {
+            if (reader.pos !== end)
+                throw RangeError("index out of range");
+            reader.len = length;
         }
         return message;
     };

@@ -293,7 +293,17 @@ $root.Package = (function() {
             long = 0;
         if (long > $Reader.recursionLimit)
             throw Error("maximum nesting depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package(), key, value;
+        var end, message, key, value;
+        if (length === undefined)
+            end = reader.len;
+        else {
+            end = reader.pos + length;
+            if (end > reader.len)
+                throw RangeError("index out of range");
+            length = reader.len;
+            reader.len = end;
+        }
+        message = new $root.Package();
         while (reader.pos < end) {
             var tag = reader.uint32();
             if (tag === error)
@@ -349,6 +359,9 @@ $root.Package = (function() {
                     if (message.bin === $util.emptyObject)
                         message.bin = {};
                     var end2 = reader.uint32() + reader.pos;
+                    if (end2 > reader.len)
+                        throw RangeError("index out of range");
+                    reader.len = end2;
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
@@ -365,6 +378,9 @@ $root.Package = (function() {
                             break;
                         }
                     }
+                    if (reader.pos !== end2)
+                        throw RangeError("index out of range");
+                    reader.len = end;
                     if (key === "__proto__")
                         $util.makeProp(message.bin, key);
                     message.bin[key] = value;
@@ -374,6 +390,9 @@ $root.Package = (function() {
                     if (message.scripts === $util.emptyObject)
                         message.scripts = {};
                     var end2 = reader.uint32() + reader.pos;
+                    if (end2 > reader.len)
+                        throw RangeError("index out of range");
+                    reader.len = end2;
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
@@ -390,6 +409,9 @@ $root.Package = (function() {
                             break;
                         }
                     }
+                    if (reader.pos !== end2)
+                        throw RangeError("index out of range");
+                    reader.len = end;
                     if (key === "__proto__")
                         $util.makeProp(message.scripts, key);
                     message.scripts[key] = value;
@@ -399,6 +421,9 @@ $root.Package = (function() {
                     if (message.dependencies === $util.emptyObject)
                         message.dependencies = {};
                     var end2 = reader.uint32() + reader.pos;
+                    if (end2 > reader.len)
+                        throw RangeError("index out of range");
+                    reader.len = end2;
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
@@ -415,6 +440,9 @@ $root.Package = (function() {
                             break;
                         }
                     }
+                    if (reader.pos !== end2)
+                        throw RangeError("index out of range");
+                    reader.len = end;
                     if (key === "__proto__")
                         $util.makeProp(message.dependencies, key);
                     message.dependencies[key] = value;
@@ -424,6 +452,9 @@ $root.Package = (function() {
                     if (message.devDependencies === $util.emptyObject)
                         message.devDependencies = {};
                     var end2 = reader.uint32() + reader.pos;
+                    if (end2 > reader.len)
+                        throw RangeError("index out of range");
+                    reader.len = end2;
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
@@ -440,6 +471,9 @@ $root.Package = (function() {
                             break;
                         }
                     }
+                    if (reader.pos !== end2)
+                        throw RangeError("index out of range");
+                    reader.len = end;
                     if (key === "__proto__")
                         $util.makeProp(message.devDependencies, key);
                     message.devDependencies[key] = value;
@@ -459,6 +493,11 @@ $root.Package = (function() {
                 reader.skipType(tag & 7, long);
                 break;
             }
+        }
+        if (length !== undefined) {
+            if (reader.pos !== end)
+                throw RangeError("index out of range");
+            reader.len = length;
         }
         return message;
     };
@@ -919,7 +958,17 @@ $root.Package = (function() {
                 long = 0;
             if (long > $Reader.recursionLimit)
                 throw Error("maximum nesting depth exceeded");
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package.Repository();
+            var end, message;
+            if (length === undefined)
+                end = reader.len;
+            else {
+                end = reader.pos + length;
+                if (end > reader.len)
+                    throw RangeError("index out of range");
+                length = reader.len;
+                reader.len = end;
+            }
+            message = new $root.Package.Repository();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 if (tag === error)
@@ -937,6 +986,11 @@ $root.Package = (function() {
                     reader.skipType(tag & 7, long);
                     break;
                 }
+            }
+            if (length !== undefined) {
+                if (reader.pos !== end)
+                    throw RangeError("index out of range");
+                reader.len = length;
             }
             return message;
         };
