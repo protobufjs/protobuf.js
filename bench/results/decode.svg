@@ -7,49 +7,49 @@ text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#1f
 </style>
 <rect width="100%" height="100%" fill="#ffffff"/>
 <text x="12" y="30" class="title">Decode Throughput</text>
-<text x="12" y="50" class="meta">Normalized ops/s; fastest = 100%. Node v24.15.0 · AMD Ryzen 9 9950X3D 16-Core Processor.</text>
+<text x="12" y="50" class="meta">Normalized ops/s; fastest = 100%. Node v26.7.0 · AMD Ryzen 9 9950X3D 16-Core Processor.</text>
 <text x="144" y="88" text-anchor="middle" class="case">Common</text>
 <line x1="12" y1="290" x2="276" y2="290" class="axis"/>
 <line x1="12" y1="195" x2="276" y2="195" class="grid"/>
 <line x1="12" y1="100" x2="276" y2="100" class="grid"/>
-<rect x="56" y="108" width="30" height="182" class="bar" fill="#0072ce"/>
-<text x="71" y="307" text-anchor="middle" class="value">6.20M</text>
+<rect x="56" y="121" width="30" height="169" class="bar" fill="#0072ce"/>
+<text x="71" y="307" text-anchor="middle" class="value">5.84M</text>
 <rect x="88" y="100" width="30" height="190" class="bar" fill="#60a5fa"/>
-<text x="103" y="307" text-anchor="middle" class="value">6.46M</text>
-<rect x="126" y="242" width="30" height="48" class="bar" fill="#ef4444"/>
-<text x="141" y="307" text-anchor="middle" class="value">1.62M</text>
-<rect x="164" y="250" width="30" height="40" class="bar" fill="#7c3aed"/>
-<text x="179" y="307" text-anchor="middle" class="value">1.35M</text>
-<rect x="202" y="266" width="30" height="24" class="bar" fill="#f59e0b"/>
-<text x="217" y="307" text-anchor="middle" class="value">799K</text>
+<text x="103" y="307" text-anchor="middle" class="value">6.54M</text>
+<rect x="126" y="241" width="30" height="49" class="bar" fill="#ef4444"/>
+<text x="141" y="307" text-anchor="middle" class="value">1.67M</text>
+<rect x="164" y="244" width="30" height="46" class="bar" fill="#7c3aed"/>
+<text x="179" y="307" text-anchor="middle" class="value">1.58M</text>
+<rect x="202" y="270" width="30" height="20" class="bar" fill="#f59e0b"/>
+<text x="217" y="307" text-anchor="middle" class="value">701K</text>
 <text x="420" y="88" text-anchor="middle" class="case">Vector tile</text>
 <line x1="288" y1="290" x2="552" y2="290" class="axis"/>
 <line x1="288" y1="195" x2="552" y2="195" class="grid"/>
 <line x1="288" y1="100" x2="552" y2="100" class="grid"/>
-<rect x="332" y="121" width="30" height="169" class="bar" fill="#0072ce"/>
-<text x="347" y="307" text-anchor="middle" class="value">2.68K</text>
+<rect x="332" y="115" width="30" height="175" class="bar" fill="#0072ce"/>
+<text x="347" y="307" text-anchor="middle" class="value">2.45K</text>
 <rect x="364" y="100" width="30" height="190" class="bar" fill="#60a5fa"/>
-<text x="379" y="307" text-anchor="middle" class="value">3.01K</text>
-<rect x="402" y="212" width="30" height="78" class="bar" fill="#ef4444"/>
-<text x="417" y="307" text-anchor="middle" class="value">1.24K</text>
-<rect x="440" y="223" width="30" height="67" class="bar" fill="#7c3aed"/>
-<text x="455" y="307" text-anchor="middle" class="value">1.05K</text>
-<rect x="478" y="235" width="30" height="55" class="bar" fill="#f59e0b"/>
-<text x="493" y="307" text-anchor="middle" class="value">877</text>
+<text x="379" y="307" text-anchor="middle" class="value">2.66K</text>
+<rect x="402" y="203" width="30" height="87" class="bar" fill="#7c3aed"/>
+<text x="417" y="307" text-anchor="middle" class="value">1.21K</text>
+<rect x="440" y="205" width="30" height="85" class="bar" fill="#ef4444"/>
+<text x="455" y="307" text-anchor="middle" class="value">1.19K</text>
+<rect x="478" y="222" width="30" height="68" class="bar" fill="#f59e0b"/>
+<text x="493" y="307" text-anchor="middle" class="value">946</text>
 <text x="696" y="88" text-anchor="middle" class="case">Buf perf</text>
 <line x1="564" y1="290" x2="828" y2="290" class="axis"/>
 <line x1="564" y1="195" x2="828" y2="195" class="grid"/>
 <line x1="564" y1="100" x2="828" y2="100" class="grid"/>
 <rect x="608" y="100" width="30" height="190" class="bar" fill="#0072ce"/>
-<text x="623" y="307" text-anchor="middle" class="value">80.5K</text>
-<rect x="640" y="102" width="30" height="188" class="bar" fill="#60a5fa"/>
-<text x="655" y="307" text-anchor="middle" class="value">79.6K</text>
-<rect x="678" y="221" width="30" height="69" class="bar" fill="#ef4444"/>
-<text x="693" y="307" text-anchor="middle" class="value">29.1K</text>
-<rect x="716" y="239" width="30" height="51" class="bar" fill="#f59e0b"/>
-<text x="731" y="307" text-anchor="middle" class="value">21.6K</text>
-<rect x="754" y="245" width="30" height="45" class="bar" fill="#7c3aed"/>
-<text x="769" y="307" text-anchor="middle" class="value">19.1K</text>
+<text x="623" y="307" text-anchor="middle" class="value">78.9K</text>
+<rect x="640" y="105" width="30" height="185" class="bar" fill="#60a5fa"/>
+<text x="655" y="307" text-anchor="middle" class="value">77.0K</text>
+<rect x="678" y="215" width="30" height="75" class="bar" fill="#ef4444"/>
+<text x="693" y="307" text-anchor="middle" class="value">31.0K</text>
+<rect x="716" y="238" width="30" height="52" class="bar" fill="#f59e0b"/>
+<text x="731" y="307" text-anchor="middle" class="value">21.5K</text>
+<rect x="754" y="239" width="30" height="51" class="bar" fill="#7c3aed"/>
+<text x="769" y="307" text-anchor="middle" class="value">21.0K</text>
 <rect x="120" y="328" width="11" height="11" rx="2" ry="2" fill="#0072ce"/>
 <text x="136" y="338" class="legend">protobuf.js static</text>
 <rect x="260" y="328" width="11" height="11" rx="2" ry="2" fill="#60a5fa"/>

@@ -46,7 +46,17 @@ function decoder(mtype) {
     ("if(q===undefined)q=0")
     ("if(q>Reader.recursionLimit)")
         ("throw Error(\"max depth exceeded\")")
-    ("var c=l===undefined?r.len:r.pos+l,m=g||new C" + (hasMapField ? ",k,v" : needsValueVar ? ",v" : ""))
+    ("var c,m" + (hasMapField ? ",k,v" : needsValueVar ? ",v" : ""))
+    ("if(l===undefined)")
+        ("c=r.len")
+    ("else{")
+        ("c=r.pos+l")
+        ("if(c>r.len)")
+            ("throw RangeError(\"index out of range\")")
+        ("l=r.len")
+        ("r.len=c")
+    ("}")
+    ("m=g||new C")
     ("while(r.pos<c){")
         ("var s=r.pos")
         ("var t=r.tag()")
@@ -73,7 +83,10 @@ function decoder(mtype) {
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref);
             gen
-                ("var c2=r.uint32()+r.pos");
+                ("var c2=r.uint32()+r.pos")
+                ("if(c2>r.len)")
+                    ("throw RangeError(\"index out of range\")")
+                ("r.len=c2");
 
             if (types.defaults[field.keyType] !== undefined) gen
                 ("k=%j", types.defaults[field.keyType]);
@@ -111,6 +124,10 @@ function decoder(mtype) {
                     ("}")
                     ("r.skipType(u,q,t2)")
                 ("}");
+            gen
+                ("if(r.pos!==c2)")
+                    ("throw RangeError(\"index out of range\")")
+                ("r.len=c");
 
             if (closed) { gen
                 ("if(types[%i].valuesById[v]===undefined){", i);
@@ -144,6 +161,9 @@ function decoder(mtype) {
                 if (closed) {
                     gen
                     ("var c2=r.uint32()+r.pos")
+                    ("if(c2>r.len)")
+                        ("throw RangeError(\"index out of range\")")
+                    ("r.len=c2")
                     ("while(r.pos<c2){")
                         ("s=r.pos")
                         ("v=r.%s()", type)
@@ -154,6 +174,10 @@ function decoder(mtype) {
                         ("}else");
                             genPreserveUnknown(gen, "util.rawField(" + field.id + ",0,r.raw(s,r.pos))")
                     ("}");
+                    gen
+                    ("if(r.pos!==c2)")
+                        ("throw RangeError(\"index out of range\")")
+                    ("r.len=c");
                 } else gen
                     ("if(!(%s&&%s.length))", ref, ref)
                         ("%s=[]", ref)
@@ -261,6 +285,11 @@ function decoder(mtype) {
     gen
         ("r.skipType(%s,q,t)", i ? "u" : "t&7");
     genPreserveUnknown(gen, "r.raw(s,r.pos)")
+    ("}")
+    ("if(l!==undefined){")
+        ("if(r.pos!==c)")
+            ("throw RangeError(\"index out of range\")")
+        ("r.len=l")
     ("}")
     ("if(z!==undefined)")
         ("throw Error(\"missing end group\")");

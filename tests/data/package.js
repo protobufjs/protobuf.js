@@ -5,7 +5,7 @@ var $protobuf = require("../../minimal");
 
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
-var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $Array = $util.global.Array, $TypeError = $util.global.TypeError, $String = $util.global.String;
+var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $RangeError = $util.global.RangeError, $Array = $util.global.Array, $TypeError = $util.global.TypeError, $String = $util.global.String;
 
 // Exported root namespace
 var $root = $protobuf.roots["test_package"] || ($protobuf.roots["test_package"] = {});
@@ -314,7 +314,17 @@ $root.Package = (function() {
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
             throw $Error("max depth exceeded");
-        var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.Package(), key, value;
+        var end, message, key, value;
+        if (length === $undefined)
+            end = reader.len;
+        else {
+            end = reader.pos + length;
+            if (end > reader.len)
+                throw $RangeError("index out of range");
+            length = reader.len;
+            reader.len = end;
+        }
+        message = _target || new $root.Package();
         while (reader.pos < end) {
             var start = reader.pos;
             var tag = reader.tag();
@@ -425,6 +435,9 @@ $root.Package = (function() {
                     if (message.bin === $util.emptyObject)
                         message.bin = {};
                     var end2 = reader.uint32() + reader.pos;
+                    if (end2 > reader.len)
+                        throw $RangeError("index out of range");
+                    reader.len = end2;
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
@@ -444,6 +457,9 @@ $root.Package = (function() {
                         }
                         reader.skipType(wireType, _depth, tag2);
                     }
+                    if (reader.pos !== end2)
+                        throw $RangeError("index out of range");
+                    reader.len = end;
                     if (key === "__proto__")
                         $util.makeProp(message.bin, key);
                     message.bin[key] = value;
@@ -455,6 +471,9 @@ $root.Package = (function() {
                     if (message.scripts === $util.emptyObject)
                         message.scripts = {};
                     var end2 = reader.uint32() + reader.pos;
+                    if (end2 > reader.len)
+                        throw $RangeError("index out of range");
+                    reader.len = end2;
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
@@ -474,6 +493,9 @@ $root.Package = (function() {
                         }
                         reader.skipType(wireType, _depth, tag2);
                     }
+                    if (reader.pos !== end2)
+                        throw $RangeError("index out of range");
+                    reader.len = end;
                     if (key === "__proto__")
                         $util.makeProp(message.scripts, key);
                     message.scripts[key] = value;
@@ -485,6 +507,9 @@ $root.Package = (function() {
                     if (message.dependencies === $util.emptyObject)
                         message.dependencies = {};
                     var end2 = reader.uint32() + reader.pos;
+                    if (end2 > reader.len)
+                        throw $RangeError("index out of range");
+                    reader.len = end2;
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
@@ -504,6 +529,9 @@ $root.Package = (function() {
                         }
                         reader.skipType(wireType, _depth, tag2);
                     }
+                    if (reader.pos !== end2)
+                        throw $RangeError("index out of range");
+                    reader.len = end;
                     if (key === "__proto__")
                         $util.makeProp(message.dependencies, key);
                     message.dependencies[key] = value;
@@ -515,6 +543,9 @@ $root.Package = (function() {
                     if (message.devDependencies === $util.emptyObject)
                         message.devDependencies = {};
                     var end2 = reader.uint32() + reader.pos;
+                    if (end2 > reader.len)
+                        throw $RangeError("index out of range");
+                    reader.len = end2;
                     key = "";
                     value = "";
                     while (reader.pos < end2) {
@@ -534,6 +565,9 @@ $root.Package = (function() {
                         }
                         reader.skipType(wireType, _depth, tag2);
                     }
+                    if (reader.pos !== end2)
+                        throw $RangeError("index out of range");
+                    reader.len = end;
                     if (key === "__proto__")
                         $util.makeProp(message.devDependencies, key);
                     message.devDependencies[key] = value;
@@ -562,6 +596,11 @@ $root.Package = (function() {
                 $util.makeProp(message, "$unknowns", false);
                 (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
+        }
+        if (length !== $undefined) {
+            if (reader.pos !== end)
+                throw $RangeError("index out of range");
+            reader.len = length;
         }
         if (_end !== $undefined)
             throw $Error("missing end group");
@@ -1053,7 +1092,17 @@ $root.Package = (function() {
                 _depth = 0;
             if (_depth > $Reader.recursionLimit)
                 throw $Error("max depth exceeded");
-            var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.Package.Repository(), value;
+            var end, message, value;
+            if (length === $undefined)
+                end = reader.len;
+            else {
+                end = reader.pos + length;
+                if (end > reader.len)
+                    throw $RangeError("index out of range");
+                length = reader.len;
+                reader.len = end;
+            }
+            message = _target || new $root.Package.Repository();
             while (reader.pos < end) {
                 var start = reader.pos;
                 var tag = reader.tag();
@@ -1087,6 +1136,11 @@ $root.Package = (function() {
                     $util.makeProp(message, "$unknowns", false);
                     (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
+            }
+            if (length !== $undefined) {
+                if (reader.pos !== end)
+                    throw $RangeError("index out of range");
+                reader.len = length;
             }
             if (_end !== $undefined)
                 throw $Error("missing end group");

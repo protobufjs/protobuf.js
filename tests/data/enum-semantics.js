@@ -5,7 +5,7 @@ var $protobuf = require("../../minimal");
 
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
-var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $Array = $util.global.Array, $TypeError = $util.global.TypeError, $String = $util.global.String;
+var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $RangeError = $util.global.RangeError, $Array = $util.global.Array, $TypeError = $util.global.TypeError, $String = $util.global.String;
 
 // Exported root namespace
 var $root = $protobuf.roots["test_enum-semantics"] || ($protobuf.roots["test_enum-semantics"] = {});
@@ -164,7 +164,17 @@ $root.OpenMessage = (function() {
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
             throw $Error("max depth exceeded");
-        var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.OpenMessage(), key, value;
+        var end, message, key, value;
+        if (length === $undefined)
+            end = reader.len;
+        else {
+            end = reader.pos + length;
+            if (end > reader.len)
+                throw $RangeError("index out of range");
+            length = reader.len;
+            reader.len = end;
+        }
+        message = _target || new $root.OpenMessage();
         while (reader.pos < end) {
             var start = reader.pos;
             var tag = reader.tag();
@@ -214,6 +224,9 @@ $root.OpenMessage = (function() {
                     if (message.values === $util.emptyObject)
                         message.values = {};
                     var end2 = reader.uint32() + reader.pos;
+                    if (end2 > reader.len)
+                        throw $RangeError("index out of range");
+                    reader.len = end2;
                     key = "";
                     value = 0;
                     while (reader.pos < end2) {
@@ -233,6 +246,9 @@ $root.OpenMessage = (function() {
                         }
                         reader.skipType(wireType, _depth, tag2);
                     }
+                    if (reader.pos !== end2)
+                        throw $RangeError("index out of range");
+                    reader.len = end;
                     if (key === "__proto__")
                         $util.makeProp(message.values, key);
                     message.values[key] = value;
@@ -244,6 +260,11 @@ $root.OpenMessage = (function() {
                 $util.makeProp(message, "$unknowns", false);
                 (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
+        }
+        if (length !== $undefined) {
+            if (reader.pos !== end)
+                throw $RangeError("index out of range");
+            reader.len = length;
         }
         if (_end !== $undefined)
             throw $Error("missing end group");
@@ -648,7 +669,17 @@ $root.ClosedMessage = (function() {
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
             throw $Error("max depth exceeded");
-        var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.ClosedMessage(), key, value;
+        var end, message, key, value;
+        if (length === $undefined)
+            end = reader.len;
+        else {
+            end = reader.pos + length;
+            if (end > reader.len)
+                throw $RangeError("index out of range");
+            length = reader.len;
+            reader.len = end;
+        }
+        message = _target || new $root.ClosedMessage();
         while (reader.pos < end) {
             var start = reader.pos;
             var tag = reader.tag();
@@ -673,6 +704,9 @@ $root.ClosedMessage = (function() {
             case 2: {
                     if (wireType === 2) {
                         var end2 = reader.uint32() + reader.pos;
+                        if (end2 > reader.len)
+                            throw $RangeError("index out of range");
+                        reader.len = end2;
                         while (reader.pos < end2) {
                             start = reader.pos;
                             value = reader.int32();
@@ -685,6 +719,9 @@ $root.ClosedMessage = (function() {
                                 (message.$unknowns || (message.$unknowns = [])).push($util.rawField(2, 0, reader.raw(start, reader.pos)));
                             }
                         }
+                        if (reader.pos !== end2)
+                            throw $RangeError("index out of range");
+                        reader.len = end;
                         continue;
                     }
                     if (wireType !== 0)
@@ -703,6 +740,9 @@ $root.ClosedMessage = (function() {
             case 3: {
                     if (wireType === 2) {
                         var end2 = reader.uint32() + reader.pos;
+                        if (end2 > reader.len)
+                            throw $RangeError("index out of range");
+                        reader.len = end2;
                         while (reader.pos < end2) {
                             start = reader.pos;
                             value = reader.int32();
@@ -715,6 +755,9 @@ $root.ClosedMessage = (function() {
                                 (message.$unknowns || (message.$unknowns = [])).push($util.rawField(3, 0, reader.raw(start, reader.pos)));
                             }
                         }
+                        if (reader.pos !== end2)
+                            throw $RangeError("index out of range");
+                        reader.len = end;
                         continue;
                     }
                     if (wireType !== 0)
@@ -734,6 +777,9 @@ $root.ClosedMessage = (function() {
                     if (wireType !== 2)
                         break;
                     var end2 = reader.uint32() + reader.pos;
+                    if (end2 > reader.len)
+                        throw $RangeError("index out of range");
+                    reader.len = end2;
                     key = "";
                     value = 0;
                     while (reader.pos < end2) {
@@ -753,6 +799,9 @@ $root.ClosedMessage = (function() {
                         }
                         reader.skipType(wireType, _depth, tag2);
                     }
+                    if (reader.pos !== end2)
+                        throw $RangeError("index out of range");
+                    reader.len = end;
                     if ($root.ClosedMessage.ClosedEnum[value] === $undefined) {
                         if (!reader.discardUnknown) {
                             $util.makeProp(message, "$unknowns", false);
@@ -773,6 +822,11 @@ $root.ClosedMessage = (function() {
                 $util.makeProp(message, "$unknowns", false);
                 (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
+        }
+        if (length !== $undefined) {
+            if (reader.pos !== end)
+                throw $RangeError("index out of range");
+            reader.len = length;
         }
         if (_end !== $undefined)
             throw $Error("missing end group");
@@ -1151,7 +1205,17 @@ $root.ClosedImplicitMessage = (function() {
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
             throw $Error("max depth exceeded");
-        var end = length === $undefined ? reader.len : reader.pos + length, message = _target || new $root.ClosedImplicitMessage(), value;
+        var end, message, value;
+        if (length === $undefined)
+            end = reader.len;
+        else {
+            end = reader.pos + length;
+            if (end > reader.len)
+                throw $RangeError("index out of range");
+            length = reader.len;
+            reader.len = end;
+        }
+        message = _target || new $root.ClosedImplicitMessage();
         while (reader.pos < end) {
             var start = reader.pos;
             var tag = reader.tag();
@@ -1182,6 +1246,11 @@ $root.ClosedImplicitMessage = (function() {
                 $util.makeProp(message, "$unknowns", false);
                 (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
+        }
+        if (length !== $undefined) {
+            if (reader.pos !== end)
+                throw $RangeError("index out of range");
+            reader.len = length;
         }
         if (_end !== $undefined)
             throw $Error("missing end group");
