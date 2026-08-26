@@ -322,6 +322,12 @@ protobuf.js is validated against the official Protocol Buffers conformance suite
 
 <!-- END CONFORMANCE DATA -->
 
+| Edition | Supported since
+|---------|----------------
+| 2023    | v7.5.0
+| 2024    | v8.0.0
+| 2026    | v8.8.0
+
 [Structured results](https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush) of the conformance tests are also available as CI artifacts.
 
 ## Performance
