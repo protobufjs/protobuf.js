@@ -586,14 +586,14 @@ Parser.prototype.parseScalar = function parseScalar(field) {
 };
 
 Parser.prototype.readStringBytes = function readStringBytes() {
-    var token = this.tn.next(),
-        bytes = [];
+    var token = this.tn.next();
     if (!token || token.type !== "string")
         this.error("expected string");
-    Array.prototype.push.apply(bytes, token.value);
+    var bytes = token.value;
     while ((token = this.tn.peek()) && token.type === "string") {
         token = this.tn.next();
-        Array.prototype.push.apply(bytes, token.value);
+        for (var i = 0; i < token.value.length; ++i)
+            bytes.push(token.value[i]);
     }
     return bytes;
 };
@@ -841,6 +841,10 @@ function parseInteger(token, sign, unsigned, bits) {
         digits = raw.substring(1);
     } else if (!/^(?:0|[1-9][0-9]*)$/.test(raw))
         throw Error("integer value expected");
+
+    digits = digits.replace(/^0+(?=.)/, "");
+    if (digits.length > Math.ceil(bits / 3)) // 3 bits per octal digit
+        throw Error((unsigned ? "unsigned " : "") + "integer value out of range");
 
     if (typeof util.global.BigInt === "function")
         return parseIntegerBigInt(digits, radix, sign, unsigned, bits);

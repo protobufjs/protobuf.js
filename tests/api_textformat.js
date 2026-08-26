@@ -80,6 +80,32 @@ tape.test("textformat - parses scalar, repeated, map and nested fields", functio
     test.end();
 });
 
+tape.test("textformat - bounds integer conversion inputs", function(test) {
+    var nativeBigInt = protobuf.util.global.BigInt,
+        maxBigIntLength = 0;
+    protobuf.util.global.BigInt = function(value) {
+        maxBigIntLength = Math.max(maxBigIntLength, String(value).length);
+        return nativeBigInt(value);
+    };
+    try {
+        test.throws(function() {
+            Msg.fromText("int64_field: " + "9".repeat(1000));
+        }, /out of range/, "rejects oversized integer literals");
+        test.equal(Msg.fromText("uint64_field: 0" + "0".repeat(1000) + "1").uint64Field.toString(), "1", "accepts insignificant leading zeros");
+        test.ok(maxBigIntLength <= 24, "passes only bounded values to BigInt");
+    } finally {
+        protobuf.util.global.BigInt = nativeBigInt;
+    }
+    test.end();
+});
+
+tape.test("textformat - parses large string literals", function(test) {
+    var value = "a".repeat(200000),
+        message = Msg.fromText("string_field: \"" + value + "\"");
+    test.equal(message.stringField, value, "does not depend on the argument count limit");
+    test.end();
+});
+
 tape.test("textformat - preserves __proto__ map key as own data", function(test) {
     var MapRoot = protobuf.parse("syntax = \"proto3\"; message Value { bool admin = 1; string role = 2; } message M { map<string, Value> labels = 1; }").root,
         M = MapRoot.lookupType("M"),
