@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.6.6](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.6.5...protobufjs-v7.6.6) (2026-08-27)
+
+
+### Bug Fixes
+
+* Backport recent 8.x fixes to 7.x ([#2422](https://github.com/protobufjs/protobuf.js/issues/2422)) ([d3db676](https://github.com/protobufjs/protobuf.js/commit/d3db676fd732cf8db976174576280f26614fbc79))
+
 ## [7.6.5](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.6.4...protobufjs-v7.6.5) (2026-07-04)
 
 
