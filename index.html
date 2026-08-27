@@ -686,6 +686,8 @@
                 
                     <li data-name="Enum#valuesOptions"><a href="Enum.html#valuesOptions">valuesOptions</a></li>
                 
+                    <li data-name="Enum#visibility"><a href="Enum.html#visibility">visibility</a></li>
+                
                 
             </ul>
             
@@ -1913,6 +1915,8 @@
                     <li data-name="Type#resolved"><a href="Type.html#resolved">resolved</a></li>
                 
                     <li data-name="Type#root"><a href="Type.html#root">root</a></li>
+                
+                    <li data-name="Type#visibility"><a href="Type.html#visibility">visibility</a></li>
                 
                 
             </ul>
@@ -3505,9 +3509,9 @@ const myService = MyService.create(myRpcImpl/*, requestDelimited?, responseDelim
 </tr>
 <tr>
 <td>ProtoJSON</td>
-<td style="text-align:right">100.00% (2796/2796)</td>
+<td style="text-align:right">100.00% (2814/2814)</td>
 <td style="text-align:right">100.00% (2362/2362)</td>
-<td style="text-align:right">100.00% (434/434)</td>
+<td style="text-align:right">100.00% (452/452)</td>
 </tr>
 <tr>
 <td>TextFormat</td>
@@ -3517,22 +3521,44 @@ const myService = MyService.create(myRpcImpl/*, requestDelimited?, responseDelim
 </tr>
 <tr>
 <td>Overall</td>
-<td style="text-align:right">100.00% (6540/6540)</td>
+<td style="text-align:right">100.00% (6558/6558)</td>
 <td style="text-align:right">100.00% (5165/5165)</td>
-<td style="text-align:right">100.00% (1375/1375)</td>
+<td style="text-align:right">100.00% (1393/1393)</td>
 </tr>
 </tbody>
 </table>
 <!-- END CONFORMANCE DATA -->
+<table>
+<thead>
+<tr>
+<th>Edition</th>
+<th>Supported since</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2023</td>
+<td>v7.5.0</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>v8.0.0</td>
+</tr>
+<tr>
+<td>2026</td>
+<td>v8.8.0</td>
+</tr>
+</tbody>
+</table>
 <p><a target="_blank" href="https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml?query=branch%3Amaster+event%3Apush">Structured results</a> of the conformance tests are also available as CI artifacts.</p>
 <h2 id="performance">Performance</h2>
-<p>Both reflection and static modes use specialized encoders and decoders backed by the same hand-tuned reader and writer primitives.</p>
-<p>The repository includes a <a target="_blank" href="https://github.com/protobufjs/protobuf.js/tree/master/bench">benchmark suite</a> you can run yourself. It compares protobuf.js with other general-purpose JavaScript implementations across three substantially different cases: our classic common message shape and two unmodified, structurally distinct fixtures sourced externally. The suite measures each library's recommended serialization and deserialization path using identical schemas and inputs, with JSON included as an additional baseline. Across these cases, protobuf.js is a clear upgrade over using JSON and consistently the fastest Protobuf implementation by a considerable margin.</p>
+<p>protobuf.js's reflection and static modes share the same code-generation backend and underlying hand-tuned reader and writer primitives. Reflection mode emits specialized encoders and decoders just in time, while static mode emits equivalent code ahead of time.</p>
+<p>To see how this architecture compares in practice, the repository includes a reproducible <a target="_blank" href="https://github.com/protobufjs/protobuf.js/tree/master/bench">benchmark suite</a> measuring both modes alongside other general-purpose JavaScript implementations across three cases: our classic common message shape and two unmodified, structurally distinct fixtures sourced from other implementations. Each library is tested through its recommended serialization and deserialization path using identical schemas and message contents.</p>
 <!-- BEGIN BENCHMARK DATA -->
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./bench/results/encode-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="./bench/results/encode-light.svg">
-  <img alt="Encode benchmark" src="https://raw.githubusercontent.com/protobufjs/protobuf.js/master/bench/results/encode.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/protobufjs/protobuf.js/master/bench/results/encode-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/protobufjs/protobuf.js/master/bench/results/encode-light.svg">
+  <img alt="Encode Throughput" src="https://raw.githubusercontent.com/protobufjs/protobuf.js/master/bench/results/encode.svg">
 </picture>
 <details>
 <summary>Show table</summary>
@@ -3548,41 +3574,41 @@ const myService = MyService.create(myRpcImpl/*, requestDelimited?, responseDelim
 <tbody>
 <tr>
 <td>protobuf.js static</td>
-<td style="text-align:right"><strong>5.34M ops/s</strong>   <small>1.0x</small></td>
-<td style="text-align:right"><strong>3.09K ops/s</strong>   <small>1.0x</small></td>
-<td style="text-align:right">43.1K ops/s   <small>1.0x</small></td>
+<td style="text-align:right"><strong>5.28M ops/s</strong>   <small>1.0x</small></td>
+<td style="text-align:right">3.06K ops/s   <small>1.0x</small></td>
+<td style="text-align:right"><strong>49.2K ops/s</strong>   <small>1.0x</small></td>
 </tr>
 <tr>
 <td>protobuf.js reflect</td>
-<td style="text-align:right">4.89M ops/s   <small>1.1x</small></td>
-<td style="text-align:right">3.03K ops/s   <small>1.0x</small></td>
-<td style="text-align:right"><strong>43.3K ops/s</strong>   <small>1.0x</small></td>
+<td style="text-align:right">5.16M ops/s   <small>1.0x</small></td>
+<td style="text-align:right"><strong>3.08K ops/s</strong>   <small>1.0x</small></td>
+<td style="text-align:right">47.5K ops/s   <small>1.0x</small></td>
 </tr>
 <tr>
 <td>JSON</td>
-<td style="text-align:right">2.09M ops/s   <small>2.6x</small></td>
-<td style="text-align:right">897 ops/s   <small>3.4x</small></td>
-<td style="text-align:right">6.70K ops/s   <small>6.5x</small></td>
+<td style="text-align:right">3.44M ops/s   <small>1.5x</small></td>
+<td style="text-align:right">1.50K ops/s   <small>2.1x</small></td>
+<td style="text-align:right">7.13K ops/s   <small>6.9x</small></td>
 </tr>
 <tr>
 <td>protoc-gen-js</td>
-<td style="text-align:right">1.03M ops/s   <small>5.2x</small></td>
-<td style="text-align:right">700 ops/s   <small>4.4x</small></td>
-<td style="text-align:right">13.9K ops/s   <small>3.1x</small></td>
+<td style="text-align:right">1.05M ops/s   <small>5.0x</small></td>
+<td style="text-align:right">691 ops/s   <small>4.5x</small></td>
+<td style="text-align:right">15.0K ops/s   <small>3.3x</small></td>
 </tr>
 <tr>
 <td>protoc-gen-es</td>
-<td style="text-align:right">402K ops/s   <small>13.3x</small></td>
-<td style="text-align:right">235 ops/s   <small>13.2x</small></td>
-<td style="text-align:right">8.22K ops/s   <small>5.3x</small></td>
+<td style="text-align:right">1.22M ops/s   <small>4.3x</small></td>
+<td style="text-align:right">1.14K ops/s   <small>2.7x</small></td>
+<td style="text-align:right">35.8K ops/s   <small>1.4x</small></td>
 </tr>
 </tbody>
 </table>
 </details>
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./bench/results/decode-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="./bench/results/decode-light.svg">
-  <img alt="Decode benchmark" src="https://raw.githubusercontent.com/protobufjs/protobuf.js/master/bench/results/decode.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/protobufjs/protobuf.js/master/bench/results/decode-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/protobufjs/protobuf.js/master/bench/results/decode-light.svg">
+  <img alt="Decode Throughput" src="https://raw.githubusercontent.com/protobufjs/protobuf.js/master/bench/results/decode.svg">
 </picture>
 <details>
 <summary>Show table</summary>
@@ -3598,41 +3624,42 @@ const myService = MyService.create(myRpcImpl/*, requestDelimited?, responseDelim
 <tbody>
 <tr>
 <td>protobuf.js static</td>
-<td style="text-align:right">6.45M ops/s   <small>1.1x</small></td>
-<td style="text-align:right">2.70K ops/s   <small>1.1x</small></td>
-<td style="text-align:right"><strong>81.7K ops/s</strong>   <small>1.0x</small></td>
+<td style="text-align:right">5.84M ops/s   <small>1.1x</small></td>
+<td style="text-align:right">2.45K ops/s   <small>1.1x</small></td>
+<td style="text-align:right"><strong>78.9K ops/s</strong>   <small>1.0x</small></td>
 </tr>
 <tr>
 <td>protobuf.js reflect</td>
-<td style="text-align:right"><strong>6.93M ops/s</strong>   <small>1.0x</small></td>
-<td style="text-align:right"><strong>2.99K ops/s</strong>   <small>1.0x</small></td>
-<td style="text-align:right">80.3K ops/s   <small>1.0x</small></td>
+<td style="text-align:right"><strong>6.54M ops/s</strong>   <small>1.0x</small></td>
+<td style="text-align:right"><strong>2.66K ops/s</strong>   <small>1.0x</small></td>
+<td style="text-align:right">77.0K ops/s   <small>1.0x</small></td>
 </tr>
 <tr>
 <td>JSON</td>
-<td style="text-align:right">1.37M ops/s   <small>5.0x</small></td>
-<td style="text-align:right">1.06K ops/s   <small>2.8x</small></td>
-<td style="text-align:right">19.5K ops/s   <small>4.2x</small></td>
+<td style="text-align:right">1.58M ops/s   <small>4.1x</small></td>
+<td style="text-align:right">1.21K ops/s   <small>2.2x</small></td>
+<td style="text-align:right">21.0K ops/s   <small>3.8x</small></td>
 </tr>
 <tr>
 <td>protoc-gen-js</td>
-<td style="text-align:right">811K ops/s   <small>8.5x</small></td>
-<td style="text-align:right">851 ops/s   <small>3.5x</small></td>
-<td style="text-align:right">21.7K ops/s   <small>3.8x</small></td>
+<td style="text-align:right">701K ops/s   <small>9.3x</small></td>
+<td style="text-align:right">946 ops/s   <small>2.8x</small></td>
+<td style="text-align:right">21.5K ops/s   <small>3.7x</small></td>
 </tr>
 <tr>
 <td>protoc-gen-es</td>
-<td style="text-align:right">691K ops/s   <small>10.0x</small></td>
-<td style="text-align:right">376 ops/s   <small>8.0x</small></td>
-<td style="text-align:right">14.3K ops/s   <small>5.7x</small></td>
+<td style="text-align:right">1.67M ops/s   <small>3.9x</small></td>
+<td style="text-align:right">1.19K ops/s   <small>2.2x</small></td>
+<td style="text-align:right">31.0K ops/s   <small>2.5x</small></td>
 </tr>
 </tbody>
 </table>
 </details>
 <!-- END BENCHMARK DATA -->
-<p><a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/bench/results/latest.json">Structured results</a> and environment details for this run are also available as committed artifacts.</p>
+<p><a target="_blank" href="https://github.com/protobufjs/protobuf.js/blob/master/bench/results/latest.json">Structured results</a> include environment details for this run and are committed alongside the charts. The suite also runs in CI.</p>
 <p>To run the benchmark on your own hardware:</p>
 <pre class="prettyprint source lang-sh"><code>npm --prefix bench install
+npm --prefix bench run generate
 npm run bench
 </code></pre>
 <h2 id="compatibility">Compatibility</h2>
