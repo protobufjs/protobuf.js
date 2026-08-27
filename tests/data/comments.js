@@ -130,7 +130,17 @@ $root.Test1 = (function() {
             long = 0;
         if (long > $Reader.recursionLimit)
             throw Error("maximum nesting depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Test1();
+        var end, message;
+        if (length === undefined)
+            end = reader.len;
+        else {
+            end = reader.pos + length;
+            if (end > reader.len)
+                throw RangeError("index out of range");
+            length = reader.len;
+            reader.len = end;
+        }
+        message = new $root.Test1();
         while (reader.pos < end) {
             var tag = reader.uint32();
             if (tag === error)
@@ -152,6 +162,11 @@ $root.Test1 = (function() {
                 reader.skipType(tag & 7, long);
                 break;
             }
+        }
+        if (length !== undefined) {
+            if (reader.pos !== end)
+                throw RangeError("index out of range");
+            reader.len = length;
         }
         return message;
     };
@@ -371,7 +386,17 @@ $root.Test2 = (function() {
             long = 0;
         if (long > $Reader.recursionLimit)
             throw Error("maximum nesting depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Test2();
+        var end, message;
+        if (length === undefined)
+            end = reader.len;
+        else {
+            end = reader.pos + length;
+            if (end > reader.len)
+                throw RangeError("index out of range");
+            length = reader.len;
+            reader.len = end;
+        }
+        message = new $root.Test2();
         while (reader.pos < end) {
             var tag = reader.uint32();
             if (tag === error)
@@ -381,6 +406,11 @@ $root.Test2 = (function() {
                 reader.skipType(tag & 7, long);
                 break;
             }
+        }
+        if (length !== undefined) {
+            if (reader.pos !== end)
+                throw RangeError("index out of range");
+            reader.len = length;
         }
         return message;
     };

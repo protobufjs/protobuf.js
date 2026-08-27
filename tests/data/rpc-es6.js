@@ -171,7 +171,17 @@ export const MyRequest = $root.MyRequest = (() => {
             long = 0;
         if (long > $Reader.recursionLimit)
             throw Error("maximum nesting depth exceeded");
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyRequest();
+        let end, message;
+        if (length === undefined)
+            end = reader.len;
+        else {
+            end = reader.pos + length;
+            if (end > reader.len)
+                throw RangeError("index out of range");
+            length = reader.len;
+            reader.len = end;
+        }
+        message = new $root.MyRequest();
         while (reader.pos < end) {
             let tag = reader.uint32();
             if (tag === error)
@@ -185,6 +195,11 @@ export const MyRequest = $root.MyRequest = (() => {
                 reader.skipType(tag & 7, long);
                 break;
             }
+        }
+        if (length !== undefined) {
+            if (reader.pos !== end)
+                throw RangeError("index out of range");
+            reader.len = length;
         }
         return message;
     };
@@ -398,7 +413,17 @@ export const MyResponse = $root.MyResponse = (() => {
             long = 0;
         if (long > $Reader.recursionLimit)
             throw Error("maximum nesting depth exceeded");
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyResponse();
+        let end, message;
+        if (length === undefined)
+            end = reader.len;
+        else {
+            end = reader.pos + length;
+            if (end > reader.len)
+                throw RangeError("index out of range");
+            length = reader.len;
+            reader.len = end;
+        }
+        message = new $root.MyResponse();
         while (reader.pos < end) {
             let tag = reader.uint32();
             if (tag === error)
@@ -412,6 +437,11 @@ export const MyResponse = $root.MyResponse = (() => {
                 reader.skipType(tag & 7, long);
                 break;
             }
+        }
+        if (length !== undefined) {
+            if (reader.pos !== end)
+                throw RangeError("index out of range");
+            reader.len = length;
         }
         return message;
     };

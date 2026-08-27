@@ -116,7 +116,17 @@ $root.vector_tile = (function() {
                 long = 0;
             if (long > $Reader.recursionLimit)
                 throw Error("maximum nesting depth exceeded");
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile();
+            var end, message;
+            if (length === undefined)
+                end = reader.len;
+            else {
+                end = reader.pos + length;
+                if (end > reader.len)
+                    throw RangeError("index out of range");
+                length = reader.len;
+                reader.len = end;
+            }
+            message = new $root.vector_tile.Tile();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 if (tag === error)
@@ -132,6 +142,11 @@ $root.vector_tile = (function() {
                     reader.skipType(tag & 7, long);
                     break;
                 }
+            }
+            if (length !== undefined) {
+                if (reader.pos !== end)
+                    throw RangeError("index out of range");
+                reader.len = length;
             }
             return message;
         };
@@ -443,7 +458,17 @@ $root.vector_tile = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Value();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.vector_tile.Tile.Value();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -481,6 +506,11 @@ $root.vector_tile = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -834,7 +864,17 @@ $root.vector_tile = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Feature();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.vector_tile.Tile.Feature();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -849,8 +889,14 @@ $root.vector_tile = (function() {
                                 message.tags = [];
                             if ((tag & 7) === 2) {
                                 var end2 = reader.uint32() + reader.pos;
+                                if (end2 > reader.len)
+                                    throw RangeError("index out of range");
+                                reader.len = end2;
                                 while (reader.pos < end2)
                                     message.tags.push(reader.uint32());
+                                if (reader.pos !== end2)
+                                    throw RangeError("index out of range");
+                                reader.len = end;
                             } else
                                 message.tags.push(reader.uint32());
                             break;
@@ -864,8 +910,14 @@ $root.vector_tile = (function() {
                                 message.geometry = [];
                             if ((tag & 7) === 2) {
                                 var end2 = reader.uint32() + reader.pos;
+                                if (end2 > reader.len)
+                                    throw RangeError("index out of range");
+                                reader.len = end2;
                                 while (reader.pos < end2)
                                     message.geometry.push(reader.uint32());
+                                if (reader.pos !== end2)
+                                    throw RangeError("index out of range");
+                                reader.len = end;
                             } else
                                 message.geometry.push(reader.uint32());
                             break;
@@ -874,6 +926,11 @@ $root.vector_tile = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 return message;
             };
@@ -1242,7 +1299,17 @@ $root.vector_tile = (function() {
                     long = 0;
                 if (long > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Layer();
+                var end, message;
+                if (length === undefined)
+                    end = reader.len;
+                else {
+                    end = reader.pos + length;
+                    if (end > reader.len)
+                        throw RangeError("index out of range");
+                    length = reader.len;
+                    reader.len = end;
+                }
+                message = new $root.vector_tile.Tile.Layer();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     if (tag === error)
@@ -1282,6 +1349,11 @@ $root.vector_tile = (function() {
                         reader.skipType(tag & 7, long);
                         break;
                     }
+                }
+                if (length !== undefined) {
+                    if (reader.pos !== end)
+                        throw RangeError("index out of range");
+                    reader.len = length;
                 }
                 if (!Object.hasOwnProperty.call(message, "version"))
                     throw $util.ProtocolError("missing required 'version'", { instance: message });
