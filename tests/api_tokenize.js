@@ -7,15 +7,25 @@ var tokenize = protobuf.tokenize;
 tape.test("tokenize", function(test) {
 
     test.test(test.name + " - unescape", function(test) {
-        test.equal(tokenize.unescape("\\\\0 \\\0 \\0 \0"), "\\0  \0 \0", "should propery unescape zero-sequences");
-        test.equal(tokenize.unescape("\\\t\\t\\r\\n"), "\t\r\n", "should propery unescape tabs and line feeds");
+        test.equal(tokenize.unescape("\\\\0\\0"), "\\0\0", "should properly unescape zero-sequences");
+        test.equal(tokenize.unescape("\\t\\r\\n"), "\t\r\n", "should properly unescape tabs and line feeds");
+        test.equal(tokenize.unescape("\\a\\b\\f\\v\\?\\'\\\""), "\x07\b\f\v?'\"", "should unescape single-character sequences");
+        test.equal(tokenize.unescape("\\101\\102\\103"), "ABC", "should unescape octal sequences");
+        test.equal(tokenize.unescape("\\x41\\x42\\X43"), "ABC", "should unescape hexadecimal sequences");
+        test.equal(tokenize.unescape("\\1x\\12x\\123x\\x1x\\x12x"), "\x01x\nxSx\x01x\x12x", "should consume bounded numeric escapes");
         test.end();
     });
 
     test.ok(expect("", [null]), "should instantly finish for an empty source");
     test.ok(expect("'hello\\nworld'", ["'", "hello\nworld", "'", null]), "should parse single quoted strings");
     test.ok(expect("\"hello\\nworld\"", ["\"", "hello\nworld", "\"", null]), "should parse double quoted strings");
+    test.ok(expect("'a\\'b'", ["'", "a'b", "'", null]), "should parse escaped single quotes");
+    test.ok(expect("\"a\\\"b\"", ["\"", "a\"b", "\"", null]), "should parse escaped double quotes");
     test.ok(expectError("\"as\"d\""), "should throw for invalid strings");
+
+    var escapedDefault = protobuf.parse("syntax = \"proto2\"; message M { optional string value = 1 [default = \"default<>\\'\\\"abc\\101\\x42\"]; }")
+        .root.lookupType("M").fields.value.options.default;
+    test.equal(escapedDefault, "default<>'\"abcAB", "should preserve escaped string defaults");
 
     var tn = tokenize("message Test {}");
     test.throws(function() {

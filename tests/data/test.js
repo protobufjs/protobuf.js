@@ -4489,7 +4489,7 @@ $root.jspb = (function() {
              * @memberof jspb.test.DefaultValues
              * @instance
              */
-            DefaultValues.prototype.stringField = "default<>abc";
+            DefaultValues.prototype.stringField = "default<>'\"abc";
 
             /**
              * DefaultValues boolField.
@@ -4818,7 +4818,7 @@ $root.jspb = (function() {
                     throw $Error("max depth exceeded");
                 var object = {};
                 if (options.defaults) {
-                    object.stringField = "default<>abc";
+                    object.stringField = "default<>'\"abc";
                     object.boolField = true;
                     if ($util.Long) {
                         var long = new $util.Long(11, 0, false);

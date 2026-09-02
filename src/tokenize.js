@@ -9,13 +9,19 @@ var setCommentRe = /^ *[*/]+ */,
     setCommentAltRe = /^\s*\*?\/*/,
     setCommentSplitRe = /\n/g,
     whitespaceRe = /\s/,
-    unescapeRe = /\\(.?)/g;
+    unescapeRe = /\\([0-7]{1,3}|[xX][0-9a-fA-F]{1,2}|.?)/g;
 
 var unescapeMap = {
-    "0": "\0",
+    "a": "\x07",
+    "b": "\b",
+    "f": "\f",
     "r": "\r",
     "n": "\n",
-    "t": "\t"
+    "t": "\t",
+    "v": "\v",
+    "?": "?",
+    "'": "'",
+    "\"": "\""
 };
 
 /**
@@ -27,6 +33,11 @@ var unescapeMap = {
  */
 function unescape(str) {
     return str.replace(unescapeRe, function($0, $1) {
+        var first = $1.charAt(0);
+        if (first >= "0" && first <= "7")
+            return String.fromCharCode(parseInt($1, 8) & 255);
+        if (first === "x" || first === "X")
+            return String.fromCharCode(parseInt($1.substring(1), 16));
         switch ($1) {
             case "\\":
             case "":
