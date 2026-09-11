@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package example;
+
+import "./filter-nested-values.proto";
+
+message Response {
+  values.Value value = 1;
+}
+
+message UnusedRoot {
+  string value = 1;
+}
