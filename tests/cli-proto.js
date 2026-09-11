@@ -94,6 +94,39 @@ message OptionalFields {
     });
 });
 
+tape.test("proto2 64 bit field defaults", function(test) {
+    const proto = `syntax = "proto2";
+
+message Defaults {
+
+    optional uint64 implicit = 1 [default=0];
+    optional int64 answer = 2 [default=42];
+    optional sint64 negative = 3 [default=-7];
+    optional int32 small = 4 [default=0];
+}`;
+    const expected = `syntax = "proto2";
+
+message Defaults {
+
+    optional uint64 implicit = 1;
+    optional int64 answer = 2 [default=42];
+    optional sint64 negative = 3 [default=-7];
+    optional int32 small = 4;
+}`;
+    cliTest(test, function() {
+        var root = protobuf.parse(proto).root.resolveAll();
+        var protoTarget = require("../cli/targets/proto2");
+
+        protoTarget(root, {}, function(err, output) {
+            test.error(err, 'proto code generation worked');
+
+            test.equal(output, expected);
+
+            test.end();
+        });
+    });
+});
+
 tape.test("proto3 to proto2 valid", function(test) {
     const proto3 = `syntax = "proto3";
 
