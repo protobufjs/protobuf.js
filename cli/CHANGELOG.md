@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.7.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.7.0...protobufjs-cli-v2.7.1) (2026-09-11)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * protobufjs bumped from file:.. to 8.8.1
+  * peerDependencies
+    * protobufjs bumped from ^8.8.0 to ^8.8.1
+
 ## [2.7.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.6.2...protobufjs-cli-v2.7.0) (2026-08-26)
 
 
