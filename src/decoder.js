@@ -282,8 +282,10 @@ function decoder(mtype) {
     if (i) gen
         ("}");
     // Unknown fields
+    // When the type has fields, the switch above already shifted `t` to the field number;
+    // otherwise `t` is still the full tag, so shift it here for the end-group check.
     gen
-        ("r.skipType(%s,q,t)", i ? "u" : "t&7");
+        ("r.skipType(%s,q,%s)", i ? "u" : "t&7", i ? "t" : "t>>>3");
     genPreserveUnknown(gen, "r.raw(s,r.pos)")
     ("}")
     ("if(l!==undefined){")
