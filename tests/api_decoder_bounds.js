@@ -102,3 +102,24 @@ tape.test("decoder respects unknown fixed-width field boundaries", function(test
     }, RangeError, "rejects an unknown fixed64 field that crosses the parent boundary");
     test.end();
 });
+
+tape.test("decoder skips well-formed unknown groups in zero-field messages", function(test) {
+    // bytes: field 1, wire type 3 (start group) + matching end tag for field 1
+    var bytes = [ 0x0b, 0x0c ];
+
+    var Empty = new protobuf.Type("Empty"); // zero fields: the generated decoder has no
+    test.doesNotThrow(function() {          // field loop, so `t` is still the full tag
+        Empty.decode(bytes);
+    }, "accepts a matching end-group tag");
+    test.throws(function() {
+        Empty.decode([ 0x0b, 0x1c ]);
+    }, /invalid end group tag/, "still rejects a mismatched end-group tag");
+
+    var NonEmpty = new protobuf.Type("NonEmpty")
+        .add(new protobuf.Field("x", 1, "int32"));
+    test.doesNotThrow(function() {
+        NonEmpty.decode(bytes);
+    }, "behaves the same for types with fields");
+
+    test.end();
+});
