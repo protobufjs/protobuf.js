@@ -113,6 +113,27 @@ tape.test("writer & reader", function(test) {
         Reader.create(protobuf.util.newBuffer([ 3, 49, 50 ])).string();
     }, /index out of range/, "should throw on truncated strings");
 
+    test.test(test.name + " - unpaired surrogates", function(test) {
+        var Message = protobuf.parse('syntax = "proto3"; message Label { string value = 1; }').root.lookupType("Label");
+        [Writer, Writer.create().constructor].forEach(function(WriterToTest) {
+            ["\ud800", "\udfff", "\ud800\udc00"].forEach(function(suffix) {
+                [0, 38, 39, 127].forEach(function(prefixLength) {
+                    var value = "a".repeat(prefixLength) + suffix,
+                        expected = Buffer.from(value, "utf8").toString("utf8"),
+                        encoded = Message.encode({ value: value }, new WriterToTest()).finish(),
+                        reference = Message.encode({ value: expected }).finish();
+
+                    test.equal(Message.verify({ value: value }), null, "should accept the input string");
+                    test.same(Array.prototype.slice.call(encoded), Array.prototype.slice.call(reference), "should encode strings consistently across writer cutoffs");
+                    test.doesNotThrow(function() {
+                        test.equal(Message.decode(encoded).value, expected, "should decode the normalized string");
+                    }, "should produce valid UTF-8");
+                });
+            });
+        });
+        test.end();
+    });
+
     // bytes
 
     test.ok(expect("bytes", [1,2,3], [3,1,2,3]), "should write [1,2,3] as bytes prefixed with its length as a varint and read it back equally");

@@ -155,6 +155,8 @@ utf8.write = function utf8_write(string, buffer, offset) {
             buffer[offset++] = c1 >> 6  & 63 | 128;
             buffer[offset++] = c1       & 63 | 128;
         } else {
+            if ((c1 & 0xF800) === 0xD800)
+                c1 = 0xFFFD;
             buffer[offset++] = c1 >> 12      | 224;
             buffer[offset++] = c1 >> 6  & 63 | 128;
             buffer[offset++] = c1       & 63 | 128;
