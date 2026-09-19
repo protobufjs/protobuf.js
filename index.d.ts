@@ -2323,6 +2323,7 @@ export namespace util {
 
         /**
          * Emits an event by calling its listeners with the specified arguments.
+         * Listener changes take effect on the next emission.
          * @param evt Event name
          * @param args Arguments
          * @returns `this`
