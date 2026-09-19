@@ -37,6 +37,7 @@ declare class EventEmitter {
 
     /**
      * Emits an event by calling its listeners with the specified arguments.
+     * Listener changes take effect on the next emission.
      * @param {string} evt Event name
      * @param {...*} args Arguments
      * @returns {this} `this`

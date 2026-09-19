@@ -56,11 +56,9 @@ EventEmitter.prototype.off = function off(evt, fn) {
             var listeners = this._listeners[evt];
             if (!listeners)
                 return this;
-            for (var i = 0; i < listeners.length;)
-                if (listeners[i].fn === fn)
-                    listeners.splice(i, 1);
-                else
-                    ++i;
+            this._listeners[evt] = listeners.filter(function(listener) {
+                return listener.fn !== fn;
+            });
         }
     }
     return this;
@@ -68,6 +66,7 @@ EventEmitter.prototype.off = function off(evt, fn) {
 
 /**
  * Emits an event by calling its listeners with the specified arguments.
+ * Listener changes take effect on the next emission.
  * @param {string} evt Event name
  * @param {...*} args Arguments
  * @returns {this} `this`
@@ -76,10 +75,11 @@ EventEmitter.prototype.emit = function emit(evt) {
     var listeners = this._listeners[evt];
     if (listeners) {
         var args = [],
-            i = 1;
+            i = 1,
+            length = listeners.length;
         for (; i < arguments.length;)
             args.push(arguments[i++]);
-        for (i = 0; i < listeners.length;)
+        for (i = 0; i < length;)
             listeners[i].fn.apply(listeners[i++].ctx, args);
     }
     return this;

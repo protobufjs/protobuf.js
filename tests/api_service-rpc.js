@@ -95,6 +95,31 @@ tape.test("reflected services", function(test) {
         });
     });
 
+    test.test(test.name + " - should preserve data delivery after listener removal", function(test) {
+        var service2 = MyService.create(function(method, requestData, callback) {
+            if (requestData)
+                callback(null, DoSomethingResponse.encode({}).finish());
+        });
+        var once = 0,
+            persistent = 0;
+        function first() {
+            ++once;
+            service2.off("data", first);
+        }
+        service2.on("data", first);
+        service2.on("data", function() { ++persistent; });
+        service2.doSomething({}, function(err) {
+            test.error(err, "should complete the first RPC");
+            service2.doSomething({}, function(err) {
+                test.error(err, "should complete the second RPC");
+                test.equal(once, 1, "should remove the one-shot listener");
+                test.equal(persistent, 2, "should deliver both responses to the persistent listener");
+                service2.end();
+                test.end();
+            });
+        });
+    });
+
     var dataEmitted = false;
     service.on("data", function(responseData) {
         dataEmitted = true;
