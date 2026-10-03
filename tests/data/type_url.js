@@ -149,7 +149,7 @@ $root.TypeUrlTest = (function() {
             case 1: {
                     if (wireType !== 2)
                         break;
-                    message.nested = $root.TypeUrlTest.Nested.decode(reader, reader.uint32(), $undefined, _depth + 1, message.nested);
+                    message.nested = $root.TypeUrlTest.Nested.decode(reader, reader.size(), $undefined, _depth + 1, message.nested);
                     continue;
                 }
             }
@@ -182,7 +182,7 @@ $root.TypeUrlTest = (function() {
     TypeUrlTest.decodeDelimited = function(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
+        return this.decode(reader, reader.size());
     };
 
     /**
@@ -458,7 +458,7 @@ $root.TypeUrlTest = (function() {
         Nested.decodeDelimited = function(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
+            return this.decode(reader, reader.size());
         };
 
         /**

@@ -2,6 +2,47 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
+tape.test("decoders reject overflowing length prefixes", function(test) {
+    var root = protobuf.parse([
+        "syntax = \"proto2\";",
+        "enum Value { ZERO = 0; }",
+        "message Inner {}",
+        "message Message {",
+        "  optional Inner child = 1;",
+        "  repeated Inner children = 2;",
+        "  map<string, Inner> entries = 3;",
+        "  repeated Value values = 4 [packed = true];",
+        "}"
+    ].join("\n")).root.resolveAll();
+    var overflow = [ 128, 128, 128, 128, 16 ];
+
+    function check(Type, mode) {
+        [
+            [ "nested message", [ 10 ] ],
+            [ "repeated message", [ 18 ] ],
+            [ "map entry", [ 26 ] ],
+            [ "map message value", [ 26, 6, 18 ] ],
+            [ "packed closed enum", [ 34 ] ],
+            [ "unknown field", [ 42 ] ]
+        ].forEach(function(c) {
+            test.throws(function() {
+                Type.decode(Uint8Array.from(c[1].concat(overflow)));
+            }, /invalid length encoding/, mode + " rejects overflowing " + c[0] + " length");
+        });
+        test.throws(function() {
+            Type.decodeDelimited(Uint8Array.from(overflow));
+        }, /invalid length encoding/, mode + " rejects overflowing delimited length");
+    }
+
+    check(root.lookupType("Message"), "reflect");
+    require("../cli/pbjs").generate(root, { target: "static", root: "test_length_overflow" }, function(err, output) {
+        test.error(err, "static code generation worked");
+        var staticRoot = new Function("$protobuf", output + "\nreturn $root;")(protobuf); // eslint-disable-line no-new-func
+        check(staticRoot.Message, "static");
+        test.end();
+    });
+});
+
 tape.test("decoder respects enclosing message boundaries", function(test) {
     var constructed;
     var Inner = new protobuf.Type("Inner")

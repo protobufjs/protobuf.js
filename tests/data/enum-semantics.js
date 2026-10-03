@@ -223,7 +223,7 @@ $root.OpenMessage = (function() {
                         break;
                     if (message.values === $util.emptyObject)
                         message.values = {};
-                    var end2 = reader.uint32() + reader.pos;
+                    var end2 = reader.size() + reader.pos;
                     if (end2 > reader.len)
                         throw $RangeError("index out of range");
                     reader.len = end2;
@@ -284,7 +284,7 @@ $root.OpenMessage = (function() {
     OpenMessage.decodeDelimited = function(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
+        return this.decode(reader, reader.size());
     };
 
     /**
@@ -703,7 +703,7 @@ $root.ClosedMessage = (function() {
                 }
             case 2: {
                     if (wireType === 2) {
-                        var end2 = reader.uint32() + reader.pos;
+                        var end2 = reader.size() + reader.pos;
                         if (end2 > reader.len)
                             throw $RangeError("index out of range");
                         reader.len = end2;
@@ -739,7 +739,7 @@ $root.ClosedMessage = (function() {
                 }
             case 3: {
                     if (wireType === 2) {
-                        var end2 = reader.uint32() + reader.pos;
+                        var end2 = reader.size() + reader.pos;
                         if (end2 > reader.len)
                             throw $RangeError("index out of range");
                         reader.len = end2;
@@ -776,7 +776,7 @@ $root.ClosedMessage = (function() {
             case 4: {
                     if (wireType !== 2)
                         break;
-                    var end2 = reader.uint32() + reader.pos;
+                    var end2 = reader.size() + reader.pos;
                     if (end2 > reader.len)
                         throw $RangeError("index out of range");
                     reader.len = end2;
@@ -846,7 +846,7 @@ $root.ClosedMessage = (function() {
     ClosedMessage.decodeDelimited = function(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
+        return this.decode(reader, reader.size());
     };
 
     /**
@@ -1270,7 +1270,7 @@ $root.ClosedImplicitMessage = (function() {
     ClosedImplicitMessage.decodeDelimited = function(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
+        return this.decode(reader, reader.size());
     };
 
     /**
