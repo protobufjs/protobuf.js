@@ -934,7 +934,7 @@ function buildType(ref, type) {
                 ++indent;
                     push("reader = new $Reader(reader);");
                 --indent;
-                push("return this.decode(reader, reader.uint32());");
+                push("return this.decode(reader, reader.size());");
             --indent;
             push("};");
         }

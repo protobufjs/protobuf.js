@@ -5,6 +5,36 @@ var protobuf = require("..");
 var Writer = protobuf.Writer,
     Reader = protobuf.Reader;
 
+tape.test("reader length prefixes", function(test) {
+    [ 0, 127, 128, 16384, 2097152, 268435456, 2147483647 ].forEach(function(value) {
+        test.equal(Reader.create(Writer.create().uint32(value).finish()).size(), value, "accepts length " + value);
+    });
+    test.equal(Reader.create([ 128, 128, 128, 128, 0 ]).size(), 0, "accepts a non-minimal length within five bytes");
+
+    [
+        [ 128, 128, 128, 128, 8 ],
+        [ 128, 128, 128, 128, 16 ],
+        [ 128, 128, 128, 128, 128, 0 ]
+    ].forEach(function(bytes) {
+        test.throws(function() {
+            Reader.create(bytes).size();
+        }, /invalid length encoding/, "rejects an overflowing or overlong length");
+    });
+    test.equal(Reader.create([ 128, 128, 128, 128, 16 ]).uint32(), 0, "retains scalar uint32 truncation");
+    test.throws(function() {
+        Reader.create([ 128, 128, 128, 128 ]).size();
+    }, RangeError, "rejects a truncated length");
+
+    [ Uint8Array, protobuf.util.Buffer ].filter(Boolean).forEach(function(BufferType) {
+        [ "bytes", "string", "stringVerify" ].forEach(function(method) {
+            test.throws(function() {
+                Reader.create(BufferType.from([ 128, 128, 128, 128, 16 ]))[method]();
+            }, /invalid length encoding/, BufferType.name + "." + method + " rejects an overflowing length");
+        });
+    });
+    test.end();
+});
+
 tape.test("writer & reader", function(test) {
 
     test.throws(function() {
