@@ -1,6 +1,7 @@
 "use strict";
 var $protobuf = require("../light");
 module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).lookup(".google.protobuf");
+exports.root.define("pb").addJSON(require("../google/protobuf/json_enumvalue_options.json").nested.pb.nested);
 
 var Namespace = $protobuf.Namespace,
     Root      = $protobuf.Root,
@@ -1091,6 +1092,10 @@ function fromDescriptorOptionsRecursive(obj, type) {
         if ((key = (field = type._fieldsArray[i]).name) === "uninterpretedOption") continue;
         if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
 
+        if (key === ".pb.enumvalue.json") {
+            val["(pb.enumvalue.json).string"] = obj[key].string === undefined ? "" : obj[key].string;
+            continue;
+        }
         var newKey = underScore(key);
         if (field.resolvedType instanceof Type) {
             val[newKey] = fromDescriptorOptionsRecursive(obj[key], field.resolvedType);
@@ -1115,6 +1120,10 @@ function toDescriptorOptionsRecursive(obj, type) {
     var keys = Object.keys(obj);
     for (var i = 0; i < keys.length; ++i) {
         var key = keys[i];
+        if (type === exports.EnumValueOptions && key === "(pb.enumvalue.json).string") {
+            val[".pb.enumvalue.json"] = { string: obj[key] };
+            continue;
+        }
         var newKey = $protobuf.util.camelCase(key);
         if (!Object.prototype.hasOwnProperty.call(type.fields, newKey)) continue;
         var field = type.fields[newKey];

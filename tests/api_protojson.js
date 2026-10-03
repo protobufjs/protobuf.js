@@ -272,6 +272,40 @@ message AliasMessage {\
     test.end();
 });
 
+tape.test("protojson - custom enum JSON names", function(test) {
+    var root = protobuf.parse(`edition = "2026";
+enum Choice {
+  option allow_alias = true;
+  ZERO = 0;
+  CUSTOM = 1 [(pb.enumvalue.json).string = "custom"];
+  EMPTY = 2 [(pb.enumvalue.json) = { string: "" }];
+  ESCAPED = 3 [(pb.enumvalue.json).string = "quote\\\"\\t\\n"];
+  ALIAS = 1 [(pb.enumvalue.json).string = "custom"];
+  SIX = 6 [(pb.enumvalue.json).string = "6"];
+  PROTO = 7 [(pb.enumvalue.json).string = "__proto__"];
+}
+message Message {
+  Choice choice = 1;
+  repeated Choice choices = 2;
+  map<string, Choice> choice_map = 3;
+}`).root.resolveAll();
+    [root, protobuf.Root.fromJSON(root.toJSON()).resolveAll()].forEach(function(root) {
+        var Message = root.lookupType("Message");
+        [ [0, "ZERO"], [1, "custom"], [2, ""], [3, "quote\"\t\n"], [6, "6"], [7, "__proto__"], [99, 99] ].forEach(function(pair) {
+            test.equal(protojson.fromJson(Message, { choice: pair[1] }).choice, pair[0], "reads " + JSON.stringify(pair[1]));
+            test.equal(protojson.toJson(Message, { choice: pair[0] }).choice, pair[1], "writes " + pair[0]);
+        });
+        test.equal(protojson.fromJson(Message, { choice: "ALIAS" }).choice, 1, "still accepts declared names");
+        var json = { choices: ["custom", "", "6"], choiceMap: { first: "custom", second: "" } };
+        test.same(protojson.toJson(Message, protojson.fromJson(Message, json)), json, "round-trips repeated and map values");
+        test.throws(function() {
+            protojson.fromJson(Message, { choice: "1" });
+        }, /unknown enum/, "does not accept reverse enum mappings as names");
+        test.notOk(owns(protojson.fromJson(Message, { choice: "unknown" }, { ignoreUnknownFields: true }), "choice"), "can ignore unknown names");
+    });
+    test.end();
+});
+
 tape.test("protojson - reads legacy json_name reflection options", function(test) {
     var Legacy = protobuf.Root.fromJSON({
         nested: {
