@@ -16,6 +16,22 @@ tape.test("descriptor - bundled common field names", function(test) {
     test.end();
 });
 
+tape.test("descriptor - custom enum JSON names", function(test) {
+    var enm = protobuf.parse(`edition = "2026";
+enum Choice {
+  ZERO = 0;
+  CUSTOM = 1 [(pb.enumvalue.json).string = "custom", deprecated = true];
+  EMPTY = 2 [(pb.enumvalue.json).string = ""];
+}`).root.lookupEnum("Choice");
+    var bytes = descriptor.EnumDescriptorProto.encode(enm.toDescriptor()).finish(),
+        decoded = descriptor.EnumDescriptorProto.decode(bytes);
+    test.same(decoded.value[1].options[".pb.enumvalue.json"].string, "custom", "decodes the registered option extension");
+    test.same(protobuf.Enum.fromDescriptor(decoded, "2026").valuesOptions, enm.valuesOptions, "preserves custom names and ordinary options through binary descriptors");
+    decoded.value[2].options[".pb.enumvalue.json"] = {};
+    test.equal(protobuf.Enum.fromDescriptor(decoded, "2026").valuesOptions.EMPTY["(pb.enumvalue.json).string"], "", "defaults a present option to the empty name");
+    test.end();
+});
+
 tape.test("descriptor - proto2 to proto3", function (test) {
     // load document with extended field imported multiple times
     var root = protobuf.loadSync(path.resolve(__dirname, "data/test.proto"));

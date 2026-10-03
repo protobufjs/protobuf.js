@@ -1,0 +1,56 @@
+{
+  "nested": {
+    "pb": {
+      "nested": {
+        "enumvalue": {
+          "options": {
+            "java_package": "com.google.protobuf.util"
+          },
+          "nested": {
+            "JsonEnumValueOptions": {
+              "edition": "2024",
+              "fields": {
+                "string": {
+                  "type": "string",
+                  "id": 1
+                }
+              },
+              "visibility": "local"
+            },
+            "json": {
+              "edition": "2024",
+              "type": "JsonEnumValueOptions",
+              "id": 998,
+              "extend": "google.protobuf.EnumValueOptions",
+              "options": {
+                "feature_support.edition_introduced": "EDITION_2026"
+              }
+            }
+          }
+        }
+      }
+    },
+    "google": {
+      "nested": {
+        "protobuf": {
+          "nested": {
+            "EnumValueOptions": {
+              "edition": "proto2",
+              "fields": {},
+              "extensions": [
+                [
+                  990,
+                  998
+                ],
+                [
+                  1000,
+                  536870911
+                ]
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

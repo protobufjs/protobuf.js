@@ -241,11 +241,19 @@ function readScalar(type, value, name) {
     }
 }
 
+function enumJsonName(enm, name) {
+    var options = hasOwn(enm.valuesOptions, name) && enm.valuesOptions[name];
+    return hasOwn(options, "(pb.enumvalue.json).string") ? options["(pb.enumvalue.json).string"] : undefined;
+}
+
 function readEnum(enm, value, name, options) {
     if (typeof value === "string") {
-        var num = enm.values[value];
-        if (num !== undefined)
-            return num;
+        if (hasOwn(enm.values, value))
+            return enm.values[value];
+        if (enm.valuesOptions)
+            for (var names = Object.keys(enm.valuesOptions), i = 0; i < names.length; ++i)
+                if (hasOwn(enm.values, names[i]) && enumJsonName(enm, names[i]) === value)
+                    return enm.values[names[i]];
         if (options.ignoreUnknownFields)
             return SKIP;
         throw invalid(name, value, "unknown enum value");
@@ -448,7 +456,10 @@ function writeSingular(field, value, options, depth) {
         if (field.resolvedType.fullName === ".google.protobuf.NullValue")
             return null;
         var name = field.resolvedType.valuesById[value];
-        return name === undefined ? value : name;
+        if (name === undefined)
+            return value;
+        var jsonName = enumJsonName(field.resolvedType, name);
+        return jsonName === undefined ? name : jsonName;
     }
     return writeScalar(field.type, value);
 }
