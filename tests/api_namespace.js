@@ -96,6 +96,15 @@ message TestMessage {\
         ns.define(["", "sub"], {});
     }, "should throw when defining absolute [\"\", \"sub\"]");
 
+    var path = ["array", "child"];
+    var arrayNamespace = ns.define(path);
+    test.same(path, ["array", "child"], "should preserve array namespace paths");
+    test.equal(ns.define(path), arrayNamespace, "should reuse the same array path");
+    test.doesNotThrow(function() {
+        ns.define(Object.freeze(["frozen", "child"]));
+    }, "should accept frozen path arrays");
+    test.ok(ns.lookup("frozen.child"), "should define every frozen path segment");
+
     var sub = ns.define("sub", {});
     test.equal(ns.lookup("sub"), sub, "should define sub namespaces");
 

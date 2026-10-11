@@ -356,8 +356,8 @@ Namespace.prototype.define = function define(path, json) {
         throw Error("max depth exceeded");
 
     var ptr = this;
-    while (path.length > 0) {
-        var part = path.shift();
+    for (var i = 0; i < path.length; ++i) {
+        var part = path[i];
         if (ptr.nested && ptr.nested[part]) {
             ptr = ptr.nested[part];
             if (!(ptr instanceof Namespace))
