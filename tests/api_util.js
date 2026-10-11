@@ -106,6 +106,15 @@ tape.test("util", function(test) {
             util.setProperty(o, '', 5);
         }, TypeError, "path must be specified");
 
+        [false, 0, ""].forEach(function(value) {
+            var repeated = { option: value };
+            util.setProperty(repeated, "option", "next");
+            test.same(repeated.option, [value, "next"], "should append to a falsy option " + JSON.stringify(value));
+            var preserved = { nested: { option: value } };
+            util.setProperty(preserved, "nested.option", "next", true);
+            test.equal(preserved.nested.option, value, "should preserve a falsy option when ifNotSet is true");
+        });
+
         util.setProperty(o, 'prop1', 5);
         test.same(o, {prop1: 5}, "should set single property value");
 

@@ -230,9 +230,9 @@ util.setProperty = function setProperty(dst, path, value, ifNotSet) {
             dst[part] = setProp(dst[part] || {}, path, value);
         } else {
             var prevValue = dst[part];
-            if (prevValue && ifNotSet)
+            if (prevValue !== undefined && ifNotSet)
                 return dst;
-            if (prevValue)
+            if (prevValue !== undefined)
                 value = [].concat(prevValue).concat(value);
             dst[part] = value;
         }
