@@ -131,7 +131,12 @@ Root.prototype.load = function load(filename, options, callback) {
             throw err;
         }
         if (root) {
-            root.resolveAll();
+            try {
+                root.resolveAll();
+            } catch (resolveError) {
+                err = resolveError;
+                root = undefined;
+            }
         }
         var cb = callback;
         callback = null;
