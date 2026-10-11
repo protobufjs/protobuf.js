@@ -156,7 +156,7 @@ Root.prototype.load = function load(filename, options, callback) {
         try {
             if (depth > util.recursionLimit)
                 throw Error("max depth exceeded");
-            if (util.isString(source) && source.charAt(0) === "{")
+            if (util.isString(source) && /^[ \t\r\n]*\{/.test(source))
                 source = JSON.parse(source);
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
