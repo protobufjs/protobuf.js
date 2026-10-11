@@ -48,6 +48,77 @@ tape.test("eventemitter", function(test) {
         ee.off("a", fn);
     }, "should not throw if no such listener is found");
 
+    test.test(test.name + " - removing a listener during emission", function(test) {
+        var ee = new EventEmitter(),
+            calls = [];
+        function first(value) {
+            calls.push("first:" + value);
+            ee.off("a", first);
+        }
+        ee.on("a", first);
+        ee.on("a", function(value) { calls.push("second:" + value); });
+        ee.emit("a", 1);
+        ee.emit("a", 2);
+        test.same(calls, ["first:1", "second:1", "second:2"], "should not skip the remaining listener");
+        test.end();
+    });
+
+    test.test(test.name + " - removing another listener during emission", function(test) {
+        var ee = new EventEmitter(),
+            calls = [];
+        function second(value) { calls.push("second:" + value); }
+        ee.on("a", function(value) {
+            calls.push("first:" + value);
+            ee.off("a", second);
+        });
+        ee.on("a", second);
+        ee.emit("a", 1);
+        ee.emit("a", 2);
+        test.same(calls, ["first:1", "second:1", "first:2"], "should remove listeners from the next emission");
+        test.end();
+    });
+
+    test.test(test.name + " - adding a listener during emission", function(test) {
+        var ee = new EventEmitter(),
+            calls = [];
+        ee.on("a", function(value) {
+            calls.push("first:" + value);
+            if (value === 1)
+                ee.on("a", function(value) { calls.push("added:" + value); });
+        });
+        ee.on("a", function(value) { calls.push("second:" + value); });
+        ee.emit("a", 1);
+        ee.emit("a", 2);
+        test.same(calls, ["first:1", "second:1", "first:2", "second:2", "added:2"], "should defer new listeners until the next emission");
+        test.end();
+    });
+
+    test.test(test.name + " - nested emission after listener changes", function(test) {
+        var ee = new EventEmitter(),
+            calls = [];
+        function first(value) {
+            calls.push("first:" + value);
+            ee.off("a", first);
+            ee.on("a", function(value) { calls.push("added:" + value); });
+            ee.emit("a", 2);
+        }
+        ee.on("a", first);
+        ee.on("a", function(value) { calls.push("second:" + value); });
+        ee.emit("a", 1);
+        test.same(calls, ["first:1", "second:2", "added:2", "second:1"], "should use the changed listeners only for the nested emission");
+        test.end();
+    });
+
+    test.test(test.name + " - removing duplicate listeners", function(test) {
+        var ee = new EventEmitter(),
+            calls = 0;
+        function listener() { ++calls; }
+        ee.on("a", listener, {}).on("a", listener, {});
+        ee.off("a", listener).emit("a");
+        test.equal(calls, 0, "should remove every registration of the listener");
+        test.end();
+    });
+
     test.test(test.name + " - special event names", function(test) {
         var ee = new EventEmitter();
         var calls = 0;
