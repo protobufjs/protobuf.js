@@ -1271,6 +1271,12 @@ export class Reader {
     tag(): number;
 
     /**
+     * Reads a varint length prefix within signed 32 bit range.
+     * @returns Length read
+     */
+    size(): number;
+
+    /**
      * Reads a varint as a signed 32 bit value.
      * @returns Value read
      */

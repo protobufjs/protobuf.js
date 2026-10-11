@@ -349,7 +349,7 @@ $root.Message = (function() {
                         break;
                     if (message.int64Map === $util.emptyObject)
                         message.int64Map = {};
-                    var end2 = reader.uint32() + reader.pos;
+                    var end2 = reader.size() + reader.pos;
                     if (end2 > reader.len)
                         throw $RangeError("index out of range");
                     reader.len = end2;
@@ -428,7 +428,7 @@ $root.Message = (function() {
     Message.decodeDelimited = function(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
+        return this.decode(reader, reader.size());
     };
 
     /**

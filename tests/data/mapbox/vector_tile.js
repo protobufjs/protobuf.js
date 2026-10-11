@@ -162,7 +162,7 @@ $root.vector_tile = (function() {
                             break;
                         if (!(message.layers && message.layers.length))
                             message.layers = [];
-                        message.layers.push($root.vector_tile.Tile.Layer.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                        message.layers.push($root.vector_tile.Tile.Layer.decode(reader, reader.size(), $undefined, _depth + 1));
                         continue;
                     }
                 }
@@ -195,7 +195,7 @@ $root.vector_tile = (function() {
         Tile.decodeDelimited = function(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
+            return this.decode(reader, reader.size());
         };
 
         /**
@@ -600,7 +600,7 @@ $root.vector_tile = (function() {
             Value.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -1043,7 +1043,7 @@ $root.vector_tile = (function() {
             Feature.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -1445,7 +1445,7 @@ $root.vector_tile = (function() {
                                 break;
                             if (!(message.features && message.features.length))
                                 message.features = [];
-                            message.features.push($root.vector_tile.Tile.Feature.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.features.push($root.vector_tile.Tile.Feature.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 3: {
@@ -1461,7 +1461,7 @@ $root.vector_tile = (function() {
                                 break;
                             if (!(message.values && message.values.length))
                                 message.values = [];
-                            message.values.push($root.vector_tile.Tile.Value.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.values.push($root.vector_tile.Tile.Value.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 5: {
@@ -1504,7 +1504,7 @@ $root.vector_tile = (function() {
             Layer.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**

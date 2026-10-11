@@ -82,6 +82,15 @@ tape.test("packed reader methods reject invalid fixed-width lengths", function(t
     test.end();
 });
 
+tape.test("packed reader methods reject overflowing lengths", function(test) {
+    cases.forEach(function(c) {
+        test.throws(function() {
+            Reader.create([ 128, 128, 128, 128, 16 ])[c[0]]();
+        }, /invalid length encoding/, c[0] + " rejects an overflowing length");
+    });
+    test.end();
+});
+
 tape.test("packed reader methods reject varints crossing their declared length", function(test) {
     [ "uint32s", "int32s", "sint32s", "bools", "uint64s", "int64s", "sint64s" ].forEach(function(name) {
         test.throws(function() {

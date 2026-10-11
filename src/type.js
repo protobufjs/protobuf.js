@@ -600,7 +600,7 @@ Type.prototype.decode = function decode_setup(reader, length) { // eslint-disabl
 Type.prototype.decodeDelimited = function decodeDelimited(reader) {
     if (!(reader instanceof Reader))
         reader = Reader.create(reader);
-    return this.decode(reader, reader.uint32());
+    return this.decode(reader, reader.size());
 };
 
 /**

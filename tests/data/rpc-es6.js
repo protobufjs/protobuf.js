@@ -259,7 +259,7 @@ export const MyRequest = $root.MyRequest = (() => {
     MyRequest.decodeDelimited = function(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
+        return this.decode(reader, reader.size());
     };
 
     /**
@@ -534,7 +534,7 @@ export const MyResponse = $root.MyResponse = (() => {
     MyResponse.decodeDelimited = function(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
+        return this.decode(reader, reader.size());
     };
 
     /**

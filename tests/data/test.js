@@ -180,7 +180,7 @@ $root.jspb = (function() {
             Empty.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -454,7 +454,7 @@ $root.jspb = (function() {
             EnumContainer.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -778,7 +778,7 @@ $root.jspb = (function() {
             Simple1.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -1100,7 +1100,7 @@ $root.jspb = (function() {
             Simple2.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -1446,7 +1446,7 @@ $root.jspb = (function() {
             SpecialCases.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -1764,7 +1764,7 @@ $root.jspb = (function() {
                     case 3: {
                             if (wireType !== 2)
                                 break;
-                            message.aNestedMessage = $root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32(), $undefined, _depth + 1, message.aNestedMessage);
+                            message.aNestedMessage = $root.jspb.test.OptionalFields.Nested.decode(reader, reader.size(), $undefined, _depth + 1, message.aNestedMessage);
                             continue;
                         }
                     case 4: {
@@ -1772,7 +1772,7 @@ $root.jspb = (function() {
                                 break;
                             if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
                                 message.aRepeatedMessage = [];
-                            message.aRepeatedMessage.push($root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.aRepeatedMessage.push($root.jspb.test.OptionalFields.Nested.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 5: {
@@ -1815,7 +1815,7 @@ $root.jspb = (function() {
             OptionalFields.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -2151,7 +2151,7 @@ $root.jspb = (function() {
                 Nested.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -2467,13 +2467,13 @@ $root.jspb = (function() {
                     case 100: {
                             if (wireType !== 2)
                                 break;
-                            message[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.decode(reader, reader.uint32(), $undefined, _depth + 1, message[".jspb.test.IsExtension.extField"]);
+                            message[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.decode(reader, reader.size(), $undefined, _depth + 1, message[".jspb.test.IsExtension.extField"]);
                             continue;
                         }
                     case 101: {
                             if (wireType !== 2)
                                 break;
-                            message[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.decode(reader, reader.uint32(), $undefined, _depth + 1, message[".jspb.test.IndirectExtension.simple"]);
+                            message[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.decode(reader, reader.size(), $undefined, _depth + 1, message[".jspb.test.IndirectExtension.simple"]);
                             continue;
                         }
                     case 102: {
@@ -2495,13 +2495,13 @@ $root.jspb = (function() {
                                 break;
                             if (!(message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length))
                                 message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
-                            message[".jspb.test.IndirectExtension.repeatedSimple"].push($root.jspb.test.Simple1.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message[".jspb.test.IndirectExtension.repeatedSimple"].push($root.jspb.test.Simple1.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 105: {
                             if (wireType !== 2)
                                 break;
-                            message[".jspb.test.simple1"] = $root.jspb.test.Simple1.decode(reader, reader.uint32(), $undefined, _depth + 1, message[".jspb.test.simple1"]);
+                            message[".jspb.test.simple1"] = $root.jspb.test.Simple1.decode(reader, reader.size(), $undefined, _depth + 1, message[".jspb.test.simple1"]);
                             continue;
                         }
                     }
@@ -2534,7 +2534,7 @@ $root.jspb = (function() {
             HasExtensions.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -2941,7 +2941,7 @@ $root.jspb = (function() {
                     case 4: {
                             if (wireType !== 2)
                                 break;
-                            message.aNestedMessage = $root.jspb.test.Complex.Nested.decode(reader, reader.uint32(), $undefined, _depth + 1, message.aNestedMessage);
+                            message.aNestedMessage = $root.jspb.test.Complex.Nested.decode(reader, reader.size(), $undefined, _depth + 1, message.aNestedMessage);
                             continue;
                         }
                     case 5: {
@@ -2949,7 +2949,7 @@ $root.jspb = (function() {
                                 break;
                             if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
                                 message.aRepeatedMessage = [];
-                            message.aRepeatedMessage.push($root.jspb.test.Complex.Nested.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.aRepeatedMessage.push($root.jspb.test.Complex.Nested.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 7: {
@@ -2994,7 +2994,7 @@ $root.jspb = (function() {
             Complex.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -3330,7 +3330,7 @@ $root.jspb = (function() {
                 Nested.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -3583,7 +3583,7 @@ $root.jspb = (function() {
             OuterMessage.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -3834,7 +3834,7 @@ $root.jspb = (function() {
                 Complex.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -4108,7 +4108,7 @@ $root.jspb = (function() {
             IsExtension.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -4359,7 +4359,7 @@ $root.jspb = (function() {
             IndirectExtension.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -4704,7 +4704,7 @@ $root.jspb = (function() {
             DefaultValues.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -5214,7 +5214,7 @@ $root.jspb = (function() {
             FloatingPointFields.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -5591,7 +5591,7 @@ $root.jspb = (function() {
                     case 3: {
                             if (wireType !== 2)
                                 break;
-                            message.simple1 = $root.jspb.test.Simple1.decode(reader, reader.uint32(), $undefined, _depth + 1, message.simple1);
+                            message.simple1 = $root.jspb.test.Simple1.decode(reader, reader.size(), $undefined, _depth + 1, message.simple1);
                             continue;
                         }
                     case 5: {
@@ -5599,7 +5599,7 @@ $root.jspb = (function() {
                                 break;
                             if (!(message.simple2 && message.simple2.length))
                                 message.simple2 = [];
-                            message.simple2.push($root.jspb.test.Simple1.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.simple2.push($root.jspb.test.Simple1.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 6: {
@@ -5617,7 +5617,7 @@ $root.jspb = (function() {
                     case 100: {
                             if (wireType !== 2)
                                 break;
-                            message[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.decode(reader, reader.uint32(), $undefined, _depth + 1, message[".jspb.test.CloneExtension.extField"]);
+                            message[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.decode(reader, reader.size(), $undefined, _depth + 1, message[".jspb.test.CloneExtension.extField"]);
                             continue;
                         }
                     }
@@ -5650,7 +5650,7 @@ $root.jspb = (function() {
             TestClone.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -5999,7 +5999,7 @@ $root.jspb = (function() {
             CloneExtension.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -6352,13 +6352,13 @@ $root.jspb = (function() {
                     case 7: {
                             if (wireType !== 2)
                                 break;
-                            message.requiredSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32(), $undefined, _depth + 1, message.requiredSimple);
+                            message.requiredSimple = $root.jspb.test.Simple2.decode(reader, reader.size(), $undefined, _depth + 1, message.requiredSimple);
                             continue;
                         }
                     case 8: {
                             if (wireType !== 2)
                                 break;
-                            message.optionalSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32(), $undefined, _depth + 1, message.optionalSimple);
+                            message.optionalSimple = $root.jspb.test.Simple2.decode(reader, reader.size(), $undefined, _depth + 1, message.optionalSimple);
                             continue;
                         }
                     }
@@ -6395,7 +6395,7 @@ $root.jspb = (function() {
             TestGroup.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -6796,7 +6796,7 @@ $root.jspb = (function() {
                 RepeatedGroup.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -7088,7 +7088,7 @@ $root.jspb = (function() {
                 RequiredGroup.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -7359,7 +7359,7 @@ $root.jspb = (function() {
                 OptionalGroup.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -7595,7 +7595,7 @@ $root.jspb = (function() {
                         case 1: {
                                 if (wireType !== 2)
                                     break;
-                                message.id = $root.jspb.test.TestGroup.MessageInGroup.NestedMessage.decode(reader, reader.uint32(), $undefined, _depth + 1, message.id);
+                                message.id = $root.jspb.test.TestGroup.MessageInGroup.NestedMessage.decode(reader, reader.size(), $undefined, _depth + 1, message.id);
                                 continue;
                             }
                         }
@@ -7630,7 +7630,7 @@ $root.jspb = (function() {
                 MessageInGroup.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -7903,7 +7903,7 @@ $root.jspb = (function() {
                     NestedMessage.decodeDelimited = function(reader) {
                         if (!(reader instanceof $Reader))
                             reader = new $Reader(reader);
-                        return this.decode(reader, reader.uint32());
+                        return this.decode(reader, reader.size());
                     };
 
                     /**
@@ -8184,7 +8184,7 @@ $root.jspb = (function() {
                 EnumInGroup.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -8452,7 +8452,7 @@ $root.jspb = (function() {
                     case 1: {
                             if (wireType !== 2)
                                 break;
-                            message.group = $root.jspb.test.TestGroup.RepeatedGroup.decode(reader, reader.uint32(), $undefined, _depth + 1, message.group);
+                            message.group = $root.jspb.test.TestGroup.RepeatedGroup.decode(reader, reader.size(), $undefined, _depth + 1, message.group);
                             continue;
                         }
                     }
@@ -8485,7 +8485,7 @@ $root.jspb = (function() {
             TestGroup1.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -8773,7 +8773,7 @@ $root.jspb = (function() {
             TestReservedNames.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -9033,7 +9033,7 @@ $root.jspb = (function() {
             TestReservedNamesExtension.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -9440,7 +9440,7 @@ $root.jspb = (function() {
                     case 6: {
                             if (wireType !== 2)
                                 break;
-                            message.rone = $root.jspb.test.TestMessageWithOneof.decode(reader, reader.uint32(), $undefined, _depth + 1, message.rone);
+                            message.rone = $root.jspb.test.TestMessageWithOneof.decode(reader, reader.size(), $undefined, _depth + 1, message.rone);
                             message.recursiveOneof = "rone";
                             continue;
                         }
@@ -9523,7 +9523,7 @@ $root.jspb = (function() {
             TestMessageWithOneof.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -9943,7 +9943,7 @@ $root.jspb = (function() {
             TestEndsWithBytes.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -10348,7 +10348,7 @@ $root.jspb = (function() {
                                 break;
                             if (message.mapStringString === $util.emptyObject)
                                 message.mapStringString = {};
-                            var end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.size() + reader.pos;
                             if (end2 > reader.len)
                                 throw $RangeError("index out of range");
                             reader.len = end2;
@@ -10384,7 +10384,7 @@ $root.jspb = (function() {
                                 break;
                             if (message.mapStringInt32 === $util.emptyObject)
                                 message.mapStringInt32 = {};
-                            var end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.size() + reader.pos;
                             if (end2 > reader.len)
                                 throw $RangeError("index out of range");
                             reader.len = end2;
@@ -10420,7 +10420,7 @@ $root.jspb = (function() {
                                 break;
                             if (message.mapStringInt64 === $util.emptyObject)
                                 message.mapStringInt64 = {};
-                            var end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.size() + reader.pos;
                             if (end2 > reader.len)
                                 throw $RangeError("index out of range");
                             reader.len = end2;
@@ -10456,7 +10456,7 @@ $root.jspb = (function() {
                                 break;
                             if (message.mapStringBool === $util.emptyObject)
                                 message.mapStringBool = {};
-                            var end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.size() + reader.pos;
                             if (end2 > reader.len)
                                 throw $RangeError("index out of range");
                             reader.len = end2;
@@ -10492,7 +10492,7 @@ $root.jspb = (function() {
                                 break;
                             if (message.mapStringDouble === $util.emptyObject)
                                 message.mapStringDouble = {};
-                            var end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.size() + reader.pos;
                             if (end2 > reader.len)
                                 throw $RangeError("index out of range");
                             reader.len = end2;
@@ -10526,7 +10526,7 @@ $root.jspb = (function() {
                     case 6: {
                             if (wireType !== 2)
                                 break;
-                            var end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.size() + reader.pos;
                             if (end2 > reader.len)
                                 throw $RangeError("index out of range");
                             reader.len = end2;
@@ -10571,7 +10571,7 @@ $root.jspb = (function() {
                                 break;
                             if (message.mapStringMsg === $util.emptyObject)
                                 message.mapStringMsg = {};
-                            var end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.size() + reader.pos;
                             if (end2 > reader.len)
                                 throw $RangeError("index out of range");
                             reader.len = end2;
@@ -10589,7 +10589,7 @@ $root.jspb = (function() {
                                 case 2:
                                     if (wireType !== 2)
                                         break;
-                                    value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32(), $undefined, _depth + 1, value);
+                                    value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.size(), $undefined, _depth + 1, value);
                                     continue;
                                 }
                                 reader.skipType(wireType, _depth, tag2);
@@ -10607,7 +10607,7 @@ $root.jspb = (function() {
                                 break;
                             if (message.mapInt32String === $util.emptyObject)
                                 message.mapInt32String = {};
-                            var end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.size() + reader.pos;
                             if (end2 > reader.len)
                                 throw $RangeError("index out of range");
                             reader.len = end2;
@@ -10641,7 +10641,7 @@ $root.jspb = (function() {
                                 break;
                             if (message.mapInt64String === $util.emptyObject)
                                 message.mapInt64String = {};
-                            var end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.size() + reader.pos;
                             if (end2 > reader.len)
                                 throw $RangeError("index out of range");
                             reader.len = end2;
@@ -10675,7 +10675,7 @@ $root.jspb = (function() {
                                 break;
                             if (message.mapBoolString === $util.emptyObject)
                                 message.mapBoolString = {};
-                            var end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.size() + reader.pos;
                             if (end2 > reader.len)
                                 throw $RangeError("index out of range");
                             reader.len = end2;
@@ -10707,7 +10707,7 @@ $root.jspb = (function() {
                     case 11: {
                             if (wireType !== 2)
                                 break;
-                            message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32(), $undefined, _depth + 1, message.testMapFields);
+                            message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.size(), $undefined, _depth + 1, message.testMapFields);
                             continue;
                         }
                     case 12: {
@@ -10715,7 +10715,7 @@ $root.jspb = (function() {
                                 break;
                             if (message.mapStringTestmapfields === $util.emptyObject)
                                 message.mapStringTestmapfields = {};
-                            var end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.size() + reader.pos;
                             if (end2 > reader.len)
                                 throw $RangeError("index out of range");
                             reader.len = end2;
@@ -10733,7 +10733,7 @@ $root.jspb = (function() {
                                 case 2:
                                     if (wireType !== 2)
                                         break;
-                                    value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32(), $undefined, _depth + 1, value);
+                                    value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.size(), $undefined, _depth + 1, value);
                                     continue;
                                 }
                                 reader.skipType(wireType, _depth, tag2);
@@ -10776,7 +10776,7 @@ $root.jspb = (function() {
             TestMapFieldsNoBinary.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -11418,7 +11418,7 @@ $root.jspb = (function() {
             MapValueMessageNoBinary.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -11669,7 +11669,7 @@ $root.jspb = (function() {
             Deeply.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -11900,7 +11900,7 @@ $root.jspb = (function() {
                 Nested.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -12151,7 +12151,7 @@ $root.jspb = (function() {
                     Message.decodeDelimited = function(reader) {
                         if (!(reader instanceof $Reader))
                             reader = new $Reader(reader);
-                        return this.decode(reader, reader.uint32());
+                        return this.decode(reader, reader.size());
                     };
 
                     /**
@@ -12423,7 +12423,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.file && message.file.length))
                                 message.file = [];
-                            message.file.push($root.google.protobuf.FileDescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.file.push($root.google.protobuf.FileDescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     }
@@ -12456,7 +12456,7 @@ $root.google = (function() {
             FileDescriptorSet.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -12962,7 +12962,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.messageType && message.messageType.length))
                                 message.messageType = [];
-                            message.messageType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.messageType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 5: {
@@ -12970,7 +12970,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.enumType && message.enumType.length))
                                 message.enumType = [];
-                            message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 6: {
@@ -12978,7 +12978,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.service && message.service.length))
                                 message.service = [];
-                            message.service.push($root.google.protobuf.ServiceDescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.service.push($root.google.protobuf.ServiceDescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 7: {
@@ -12986,19 +12986,19 @@ $root.google = (function() {
                                 break;
                             if (!(message.extension && message.extension.length))
                                 message.extension = [];
-                            message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 8: {
                             if (wireType !== 2)
                                 break;
-                            message.options = $root.google.protobuf.FileOptions.decode(reader, reader.uint32(), $undefined, _depth + 1, message.options);
+                            message.options = $root.google.protobuf.FileOptions.decode(reader, reader.size(), $undefined, _depth + 1, message.options);
                             continue;
                         }
                     case 9: {
                             if (wireType !== 2)
                                 break;
-                            message.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.decode(reader, reader.uint32(), $undefined, _depth + 1, message.sourceCodeInfo);
+                            message.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.decode(reader, reader.size(), $undefined, _depth + 1, message.sourceCodeInfo);
                             continue;
                         }
                     case 12: {
@@ -13049,7 +13049,7 @@ $root.google = (function() {
             FileDescriptorProto.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -13718,7 +13718,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.field && message.field.length))
                                 message.field = [];
-                            message.field.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.field.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 6: {
@@ -13726,7 +13726,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.extension && message.extension.length))
                                 message.extension = [];
-                            message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 3: {
@@ -13734,7 +13734,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.nestedType && message.nestedType.length))
                                 message.nestedType = [];
-                            message.nestedType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.nestedType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 4: {
@@ -13742,7 +13742,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.enumType && message.enumType.length))
                                 message.enumType = [];
-                            message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 5: {
@@ -13750,7 +13750,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.extensionRange && message.extensionRange.length))
                                 message.extensionRange = [];
-                            message.extensionRange.push($root.google.protobuf.DescriptorProto.ExtensionRange.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.extensionRange.push($root.google.protobuf.DescriptorProto.ExtensionRange.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 8: {
@@ -13758,13 +13758,13 @@ $root.google = (function() {
                                 break;
                             if (!(message.oneofDecl && message.oneofDecl.length))
                                 message.oneofDecl = [];
-                            message.oneofDecl.push($root.google.protobuf.OneofDescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.oneofDecl.push($root.google.protobuf.OneofDescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 7: {
                             if (wireType !== 2)
                                 break;
-                            message.options = $root.google.protobuf.MessageOptions.decode(reader, reader.uint32(), $undefined, _depth + 1, message.options);
+                            message.options = $root.google.protobuf.MessageOptions.decode(reader, reader.size(), $undefined, _depth + 1, message.options);
                             continue;
                         }
                     case 9: {
@@ -13772,7 +13772,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.reservedRange && message.reservedRange.length))
                                 message.reservedRange = [];
-                            message.reservedRange.push($root.google.protobuf.DescriptorProto.ReservedRange.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.reservedRange.push($root.google.protobuf.DescriptorProto.ReservedRange.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 10: {
@@ -13825,7 +13825,7 @@ $root.google = (function() {
             DescriptorProto.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -14332,7 +14332,7 @@ $root.google = (function() {
                         case 3: {
                                 if (wireType !== 2)
                                     break;
-                                message.options = $root.google.protobuf.ExtensionRangeOptions.decode(reader, reader.uint32(), $undefined, _depth + 1, message.options);
+                                message.options = $root.google.protobuf.ExtensionRangeOptions.decode(reader, reader.size(), $undefined, _depth + 1, message.options);
                                 continue;
                             }
                         }
@@ -14365,7 +14365,7 @@ $root.google = (function() {
                 ExtensionRange.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -14675,7 +14675,7 @@ $root.google = (function() {
                 ReservedRange.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -14964,7 +14964,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
-                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 2: {
@@ -14972,13 +14972,13 @@ $root.google = (function() {
                                 break;
                             if (!(message.declaration && message.declaration.length))
                                 message.declaration = [];
-                            message.declaration.push($root.google.protobuf.ExtensionRangeOptions.Declaration.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.declaration.push($root.google.protobuf.ExtensionRangeOptions.Declaration.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 50: {
                             if (wireType !== 2)
                                 break;
-                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), $undefined, _depth + 1, message.features);
+                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.size(), $undefined, _depth + 1, message.features);
                             continue;
                         }
                     case 3: {
@@ -15023,7 +15023,7 @@ $root.google = (function() {
             ExtensionRangeOptions.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -15439,7 +15439,7 @@ $root.google = (function() {
                 Declaration.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -15903,7 +15903,7 @@ $root.google = (function() {
                     case 8: {
                             if (wireType !== 2)
                                 break;
-                            message.options = $root.google.protobuf.FieldOptions.decode(reader, reader.uint32(), $undefined, _depth + 1, message.options);
+                            message.options = $root.google.protobuf.FieldOptions.decode(reader, reader.size(), $undefined, _depth + 1, message.options);
                             continue;
                         }
                     case 17: {
@@ -15942,7 +15942,7 @@ $root.google = (function() {
             FieldDescriptorProto.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -16458,7 +16458,7 @@ $root.google = (function() {
                     case 2: {
                             if (wireType !== 2)
                                 break;
-                            message.options = $root.google.protobuf.OneofOptions.decode(reader, reader.uint32(), $undefined, _depth + 1, message.options);
+                            message.options = $root.google.protobuf.OneofOptions.decode(reader, reader.size(), $undefined, _depth + 1, message.options);
                             continue;
                         }
                     }
@@ -16491,7 +16491,7 @@ $root.google = (function() {
             OneofDescriptorProto.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -16812,13 +16812,13 @@ $root.google = (function() {
                                 break;
                             if (!(message.value && message.value.length))
                                 message.value = [];
-                            message.value.push($root.google.protobuf.EnumValueDescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.value.push($root.google.protobuf.EnumValueDescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 3: {
                             if (wireType !== 2)
                                 break;
-                            message.options = $root.google.protobuf.EnumOptions.decode(reader, reader.uint32(), $undefined, _depth + 1, message.options);
+                            message.options = $root.google.protobuf.EnumOptions.decode(reader, reader.size(), $undefined, _depth + 1, message.options);
                             continue;
                         }
                     case 4: {
@@ -16826,7 +16826,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.reservedRange && message.reservedRange.length))
                                 message.reservedRange = [];
-                            message.reservedRange.push($root.google.protobuf.EnumDescriptorProto.EnumReservedRange.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.reservedRange.push($root.google.protobuf.EnumDescriptorProto.EnumReservedRange.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 5: {
@@ -16879,7 +16879,7 @@ $root.google = (function() {
             EnumDescriptorProto.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -17277,7 +17277,7 @@ $root.google = (function() {
                 EnumReservedRange.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -17561,7 +17561,7 @@ $root.google = (function() {
                     case 3: {
                             if (wireType !== 2)
                                 break;
-                            message.options = $root.google.protobuf.EnumValueOptions.decode(reader, reader.uint32(), $undefined, _depth + 1, message.options);
+                            message.options = $root.google.protobuf.EnumValueOptions.decode(reader, reader.size(), $undefined, _depth + 1, message.options);
                             continue;
                         }
                     }
@@ -17594,7 +17594,7 @@ $root.google = (function() {
             EnumValueDescriptorProto.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -17886,13 +17886,13 @@ $root.google = (function() {
                                 break;
                             if (!(message.method && message.method.length))
                                 message.method = [];
-                            message.method.push($root.google.protobuf.MethodDescriptorProto.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.method.push($root.google.protobuf.MethodDescriptorProto.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 3: {
                             if (wireType !== 2)
                                 break;
-                            message.options = $root.google.protobuf.ServiceOptions.decode(reader, reader.uint32(), $undefined, _depth + 1, message.options);
+                            message.options = $root.google.protobuf.ServiceOptions.decode(reader, reader.size(), $undefined, _depth + 1, message.options);
                             continue;
                         }
                     }
@@ -17925,7 +17925,7 @@ $root.google = (function() {
             ServiceDescriptorProto.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -18276,7 +18276,7 @@ $root.google = (function() {
                     case 4: {
                             if (wireType !== 2)
                                 break;
-                            message.options = $root.google.protobuf.MethodOptions.decode(reader, reader.uint32(), $undefined, _depth + 1, message.options);
+                            message.options = $root.google.protobuf.MethodOptions.decode(reader, reader.size(), $undefined, _depth + 1, message.options);
                             continue;
                         }
                     case 5: {
@@ -18321,7 +18321,7 @@ $root.google = (function() {
             MethodDescriptorProto.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -18947,7 +18947,7 @@ $root.google = (function() {
                     case 50: {
                             if (wireType !== 2)
                                 break;
-                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), $undefined, _depth + 1, message.features);
+                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.size(), $undefined, _depth + 1, message.features);
                             continue;
                         }
                     case 999: {
@@ -18955,7 +18955,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
-                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     }
@@ -18988,7 +18988,7 @@ $root.google = (function() {
             FileOptions.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -19543,7 +19543,7 @@ $root.google = (function() {
                     case 12: {
                             if (wireType !== 2)
                                 break;
-                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), $undefined, _depth + 1, message.features);
+                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.size(), $undefined, _depth + 1, message.features);
                             continue;
                         }
                     case 999: {
@@ -19551,7 +19551,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
-                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     }
@@ -19584,7 +19584,7 @@ $root.google = (function() {
             MessageOptions.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -20114,7 +20114,7 @@ $root.google = (function() {
                         }
                     case 19: {
                             if (wireType === 2) {
-                                var end2 = reader.uint32() + reader.pos;
+                                var end2 = reader.size() + reader.pos;
                                 if (end2 > reader.len)
                                     throw $RangeError("index out of range");
                                 reader.len = end2;
@@ -20153,19 +20153,19 @@ $root.google = (function() {
                                 break;
                             if (!(message.editionDefaults && message.editionDefaults.length))
                                 message.editionDefaults = [];
-                            message.editionDefaults.push($root.google.protobuf.FieldOptions.EditionDefault.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.editionDefaults.push($root.google.protobuf.FieldOptions.EditionDefault.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 21: {
                             if (wireType !== 2)
                                 break;
-                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), $undefined, _depth + 1, message.features);
+                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.size(), $undefined, _depth + 1, message.features);
                             continue;
                         }
                     case 22: {
                             if (wireType !== 2)
                                 break;
-                            message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.decode(reader, reader.uint32(), $undefined, _depth + 1, message.featureSupport);
+                            message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.decode(reader, reader.size(), $undefined, _depth + 1, message.featureSupport);
                             continue;
                         }
                     case 999: {
@@ -20173,7 +20173,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
-                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     }
@@ -20206,7 +20206,7 @@ $root.google = (function() {
             FieldOptions.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -20850,7 +20850,7 @@ $root.google = (function() {
                 EditionDefault.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -21263,7 +21263,7 @@ $root.google = (function() {
                 FeatureSupport.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -21734,7 +21734,7 @@ $root.google = (function() {
                     case 1: {
                             if (wireType !== 2)
                                 break;
-                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), $undefined, _depth + 1, message.features);
+                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.size(), $undefined, _depth + 1, message.features);
                             continue;
                         }
                     case 999: {
@@ -21742,7 +21742,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
-                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     }
@@ -21775,7 +21775,7 @@ $root.google = (function() {
             OneofOptions.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -22114,7 +22114,7 @@ $root.google = (function() {
                     case 7: {
                             if (wireType !== 2)
                                 break;
-                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), $undefined, _depth + 1, message.features);
+                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.size(), $undefined, _depth + 1, message.features);
                             continue;
                         }
                     case 999: {
@@ -22122,7 +22122,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
-                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 42113038: {
@@ -22161,7 +22161,7 @@ $root.google = (function() {
             EnumOptions.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -22515,7 +22515,7 @@ $root.google = (function() {
                     case 2: {
                             if (wireType !== 2)
                                 break;
-                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), $undefined, _depth + 1, message.features);
+                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.size(), $undefined, _depth + 1, message.features);
                             continue;
                         }
                     case 3: {
@@ -22527,7 +22527,7 @@ $root.google = (function() {
                     case 4: {
                             if (wireType !== 2)
                                 break;
-                            message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.decode(reader, reader.uint32(), $undefined, _depth + 1, message.featureSupport);
+                            message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.decode(reader, reader.size(), $undefined, _depth + 1, message.featureSupport);
                             continue;
                         }
                     case 999: {
@@ -22535,7 +22535,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
-                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     }
@@ -22568,7 +22568,7 @@ $root.google = (function() {
             EnumValueOptions.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -22891,7 +22891,7 @@ $root.google = (function() {
                     case 34: {
                             if (wireType !== 2)
                                 break;
-                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), $undefined, _depth + 1, message.features);
+                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.size(), $undefined, _depth + 1, message.features);
                             continue;
                         }
                     case 33: {
@@ -22905,7 +22905,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
-                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     }
@@ -22938,7 +22938,7 @@ $root.google = (function() {
             ServiceOptions.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -23269,7 +23269,7 @@ $root.google = (function() {
                     case 35: {
                             if (wireType !== 2)
                                 break;
-                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), $undefined, _depth + 1, message.features);
+                            message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.size(), $undefined, _depth + 1, message.features);
                             continue;
                         }
                     case 999: {
@@ -23277,7 +23277,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
-                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     }
@@ -23310,7 +23310,7 @@ $root.google = (function() {
             MethodOptions.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -23701,7 +23701,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.name && message.name.length))
                                 message.name = [];
-                            message.name.push($root.google.protobuf.UninterpretedOption.NamePart.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.name.push($root.google.protobuf.UninterpretedOption.NamePart.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 3: {
@@ -23770,7 +23770,7 @@ $root.google = (function() {
             UninterpretedOption.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -24165,7 +24165,7 @@ $root.google = (function() {
                 NamePart.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -24613,7 +24613,7 @@ $root.google = (function() {
             FeatureSet.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -25199,7 +25199,7 @@ $root.google = (function() {
                 VisibilityFeature.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -25469,7 +25469,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.defaults && message.defaults.length))
                                 message.defaults = [];
-                            message.defaults.push($root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.defaults.push($root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     case 4: {
@@ -25526,7 +25526,7 @@ $root.google = (function() {
             FeatureSetDefaults.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -25958,13 +25958,13 @@ $root.google = (function() {
                         case 4: {
                                 if (wireType !== 2)
                                     break;
-                                message.overridableFeatures = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), $undefined, _depth + 1, message.overridableFeatures);
+                                message.overridableFeatures = $root.google.protobuf.FeatureSet.decode(reader, reader.size(), $undefined, _depth + 1, message.overridableFeatures);
                                 continue;
                             }
                         case 5: {
                                 if (wireType !== 2)
                                     break;
-                                message.fixedFeatures = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), $undefined, _depth + 1, message.fixedFeatures);
+                                message.fixedFeatures = $root.google.protobuf.FeatureSet.decode(reader, reader.size(), $undefined, _depth + 1, message.fixedFeatures);
                                 continue;
                             }
                         }
@@ -25997,7 +25997,7 @@ $root.google = (function() {
                 FeatureSetEditionDefault.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -26333,7 +26333,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.location && message.location.length))
                                 message.location = [];
-                            message.location.push($root.google.protobuf.SourceCodeInfo.Location.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.location.push($root.google.protobuf.SourceCodeInfo.Location.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     }
@@ -26366,7 +26366,7 @@ $root.google = (function() {
             SourceCodeInfo.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -26741,7 +26741,7 @@ $root.google = (function() {
                 Location.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**
@@ -27057,7 +27057,7 @@ $root.google = (function() {
                                 break;
                             if (!(message.annotation && message.annotation.length))
                                 message.annotation = [];
-                            message.annotation.push($root.google.protobuf.GeneratedCodeInfo.Annotation.decode(reader, reader.uint32(), $undefined, _depth + 1));
+                            message.annotation.push($root.google.protobuf.GeneratedCodeInfo.Annotation.decode(reader, reader.size(), $undefined, _depth + 1));
                             continue;
                         }
                     }
@@ -27090,7 +27090,7 @@ $root.google = (function() {
             GeneratedCodeInfo.decodeDelimited = function(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
+                return this.decode(reader, reader.size());
             };
 
             /**
@@ -27458,7 +27458,7 @@ $root.google = (function() {
                 Annotation.decodeDelimited = function(reader) {
                     if (!(reader instanceof $Reader))
                         reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
+                    return this.decode(reader, reader.size());
                 };
 
                 /**

@@ -83,7 +83,7 @@ function decoder(mtype) {
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref);
             gen
-                ("var c2=r.uint32()+r.pos")
+                ("var c2=r.size()+r.pos")
                 ("if(c2>r.len)")
                     ("throw RangeError(\"index out of range\")")
                 ("r.len=c2");
@@ -115,7 +115,7 @@ function decoder(mtype) {
                                 ("break");
 
             if (types.basic[type] === undefined) gen
-                            ("v=types[%i].decode(r,r.uint32(),undefined,q+1,v)", i); // can't be groups
+                            ("v=types[%i].decode(r,r.size(),undefined,q+1,v)", i); // can't be groups
             else gen
                             ("v=r.%s()", type === "string" ? stringMethod(field) : type);
 
@@ -160,7 +160,7 @@ function decoder(mtype) {
                 ("if(u===2){");
                 if (closed) {
                     gen
-                    ("var c2=r.uint32()+r.pos")
+                    ("var c2=r.size()+r.pos")
                     ("if(c2>r.len)")
                         ("throw RangeError(\"index out of range\")")
                     ("r.len=c2")
@@ -198,7 +198,7 @@ function decoder(mtype) {
                 if (field.delimited) gen
                     ("%s.push(types[%i].decode(r,undefined,%i,q+1))", ref, i, field.id * 8 + 4);
                 else gen
-                    ("%s.push(types[%i].decode(r,r.uint32(),undefined,q+1))", ref, i);
+                    ("%s.push(types[%i].decode(r,r.size(),undefined,q+1))", ref, i);
             } else if (closed) { gen
                     ("v=r.%s()", type)
                     ("if(types[%i].valuesById[v]!==undefined){", i)
@@ -219,7 +219,7 @@ function decoder(mtype) {
             if (field.delimited) gen
                 ("%s=types[%i].decode(r,undefined,%i,q+1,%s)", ref, i, field.id * 8 + 4, ref);
             else gen
-                ("%s=types[%i].decode(r,r.uint32(),undefined,q+1,%s)", ref, i, ref);
+                ("%s=types[%i].decode(r,r.size(),undefined,q+1,%s)", ref, i, ref);
         }
         else if (field.hasPresence) {
             gen

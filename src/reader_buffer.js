@@ -53,7 +53,7 @@ BufferReader.prototype.raw = function read_raw_buffer(start, end) {
  * @override
  */
 BufferReader.prototype.string = function read_string_buffer() {
-    var len = this.uint32(), // modifies pos
+    var len = this.size(), // modifies pos
         start = this.pos,
         end = this.pos + len;
 

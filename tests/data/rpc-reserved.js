@@ -261,7 +261,7 @@ $root.MyRequest = (function() {
     MyRequest.decodeDelimited = function(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
+        return this.decode(reader, reader.size());
     };
 
     /**
@@ -536,7 +536,7 @@ $root.MyResponse = (function() {
     MyResponse.decodeDelimited = function(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
+        return this.decode(reader, reader.size());
     };
 
     /**
