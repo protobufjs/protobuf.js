@@ -84,4 +84,30 @@ tape.test("utf8", function(test) {
         test.end();
     });
 
+    test.test(test.name + " - write unpaired surrogates", function(test) {
+        [
+            "\ud800",
+            "\udfff",
+            "\ud800a",
+            "a\udfff",
+            "\ud800\ud800\udc00",
+            "\udc00\ud800",
+            "\ud800\udc00",
+            "\udbff\udfff",
+            "\ud7ff",
+            "\ue000"
+        ].forEach(function(value) {
+            var expected = Buffer.from(value, "utf8"),
+                buf = new Uint8Array(expected.length + 4);
+            buf.fill(255);
+
+            test.equal(utf8.length(value), expected.length, "should match the native UTF-8 length");
+            test.equal(utf8.write(value, buf, 2), expected.length, "should return the number of encoded bytes");
+            test.same(Array.prototype.slice.call(buf, 2, -2), Array.prototype.slice.call(expected), "should match native UTF-8 bytes");
+            test.same(Array.prototype.slice.call(buf, 0, 2), [255, 255], "should preserve bytes before the offset");
+            test.same(Array.prototype.slice.call(buf, -2), [255, 255], "should preserve bytes after the value");
+        });
+        test.end();
+    });
+
 });
