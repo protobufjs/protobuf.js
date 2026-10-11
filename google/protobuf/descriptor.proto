@@ -341,6 +341,7 @@ message EnumValueOptions {
     optional FieldOptions.FeatureSupport feature_support = 4;
     repeated UninterpretedOption uninterpreted_option = 999;
 
+    extensions 990 to 998;
     extensions 1000 to max;
 }
 
