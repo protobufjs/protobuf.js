@@ -1,0 +1,10 @@
+
+{
+  "nested": {
+    "WhitespaceMessage": {
+      "fields": {
+        "id": { "type": "int32", "id": 1 }
+      }
+    }
+  }
+}

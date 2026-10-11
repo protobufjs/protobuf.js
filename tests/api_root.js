@@ -49,6 +49,24 @@ tape.test("reflected roots", function(test) {
         });
     });
 
+    test.test(test.name + " - json with leading whitespace", function(test) {
+        var root = new Root();
+        root.load("tests/data/leading-whitespace.json", function(err) {
+            test.error(err, "should load a JSON descriptor preceded by whitespace");
+            if (!err)
+                test.equal(root.lookupType("WhitespaceMessage").fields.id.id, 1, "should load its message fields");
+            test.end();
+        });
+    });
+
+    test.test(test.name + " - json with leading whitespace, sync", function(test) {
+        test.doesNotThrow(function() {
+            var root = new Root().loadSync("tests/data/leading-whitespace.json");
+            test.equal(root.lookupType("WhitespaceMessage").fields.id.id, 1, "should load its message fields synchronously");
+        }, "should not treat a JSON descriptor as proto source");
+        test.end();
+    });
+
     test.test(test.name + " - weak", function(test) {
         var root = new Root();
         test.plan(1);        
