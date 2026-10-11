@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.7.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.7.0...protobufjs-cli-v2.7.1) (2026-10-11)
+
+
+### Bug Fixes
+
+* Reject overflowing length prefixes ([#2439](https://github.com/protobufjs/protobuf.js/issues/2439)) ([507c5d0](https://github.com/protobufjs/protobuf.js/commit/507c5d0cdc6d4b3b27dd440af2a853d5ef1405e0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * protobufjs bumped from file:.. to 8.8.1
+  * peerDependencies
+    * protobufjs bumped from ^8.8.0 to ^8.8.1
+
 ## [2.7.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.6.2...protobufjs-cli-v2.7.0) (2026-08-26)
 
 

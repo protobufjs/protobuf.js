@@ -1,5 +1,14 @@
 # Changelog
 
+## [8.8.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.8.0...protobufjs-v8.8.1) (2026-10-11)
+
+
+### Bug Fixes
+
+* parse character, octal, and hex string escapes ([#2426](https://github.com/protobufjs/protobuf.js/issues/2426)) ([0ad9a28](https://github.com/protobufjs/protobuf.js/commit/0ad9a28adec14a7f181333b59454ee5e96f41e14))
+* Reject overflowing length prefixes ([#2439](https://github.com/protobufjs/protobuf.js/issues/2439)) ([507c5d0](https://github.com/protobufjs/protobuf.js/commit/507c5d0cdc6d4b3b27dd440af2a853d5ef1405e0))
+* Support custom enum JSON names ([#2440](https://github.com/protobufjs/protobuf.js/issues/2440)) ([2f7e339](https://github.com/protobufjs/protobuf.js/commit/2f7e3397379fdd500a768e9a5014d5f7f9cc8811))
+
 ## [8.8.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.7.2...protobufjs-v8.8.0) (2026-08-26)
 
 
