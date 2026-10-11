@@ -111,12 +111,9 @@ function parseIntegerString(value, type, name) {
             throw invalid(name, value, "invalid integer");
         if (/^[+-]?[0-9]+$/.test(value))
             str = value;
-        else if (NUMERIC_RE.test(value)) {
-            var num = Number(value);
-            if (!isFinite(num) || Math.floor(num) !== num)
-                throw invalid(name, value, "not an integer");
-            str = numberToIntString(num);
-        } else
+        else if (NUMERIC_RE.test(value))
+            str = decimalToIntString(value, type, name);
+        else
             throw invalid(name, value, "invalid integer");
     } else
         throw invalid(name, value, "expected integer (number or string)");
@@ -157,6 +154,25 @@ function numberToIntString(num) {
     if (num >= -9007199254740991 && num <= 9007199254740991)
         return String(num);
     return num.toFixed(0);
+}
+
+// Converts a NUMERIC_RE string to the integer string it denotes without rounding through a Number.
+function decimalToIntString(value, type, name) {
+    var match = /^([+-]?)([0-9]*)\.?([0-9]*)(?:[eE]([+-]?[0-9]+))?$/.exec(value),
+        digits = (match[2] + match[3]).replace(/^0+/, ""),
+        exponent = (match[4] ? parseInt(match[4], 10) : 0) - match[3].length;
+    if (!digits)
+        return "0";
+    if (exponent < 0) {
+        if (!/^0*$/.test(digits.slice(exponent)))
+            throw invalid(name, value, "not an integer");
+        return match[1] + digits.slice(0, exponent);
+    }
+    if (digits.length + exponent > 20) // max uint64 has 20 digits
+        throw Error(name + ": out of range for " + type);
+    while (exponent-- > 0)
+        digits += "0";
+    return match[1] + digits;
 }
 
 function parseFloat32Or64(value, isFloat, name) {

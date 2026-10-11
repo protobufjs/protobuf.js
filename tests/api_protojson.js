@@ -14,6 +14,8 @@ function bytes(buf) {
 var proto = "syntax = \"proto3\";\
 message Msg { int32 value = 1; }\
 message LongMsg { int64 value = 1; }\
+message Uint64Msg { uint64 value = 1; }\
+message Fixed64Msg { fixed64 value = 1; }\
 enum Choice { A = 0; B = 1; }\
 message Inner { int32 value = 1; }\
 message Outer {\
@@ -37,6 +39,8 @@ message MapMsg {\
 var root = protobuf.parse(proto).root,
     Msg = root.lookupType("Msg"),
     LongMsg = root.lookupType("LongMsg"),
+    Uint64Msg = root.lookupType("Uint64Msg"),
+    Fixed64Msg = root.lookupType("Fixed64Msg"),
     Outer = root.lookupType("Outer"),
     OneofDefault = root.lookupType("OneofDefault"),
     MapMsg = root.lookupType("MapMsg"),
@@ -219,6 +223,47 @@ tape.test("protojson - bounds integer conversion inputs", function(test) {
     } finally {
         protobuf.util.global.BigInt = nativeBigInt;
     }
+    test.end();
+});
+
+tape.test("protojson - reads exponent and fraction integer strings exactly", function(test) {
+    [LongMsg, Uint64Msg, Fixed64Msg].forEach(function(Type) {
+        ["9007199254740993e0", "9007199254740993.0", "9.007199254740993e15"].forEach(function(value) {
+            test.equal(protojson.fromJson(Type, { value: value }).value.toString(), "9007199254740993", Type.name + ": reads " + value + " exactly");
+        });
+        test.equal(protojson.fromJson(Type, { value: "1e2" }).value.toString(), "100", Type.name + ": reads 1e2");
+        test.equal(protojson.fromJson(Type, { value: "100.0" }).value.toString(), "100", Type.name + ": reads 100.0");
+        ["1.0000000000000000001", "1e-400"].forEach(function(value) {
+            test.throws(function() {
+                protojson.fromJson(Type, { value: value });
+            }, /not an integer/, Type.name + ": rejects " + value);
+        });
+    });
+    test.end();
+});
+
+tape.test("protojson - range checks exponent and fraction integer strings", function(test) {
+    test.equal(protojson.fromJson(LongMsg, { value: "-9.223372036854775808e18" }).value.toString(), "-9223372036854775808", "accepts min int64");
+    test.equal(protojson.fromJson(LongMsg, { value: "9223372036854775807.0" }).value.toString(), "9223372036854775807", "accepts max int64");
+    test.equal(protojson.fromJson(Uint64Msg, { value: "1.8446744073709551615e19" }).value.toString(), "18446744073709551615", "accepts max uint64");
+    test.equal(protojson.fromJson(Uint64Msg, { value: "0e536870000" }).value.toString(), "0", "accepts zero with a large exponent");
+
+    test.throws(function() {
+        protojson.fromJson(LongMsg, { value: "-9.223372036854775809e18" });
+    }, /out of range for int64/, "rejects int64 below min");
+    test.throws(function() {
+        protojson.fromJson(LongMsg, { value: "9223372036854775808.0" });
+    }, /out of range for int64/, "rejects int64 above max");
+    test.throws(function() {
+        protojson.fromJson(Uint64Msg, { value: "1.8446744073709551616e19" });
+    }, /out of range for uint64/, "rejects uint64 above max");
+    test.throws(function() {
+        protojson.fromJson(Uint64Msg, { value: "-1e0" });
+    }, /out of range for uint64/, "rejects negative uint64");
+    test.throws(function() {
+        protojson.fromJson(Uint64Msg, { value: "1e536870000" });
+    }, /out of range for uint64/, "rejects large exponents without expanding them");
+
     test.end();
 });
 
