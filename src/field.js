@@ -334,6 +334,26 @@ Field.prototype.toJSON = function toJSON(toJSONOptions) {
 };
 
 /**
+ * Verifies that a resolved type or enum may be referenced by the given field.
+ * A symbol declared `local` (edition 2024) is only visible within its own file.
+ * If either file name is unknown - programmatic construction, `fromJSON`, bundled
+ * common types - the reference cannot be proven to cross files and is allowed.
+ * @param {Field} field Referencing field
+ * @param {Type|Enum} resolved Resolved type or enum
+ * @returns {undefined}
+ * @throws {Error} If the referenced symbol is local to another file
+ * @inner
+ */
+function checkVisibility(field, resolved) {
+    if (resolved.visibility !== "local")
+        return;
+    var from = (field.declaringField || field).filename;
+    if (!from || !resolved.filename || from === resolved.filename)
+        return;
+    throw Error("'" + resolved.fullName + "' is local to '" + resolved.filename + "' and cannot be referenced from '" + from + "'");
+}
+
+/**
  * Resolves this field's type references.
  * @returns {Field} `this`
  * @throws {Error} If any reference cannot be resolved
@@ -345,6 +365,7 @@ Field.prototype.resolve = function resolve() {
 
     if ((this.typeDefault = types.defaults[this.type]) === undefined) { // if not a basic type, resolve it
         this.resolvedType = (this.declaringField ? this.declaringField.parent : this.parent).lookupTypeOrEnum(this.type);
+        checkVisibility(this, this.resolvedType);
         if (this.resolvedType instanceof Type)
             this.typeDefault = null;
         else // instanceof Enum
