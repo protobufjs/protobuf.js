@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package edge;
+
+// Cyclic references between messages must not recurse endlessly.
+message Cyclic {
+  Cyclic self = 1;
+  CyclicPeer peer = 2;
+}
+
+message CyclicPeer {
+  Cyclic peer = 1;
+}
+
+// Repeated and map fields carry their dependencies just like singular fields do.
+message Collections {
+  repeated Item items = 1;
+  repeated Flavor flavors = 2;
+  map<string, Item> itemsByName = 3;
+}
+
+message Item {
+  string id = 1;
+}
+
+enum Flavor {
+  FLAVOR_UNSPECIFIED = 0;
+  FLAVOR_SWEET = 1;
+}
+
+// All branches of a oneof are ordinary fields of the containing message.
+message Choice {
+  oneof pick {
+    FirstChoice first = 1;
+    SecondChoice second = 2;
+    string plain = 3;
+  }
+}
+
+message FirstChoice {
+  string value = 1;
+}
+
+message SecondChoice {
+  string value = 1;
+}
+
+// Only the nested types that are actually used are kept.
+message Container {
+  message UsedNested {
+    string value = 1;
+  }
+
+  message UnusedNested {
+    string value = 1;
+  }
+
+  enum UsedNestedEnum {
+    USED_NESTED_ENUM_UNSPECIFIED = 0;
+  }
+
+  enum UnusedNestedEnum {
+    UNUSED_NESTED_ENUM_UNSPECIFIED = 0;
+  }
+
+  UsedNested used = 1;
+  UsedNestedEnum usedEnum = 2;
+}
+
+// Selecting Outer.SelectedNested must keep Outer as a container only.
+message Outer {
+  message SelectedNested {
+    string value = 1;
+  }
+
+  string outerOnly = 1;
+  OuterDependency dependency = 2;
+}
+
+message OuterDependency {
+  string value = 1;
+}
+
+message Unused {
+  string value = 1;
+}
+
+service EdgeService {
+  rpc Ping (Item) returns (Item);
+}

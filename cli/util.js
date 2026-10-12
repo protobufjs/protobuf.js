@@ -120,117 +120,135 @@ exports.pad = function(str, len, l) {
 
 
 /**
- * DFS to get all message dependencies, cache in filterMap.
- * @param {Root} root  The protobuf root instance
- * @param {Message} message  The message need to process.
- * @param {Map} filterMap  The result of message you need and their dependencies.
- * @param {Map} flatMap  A flag to record whether the message was searched.
- * @returns {undefined}  Does not return a value
+ * Retains an object and, if it is a message, everything it transitively references.
+ * The set of retained objects doubles as the guard against cyclic references.
+ * @param {Set} retained Set of retained reflection objects
+ * @param {ReflectionObject} object Object to retain
+ * @returns {undefined} Does not return a value
  */
-function dfsFilterMessageDependencies(root, message, filterMap, flatMap) {
-    if (message instanceof protobuf.Type) {
-        if (flatMap.get(`${message.fullName}`)) return;
-        flatMap.set(`${message.fullName}`, true);
-        for (var field of message.fieldsArray) {
-            if (field.resolvedType) {
-                // a nested message
-                if (field.resolvedType.parent.name === message.name) {
-                    var nestedMessage = message.nested[field.resolvedType.name];
-                    dfsFilterMessageDependencies(root, nestedMessage, filterMap, flatMap);
-                    continue;
-                }
-                var packageName = field.resolvedType.parent.name;
-                var typeName = field.resolvedType.name;
-                var fullName = packageName ? `${packageName}.${typeName}` : typeName;
-                doFilterMessage(root, { messageNames: [fullName] }, filterMap, flatMap, packageName);
-            }
-        }
-    }
+function retainWithDependencies(retained, object) {
+    if (retained.has(object))
+        return;
+    retained.add(object);
+
+    // Enums have no dependencies of their own, everything else is reached through fields.
+    // fieldsArray covers plain, repeated, map value, oneof and group fields alike.
+    if (object instanceof protobuf.Type)
+        object.fieldsArray.forEach(function(field) {
+            if (field.resolvedType)
+                retainWithDependencies(retained, field.resolvedType);
+        });
 }
 
 /**
- * DFS to get all message you need and their dependencies, cache in filterMap.
- * @param {Root} root  The protobuf root instance
- * @param {object} needMessageConfig  Need message config:
- * @param {string[]} needMessageConfig.messageNames  The message names array in the root namespace you need to gen. example: [msg1, msg2]
- * @param {Map} filterMap The result of message you need and their dependencies.
- * @param {Map} flatMap A flag to record whether the message was searched.
- * @param {string} currentPackageName  Current package name
- * @returns {undefined}  Does not return a value
+ * Determines the edition an object is subject to, which it may inherit from its parents.
+ * @param {ReflectionObject} object Object to inspect
+ * @returns {string|undefined} Edition, if any
  */
-function doFilterMessage(root, needMessageConfig, filterMap, flatMap, currentPackageName) {
-    var needMessageNames = needMessageConfig.messageNames;
-
-    for (var messageFullName of needMessageNames) {
-        var nameSplit = messageFullName.split(".");
-        var packageName = "";
-        var messageName = "";
-        if (nameSplit.length > 1) {
-            packageName = nameSplit[0];
-            messageName = nameSplit[1];
-        } else {
-            messageName = nameSplit[0];
-        }
-
-        // in Namespace
-        if (packageName) {
-            var ns = root.nested[packageName];
-            if (!ns || !(ns instanceof protobuf.Namespace)) {
-                throw new Error(`package not foud ${currentPackageName}.${messageName}`);
-            }
-
-            doFilterMessage(root, { messageNames: [messageName] }, filterMap, flatMap, packageName);
-        } else {
-            var message = root.nested[messageName];
-
-            if (currentPackageName) {
-                message = root.nested[currentPackageName].nested[messageName];
-            }
-
-            if (!message) {
-                throw new Error(`message not foud ${currentPackageName}.${messageName}`);
-            }
-
-            var set = filterMap.get(currentPackageName);
-            if (!filterMap.has(currentPackageName)) {
-                set = new Set();
-                filterMap.set(currentPackageName, set);
-            }
-
-            set.add(messageName);
-
-            // dfs to find all dependencies
-            dfsFilterMessageDependencies(root, message, filterMap, flatMap, currentPackageName);
-        }
-    }
+function inheritedEdition(object) {
+    var current = object;
+    while (current && !current._edition)
+        current = current.parent;
+    return current ? current._edition : undefined;
 }
 
 /**
- * filter the message you need and their dependencies, all others will be delete from root.
- * @param {Root} root  Root the protobuf root instance
- * @param {object} needMessageConfig  Need message config:
- * @param {string[]} needMessageConfig.messageNames  Tthe message names array in the root namespace you need to gen. example: [msg1, msg2]
- * @returns {boolean} True if a message should present in the generated files
+ * Replaces a namespace subclass with a plain namespace, keeping its nested objects.
+ * Used for types that are only needed to spell out the full name of a retained object.
+ * @param {NamespaceBase} parent Parent namespace of `object`
+ * @param {NamespaceBase} object Object to replace
+ * @returns {undefined} Does not return a value
  */
-exports.filterMessage = function (root, needMessageConfig) {
-    var filterMap = new Map();
-    var flatMap = new Map();
-    doFilterMessage(root, needMessageConfig, filterMap, flatMap, "");
-    root._nestedArray = root._nestedArray.filter(ns => {
-        if (ns instanceof protobuf.Type || ns instanceof protobuf.Enum) {
-            return filterMap.get("").has(ns.name);
-        } else if (ns instanceof protobuf.Namespace) {
-            if (!filterMap.has(ns.name)) {
-                return false;
-            }
-            ns._nestedArray = ns._nestedArray.filter(nns => {
-                const nnsSet = filterMap.get(ns.name);
-                return nnsSet.has(nns.name);
-            });
+function replaceWithNamespace(parent, object) {
+    var replacement = new protobuf.Namespace(object.name, object.options);
+    replacement.comment = object.comment;
+    replacement.filename = object.filename;
 
-            return true;
-        }
-        return true;
+    // Types inherit the edition of the enclosing type, whereas Namespace#add stamps direct
+    // children of a plain namespace with the default edition. Pinning the edition that was
+    // in effect before the replacement keeps feature resolution, and thus field presence,
+    // unchanged for everything that is moved over.
+    var edition = inheritedEdition(object);
+    replacement._edition = edition;
+
+    object.nestedArray.slice().forEach(function(nested) {
+        if (!nested._edition)
+            nested._edition = edition;
+        object.remove(nested);
+        replacement.add(nested);
     });
+
+    parent.remove(object);
+    parent.add(replacement);
+}
+
+/**
+ * Recursively removes everything that is neither retained nor required to address a
+ * retained object by its full name.
+ * @param {NamespaceBase} namespace Namespace to prune
+ * @param {Set} retained Set of retained reflection objects
+ * @returns {undefined} Does not return a value
+ */
+function pruneNamespace(namespace, retained) {
+    // The array is a snapshot because removing and replacing children mutates it.
+    namespace.nestedArray.slice().forEach(function(child) {
+        if (child instanceof protobuf.Namespace)
+            pruneNamespace(child, retained);
+
+        if (retained.has(child))
+            return;
+
+        // Nothing retained inside, so nothing to keep it around for. Non-namespace children
+        // (declaring extension fields) always end up here, and removing them makes the root
+        // drop their sister fields as well.
+        if (!(child instanceof protobuf.Namespace) || !child.nestedArray.length) {
+            namespace.remove(child);
+            return;
+        }
+
+        // Retained descendants below an object that was not selected itself: keep it as a
+        // container only, so that message and service code is not emitted for it.
+        if (child instanceof protobuf.Type || child instanceof protobuf.Service)
+            replaceWithNamespace(namespace, child);
+    });
+}
+
+/**
+ * Removes everything from the root that is neither one of the configured messages nor a
+ * transitive dependency of one of them.
+ * @param {Root} root The protobuf root instance
+ * @param {object} needMessageConfig Filter configuration
+ * @param {string[]} needMessageConfig.messageNames The full names of the messages to keep.
+ * example: ["mypackage.Message", "mypackage.nested.Other"]
+ * @returns {undefined} Does not return a value
+ * @throws {TypeError} If the configuration is invalid
+ * @throws {Error} If one of the configured messages does not exist
+ */
+exports.filterMessage = function filterMessage(root, needMessageConfig) {
+    if (!needMessageConfig || !Array.isArray(needMessageConfig.messageNames) || !needMessageConfig.messageNames.length)
+        throw TypeError("filter.messageNames must be a non-empty array");
+
+    // Dependencies are followed through resolvedType, so everything must be resolved first.
+    root.resolveAll();
+
+    var retained = new Set();
+
+    // Names are resolved before anything is removed, so a filter that cannot be applied
+    // leaves the root untouched.
+    needMessageConfig.messageNames.forEach(function(name) {
+        if (typeof name !== "string" || !name.length)
+            throw TypeError("filter.messageNames must contain non-empty strings");
+
+        // Looking up from the root handles full names of any namespace depth.
+        var message = root.lookup(name, [ protobuf.Type ]);
+        if (!message)
+            throw Error("no such message: " + name);
+
+        retainWithDependencies(retained, message);
+    });
+
+    pruneNamespace(root, retained);
+
+    root.resolveAll();
 };
 

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package example.values;
+
+message Value {
+  Meta meta = 1;
+  Kind kind = 2;
+}
+
+message Meta {
+  string description = 1;
+}
+
+enum Kind {
+  KIND_UNSPECIFIED = 0;
+  KIND_PRIMARY = 1;
+}
+
+message UnusedValue {
+  string value = 1;
+}
