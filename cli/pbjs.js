@@ -319,6 +319,14 @@ exports.main = function main(args, callback) {
     for (var i = 0; i < files.length;) {
         if (glob.hasMagic(files[i])) {
             var matches = glob.sync(files[i]);
+            if (!matches.length) { // silently emitting an empty bundle would hide typo'd globs
+                var noMatchError = Error("no files matched pattern '" + files[i] + "'");
+                if (callback)
+                    callback(noMatchError); // eslint-disable-line callback-return
+                else
+                    process.stderr.write(noMatchError.message + "\n");
+                return 1;
+            }
             Array.prototype.splice.apply(files, [i, 1].concat(matches));
             i += matches.length;
         } else
