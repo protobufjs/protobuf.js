@@ -888,6 +888,7 @@ export abstract class NamespaceBase extends ReflectionObject {
 
     /**
      * Recursively looks up the reflection object matching the specified path in the scope of this namespace.
+     * A relative path is resolved in this namespace first and then in each enclosing namespace, before the non-standard fallbacks below are tried.
      * @param path Path to look up
      * @param filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
      * @param [parentAlreadyChecked=false] If known, whether the parent has already been checked

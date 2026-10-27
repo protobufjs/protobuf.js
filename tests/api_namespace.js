@@ -272,3 +272,78 @@ tape.test("JSON descriptor nesting", function(test) {
 
     test.end();
 });
+
+tape.test("nested type lookup from enclosing scopes", function(test) {
+
+    function parseTree(pkg) {
+        var prefix = pkg ? "." + pkg : "";
+        return protobuf.parse("syntax = \"proto3\";" + (pkg ? "package " + pkg + ";" : "") + "\
+message Node { string id = 1; }\
+enum Kind { KIND_UNSPECIFIED = 0; KIND_GLOBAL = 1; }\
+message Tree {\
+    message Node {\
+        string label = 1;\
+        repeated Node children = 2;\
+        Kind kind = 3;\
+    }\
+    enum Kind { KIND_UNSPECIFIED = 0; KIND_LEAF = 1; }\
+    message Branch {\
+        Node node = 1;\
+        message Twig {\
+            Node node = 1;\
+            " + prefix + ".Node global_node = 2;\
+            " + prefix + ".Kind global_kind = 3;\
+        }\
+    }\
+    message Leaf {\
+        message Node { string tag = 1; }\
+        Node node = 1;\
+    }\
+    repeated Node roots = 1;\
+    Kind kind = 2;\
+}\
+message Forest {\
+    message Leaf {\
+        message Node { string tag = 1; }\
+    }\
+    message Branch {\
+        Node node = 1;\
+    }\
+}\
+message Outer {\
+    string Node = 1;\
+    message Inner {\
+        Node node = 1;\
+    }\
+}", { keepCase: true }).root.resolveAll();
+    }
+
+    ["", "pkg"].forEach(function(pkg) {
+        var prefix = pkg ? "." + pkg : "";
+        var root = parseTree(pkg);
+        var label = pkg ? " (with package)" : " (without package)";
+        function resolved(type, field) {
+            return root.lookupType(prefix + "." + type).fields[field].resolvedType.fullName;
+        }
+        test.equal(resolved("Tree", "roots"), prefix + ".Tree.Node", "should resolve a nested type from its parent" + label);
+        test.equal(resolved("Tree", "kind"), prefix + ".Tree.Kind", "should resolve a nested enum from its parent" + label);
+        test.equal(resolved("Tree.Node", "children"), prefix + ".Tree.Node", "should resolve a nested type from inside that type" + label);
+        test.equal(resolved("Tree.Node", "kind"), prefix + ".Tree.Kind", "should resolve a nested enum from a sibling nested type" + label);
+        test.equal(resolved("Tree.Branch", "node"), prefix + ".Tree.Node", "should resolve a nested type from a sibling nested type" + label);
+        test.equal(resolved("Tree.Branch.Twig", "node"), prefix + ".Tree.Node", "should resolve a nested type from a scope two levels down" + label);
+        test.equal(resolved("Tree.Leaf", "node"), prefix + ".Tree.Leaf.Node", "should prefer the innermost scope when several enclosing scopes declare the name" + label);
+        test.equal(resolved("Forest.Branch", "node"), prefix + ".Node", "should not let a type nested in a sibling scope shadow a root type" + label);
+        test.equal(resolved("Outer.Inner", "node"), prefix + ".Node", "should skip a field named like the type in an enclosing scope" + label);
+        test.equal(resolved("Tree.Branch.Twig", "global_node"), prefix + ".Node", "should resolve a leading dot from the root" + label);
+        test.equal(resolved("Tree.Branch.Twig", "global_kind"), prefix + ".Kind", "should resolve a leading dot to a root enum" + label);
+
+        var Tree = root.lookupType(prefix + ".Tree");
+        var buf = Tree.encode(Tree.fromObject({ roots: [{ label: "a", children: [{ label: "b", kind: "KIND_LEAF" }] }] })).finish();
+        test.equal(Buffer.from(buf).toString("hex"), "0a0a0a016112050a01621801", "should encode nested fields with the nested types' layout, as protoc does" + label);
+        test.deepEqual(Tree.toObject(Tree.decode(buf), { enums: String }), { roots: [{ label: "a", children: [{ label: "b", kind: "KIND_LEAF" }] }] }, "should decode what it encoded" + label);
+        test.equal(root.lookupType(prefix + ".Outer.Inner").lookup("Node"), root.lookupType(prefix + ".Node"), "should skip a field named like the type in an enclosing scope in an unfiltered lookup" + label);
+        test.equal(root.lookupType(prefix + ".Outer").lookup("Node"), root.lookupType(prefix + ".Outer").fields.Node, "should still find a field by its name in an unfiltered lookup" + label);
+        test.equal(root.lookupType(prefix + ".Tree.Branch.Twig").lookup((prefix + ".Node").slice(1), true), root.lookupType(prefix + ".Node"), "should keep the absolute-path fallback when the enclosing scopes are skipped" + label);
+    });
+    test.end();
+});
