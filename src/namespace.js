@@ -409,6 +409,7 @@ Namespace.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursi
 
 /**
  * Recursively looks up the reflection object matching the specified path in the scope of this namespace.
+ * A relative path is resolved in this namespace first and then in each enclosing namespace, before the non-standard fallbacks below are tried.
  * @param {string|string[]} path Path to look up
  * @param {*|Array.<*>} filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
  * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
@@ -435,17 +436,26 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
     if (path[0] === "")
         return this.root.lookup(path.slice(1), filterTypes);
 
-    // Lookup at this namespace and below
-    var found = this._lookupImpl(path, flatPath);
-    if (found && (!filterTypes || filterTypes.indexOf(found.constructor) > -1)) {
-        return found;
+    // Resolve in the innermost scope first, then in each enclosing scope, through direct children only (like protoc)
+    var found;
+    var scope = this;
+    while (scope) {
+        found = scope._lookupDirect(path);
+        // Fields, oneofs and methods of an enclosing scope do not shadow types
+        if ((scope === this || found instanceof Namespace || found instanceof Enum) && matchesFilter(found, filterTypes))
+            return found;
+        scope = parentAlreadyChecked ? null : scope.parent;
     }
 
-    // Fall back to respective absolute path once relative scope has been checked (non-standard)
-    found = this.root._fullyQualifiedObjects && this.root._fullyQualifiedObjects["." + flatPath];
-    if (found && (!filterTypes || filterTypes.indexOf(found.constructor) > -1)) {
+    // Lookup at this namespace and below (non-standard)
+    found = matchesFilter(this._lookupImpl(path, flatPath), filterTypes);
+    if (found)
         return found;
-    }
+
+    // Fall back to respective absolute path once relative scope has been checked (non-standard)
+    found = matchesFilter(this.root._fullyQualifiedObjects && this.root._fullyQualifiedObjects["." + flatPath], filterTypes);
+    if (found)
+        return found;
 
     if (parentAlreadyChecked)
         return null;
@@ -453,13 +463,41 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
     // If there hasn't been a match, walk up the tree and look more broadly
     var current = this;
     while (current.parent) {
-        found = current.parent._lookupImpl(path, flatPath);
-        if (found && (!filterTypes || filterTypes.indexOf(found.constructor) > -1)) {
+        found = matchesFilter(current.parent._lookupImpl(path, flatPath), filterTypes);
+        if (found)
             return found;
-        }
         current = current.parent;
     }
     return null;
+};
+
+/**
+ * Returns the object if it matches the filter types.
+ * @param {ReflectionObject|null|undefined} object Object to test
+ * @param {Array.<*>|undefined} filterTypes Filter types, if any
+ * @returns {ReflectionObject|null} The object if it matches, otherwise `null`
+ * @ignore
+ */
+function matchesFilter(object, filterTypes) {
+    return object && (!filterTypes || filterTypes.indexOf(object.constructor) > -1) ? object : null;
+}
+
+/**
+ * Looks up the reflection object at the specified path, descending through direct children only.
+ * @param {string[]} path Path to look up
+ * @returns {ReflectionObject|null} Looked up object or `null` if none could be found
+ * @private
+ */
+Namespace.prototype._lookupDirect = function _lookupDirect(path) {
+    var object = this;
+    for (var i = 0; i < path.length; ++i) {
+        if (!(object instanceof Namespace))
+            return null;
+        object = object.get(path[i]);
+        if (!object)
+            return null;
+    }
+    return object;
 };
 
 /**
