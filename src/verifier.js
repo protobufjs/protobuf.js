@@ -74,7 +74,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                     ("return%j", invalid(field, "string"));
                 break;
             case "bytes": gen
-                ("if(!(%s&&typeof %s.length===\"number\"||util.isString(%s)))", ref, ref, ref)
+                ("if(!(Array.isArray(%s)||ArrayBuffer.isView(%s)||util.isString(%s)))", ref, ref, ref)
                     ("return%j", invalid(field, "buffer"));
                 break;
         }
