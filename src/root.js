@@ -320,7 +320,7 @@ var exposeRe = /^[A-Z]/;
  * @ignore
  */
 function tryHandleExtension(root, field) {
-    var extendedType = field.parent.lookup(field.extend);
+    var extendedType = field.parent.lookup(field.extend, [ Type ]);
     if (extendedType) {
         var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);
         //do not allow to extend same field twice to prevent the error
