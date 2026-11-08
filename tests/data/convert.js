@@ -5,7 +5,7 @@ var $protobuf = require("../../minimal");
 
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
-var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $RangeError = $util.global.RangeError, $Array = $util.global.Array, $TypeError = $util.global.TypeError, $String = $util.global.String, $Number = $util.global.Number, $parseInt = $util.global.parseInt, $BigInt = $util.global.BigInt, $isFinite = $util.global.isFinite;
+var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $RangeError = $util.global.RangeError, $Array = $util.global.Array, $ArrayBuffer = $util.global.ArrayBuffer, $TypeError = $util.global.TypeError, $String = $util.global.String, $Number = $util.global.Number, $parseInt = $util.global.parseInt, $BigInt = $util.global.BigInt, $isFinite = $util.global.isFinite;
 
 // Exported root namespace
 var $root = $protobuf.roots["test_convert"] || ($protobuf.roots["test_convert"] = {});
@@ -467,13 +467,13 @@ $root.Message = (function() {
                     return "uint64Repeated: integer|Long[] expected";
         }
         if (message.bytesVal != null && $Object.hasOwnProperty.call(message, "bytesVal"))
-            if (!(message.bytesVal && typeof message.bytesVal.length === "number" || $util.isString(message.bytesVal)))
+            if (!($Array.isArray(message.bytesVal) || $ArrayBuffer.isView(message.bytesVal) || $util.isString(message.bytesVal)))
                 return "bytesVal: buffer expected";
         if (message.bytesRepeated != null && $Object.hasOwnProperty.call(message, "bytesRepeated")) {
             if (!$Array.isArray(message.bytesRepeated))
                 return "bytesRepeated: array expected";
             for (var i = 0; i < message.bytesRepeated.length; ++i)
-                if (!(message.bytesRepeated[i] && typeof message.bytesRepeated[i].length === "number" || $util.isString(message.bytesRepeated[i])))
+                if (!($Array.isArray(message.bytesRepeated[i]) || $ArrayBuffer.isView(message.bytesRepeated[i]) || $util.isString(message.bytesRepeated[i])))
                     return "bytesRepeated: buffer[] expected";
         }
         if (message.enumVal != null && $Object.hasOwnProperty.call(message, "enumVal"))
@@ -559,7 +559,7 @@ $root.Message = (function() {
             if (object.bytesVal.length)
                 if (typeof object.bytesVal === "string")
                     $util.base64.decode(object.bytesVal, message.bytesVal = $util.newBuffer($util.base64.length(object.bytesVal)), 0);
-                else if (object.bytesVal.length >= 0)
+                else if ($Array.isArray(object.bytesVal) || $ArrayBuffer.isView(object.bytesVal))
                     message.bytesVal = object.bytesVal;
         if (object.bytesRepeated) {
             if (!$Array.isArray(object.bytesRepeated))
@@ -568,7 +568,7 @@ $root.Message = (function() {
             for (var i = 0; i < object.bytesRepeated.length; ++i)
                 if (typeof object.bytesRepeated[i] === "string")
                     $util.base64.decode(object.bytesRepeated[i], message.bytesRepeated[i] = $util.newBuffer($util.base64.length(object.bytesRepeated[i])), 0);
-                else if (object.bytesRepeated[i].length >= 0)
+                else if ($Array.isArray(object.bytesRepeated[i]) || $ArrayBuffer.isView(object.bytesRepeated[i]))
                     message.bytesRepeated[i] = object.bytesRepeated[i];
         }
         if (object.enumVal !== 1 && (typeof object.enumVal !== "string" || $root.Message.SomeEnum[object.enumVal] !== 1))

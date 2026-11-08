@@ -416,3 +416,23 @@ tape.test("converters - bytes field default with bytes = String", function(test)
 
     test.end();
 });
+
+tape.test("converters - bytes from array-like objects", function(test) {
+    var proto = "syntax = \"proto3\";\
+    message Bytes {\
+        bytes bytes_val = 1;\
+        repeated bytes bytes_repeated = 2;\
+    }";
+    var Message = protobuf.parse(proto).root.lookupType("Bytes");
+    var arrayLike = { length: 0x7fffffff };
+
+    var msg = Message.fromObject({ bytesVal: arrayLike, bytesRepeated: [ arrayLike ] });
+    test.notOk(Object.prototype.hasOwnProperty.call(msg, "bytesVal"), "should not set bytesVal from an array-like object");
+    test.equal(msg.bytesRepeated[0], undefined, "should not set bytesRepeated from an array-like object");
+
+    test.equal(Message.verify({ bytesVal: arrayLike }), "bytesVal: buffer expected", "should reject an array-like object as bytesVal");
+    test.equal(Message.verify({ bytesRepeated: [ arrayLike ] }), "bytesRepeated: buffer[] expected", "should reject an array-like object in bytesRepeated");
+    test.equal(Message.verify({ bytesVal: [ 49 ], bytesRepeated: [ new Uint8Array(1), "MQ==" ] }), null, "should accept arrays, Uint8Arrays and base64 strings");
+
+    test.end();
+});

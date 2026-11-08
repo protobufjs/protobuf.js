@@ -82,7 +82,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop, dstProp) {
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", prop)
                     ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop)
-                ("else if(d%s.length>=0)", prop)
+                ("else if(Array.isArray(d%s)||ArrayBuffer.isView(d%s))", prop, prop)
                     ("m%s=d%s", prop, prop);
                 break;
             case "string": gen

@@ -5,7 +5,7 @@ var $protobuf = require("../../minimal");
 
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
-var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $RangeError = $util.global.RangeError, $TypeError = $util.global.TypeError, $String = $util.global.String, $Array = $util.global.Array, $Boolean = $util.global.Boolean, $parseInt = $util.global.parseInt, $Number = $util.global.Number, $BigInt = $util.global.BigInt, $isFinite = $util.global.isFinite;
+var $Object = $util.global.Object, $undefined = $util.global.undefined, $Error = $util.global.Error, $RangeError = $util.global.RangeError, $TypeError = $util.global.TypeError, $String = $util.global.String, $Array = $util.global.Array, $Boolean = $util.global.Boolean, $ArrayBuffer = $util.global.ArrayBuffer, $parseInt = $util.global.parseInt, $Number = $util.global.Number, $BigInt = $util.global.BigInt, $isFinite = $util.global.isFinite;
 
 // Exported root namespace
 var $root = $protobuf.roots["test_test"] || ($protobuf.roots["test_test"] = {});
@@ -4743,7 +4743,7 @@ $root.jspb = (function() {
                     if (!$util.isString(message.emptyField))
                         return "emptyField: string expected";
                 if (message.bytesField != null && $Object.hasOwnProperty.call(message, "bytesField"))
-                    if (!(message.bytesField && typeof message.bytesField.length === "number" || $util.isString(message.bytesField)))
+                    if (!($Array.isArray(message.bytesField) || $ArrayBuffer.isView(message.bytesField) || $util.isString(message.bytesField)))
                         return "bytesField: buffer expected";
                 return null;
             };
@@ -4795,7 +4795,7 @@ $root.jspb = (function() {
                 if (object.bytesField != null)
                     if (typeof object.bytesField === "string")
                         $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
-                    else if (object.bytesField.length >= 0)
+                    else if ($Array.isArray(object.bytesField) || $ArrayBuffer.isView(object.bytesField))
                         message.bytesField = object.bytesField;
                 return message;
             };
@@ -5686,7 +5686,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (message.bytesField != null && $Object.hasOwnProperty.call(message, "bytesField"))
-                    if (!(message.bytesField && typeof message.bytesField.length === "number" || $util.isString(message.bytesField)))
+                    if (!($Array.isArray(message.bytesField) || $ArrayBuffer.isView(message.bytesField) || $util.isString(message.bytesField)))
                         return "bytesField: buffer expected";
                 if (message.unused != null && $Object.hasOwnProperty.call(message, "unused"))
                     if (!$util.isString(message.unused))
@@ -5737,7 +5737,7 @@ $root.jspb = (function() {
                 if (object.bytesField != null)
                     if (typeof object.bytesField === "string")
                         $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
-                    else if (object.bytesField.length >= 0)
+                    else if ($Array.isArray(object.bytesField) || $ArrayBuffer.isView(object.bytesField))
                         message.bytesField = object.bytesField;
                 if (object.unused != null)
                     message.unused = $String(object.unused);
@@ -9965,7 +9965,7 @@ $root.jspb = (function() {
                     if (!$util.isInteger(message.value))
                         return "value: integer expected";
                 if (message.data != null && $Object.hasOwnProperty.call(message, "data"))
-                    if (!(message.data && typeof message.data.length === "number" || $util.isString(message.data)))
+                    if (!($Array.isArray(message.data) || $ArrayBuffer.isView(message.data) || $util.isString(message.data)))
                         return "data: buffer expected";
                 return null;
             };
@@ -9993,7 +9993,7 @@ $root.jspb = (function() {
                 if (object.data != null)
                     if (typeof object.data === "string")
                         $util.base64.decode(object.data, message.data = $util.newBuffer($util.base64.length(object.data)), 0);
-                    else if (object.data.length >= 0)
+                    else if ($Array.isArray(object.data) || $ArrayBuffer.isView(object.data))
                         message.data = object.data;
                 return message;
             };
@@ -23810,7 +23810,7 @@ $root.google = (function() {
                     if (typeof message.doubleValue !== "number")
                         return "doubleValue: number expected";
                 if (message.stringValue != null && $Object.hasOwnProperty.call(message, "stringValue"))
-                    if (!(message.stringValue && typeof message.stringValue.length === "number" || $util.isString(message.stringValue)))
+                    if (!($Array.isArray(message.stringValue) || $ArrayBuffer.isView(message.stringValue) || $util.isString(message.stringValue)))
                         return "stringValue: buffer expected";
                 if (message.aggregateValue != null && $Object.hasOwnProperty.call(message, "aggregateValue"))
                     if (!$util.isString(message.aggregateValue))
@@ -23871,7 +23871,7 @@ $root.google = (function() {
                 if (object.stringValue != null)
                     if (typeof object.stringValue === "string")
                         $util.base64.decode(object.stringValue, message.stringValue = $util.newBuffer($util.base64.length(object.stringValue)), 0);
-                    else if (object.stringValue.length >= 0)
+                    else if ($Array.isArray(object.stringValue) || $ArrayBuffer.isView(object.stringValue))
                         message.stringValue = object.stringValue;
                 if (object.aggregateValue != null)
                     message.aggregateValue = $String(object.aggregateValue);
