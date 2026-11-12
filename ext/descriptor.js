@@ -604,7 +604,7 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
     if (this.map) {
 
         descriptor.type = 11; // message
-        descriptor.typeName = $protobuf.util.ucFirst(this.name); // fieldName -> FieldNameEntry (built in Type#toDescriptor)
+        descriptor.typeName = mapEntryName(protoName); // field_name -> FieldNameEntry (built in Type#toDescriptor)
         descriptor.label = 3; // repeated
 
     } else {
@@ -1151,6 +1151,23 @@ function decodeDescriptor(descriptor, type) {
     if (descriptor instanceof $protobuf.Reader || typeof descriptor.length === "number")
         return type.decode(descriptor);
     return descriptor;
+}
+
+// Names the synthetic map entry message like protoc does: field_name -> FieldNameEntry
+function mapEntryName(fieldName) {
+    var name = "",
+        capNext = true;
+    for (var i = 0; i < fieldName.length; ++i) {
+        var c = fieldName.charAt(i);
+        if (c === "_")
+            capNext = true;
+        else if (capNext) {
+            name += c >= "a" && c <= "z" ? c.toUpperCase() : c;
+            capNext = false;
+        } else
+            name += c;
+    }
+    return name + "Entry";
 }
 
 // Calculates the shortest relative path from `from` to `to`.

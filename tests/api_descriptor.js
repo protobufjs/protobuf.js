@@ -663,6 +663,40 @@ tape.test("descriptor - map field roundtrip", function(test) {
     test.end();
 });
 
+tape.test("descriptor - map entry names", function(test) {
+    var source = `syntax = "proto3";
+
+        message Message {
+            map<string, int32> user_tags = 1;
+            map<string, string> labels = 2;
+            message Labels {
+                string value = 1;
+            }
+            Labels other = 3;
+        }
+    `;
+
+    [false, true].forEach(function(keepCase) {
+        var root = protobuf.parse(source, { keepCase: keepCase }).root.resolveAll(),
+            descriptorSet = root.toDescriptor("proto3"),
+            message = descriptorSet.file[0].messageType[0];
+
+        test.same(message.nestedType.map(function(type) {
+            return type.name;
+        }), [ "UserTagsEntry", "LabelsEntry", "Labels" ], "names map entries like protoc (keepCase=" + keepCase + ")");
+        test.equal(message.field[0].typeName, "UserTagsEntry", "references the map entry (keepCase=" + keepCase + ")");
+        test.equal(message.field[1].typeName, "LabelsEntry", "references the map entry (keepCase=" + keepCase + ")");
+
+        var root2 = protobuf.Root.fromDescriptor(descriptor.FileDescriptorSet.encode(descriptorSet).finish()).resolveAll(),
+            Message2 = root2.lookupType("Message");
+
+        test.ok(Message2.fields.labels instanceof protobuf.MapField, "reconstructs the map field next to a same-named message (keepCase=" + keepCase + ")");
+        test.equal(Message2.fields.other.resolvedType.fullName, ".Message.Labels", "resolves the nested message, not the map entry (keepCase=" + keepCase + ")");
+    });
+
+    test.end();
+});
+
 tape.test("descriptor - protoc map entry", function(test) {
     var root = protobuf.Root.fromDescriptor(descriptor.FileDescriptorSet.create({
         file: [{
