@@ -151,6 +151,17 @@ tape.test("util", function(test) {
             Object.keys = objectKeys;
         }
 
+        var toStringCall = Object.prototype.toString.call;
+        try {
+            var inherited = util.setProperty({}, "toString.call", "value");
+            test.notOk(Object.prototype.hasOwnProperty.call(Object.prototype.toString, "call"), "should not descend into inherited properties");
+            test.same(inherited, { toString: { call: "value" } }, "should create an own property instead");
+            test.same(util.setProperty({}, "valueOf", 1), { valueOf: 1 }, "should not merge with inherited leaf values");
+        } finally {
+            if (Object.prototype.toString.call !== toStringCall)
+                delete Object.prototype.toString.call;
+        }
+
         test.end();
     });
 
