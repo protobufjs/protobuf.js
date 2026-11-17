@@ -226,10 +226,11 @@ util.setProperty = function setProperty(dst, path, value, ifNotSet) {
         var part = path.shift();
         if (util.isUnsafeProperty(part))
             return dst;
+        var own = Object.prototype.hasOwnProperty.call(dst, part);
         if (path.length > 0) {
-            dst[part] = setProp(dst[part] || {}, path, value);
+            dst[part] = setProp(own && dst[part] || {}, path, value);
         } else {
-            var prevValue = dst[part];
+            var prevValue = own ? dst[part] : undefined;
             if (prevValue && ifNotSet)
                 return dst;
             if (prevValue)
