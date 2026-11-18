@@ -81,6 +81,8 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
                 : writeStringBuffer(value, buf, pos + 1)
         );
     }
+    if (n <= 0x10000)
+        return writeStringOnePass(this, value, n);
     var len = util.Buffer.byteLength(value);
     this.uint32(len);
     this._reserve(len);
@@ -88,6 +90,29 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
     this.pos += len;
     return this;
 };
+
+// Writes a string of 128 to 65536 chars without measuring it first: writes after a length
+// prefix sized for the minimum byte length (n) and moves the bytes if the prefix must grow.
+function writeStringOnePass(writer, value, n) {
+    var vlen = sizeVarint32(n);
+    writer._reserve(n * 3 + 5); // worst case
+    var pos = writer.pos,
+        buf = writer.buf,
+        len = writeStringBuffer(value, buf, pos + vlen),
+        lv = sizeVarint32(len);
+    if (lv !== vlen)
+        buf.copyWithin(pos + lv, pos + vlen, pos + vlen + len);
+    writer.uint32(len);
+    writer.pos += len;
+    return writer;
+}
+
+function sizeVarint32(value) {
+    return value < 16384     ? 2 // >= 128 here
+         : value < 2097152   ? 3
+         : value < 268435456 ? 4
+         :                     5;
+}
 
 
 /**
