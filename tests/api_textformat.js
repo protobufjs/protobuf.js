@@ -171,6 +171,25 @@ tape.test("textformat - formats deterministically", function(test) {
     test.end();
 });
 
+tape.test("textformat - rejects non-integer values for integer and enum fields", function(test) {
+    test.equal(Msg.toText({ int32Field: "12", int64Field: "-34", kind: "ONE" }),
+        "int32_field: 12\nint64_field: -34\nkind: ONE", "formats integer strings and enum names");
+    test.equal(Msg.toText({ kind: 7 }), "kind: 7", "formats unknown enum numbers");
+    test.throws(function() {
+        Msg.toText({ int32Field: "1\nbool_field: true" });
+    }, /integer expected/, "rejects text in integer fields");
+    test.throws(function() {
+        Msg.toText({ uint64Field: "1 string_field: \"x\"" });
+    }, /integer expected/, "rejects text in 64 bit integer fields");
+    test.throws(function() {
+        Msg.toText({ kind: "0\nbool_field: true" });
+    }, /integer expected/, "rejects text in enum fields");
+    test.throws(function() {
+        Msg.toText({ stringMap: { a: "1\n}\nbool_field: true\nstring_map {\n  key: \"b\"" } });
+    }, /integer expected/, "rejects text in integer map values");
+    test.end();
+});
+
 tape.test("textformat - rejects duplicate singular and oneof fields", function(test) {
     test.throws(function() {
         Msg.fromText("string_field: \"a\" string_field: \"b\"");
