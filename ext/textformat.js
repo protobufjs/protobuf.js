@@ -1077,7 +1077,11 @@ function formatExtensionName(field) {
 function formatScalar(field, value) {
     if (field.resolvedType instanceof Enum) {
         var name = field.resolvedType.valuesById[value];
-        return name === undefined ? String(value) : name;
+        if (name !== undefined)
+            return name;
+        if (typeof value === "string" && Object.prototype.hasOwnProperty.call(field.resolvedType.values, value))
+            return value;
+        return formatInteger(field, value);
     }
     switch (field.type) {
         case "string":
@@ -1098,8 +1102,15 @@ function formatScalar(field, value) {
                 return "-inf";
             return String(value);
         default:
-            return String(value);
+            return formatInteger(field, value);
     }
+}
+
+function formatInteger(field, value) {
+    var str = String(value);
+    if (!/^-?[0-9]+$/.test(str))
+        throw TypeError(field.fullName + ": integer expected");
+    return str;
 }
 
 function bytesValue(value) {
