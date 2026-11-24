@@ -221,22 +221,36 @@ function parse(source, root, options) {
         throw illegal(token, "number", insideTryCatch);
     }
 
-    function parseInteger(token, acceptNegative, name) {
+    function parseInteger(token, acceptNegative, name, isLong) {
         if (token === null)
             throw illegal(token, "end of input");
         if (!acceptNegative && token.charAt(0) === "-")
             throw illegal(token, name || "integer");
         if (token === "0" || token === "-0")
             return 0;
-        var value;
+        var radix;
         if (base10NegRe.test(token))
-            value = parseInt(token, 10);
+            radix = 10;
         else if (base16NegRe.test(token))
-            value = parseInt(token, 16);
+            radix = 16;
         else if (base8NegRe.test(token))
-            value = parseInt(token, 8);
+            radix = 8;
         else
             throw illegal(token, name || "integer");
+
+        var value = parseInt(token, radix);
+        if (isLong && util.Long && (value > 9007199254740991 || value < -9007199254740991)) {
+            var negative = token.charAt(0) === "-",
+                digits = negative ? token.substring(1) : token;
+            if (radix === 16)
+                digits = digits.substring(2);
+            digits = (negative ? "-" : "") + digits.replace(/^0+/, "").toLowerCase();
+            var exact = util.Long.fromString(digits, !acceptNegative, radix);
+            // Keep representable 64-bit defaults exact without changing the
+            // existing Number conversion for values outside the field's range.
+            if (exact.toString(radix) === digits)
+                return exact.toString();
+        }
         return value || 0;
     }
 
@@ -888,7 +902,7 @@ function parse(source, root, options) {
         }
 
         var simpleValue = name === "default" && parent instanceof Field && integerTypeRe.test(parent.type)
-            ? parseInteger(next(), !unsignedTypeRe.test(parent.type))
+            ? parseInteger(next(), !unsignedTypeRe.test(parent.type), undefined, types.long[parent.type] !== undefined)
             : readValue(true);
         setOption(parent, name, simpleValue);
         return simpleValue;
