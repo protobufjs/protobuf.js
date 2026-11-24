@@ -253,8 +253,8 @@ function buildFieldOptions(field) {
                 // skip default (resolved) default values
                 if (field.long && !util.longNeq(field.defaultValue, types.defaults[field.type]) || !field.long && field.defaultValue === types.defaults[field.type])
                     return;
-                // enum defaults specified as strings are type references and not enclosed in quotes
-                if (field.resolvedType instanceof Enum)
+                // enum references and 64-bit integer defaults are not enclosed in quotes
+                if (field.resolvedType instanceof Enum || types.long[field.type] !== undefined)
                     break;
                 // otherwise fallthrough
             default:

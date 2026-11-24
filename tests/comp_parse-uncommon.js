@@ -53,6 +53,74 @@ tape.test("numeric defaults", function(test) {
     test.end();
 });
 
+tape.test("exact 64-bit defaults", function(test) {
+    require("../ext/descriptor");
+    var cases = [
+        ["int64", "9007199254740993", "9007199254740993"],
+        ["int64", "-9007199254740993", "-9007199254740993"],
+        ["uint64", "9007199254740993", "9007199254740993"],
+        ["sint64", "-0x20000000000001", "-9007199254740993"],
+        ["fixed64", "0x8000000000000001", "9223372036854775809"],
+        ["sfixed64", "-0400000000000000001", "-9007199254740993"],
+        ["int64", "9223372036854775807", "9223372036854775807"],
+        ["int64", "-9223372036854775808", "-9223372036854775808"],
+        ["uint64", "18446744073709551615", "18446744073709551615"],
+        ["fixed64", "0xffffffffffffffff", "18446744073709551615"],
+        ["sint64", "-0777777777777777777777", "-9223372036854775807"],
+        ["sfixed64", "-0x7FFFFFFFFFFFFFFF", "-9223372036854775807"],
+        ["uint64", "01777777777777777777777", "18446744073709551615"],
+        ["int64", "0x000020000000000001", "9007199254740993"],
+        ["int64", "000400000000000000001", "9007199254740993"],
+        ["int64", "0x20000000000000", "9007199254740992"]
+    ];
+    function defaultValue(root) {
+        var Type = root.lookupType("M");
+        return Type.toObject(Type.decode(new Uint8Array(0)), { defaults: true, longs: String }).value;
+    }
+    cases.forEach(function(item) {
+        var label = item[0] + " " + item[1],
+            root = protobuf.parse("syntax = \"proto2\"; message M { optional " + item[0] + " value = 1 [default = " + item[1] + "]; }").root;
+        test.equal(root.lookupType("M").fields.value.options.default, item[2], label + " keeps an exact decimal option");
+        test.equal(defaultValue(root), item[2], label + " is the default of an empty message");
+        test.equal(defaultValue(protobuf.Root.fromJSON(JSON.parse(JSON.stringify(root.toJSON())))), item[2], label + " survives JSON export and import");
+        test.equal(defaultValue(protobuf.Root.fromDescriptor(root.toDescriptor("proto2"))), item[2], label + " survives descriptor export and import");
+    });
+    test.end();
+});
+
+tape.test("64-bit default compatibility", function(test) {
+    function parseDefault(type, value) {
+        return protobuf.parse("syntax = \"proto2\"; message M { optional " + type + " value = 1 [default = " + value + "]; }").root.lookupType("M");
+    }
+    ["int64", "uint64", "sint64", "fixed64", "sfixed64"].forEach(function(type) {
+        ["0", "17", "0x11", "021", "9007199254740991"].forEach(function(value) {
+            test.equal(typeof parseDefault(type, value).fields.value.options.default, "number", type + " " + value + " stays a numeric option");
+        });
+        ["08", "1.5", "1e3", "inf", "nan", "\"123\""].forEach(function(value) {
+            test.throws(function() { parseDefault(type, value); }, /illegal integer/, type + " rejects " + value);
+        });
+    });
+    ["-0", "-00", "-0x0"].forEach(function(value) {
+        test.ok(Object.is(parseDefault("int64", value).fields.value.options.default, 0), value + " stays a positive integer zero");
+        test.throws(function() { parseDefault("uint64", value); }, /illegal integer/, "uint64 still rejects " + value);
+    });
+    test.equal(parseDefault("int64", "-9007199254740991").fields.value.options.default, -9007199254740991, "a safe negative default stays numeric");
+
+    // Values outside the field's range retain the existing Number conversion.
+    test.equal(parseDefault("int64", "0xffffffffffffffff").create().value.toString(), "9223372036854775807", "an out-of-range signed default does not start wrapping");
+    test.equal(parseDefault("uint64", "18446744073709551616").create().value.toString(), "18446744073709551615", "an out-of-range unsigned default does not start wrapping");
+
+    var Long = protobuf.util.Long;
+    try {
+        protobuf.util.Long = null;
+        var Type = parseDefault("int64", "9007199254740993");
+        test.equal(Type.create().value, 9007199254740992, "without Long the existing numeric fallback remains available");
+    } finally {
+        protobuf.util.Long = Long;
+    }
+    test.end();
+});
+
 tape.test("negative enum reserved values", function(test) {
     test.doesNotThrow(function() {
         var Enum = protobuf.parse("syntax = \"proto3\"; enum Values { reserved -1; INVALID = 0; OK = 1; }").root.lookupEnum("Values");
