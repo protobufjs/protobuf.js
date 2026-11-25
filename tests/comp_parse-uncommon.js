@@ -53,6 +53,26 @@ tape.test("numeric defaults", function(test) {
     test.end();
 });
 
+tape.test("bytes defaults from proto literals and JSON descriptors", function(test) {
+    var root = protobuf.parse(String.raw`syntax = "proto2";
+        message M {
+            optional bytes text = 1 [default = "test"];
+            optional bytes padded = 2 [default = "dGVzdA=="];
+            optional bytes binary = 3 [default = "\377" '\x80é'];
+        }`).root;
+    var json = JSON.parse(JSON.stringify(root));
+    [root, protobuf.Root.fromJSON(json)].forEach(function(copy) {
+        var message = copy.lookupType("M").decode([]);
+        test.same(Array.from(message.text), [116, 101, 115, 116], "reads the bytes of the literal test");
+        test.same(Array.from(message.padded), [100, 71, 86, 122, 100, 65, 61, 61], "reads padding as literal text");
+        test.same(Array.from(message.binary), [255, 128, 195, 169], "joins escaped octets and UTF-8 text");
+    });
+    json.nested.M.fields.text.options.default = "test";
+    var fromJSON = protobuf.Root.fromJSON(json).lookupType("M").decode([]);
+    test.same(Array.from(fromJSON.text), [181, 235, 45], "still decodes Base64 in JSON");
+    test.end();
+});
+
 tape.test("negative enum reserved values", function(test) {
     test.doesNotThrow(function() {
         var Enum = protobuf.parse("syntax = \"proto3\"; enum Values { reserved -1; INVALID = 0; OK = 1; }").root.lookupEnum("Values");

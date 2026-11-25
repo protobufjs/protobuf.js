@@ -5,6 +5,7 @@ parse.filename = null;
 parse.defaults = { keepCase: false };
 
 var tokenize  = require("./tokenize"),
+    bytes     = require("./util/bytes"),
     Root      = require("./root"),
     Type      = require("./type"),
     Field     = require("./field"),
@@ -112,7 +113,7 @@ function parse(source, root, options) {
         return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line + ")");
     }
 
-    function readString() {
+    function readString(asBytes) {
         var values = [],
             token;
         do {
@@ -120,11 +121,15 @@ function parse(source, root, options) {
             if ((token = next()) !== "\"" && token !== "'")
                 throw illegal(token);
 
-            values.push(next());
+            if (asBytes)
+                bytes.parse(tn._readString(), values);
+            else
+                values.push(next());
             skip(token);
             token = peek();
         } while (token === "\"" || token === "'");
-        return values.join("");
+        // Reflection JSON represents byte defaults as Base64 strings.
+        return asBytes ? util.base64.encode(values, 0, values.length) : values.join("");
     }
 
     function readValue(acceptTypeRef) {
@@ -887,9 +892,14 @@ function parse(source, root, options) {
             return objectResult;
         }
 
-        var simpleValue = name === "default" && parent instanceof Field && integerTypeRe.test(parent.type)
-            ? parseInteger(next(), !unsignedTypeRe.test(parent.type))
-            : readValue(true);
+        var fieldDefault = name === "default" && parent instanceof Field;
+        var simpleValue;
+        if (fieldDefault && parent.bytes)
+            simpleValue = readString(true);
+        else if (fieldDefault && integerTypeRe.test(parent.type))
+            simpleValue = parseInteger(next(), !unsignedTypeRe.test(parent.type));
+        else
+            simpleValue = readValue(true);
         setOption(parent, name, simpleValue);
         return simpleValue;
         // Does not enforce a delimiter to be universal

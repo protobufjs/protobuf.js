@@ -1,5 +1,6 @@
 "use strict";
 var $protobuf = require("../light");
+var bytes = require("../src/util/bytes");
 module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).lookup(".google.protobuf");
 exports.root.define("pb").addJSON(require("../google/protobuf/json_enumvalue_options.json").nested.pb.nested);
 
@@ -524,7 +525,10 @@ function Field_fromDescriptor(descriptor, ctx, nested) {
     if (descriptor.proto3Optional || descriptor.proto3_optional)
         (field.options || (field.options = {})).proto3_optional = true;
 
-    if (descriptor.defaultValue && descriptor.defaultValue.length) {
+    if (field.bytes && typeof descriptor.defaultValue === "string" && Object.prototype.hasOwnProperty.call(descriptor, "defaultValue")) {
+        var defaultBytes = bytes.parse(descriptor.defaultValue, []);
+        field.setOption("default", $protobuf.util.base64.encode(defaultBytes, 0, defaultBytes.length));
+    } else if (descriptor.defaultValue && descriptor.defaultValue.length) {
         var defaultValue = descriptor.defaultValue;
         switch (fieldType) {
             case "double": case "float":
@@ -640,7 +644,7 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
     if (this.options) {
         descriptor.options = toDescriptorOptions(this.options, exports.FieldOptions);
         if (this.options["default"] != null)
-            descriptor.defaultValue = String(this.options["default"]);
+            descriptor.defaultValue = this.bytes ? bytes.escape(this.typeDefault) : String(this.options["default"]);
         if (this.options.proto3_optional)
             descriptor.proto3Optional = true;
     }

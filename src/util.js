@@ -15,6 +15,7 @@ util.codegen  = require("./util/codegen");
 util.fetch    = require("./util/fetch");
 util.path     = require("./util/path");
 util.patterns = require("./util/patterns");
+util.escapeBytes = require("./util/bytes").escape;
 
 var reservedRe = util.patterns.reservedRe;
 
