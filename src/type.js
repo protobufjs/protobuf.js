@@ -421,7 +421,12 @@ Type.prototype.add = function add(object) {
         this.fields[object.name] = object;
         object.message = this;
         object.onAdd(this);
-        return clearCache(this);
+        // keep the id index built by the duplicate check above instead of rebuilding it per field
+        var fieldsById = this._fieldsById;
+        clearCache(this);
+        if (fieldsById)
+            (this._fieldsById = fieldsById)[object.id] = object;
+        return this;
     }
     if (object instanceof OneOf) {
         if (object.name.charAt(0) === "$")

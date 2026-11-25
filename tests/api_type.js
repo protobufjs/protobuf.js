@@ -133,6 +133,27 @@ tape.test("reflected types", function(test) {
     test.end();
 });
 
+tape.test("reflected type field id index", function(test) {
+
+    var type = new protobuf.Type("Index");
+    type.add(new protobuf.Field("a", 1, "uint32"));
+    var fieldsById = type.fieldsById;
+    type.add(new protobuf.Field("b", 2, "uint32"));
+    test.equal(type.fieldsById, fieldsById, "should update the id index instead of rebuilding it when adding fields");
+    test.equal(type.fieldsById[2], type.fields.b, "should index added fields by id");
+
+    test.throws(function() {
+        type.add(new protobuf.Field("c", 2, "uint32"));
+    }, Error, "should throw when trying to add duplicate ids");
+
+    type.remove(type.fields.b);
+    test.equal(type.fieldsById[2], undefined, "should drop removed fields from the id index");
+    type.add(new protobuf.Field("c", 2, "uint32"));
+    test.equal(type.fieldsById[2], type.fields.c, "should reuse ids of removed fields");
+
+    test.end();
+});
+
 tape.test("generated message constructors", function(test) {
     var root = protobuf.Root.fromJSON({
         nested: {
