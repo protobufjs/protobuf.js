@@ -21,17 +21,26 @@ exports.unescape = function unescape(literal) {
     return literal.replace(escapeRe, unescapeChar);
 };
 
-// A numeric escape is one byte, while unescaped text is UTF-8.
+// Octal and hex escapes are single bytes. Text and Unicode escapes are UTF-8.
 exports.parse = function parse(literal, output) {
-    var start = 0, match;
-    while ((match = escapeRe.exec(literal)) !== null) {
-        utf8.write(literal.substring(start, match.index), output, output.length);
-        var ch = unescapeChar(match[0], match[1]);
-        if (ch)
-            output.push(ch.charCodeAt(0));
-        start = escapeRe.lastIndex;
+    var byteEscapeRe = /\\(?:u([0-9a-fA-F]{4})|U([0-9a-fA-F]{8})|([0-7]{1,3}|[xX][0-9a-fA-F]{1,2}|.?))/g;
+    var start = 0, text = "", match;
+    while ((match = byteEscapeRe.exec(literal)) !== null) {
+        text += literal.substring(start, match.index);
+        var unicode = match[1] || match[2];
+        if (unicode) {
+            // Keep successive Unicode escapes together to combine UTF-16 surrogate pairs.
+            text += String.fromCodePoint(parseInt(unicode, 16));
+        } else {
+            utf8.write(text, output, output.length);
+            text = "";
+            var ch = unescapeChar(match[0], match[3]);
+            if (ch)
+                output.push(ch.charCodeAt(0));
+        }
+        start = byteEscapeRe.lastIndex;
     }
-    utf8.write(literal.substring(start), output, output.length);
+    utf8.write(text + literal.substring(start), output, output.length);
     return output;
 };
 

@@ -59,6 +59,7 @@ tape.test("bytes defaults from proto literals and JSON descriptors", function(te
             optional bytes text = 1 [default = "test"];
             optional bytes padded = 2 [default = "dGVzdA=="];
             optional bytes binary = 3 [default = "\377" '\x80é'];
+            optional bytes unicode = 4 [default = "\u00E9\U0001F600" '\uD83D\uDE00\377\\u00E9'];
         }`).root;
     var json = JSON.parse(JSON.stringify(root));
     [root, protobuf.Root.fromJSON(json)].forEach(function(copy) {
@@ -66,6 +67,8 @@ tape.test("bytes defaults from proto literals and JSON descriptors", function(te
         test.same(Array.from(message.text), [116, 101, 115, 116], "reads the bytes of the literal test");
         test.same(Array.from(message.padded), [100, 71, 86, 122, 100, 65, 61, 61], "reads padding as literal text");
         test.same(Array.from(message.binary), [255, 128, 195, 169], "joins escaped octets and UTF-8 text");
+        test.same(Array.from(message.unicode), [195, 169, 240, 159, 152, 128, 240, 159, 152, 128, 255, 92, 117, 48, 48, 69, 57],
+            "writes Unicode escapes as UTF-8 and preserves an escaped backslash");
     });
     json.nested.M.fields.text.options.default = "test";
     var fromJSON = protobuf.Root.fromJSON(json).lookupType("M").decode([]);
