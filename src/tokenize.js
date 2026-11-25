@@ -1,6 +1,8 @@
 "use strict";
 module.exports = tokenize;
 
+var bytes = require("./util/bytes");
+
 var delimRe        = /[\s{}=;:[\],'"()<>]/g,
     stringDoubleRe = /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
     stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
@@ -8,21 +10,7 @@ var delimRe        = /[\s{}=;:[\],'"()<>]/g,
 var setCommentRe = /^ *[*/]+ */,
     setCommentAltRe = /^\s*\*?\/*/,
     setCommentSplitRe = /\n/g,
-    whitespaceRe = /\s/,
-    unescapeRe = /\\([0-7]{1,3}|[xX][0-9a-fA-F]{1,2}|.?)/g;
-
-var unescapeMap = {
-    "a": "\x07",
-    "b": "\b",
-    "f": "\f",
-    "r": "\r",
-    "n": "\n",
-    "t": "\t",
-    "v": "\v",
-    "?": "?",
-    "'": "'",
-    "\"": "\""
-};
+    whitespaceRe = /\s/;
 
 /**
  * Unescapes a string.
@@ -32,20 +20,7 @@ var unescapeMap = {
  * @memberof tokenize
  */
 function unescape(str) {
-    return str.replace(unescapeRe, function($0, $1) {
-        var first = $1.charAt(0);
-        if (first >= "0" && first <= "7")
-            return String.fromCharCode(parseInt($1, 8) & 255);
-        if (first === "x" || first === "X")
-            return String.fromCharCode(parseInt($1.substring(1), 16));
-        switch ($1) {
-            case "\\":
-            case "":
-                return $1;
-            default:
-                return unescapeMap[$1] || "";
-        }
-    });
+    return bytes.unescape(str);
 }
 
 tokenize.unescape = unescape;
@@ -134,7 +109,7 @@ function tokenize(source, alternateCommentMode) {
 
     /**
      * Reads a string till its end.
-     * @returns {string} String read
+     * @returns {string} Raw contents between the quotes
      * @inner
      */
     function readString() {
@@ -146,7 +121,7 @@ function tokenize(source, alternateCommentMode) {
         offset = re.lastIndex;
         push(stringDelim);
         stringDelim = null;
-        return unescape(match[1]);
+        return match[1];
     }
 
     /**
@@ -230,7 +205,7 @@ function tokenize(source, alternateCommentMode) {
         if (stack.length > 0)
             return stack.shift();
         if (stringDelim)
-            return readString();
+            return unescape(readString());
         var repeat,
             prev,
             curr,
@@ -421,6 +396,7 @@ function tokenize(source, alternateCommentMode) {
 
     return Object.defineProperty({
         next: next,
+        _readString: readString,
         peek: peek,
         push: push,
         skip: skip,

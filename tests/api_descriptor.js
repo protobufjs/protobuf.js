@@ -80,6 +80,31 @@ tape.test("descriptor - proto2 roundtrip", function (test) {
     test.end();
 });
 
+tape.test("descriptor - bytes defaults", function(test) {
+    var file = descriptor.FileDescriptorSet.encode({ file: [{
+        name: "bytes.proto",
+        messageType: [{ name: "Message", field: [
+            { name: "text", number: 1, label: 1, type: 12, defaultValue: "test" },
+            { name: "binary", number: 2, label: 1, type: 12, defaultValue: "\\377\\x80" },
+            { name: "empty", number: 3, label: 1, type: 12, defaultValue: "" },
+            { name: "absent", number: 4, label: 1, type: 12 }
+        ] }]
+    }] }).finish();
+    var root = protobuf.Root.fromDescriptor(file);
+    var message = root.lookupType("Message").decode([]);
+    test.same(Array.from(message.text), [116, 101, 115, 116], "reads the literal bytes of a descriptor default");
+    test.same(Array.from(message.binary), [255, 128], "reads C-escaped bytes from a descriptor");
+
+    var restored = protobuf.Root.fromJSON(JSON.parse(JSON.stringify(root)));
+    var fields = restored.toDescriptor("proto2").file[0].messageType[0].field;
+    test.equal(fields[0].defaultValue, "test", "writes literal text after a JSON round-trip");
+    test.equal(fields[1].defaultValue, "\\377\\200", "writes non-ASCII bytes as C escapes");
+    test.ok(Object.prototype.hasOwnProperty.call(fields[2], "defaultValue"), "preserves an explicit empty bytes default");
+    test.equal(fields[2].defaultValue, "");
+    test.notOk(Object.prototype.hasOwnProperty.call(fields[3], "defaultValue"), "preserves an absent default");
+    test.end();
+});
+
 tape.test("descriptor - numeric defaults", function(test) {
     var root = protobuf.Root.fromDescriptor(descriptor.FileDescriptorSet.create({
         file: [{

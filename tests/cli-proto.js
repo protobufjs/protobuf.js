@@ -94,6 +94,25 @@ message OptionalFields {
     });
 });
 
+tape.test("proto2 bytes defaults from a JSON descriptor", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.Root.fromJSON({ nested: { Message: { fields: {
+            text: { id: 1, type: "bytes", options: { default: "dGVzdA==" } },
+            binary: { id: 2, type: "bytes", options: { default: "test" } }
+        } } } });
+        var protoTarget = require("../cli/targets/proto2");
+        protoTarget(root, {}, function(err, output) {
+            test.error(err);
+            test.ok(output.includes('text = 1 [default="test"]'), "writes readable ASCII bytes as a literal");
+            test.ok(output.includes('binary = 2 [default="\\265\\353-"]'), "escapes the binary bytes of a Base64 default");
+            var message = protobuf.parse(output).root.lookupType("Message").decode([]);
+            test.same(Array.from(message.text), [116, 101, 115, 116], "reparses literal text");
+            test.same(Array.from(message.binary), [181, 235, 45], "reparses binary bytes");
+            test.end();
+        });
+    });
+});
+
 tape.test("proto3 to proto2 valid", function(test) {
     const proto3 = `syntax = "proto3";
 

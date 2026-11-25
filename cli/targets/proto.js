@@ -256,6 +256,10 @@ function buildFieldOptions(field) {
                 // enum defaults specified as strings are type references and not enclosed in quotes
                 if (field.resolvedType instanceof Enum)
                     break;
+                if (field.bytes && util.escapeBytes) {
+                    val = "\"" + util.escapeBytes(field.typeDefault) + "\"";
+                    break;
+                }
                 // otherwise fallthrough
             default:
                 val = value(val);

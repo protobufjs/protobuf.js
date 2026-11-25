@@ -1113,27 +1113,7 @@ function bytesValue(value) {
 }
 
 function quoteBytes(bytes) {
-    var out = "\"",
-        oct;
-    for (var i = 0; i < bytes.length; ++i) {
-        var b = bytes[i];
-        switch (b) {
-            case 9: out += "\\t"; break;
-            case 10: out += "\\n"; break;
-            case 13: out += "\\r"; break;
-            case 34: out += "\\\""; break;
-            case 92: out += "\\\\"; break;
-            default:
-                if (b >= 32 && b <= 126)
-                    out += String.fromCharCode(b);
-                else {
-                    oct = b.toString(8);
-                    out += "\\" + (oct.length < 2 ? "00" : oct.length < 3 ? "0" : "") + oct;
-                }
-                break;
-        }
-    }
-    return out + "\"";
+    return "\"" + util.escapeBytes(bytes) + "\"";
 }
 
 function spaces(indent) {
