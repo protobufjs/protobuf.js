@@ -185,6 +185,16 @@ tape.test("textformat - rejects duplicate singular and oneof fields", function(t
         Msg.fromText("string_field: \"\\xff\"");
     }, /invalid UTF-8/, "rejects invalid UTF-8 strings");
     test.throws(function() {
+        Msg.fromText("string_field: \"\\xc2\"");
+    }, /invalid UTF-8/, "rejects truncated 2-byte UTF-8 sequences");
+    test.throws(function() {
+        Msg.fromText("string_field: \"a\\xe2\\x82\"");
+    }, /invalid UTF-8/, "rejects truncated 3-byte UTF-8 sequences");
+    test.throws(function() {
+        Msg.fromText("string_field: \"\\xf0\\x9f\\x98\"");
+    }, /invalid UTF-8/, "rejects truncated 4-byte UTF-8 sequences");
+    test.equal(Msg.fromText("string_field: \"\\xf0\\x9f\\x98\\x80\"").stringField, "\ud83d\ude00", "accepts complete 4-byte UTF-8 sequences");
+    test.throws(function() {
         Msg.fromText("repeated_int32: 1,, repeated_int32: 2");
     }, /unexpected separator/, "rejects duplicate separators");
     test.throws(function() {
