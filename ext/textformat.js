@@ -1155,6 +1155,8 @@ function validUtf8(bytes) {
         b = bytes[i++];
         if (b <= 0x7F)
             continue;
+        if (i + (b >= 0xF0 ? 3 : b >= 0xE0 ? 2 : 1) > bytes.length)
+            return false;
         if (b >= 0xC2 && b <= 0xDF) {
             if ((b = bytes[i++]) < 0x80 || b > 0xBF)
                 return false;
