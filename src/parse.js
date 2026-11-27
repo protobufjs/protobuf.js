@@ -245,7 +245,10 @@ function parse(source, root, options) {
             case "max": case "MAX": case "Max":
                 return max || maxFieldId;
         }
-        return parseInteger(token, acceptNegative, "id");
+        var value = parseInteger(token, acceptNegative, "id");
+        if (!acceptNegative && value > (max || maxFieldId))
+            throw illegal(token, "id");
+        return value;
     }
 
     function parsePackage() {
