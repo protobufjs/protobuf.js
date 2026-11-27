@@ -78,6 +78,32 @@ tape.test("negative enum reserved values", function(test) {
     test.end();
 });
 
+tape.test("field id range", function(test) {
+    var Type = protobuf.parse("syntax = \"proto3\"; message M { string value = 536870911; }").root.lookupType("M");
+    test.equal(Type.fields.value.id, 536870911, "should accept the maximum field id");
+
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto3\"; message M { string role = 1; string shadow = 536870913; }");
+    }, /illegal id '536870913'/, "should reject field ids above the maximum");
+
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto3\"; message M { map<string, string> values = 536870912; }");
+    }, /illegal id '536870912'/, "should reject map field ids above the maximum");
+
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto2\"; message M { optional group G = 0x20000000 { optional int32 a = 1; } }");
+    }, /illegal id '0x20000000'/, "should reject group field ids above the maximum");
+
+    test.throws(function() {
+        protobuf.parse("syntax = \"proto2\"; message M { extensions 100 to 536870912; }");
+    }, /illegal id '536870912'/, "should reject extension ranges above the maximum");
+
+    var Enum = protobuf.parse("syntax = \"proto3\"; enum E { ZERO = 0; BIG = 2147483647; }").root.lookupEnum("E");
+    test.equal(Enum.values.BIG, 2147483647, "should still accept large enum values");
+
+    test.end();
+});
+
 tape.test("enum declarations are order-independent", function(test) {
     var Enum = protobuf.parse("syntax = \"proto3\"; enum Values { INVALID = 0; UNKNOWN = 0; option allow_alias = true; OK = 1; }").root.lookupEnum("Values");
     test.same(Object.keys(Enum.values).map(function(name) {
